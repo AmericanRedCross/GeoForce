@@ -1,0 +1,98 @@
+[
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Belize",
+    "expr0": 1,
+    "expr1": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Colombia",
+    "expr0": 1,
+    "expr1": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Ecuador",
+    "expr0": 1,
+    "expr1": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Haiti",
+    "expr0": 2,
+    "expr1": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "India",
+    "expr0": 3,
+    "expr1": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Nigeria",
+    "expr0": 1,
+    "expr1": 1200
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Tanzania",
+    "expr0": 2,
+    "expr1": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Uganda",
+    "expr0": 17,
+    "expr1": 20000
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "United States",
+    "expr0": 1,
+    "expr1": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Vietnam",
+    "expr0": 4,
+    "expr1": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Zambia",
+    "expr0": 1,
+    "expr1": 203000
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": null,
+    "expr0": 224,
+    "expr1": 10161102
+  }
+]

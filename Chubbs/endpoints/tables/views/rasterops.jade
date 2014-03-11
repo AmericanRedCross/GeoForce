@@ -1,0 +1,16 @@
+extends ../../../shared_views/layout
+
+block content
+	script.
+		//Trigger Active Nav Link
+		$("#tableListing").addClass("active");
+
+	div.heading Raster Operations
+	span The following operations are available for your raster dataset.
+
+	div.bigSpace
+
+	- each item in opslist
+		div.littleSpace
+			a(href=path + "/" + item.link) #{item.name}
+					

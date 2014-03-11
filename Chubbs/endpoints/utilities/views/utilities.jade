@@ -1,0 +1,18 @@
+extends ../../../shared_views/layout
+
+block content
+
+	script.
+		//Trigger Active Nav Link
+		$("#utilities").addClass("active");
+
+	div.heading Utilities
+
+	span These utilities are a random collection of assorted helper functions.  Enjoy.
+
+	div.bigSpace
+		- var items = opslist
+		- each item in items
+			div.littleSpace
+				a(href="/services/" + item.link) #{item.name}
+					

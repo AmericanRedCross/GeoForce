@@ -1,0 +1,75 @@
+accessToken: 00DK000000AaesH!ASAAQLjBHB3lViR56AfDGT7HSXDVU1btcXZDCsZMzHh4v1ao4D7V9F44Os8b4IWVkN54Qf3dcoMFUYdI6zjlgJoNLJGuL3sD
+instanceUrl: https://cs9.salesforce.com
+User ID: 005K0000001q1V4IAI
+Org ID: 00DK000000AaesHMAR
+=== Query Successful ===
+query: Select Count(Name), Sum(Total_Budget__c), Location__r.Admin_0__c From Project__c Group By Location__r.Admin_0__c
+total: 12
+fetched: 12
+results path: test-queries/num-proj-and-budget-per-country.json
+========================
+
+=== Query Successful ===
+query: Select Count(Name), Sum(Total_Budget__c) From Project__c
+total: 1
+fetched: 1
+results path: test-queries/all-money-in-world.json
+========================
+
+QUERY FAILED: Select Location__r.Admin_0__c, Location__r.Admin_1__c, Location__r.Admin_2__c, Name, Type__c, Collection_Frequency__c, Project__r.Name, Organization__r.Name, Standard__r.Is_Standard__c, Standard__c, Project__c, Organization__c, Location__c From Indicator__c Where Standard__r.Is_Standard__c = true
+DESCRIPTION: all-standard-indicators
+MALFORMED_QUERY: unexpected token: Select Location__r.Admin_0__c
+
+QUERY FAILED: Select Indicator__r.Location__r.Admin_0__c, Indicator__r.Location__r.Admin_2__c, Indicator__r.Location__r.Admin_1__c, Indicator__r.Name, Indicator__r.Collection_Frequency__c, Effective_Date__c, Collection_Period__c, Target__c, Actual__c, Variance__c, Indicator__r.Location__c, Indicator__c From Indicator_Value__c Where FISCAL_YEAR(Effective_Date__c) = 2013
+DESCRIPTION: year2013-targets-and-timeframes
+MALFORMED_QUERY:
+Indicator__r.Location__r.Admin_0__c, Indicator__r.Location__r.Admin_2__c
+                                   ^
+ERROR at Row:1:Column:43
+line 1:43 no viable alternative at character ' '
+
+=== Query Successful ===
+query: Select Location__r.Admin_0__c, Count(Name), Sum(Total_Budget__c) From Project__c Group By Location__r.Admin_0__c
+total: 12
+fetched: 12
+results path: test-queries/proj-grouped-by-country.json
+========================
+
+QUERY FAILED: Select  Indicator__r.Location__r.Admin_0__c, Indicator__r.Location__r.Admin_2__c, Indicator__r.Location__r.Admin_1__c, Indicator__r.Name, Indicator__r.Collection_Frequency__c, Effective_Date__c, Collection_Period__c, Target__c, Actual__c, Variance__c, Indicator__r.Location__c,  Indicator__c From Indicator_Value__c Where FISCAL_QUARTER(Effective_Date__c) = 4
+DESCRIPTION: all-4th-quarters
+MALFORMED_QUERY:
+Select  Indicator__r.Location__r.Admin_0__c
+      ^
+ERROR at Row:1:Column:7
+line 1:7 no viable alternative at character ' '
+
+=== Query Successful ===
+query: Select Name, Location__r.Admin_2__c, Location__r.Admin_1__c, Location__r.Admin_0__c, Location__c From Account
+total: 745
+fetched: 745
+results path: test-queries/all-organizations.json
+========================
+
+=== Query Successful ===
+query: Select Indicator__r.Project__r.Start_Date__c, Indicator__r.Project__r.RecordType.Name, Indicator__r.Project__r.RecordTypeId, Indicator__r.Project__r.Program__c, Indicator__r.Project__r.Phase_Name__c, Indicator__r.Project__r.End_Date__c, Indicator__r.Logframe_Element__r.Name, Indicator__r.Logframe_Element__r.Location__c, Indicator__r.Logframe_Element__r.Start_Date__c, Indicator__r.Logframe_Element__r.End_Date__c, Indicator__r.Logframe_Element__r.Custom_Summary__c, Indicator__r.Logframe_Element__r.Type__c, Indicator__r.Logframe_Element__r.Parent__c, Indicator__r.Name, Indicator__r.Custom_Summary__c, Indicator__r.Collection_Frequency__c, Indicator__r.Logframe_Element__c, Indicator__r.Type__c, Indicator__r.Location__c, Indicator__r.Description__c, Target__c, Actual__c, Effective_Date__c, Collection_Period__c, Period__c, Subjective__c, Target_Percent__c, Variance__c, Indicator__c From Indicator_Value__c Where Indicator__r.Project__c = 'a00K0000002F8ov'
+total: 0
+fetched: 0
+results path: test-queries/all-data-for-a-given-project.json
+========================
+
+=== Query Successful ===
+query: Select Timeline_Status__c, Target_Beneficiaries_Indirect__c, Target_Beneficiaries_Direct__c, Summary__c, Sub_Sector__c, Status_As_Of__c, Start_Date__c, Sector__c, Phase_Name__c, Overall_Status__c, Name, Location__r.Admin_2__c, Location__r.Admin_1__c, Location__r.Admin_0__c, Location__c, ISD_Region__c, End_Date__c, Budget_Status__c From Project__c
+total: 258
+fetched: 258
+results path: test-queries/all-projects.json
+========================
+
+=== Query Successful ===
+query: Select Indicator__r.Project__r.Start_Date__c, Indicator__r.Project__r.RecordType.Name, Indicator__r.Project__r.RecordTypeId, Indicator__r.Project__r.Program__c, Indicator__r.Project__r.Phase_Name__c, Indicator__r.Project__r.End_Date__c, Indicator__r.Logframe_Element__r.Name, Indicator__r.Logframe_Element__r.Location__c, Indicator__r.Logframe_Element__r.Start_Date__c, Indicator__r.Logframe_Element__r.End_Date__c, Indicator__r.Logframe_Element__r.Custom_Summary__c, Indicator__r.Logframe_Element__r.Type__c, Indicator__r.Logframe_Element__r.Parent__c, Indicator__r.Name, Indicator__r.Custom_Summary__c, Indicator__r.Collection_Frequency__c, Indicator__r.Logframe_Element__c, Indicator__r.Type__c, Indicator__r.Location__c, Indicator__r.Description__c, Target__c, Actual__c, Effective_Date__c, Collection_Period__c, Period__c, Subjective__c, Target_Percent__c, Variance__c, Indicator__c From Indicator_Value__c Where Indicator__r.Project__c = 'a00K0000002IZP6' Or Indicator__r.Project__r.Program__c = 'a00K0000002IZP6'
+total: 0
+fetched: 0
+results path: test-queries/all-data-for-a-given-program.json
+========================
+
+
+Process finished with exit code 0

@@ -1,0 +1,132 @@
+extends ../../../shared_views/layout
+
+block content
+	script.
+		//Trigger Active Nav Link
+		$("#tableListing").addClass("active");
+
+	div.heading Zonal Statistics
+	span Define an area for which to calculate zonal statistics from this raster.
+		
+	form(action='',method='post')
+		table.inputTable(style='background-color: #fff;')
+			tr
+				td
+					label(for='stattype') Summary Statistic
+				td
+					select(id='stattype',name='stattype')
+						summarylist = [ 'sum', 'min', 'max','mean', 'stddev', 'count']
+							for item in summarylist
+								option(value=item, selected=(item==stattype))=item
+
+			tr
+				td
+					label(for='wkt') Well Known Text (WKT) Geometry
+				td
+					textarea(id='wkt',placeholder='POINT(32.320919 1.521428)',name='wkt')
+						|#{wkt}
+
+			tr
+				td
+					label(for='bufferdistance') Buffer Distance (meters)
+				td
+					input(id='bufferdistance',type='text',value=bufferdistance,placeholder='1000',name='bufferdistance')
+
+			tr
+				td
+					label(for='format') Format
+				td
+					select(id='format',name='format')
+						formatlist = [ 'html', 'GeoJSON', 'esriJSON']
+							for item in formatlist
+								option(value=item, selected=(item==stattype))=item
+
+
+		div(data-role='fieldcontain')   
+			input.blueButton(type='submit',value='Submit',data-transition='fade', data-theme='c')
+
+		- if(table_details){
+			table
+				thead
+					tr
+						th Columns
+				tbody
+			
+					- var items = table_details
+					- each item in items
+						tr
+							td= item.column_name + " (" + item.data_type + ")"
+		-}
+
+
+
+		- var requestSample = []
+		-if(stattype)
+			- requestSample.push("stattype=" + encodeURIComponent(stattype))
+
+		-if(wkt)
+			- requestSample.push("wkt=" + encodeURIComponent(wkt))
+	
+		-if(bufferdistance)
+			- requestSample.push("bufferdistance=" + encodeURIComponent(bufferdistance))
+
+		-if(format)
+			- requestSample.push("format=" + encodeURIComponent(format))
+
+
+		-if(requestSample.length > 0){
+			h2: |Request Sample
+			div#requestSample
+				|#{"http://" + host + path + "?" + requestSample.join("&")}
+		-}
+
+
+block results
+	-if(infoMessage || errorMessage || featureCollection){
+		div.section.code
+
+			div.codeSamplesHeader Results
+		
+			div.codeBody
+
+				-if(infoMessage){
+					div.infoMessage
+						|#{infoMessage}
+				-}
+
+				-if(errorMessage){
+					div.errorMessage
+						|#{errorMessage}
+				-}
+
+				.results
+					- if (featureCollection){
+						-if(featureCollection.features){
+							i # records: #{featureCollection.features.length}
+							each val, key in featureCollection.features
+								div.propertyGroup
+									each ival, ikey in val.properties
+										-if(ival && ival.coordinates){
+											each egval, egkey in ival
+												div.geometry #{ikey}: #{egkey}: #{egval}
+										-}else{
+											div.property #{ikey}: #{ival}
+										-}
+								
+									-if(val.geometry){
+										-if(val.geometry.geometries){
+											each mgval, mgkey in val.geometry.geometries
+												-if(mgval.coordinates){
+													div.geometries #{mgval.type}: #{mgval.coordinates}
+												-}
+										-}else{
+											each gval, gkey in val.geometry
+												div.geometry geometry: #{gkey}: #{gval}
+										-}
+									-}
+							
+						-}else{
+							div.propertyGroup No results found
+						-}
+					-}
+	-}

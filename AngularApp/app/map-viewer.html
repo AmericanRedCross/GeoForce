@@ -1,0 +1,132 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AngularJS Leaflet Routing</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
+
+    <style>
+
+    </style>
+
+</head>
+<body ng-app="demoapp">
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+
+
+
+
+<div ng-controller="GeoJSONController">
+    <leaflet center="center" defaults="defaults" geojson="geojson" width="100%" height="700px"></leaflet>
+</div>
+
+
+
+
+
+
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
+
+<!-- build:js scripts/lib.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/leaflet-dist/leaflet.js"></script>
+<script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/lib/togeojson.js"></script>
+<script src="scripts/app.js"></script>
+<script src="scripts/controllers/main.js"></script>
+<!-- endbuild -->
+
+<script>
+    var app = angular.module("demoapp", ["leaflet-directive"]);
+    app.controller("GeoJSONController", [ '$scope', '$http', 'leafletData', '$location', function($scope, $http, leafletData, $location) {
+        map = leafletData.getMap();
+
+        var path = $location.path();
+        console.log(path);
+
+        var coords = path.slice(path.indexOf('@')+1,path.indexOf('z')).split(',');
+
+        var lat = parseFloat(coords[0]) || 11.243062;
+        var lng = parseFloat(coords[1]) || 123.090820;
+        var zoom = parseInt(coords[2]) || 6;
+        console.log(lat);
+        console.log(lng);
+        console.log(zoom);
+
+        var layers = path.slice(path.indexOf('(')+1,path.indexOf(')')).split(',');
+        var basemap = layers[0] || 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}';
+        layers = layers.slice(1);
+
+        var layerStr = '';
+        if (layers.length > 0) {
+            layerStr = ',' + layers.toString();
+        }
+        $location.path('/map@'+lat+','+lng+','+zoom+'z('+basemap+layerStr+')');
+
+        angular.extend($scope, {
+            center: {
+                lat: lat,
+                lng: lng,
+                zoom: zoom
+            },
+            defaults: {
+                tileLayer: basemap,
+                scrollWheelZoom: true
+            }
+        });
+
+        leafletData.getMap().then(function(map) {
+            map.on('move',function(){ // moveend is good too
+                var c = map.getCenter();
+                var zoom = map.getZoom();
+                var lat = c.lat.toFixed(6);
+                var lng = c.lng.toFixed(6);
+                $location.path('/map@'+lat+','+lng+','+zoom+'z('+basemap+layerStr+')');
+            });
+        });
+
+        // Get the countries geojson data from a JSON
+        $http.get("data/test/phl.geojson").success(function(data, status) {
+            angular.extend($scope, {
+                geojson: {
+                    data: data,
+                    style: {
+                        fillColor: "#e8e0d8",
+                        weight: 2,
+                        opacity: 1,
+                        color: 'white',
+                        fillOpacity: 0.8
+                    }
+                }
+            });
+        });
+
+
+    } ]);
+</script>
+
+</body>
+</html>

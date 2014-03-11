@@ -1,0 +1,51 @@
+{
+  "name": "PGRestAPI",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Ryan Whitley <apollolm@gmail.com>",
+  "description": "Spatial API on top of PostGreSQL/PostGIS.",
+  "contributors": [ 
+    {
+      "name": "Ryan Whitley",
+      "email": "apollolm@gmail.com"
+    } 
+  ],
+  "scripts": {
+    "start": "node app.js",
+    "test": "node_modules\\.bin\\mocha -u tdd"
+  },
+  "dependencies": {
+	"geojson-validation": "*",
+    "express": "3.3.4",
+    "jade": "0.35.0",
+    "pg": "*",
+    "flow": "*",
+    "less-middleware": "0.1.15",
+    "topojson": "*",
+	"shortid": "*",
+	"cors": "*"
+  },
+  "optionalDependencies":{
+  	"mapnik": "*",
+	"carto": "*",
+	"ogr2ogr": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+	"sinon": "*",
+    "chai": "*",
+	"express-mock-request": "*",
+	"supertest": "*"
+  },
+  "keywords": [
+    "PostGIS",
+    "Mapnik",
+    "GIS",
+	"Maps",
+	"Spatial API"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spatialdev/PGRestAPI.git"
+  }
+}

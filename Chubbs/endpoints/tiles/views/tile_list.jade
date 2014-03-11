@@ -1,0 +1,16 @@
+extends ../../../shared_views/layout
+
+block content
+	script.
+		//Trigger Active Nav Link
+		$("#tileStream").addClass("active");
+
+	div.heading TileStream Maps
+
+	span This is a list of cached tiled map services for your enjoyment.
+
+	div.bigSpace
+
+	- each item in featureCollection
+		div.littleSpace
+			a(href=item.preview, target='_blank') #{item.name}
