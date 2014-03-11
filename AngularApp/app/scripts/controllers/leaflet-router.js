@@ -14,15 +14,15 @@ angular.module( "leaflet-router", ["leaflet-directive"]).controller("LeafletRout
 
     var coords = path.slice(path.indexOf('@')+1,path.indexOf('z')).split(',');
 
-    var lat = parseFloat(coords[0]) || 11.243062;
-    var lng = parseFloat(coords[1]) || 123.090820;
-    var zoom = parseInt(coords[2]) || 6;
+    var lat = parseFloat(coords[0]) || 0;
+    var lng = parseFloat(coords[1]) || 0;
+    var zoom = parseInt(coords[2]) || 2;
     console.log(lat);
     console.log(lng);
     console.log(zoom);
 
     var layers = path.slice(path.indexOf('(')+1,path.indexOf(')')).split(',');
-    var basemap = layers[0] || 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}';
+    var basemap = layers[0] || 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
     layers = layers.slice(1);
 
     var layerStr = '';
