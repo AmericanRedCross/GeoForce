@@ -35,18 +35,19 @@ function testSimpleSelectQuery() {
         });
     });
 }
-testSimpleSelectQuery();
-
 
 
 function testInsertProjects() {
-
-    var queryStr = salesforceQueries[queryName];
-    salesforce.queryAndFlattenResults(queryStr, insertRowsIntoProjects);
+    var queryStr = salesforceQueries.allProjects;
+    salesforce.queryAndFlattenResults(queryStr, insertRows);
 
 }
+
+
+function insertRows(rows) {
+    console.log(rows);
+}
+
+
+//testSimpleSelectQuery();
 testInsertProjects();
-
-function insertRowsIntoProjects(rows) {
-
-}
