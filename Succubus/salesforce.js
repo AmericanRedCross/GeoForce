@@ -13,7 +13,7 @@ var conn = new jsforce.Connection({
 });
 
 
-function connect() {
+function connect(cb) {
     conn.login(settings.user, settings.password+settings.token, function(err, userInfo) {
         if (err) { return console.error(err); }
         // Now you can get the access token and instance URL information.
@@ -25,13 +25,35 @@ function connect() {
         console.log("User ID: " + userInfo.id);
         console.log("Org ID: " + userInfo.organizationId);
         console.log("=================");
+        cb();
     });
 }
 
-connect();
+
+function query(queryStr, cb) {
+    // Check if we are connected. If so, go for it...
+    if (conn.accessToken) {
+        conn.query(queryStr, function(err, result) {
+            if (err) {
+                return console.error('QUERY FAILED: ' + queryStr + '\n' + err + '\n');
+            }
+            handleResult(result, cb);
+        });
+    }
+    // Otherwise, we needa connect before we can query...
+    else {
+        connect(function(){
+            conn.query(queryStr, function(err, result) {
+                if (err) {
+                    return console.error('QUERY FAILED: ' + queryStr + '\n' + err + '\n');
+                }
+                handleResult(result, cb);
+            });
+        });
+    }
+}
 
 
-// NH TODO: This should be done differently?
 function handleResult(result, cb) {
     if (!result.done) {
         // you can use the locator to fetch next records set.
@@ -39,23 +61,14 @@ function handleResult(result, cb) {
         console.log("next records URL : " + result.nextRecordsUrl);
 
         conn.queryMore(result.nextRecordsUrl, function(err, result) {
-            cb(result.records, false);
+            cb(result.records);
             handleResult(result, cb);
         });
     } else {
-        cb(result.records, true);
+        cb(result.records);
     }
 }
 
-
-function query(queryStr, cb) {
-    conn.query(queryStr, function(err, result) {
-        if (err) {
-            return console.error('QUERY FAILED: ' + queryStr + '\n' + err + '\n');
-        }
-        handleResult(result, cb);
-    });
-}
 
 module.exports = {};
 
@@ -66,6 +79,8 @@ module.exports = {};
  * that the results can be stored in a Postgres table.
  */
 module.exports.queryAndFlattenResults = function(queryStr, cb) {
+
+    query(queryStr, flattenRecords);
 
     function flattenRecords(records) {
         for (var i=0, len=records.length; i < len; ++i) {
@@ -80,6 +95,5 @@ module.exports.queryAndFlattenResults = function(queryStr, cb) {
         cb(records);
     }
 
-    query(queryStr, flattenRecords);
 }
 
