@@ -18,7 +18,7 @@ function connect(cb) {
         if (err) { return console.error(err); }
         // Now you can get the access token and instance URL information.
         // Save them to establish connection next time.
-        console.log('===== Login =====')
+        console.log('===== Login =====');
         console.log('accessToken: ' + conn.accessToken);
         console.log('instanceUrl: ' + conn.instanceUrl);
         // logged in user property
@@ -33,22 +33,22 @@ function connect(cb) {
 function query(queryStr, cb) {
     // Check if we are connected. If so, go for it...
     if (conn.accessToken) {
+        execQuery();
+    }
+    // Otherwise, we needa connect before we can query...
+    else {
+        connect(function(){
+            execQuery();
+        });
+    }
+
+    // Actually do the query.
+    function execQuery() {
         conn.query(queryStr, function(err, result) {
             if (err) {
                 return console.error('QUERY FAILED: ' + queryStr + '\n' + err + '\n');
             }
             handleResult(result, cb);
-        });
-    }
-    // Otherwise, we needa connect before we can query...
-    else {
-        connect(function(){
-            conn.query(queryStr, function(err, result) {
-                if (err) {
-                    return console.error('QUERY FAILED: ' + queryStr + '\n' + err + '\n');
-                }
-                handleResult(result, cb);
-            });
         });
     }
 }
