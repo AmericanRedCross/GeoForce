@@ -49,17 +49,45 @@ function fetchTableNames(cb) {
 
 
 function insertRows(queryTable, rows) {
+
     fetchTableNames(function (tables) {
         // See if a query table exists.
         if (tables[queryTable]) {
-
+            _insertRows(queryTable, rows);
         }
         // If not, create the given table and then insert rows.
         else {
             createTable(queryTable, rows, function() {
-
+                _insertRows(queryTable, rows);
             });
         }
+    });
+
+}
+
+
+/**
+ * This is to be called inside of function insertRows only.
+ * Consider this private private.
+ *
+ * @param rows
+ * @private
+ */
+function _insertRows(queryTable, rows) {
+    rows.forEach(function(row){
+        var insertStr = "INSERT INTO " + queryTable + " ( ";
+        var valStr = "VALUES ( ";
+        for (var field in row) {
+            insertStr += field + ', ';
+            valStr += quoteIfString(row[field]) + ', ';
+        }
+        insertStr = insertStr.slice(0, insertStr.length-2) + ') ';
+        valStr = valStr.slice(0, valStr.length-2) + ');';
+        var sql = insertStr + valStr;
+//        console.log(sql);
+        query(sql, function() {
+            console.log(sql);
+        });
     });
 }
 
@@ -140,9 +168,21 @@ function createTable(queryTable, rows, cb) {
 }
 
 
+/******************************************************************
+ ************************ UTILITY FUNCTIONS************************
+ ******************************************************************/
 function isInt(n) {
     return n % 1 === 0;
 }
+
+function quoteIfString(val) {
+    // we want a null to still be null, not a string
+    if (typeof val === 'string' && val !== 'null') {
+        return "'" + val + "'";
+    }
+    return val;
+}
+
 
 /******************************************************************
  **************************** TESTS *******************************
@@ -158,8 +198,9 @@ function testSimpleSelectQuery() {
 
 
 function testInsertProjects() {
-    var queryTable = 'allProjects';
-    var queryStr = salesforceQueries[queryTable];
+    var sfQuery = 'allProjects';
+    var queryStr = salesforceQueries[sfQuery];
+    var queryTable = ('sf_' + sfQuery).toLowerCase();
     salesforce.queryAndFlattenResults(queryStr, function(rows) {
         insertRows(queryTable, rows);
     });
