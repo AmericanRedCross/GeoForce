@@ -148,11 +148,11 @@ function createTable(queryTable, rows, cb) {
             }
             // OK, well... We haven't found what we're looking for. Let's just call it a varchar
             // and move on with our lives...
-            if (!table[key]) table[key] = 'varchar(255)';
+            if (!table[key]) table[key] = 'text';
         }
     }
 
-    var sql = "CREATE TABLE " + queryTable + "( ";
+    var sql = "CREATE TABLE " + queryTable + "( ID  SERIAL PRIMARY KEY, ";
     for (var field in table) {
         sql += field + ' ' + table[field] + ', ';
     }
@@ -164,6 +164,18 @@ function createTable(queryTable, rows, cb) {
     query(sql, function(res) {
         console.log(queryTable + ' successfully created.');
         console.log(res);
+
+        // If we have a location guid, we should make an index on it.
+        // NOTE: We can have this happen whenever, so don't worry about a callback with this.
+        var locationField = 'Location__c';
+        if (typeof row[locationField] !== 'undefined') {
+            var sql = 'CREATE INDEX idx_location__c ON ' + queryTable + '(' + locationField + ');';
+            query(sql, function(res){
+                console.log('Created Index: ' + sql);
+                console.log(res);
+            });
+        }
+
         cb();
     });
 }
