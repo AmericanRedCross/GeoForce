@@ -94,8 +94,8 @@ module.exports = {};
 module.exports.queryAndFlattenResults = function(queryStr, cb) {
 
     query(queryStr, function(records) {
-        if (typeof records !== 'array' || records.length === 0) {
-            console.log('No Records for: ' + queryStr);
+        if (typeof records !== 'object' || records.length === 0) {
+            console.warn('No Records for: ' + queryStr);
             return;
         }
         for (var i=0, len=records.length; i < len; ++i) {

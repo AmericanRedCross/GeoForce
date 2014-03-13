@@ -161,6 +161,7 @@ function createTable(queryTable, rows, cb) {
 
     console.log("Creating table for " + queryTable);
     console.log(sql);
+
     query(sql, function(res) {
         console.log(queryTable + ' successfully created.');
         console.log(res);
@@ -169,7 +170,8 @@ function createTable(queryTable, rows, cb) {
         // NOTE: We can have this happen whenever, so don't worry about a callback with this.
         var locationField = 'Location__c';
         if (typeof row !== 'undefined' && typeof row[locationField] !== 'undefined') {
-            var sql = 'CREATE INDEX idx_location__c ON ' + queryTable + '(' + locationField + ');';
+            var sql = 'CREATE INDEX idx_location__c ON ' + _qt + '(' + locationField + ');';
+            console.warn('about to create index ' + queryTable);
             query(sql, function(res){
                 console.log('Created Index: ' + sql);
                 console.log(res);
@@ -190,12 +192,27 @@ function insertQuery(sfQueryName) {
 }
 
 
+function dropQueryTable(sfQueryName) {
+    var queryTable = 'sf_' + S(sfQueryName).underscore().s;
+    var sql = "DROP TABLE IF EXISTS " + queryTable + ";";
+    query(sql, function(res) {
+        console.log(sql);
+    })
+}
+
+
 function insertAllQueryTables() {
     for (var sfQueryName in salesforceQueries) {
         insertQuery(sfQueryName);
     }
 }
 
+
+function dropAllSalesforceTables() {
+    for (var sfQueryName in salesforceQueries) {
+        dropQueryTable(sfQueryName);
+    }
+}
 
 /******************************************************************
  ************************ UTILITY FUNCTIONS************************
@@ -230,7 +247,15 @@ function testSimpleSelectQuery() {
 
 
 //testSimpleSelectQuery();
+
+dropAllSalesforceTables()
+setTimeout(null,500);
 //insertQuery('allProjects');
 //insertQuery('allOrganizations');
-insertQuery('allDataForAGivenProject');
-//insertAllQueryTables();
+//insertQuery('allMoneyInWorld');
+//insertQuery('numProjAndBudgetPerCountry');
+//insertQuery('projGroupedByCountry');
+//insertQuery('allDataForAGivenProject');
+//insertQuery('allDataForAGivenProgram');
+
+insertAllQueryTables();
