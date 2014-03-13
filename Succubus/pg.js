@@ -170,7 +170,7 @@ function createTable(queryTable, rows, cb) {
         // NOTE: We can have this happen whenever, so don't worry about a callback with this.
         var locationField = 'Location__c';
         if (typeof row !== 'undefined' && typeof row[locationField] !== 'undefined') {
-            var sql = 'CREATE INDEX idx_location__c ON ' + _qt + '(' + locationField + ');';
+            var sql = 'CREATE INDEX idx_'+queryTable+'_location__c ON ' + queryTable + '(' + locationField + ');';
             console.warn('about to create index ' + queryTable);
             query(sql, function(res){
                 console.log('Created Index: ' + sql);
