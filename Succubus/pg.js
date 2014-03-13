@@ -3,8 +3,9 @@
  *     on Tue Mar 11 2014
  */
 
-var settings            = require('./settings').pg;
 var pg                  = require('pg');
+var S                   = require('string');
+var settings            = require('./settings').pg;
 var salesforce          = require('./salesforce');
 var salesforceQueries   = require('./salesforce-queries');
 
@@ -27,7 +28,7 @@ function query(queryStr, cb) {
             done();
 
             if(err) {
-                return console.error('error running query', err);
+                return console.error('ERROR RUNNING QUERY:', queryStr, err);
             }
             cb(result.rows || result);
         });
@@ -79,7 +80,7 @@ function _insertRows(queryTable, rows) {
         var valStr = "VALUES ( ";
         for (var field in row) {
             insertStr += field + ', ';
-            valStr += quoteIfString(row[field]) + ', ';
+            valStr += sanitize(row[field]) + ', ';
         }
         insertStr = insertStr.slice(0, insertStr.length-2) + ') ';
         valStr = valStr.slice(0, valStr.length-2) + ');';
@@ -113,7 +114,7 @@ function createTable(queryTable, rows, cb) {
 
         // it's a string that may be a stringified object
         if (typeof val === 'string') {
-            table[key] = 'varchar(255)';
+            table[key] = 'text';
         }
 
         // it's a number
@@ -132,7 +133,7 @@ function createTable(queryTable, rows, cb) {
                 val = row[key];
                 // its a string that may be a stringified object
                 if (typeof val === 'string') {
-                    table[key] = 'varchar(255)';
+                    table[key] = 'text';
                     break;
                 }
                 // it's a number
@@ -175,10 +176,10 @@ function isInt(n) {
     return n % 1 === 0;
 }
 
-function quoteIfString(val) {
+function sanitize(val) {
     // we want a null to still be null, not a string
     if (typeof val === 'string' && val !== 'null') {
-        return "'" + val + "'";
+        return "$nh9$" + val + "$nh9$";
     }
     return val;
 }
