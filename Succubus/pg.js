@@ -171,7 +171,6 @@ function createTable(queryTable, rows, cb) {
         var locationField = 'Location__c';
         if (typeof row !== 'undefined' && typeof row[locationField] !== 'undefined') {
             var sql = 'CREATE INDEX idx_'+queryTable+'_location__c ON ' + queryTable + '(' + locationField + ');';
-            console.warn('about to create index ' + queryTable);
             query(sql, function(res){
                 console.log('Created Index: ' + sql);
                 console.log(res);
