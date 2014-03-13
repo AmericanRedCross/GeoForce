@@ -13,20 +13,33 @@ var conn = new jsforce.Connection({
 });
 
 
+/**
+ * I set up a queue here where all of the queries wait
+ * until the connection happens before they execute.
+ */
+var pending = [];
+var waiting = false;
 function connect(cb) {
-    conn.login(settings.user, settings.password+settings.token, function(err, userInfo) {
-        if (err) { return console.error(err); }
-        // Now you can get the access token and instance URL information.
-        // Save them to establish connection next time.
-        console.log('===== Login =====');
-        console.log('accessToken: ' + conn.accessToken);
-        console.log('instanceUrl: ' + conn.instanceUrl);
-        // logged in user property
-        console.log("User ID: " + userInfo.id);
-        console.log("Org ID: " + userInfo.organizationId);
-        console.log("=================");
-        cb();
-    });
+    pending.push(cb);
+    if (!waiting) {
+        waiting = true;
+        conn.login(settings.user, settings.password+settings.token, function(err, userInfo) {
+            if (err) { return console.error(err); }
+            // Now you can get the access token and instance URL information.
+            // Save them to establish connection next time.
+            console.log('===== Login =====');
+            console.log('accessToken: ' + conn.accessToken);
+            console.log('instanceUrl: ' + conn.instanceUrl);
+            // logged in user property
+            console.log("User ID: " + userInfo.id);
+            console.log("Org ID: " + userInfo.organizationId);
+            console.log("=================");
+            waiting = false;
+            do {
+                pending.pop()();
+            } while (pending.length > 0);
+        });
+    }
 }
 
 
@@ -80,9 +93,11 @@ module.exports = {};
  */
 module.exports.queryAndFlattenResults = function(queryStr, cb) {
 
-    query(queryStr, flattenRecords);
-
-    function flattenRecords(records) {
+    query(queryStr, function(records) {
+        if (typeof records !== 'array' || records.length === 0) {
+            console.log('No Records for: ' + queryStr);
+            return;
+        }
         for (var i=0, len=records.length; i < len; ++i) {
             var record = records[i];
             for (var key in record) {
@@ -93,7 +108,7 @@ module.exports.queryAndFlattenResults = function(queryStr, cb) {
             }
         }
         cb(records);
-    }
+    });
 
 }
 
