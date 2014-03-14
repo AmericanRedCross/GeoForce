@@ -1,6 +1,7 @@
 var jsforce = require('jsforce');
 var fs = require('fs');
 var salesforceQueries = require('./salesforce-queries');
+var settings = require('./settings').salesforce;
 
 
 var conn = new jsforce.Connection({
@@ -9,8 +10,7 @@ var conn = new jsforce.Connection({
 });
 
 
-conn.login('gis@redcross.org', 'Bmx1982$3oFZwrt5JcdbwmtK8crUR6vp', function(err, userInfo) {
-//conn.login('rwhitley@spatialdev.com', 'Alsep11!d24nNuICOP0ya24RJH2yqiRU', function(err, userInfo) {
+conn.login(settings.user, settings.password+settings.token, function(err, userInfo) {
     if (err) { return console.error(err); }
     // Now you can get the access token and instance URL information.
     // Save them to establish connection next time.
