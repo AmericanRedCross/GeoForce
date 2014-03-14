@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularAppApp', [
+angular.module('GeoAngular', [
         'ngCookies',
         'ngResource',
         'ngSanitize',
