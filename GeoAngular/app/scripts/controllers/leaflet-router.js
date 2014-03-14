@@ -3,7 +3,7 @@
  *     on Tue Mar 11 2014
  */
 
-angular.module( "leaflet-router", ["leaflet-directive"]).controller("LeafletRouterController", [
+angular.module( "GeoAngular", ["leaflet-directive"]).controller("LeafletRouterController", [
                 '$scope', '$http', 'leafletData', '$location',
                 function($scope, $http, leafletData, $location) {
 
