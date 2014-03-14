@@ -7,11 +7,14 @@ Making Salesforce spatial.
 ##Chubbs
 
 Chubbs is the NodeJS Spatial Server that serves as the API from which the web application consumes data. This
-consumes data from the PostGIS database.
+consumes data from the PostGIS database. This is currently a read-only tool. Specific SQL queries to perform the
+logic we need is done by creating an SQL view. This view in turn automatically becomes an endpoint in Chubbs.
 
 ##GeoAngular
 
-This is the front-end JavaScript application that utilizes AngularJS, Leaflet, and Bootstrap.
+This is the front-end JavaScript application that utilizes AngularJS, Leaflet, and Bootstrap. The core of the architecture
+in GeoAngular is the use of AngularJS' `ngRouter` to reflect all states of the application--both the map as well as
+the stories and other applicable views.
 
 ##Succubus
 
