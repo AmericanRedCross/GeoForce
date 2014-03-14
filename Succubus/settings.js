@@ -11,7 +11,8 @@ module.exports = {
         port: '5432',
         database: 'redcross-localdev',
         user: 'postgres',
-        password: ''
+        password: '',
+        escapeStr: 'nh9'
     },
 
     // Salesforce Credentials

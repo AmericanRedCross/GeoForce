@@ -132,7 +132,7 @@
     "Status_As_Of__c": null,
     "Start_Date__c": "2013-07-09",
     "Sector__c": null,
-    "Phase_Name__c": "Project ID & Proposal",
+    "Phase_Name__c": "Planning, Implementation & Monitoring",
     "Overall_Status__c": null,
     "Name": "Enzigma-Logframe Demo",
     "Location__r": {
@@ -1435,6 +1435,28 @@
     "Location__c": null,
     "ISD_Region__c": null,
     "End_Date__c": "2015-02-21",
+    "Budget_Status__c": null
+  },
+  {
+    "attributes": {
+      "type": "Project__c",
+      "url": "/services/data/v29.0/sobjects/Project__c/a00K0000002mtXeIAI"
+    },
+    "Timeline_Status__c": null,
+    "Target_Beneficiaries_Indirect__c": null,
+    "Target_Beneficiaries_Direct__c": null,
+    "Summary__c": null,
+    "Sub_Sector__c": null,
+    "Status_As_Of__c": null,
+    "Start_Date__c": "2014-03-03",
+    "Sector__c": null,
+    "Phase_Name__c": "Project ID & Proposal",
+    "Overall_Status__c": null,
+    "Name": "LT 1",
+    "Location__r": null,
+    "Location__c": null,
+    "ISD_Region__c": null,
+    "End_Date__c": "2014-05-27",
     "Budget_Status__c": null
   },
   {

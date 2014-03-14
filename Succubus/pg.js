@@ -225,7 +225,8 @@ function sanitize(val) {
     if (typeof val === 'string' && val !== 'null') {
         // $nh9$ is using $$ with an arbitrary tag. $$ in pg is a safe way to quote something,
         // because all escape characters are ignored inside of it.
-        return "$nh9$" + val + "$nh9$";
+        var esc = settings.escapeStr;
+        return "$"+esc+"$" + val + "$"+esc+"$";
     }
     return val;
 }
