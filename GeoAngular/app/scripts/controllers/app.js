@@ -6,7 +6,9 @@ angular.module('GeoAngular').controller('AppCtrl', AppCtrl);
 function AppCtrl($scope, $routeParams, $location) {
 
     // weird bug where redirect peels out ://{s when : is there
-//    $routeParams.layers
+    // $routeParams.layers We just dont have the : in main.js so that
+    // part of the path does not go away...
+    $routeParams.layers = $routeParams.layers.replace('http//', 'http://');
 
     $scope.routeParams = $routeParams;
 
