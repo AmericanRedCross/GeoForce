@@ -1,6 +1,6 @@
 (function () { 'use strict';
 
-angular.module('GeoAngular', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute']).config(Routes);
+angular.module('GeoAngular', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute', 'leaflet-directive']).config(Routes);
 
 
 function Routes($routeProvider) {
