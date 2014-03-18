@@ -8,14 +8,16 @@
 angular.module('GeoAngular').controller('MapCtrl', MapCtrl);
 
 
-function MapCtrl($scope, $routeParams, leafletData) {
-    $scope.test = 'here';
-    $routeParams.stories = 'inmapctr';
+function MapCtrl($scope, leafletData, RouteService) {
+    var routeParams = RouteService.getRouteParams();
 
-    var lat     = parseFloat($routeParams.lat)   || 0;
-    var lng     = parseFloat($routeParams.lng)   || 0;
-    var zoom    = parseFloat($routeParams.zoom)  || 2;
-    var layers  = $routeParams.layers.split(',') || 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+    $scope.test = 'here';
+    routeParams.stories = 'inmapctr';
+
+    var lat     = parseFloat(routeParams.lat)   || 0;
+    var lng     = parseFloat(routeParams.lng)   || 0;
+    var zoom    = parseFloat(routeParams.zoom)  || 2;
+    var layers  = routeParams.layers.split(',') || 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
 
     // first layer should always be treated as the basemap
     var basemap = layers[0];
@@ -30,6 +32,17 @@ function MapCtrl($scope, $routeParams, leafletData) {
         tileLayer: basemap,
         scrollWheelZoom: true
     }
+
+    leafletData.getMap().then(function(map) {
+        map.on('move',function(){ // moveend is good too
+            var c = map.getCenter();
+            RouteService.updateLatLngZoom(
+                c.lat.toFixed(6),
+                c.lng.toFixed(6),
+                map.getZoom()
+            );
+        });
+    });
 
 }
 

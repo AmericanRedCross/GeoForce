@@ -3,7 +3,7 @@
 angular.module('GeoAngular').controller('AppCtrl', AppCtrl);
 
 
-function AppCtrl($scope, $routeParams, $location) {
+function AppCtrl($scope, $routeParams, $location, RouteService) {
 
     // weird bug where redirect peels out ://{s when : is there
     // $routeParams.layers We just dont have the : in main.js so that
@@ -11,6 +11,10 @@ function AppCtrl($scope, $routeParams, $location) {
     $routeParams.layers = $routeParams.layers.replace('http//', 'http://');
 
     $scope.routeParams = $routeParams;
+    RouteService.setRouteParams($routeParams);
+    $scope.$on('update-lat-lng-zoom', function (event, params) {
+        $scope.routeParams = params;
+    });
 
     // Update the route when the model is updated.
     $scope.$watchCollection('routeParams', function(newValue, oldValue) {
