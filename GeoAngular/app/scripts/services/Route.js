@@ -5,16 +5,16 @@
 
 (function () { 'use strict';
 
-angular.module('GeoAngular').service('RouteService', RouteService);
+angular.module('GeoAngular').service('Route', Route);
 
-function RouteService($rootScope) {
+function Route($rootScope) {
     // default route parameters. gets reset by AppCtrl.
     this.params = {
         lat: '0',
         lng: '0',
         zoom: '2',
         layers: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-        stories: 'RouteService' //NH TODO take out, just for debugging...
+        stories: 'Route' //NH TODO take out, just for debugging...
     };
 
     this.setRouteParams = function(routeParams) {
