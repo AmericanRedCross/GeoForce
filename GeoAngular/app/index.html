@@ -30,6 +30,11 @@
     <!-- Add your site or application content here -->
     <div class="container" ng-view=""></div>
 
+    <div ng-controller="MapCtrl">
+        {{test}}
+        <leaflet width="640px" height="480px" center="center" defaults="defaults"></leaflet>
+    </div>
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -68,6 +73,7 @@
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/lib/togeojson.js"></script>
     <script src="scripts/main.js"></script>
+    <script src="scripts/services/Route.js"></script>
     <script src="scripts/controllers/landing.js"></script>
     <script src="scripts/controllers/app.js"></script>
     <script src="scripts/controllers/map.js"></script>
