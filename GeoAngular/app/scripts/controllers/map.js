@@ -8,8 +8,8 @@
 angular.module('GeoAngular').controller('MapCtrl', MapCtrl);
 
 
-function MapCtrl($scope, leafletData, RouteService) {
-    var routeParams = RouteService.getRouteParams();
+function MapCtrl($scope, leafletData, Route) {
+    var routeParams = Route.getRouteParams();
 
     $scope.test = 'here';
     routeParams.stories = 'inmapctr';
@@ -36,7 +36,7 @@ function MapCtrl($scope, leafletData, RouteService) {
     leafletData.getMap().then(function(map) {
         map.on('move',function(){ // moveend is good too
             var c = map.getCenter();
-            RouteService.updateLatLngZoom(
+            Route.updateLatLngZoom(
                 c.lat.toFixed(6),
                 c.lng.toFixed(6),
                 map.getZoom()
