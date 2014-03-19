@@ -1,31 +1,19 @@
-(function () { 'use strict';
+angular.module('GeoAngular').controller('AppCtrl', function($scope, $routeParams, $location, Route) {
 
-angular.module('GeoAngular').controller('AppCtrl', AppCtrl);
+  // weird bug where redirect peels out '://{s' when ':' is there
+  // $routeParams.layers We just dont have the : in main.js so that
+  // part of the path does not go away...
+  $routeParams.layers = $routeParams.layers.replace('http//', 'http://');
 
+  $scope.routeParams = $routeParams;
+  Route($routeParams);
+  $scope.$on('route-update', function (event, params) {
+    $scope.routeParams = params;
+  });
 
-function AppCtrl($scope, $routeParams, $location, Route) {
+  // Update the route when the model is updated.
+  $scope.$watchCollection('routeParams', function(newParams, oldParams) {
+    Route(newParams);
+  });
 
-    // weird bug where redirect peels out '://{s' when ':' is there
-    // $routeParams.layers We just dont have the : in main.js so that
-    // part of the path does not go away...
-    $routeParams.layers = $routeParams.layers.replace('http//', 'http://');
-
-    $scope.routeParams = $routeParams;
-    Route.setRouteParams($routeParams);
-    $scope.$on('update-lat-lng-zoom', function (event, params) {
-        $scope.routeParams = params;
-    });
-
-    // Update the route when the model is updated.
-    $scope.$watchCollection('routeParams', function(newValue, oldValue) {
-        $location.path( '/map@' + newValue.lat +
-                        ',' + newValue.lng +
-                        ',' + newValue.zoom +
-                        '(' + newValue.layers +
-                        ')/stories/' + newValue.stories);
-
-    });
-}
-
-
-})();
+});
