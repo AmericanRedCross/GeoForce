@@ -105,6 +105,11 @@ module.exports.queryAndFlattenResults = function(queryStr, cb) {
                 if (typeof val === 'object' && val !== null) {
                     record[key] = JSON.stringify(val);
                 }
+                // our table already has an id field, so we need to rename it
+                if (key.toLowerCase() === 'id') {
+                  record['sf_id'] = val;
+                  delete record[key];
+                }
             }
         }
         cb(records);
