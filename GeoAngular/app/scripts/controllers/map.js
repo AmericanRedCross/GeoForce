@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData, Route) {
+angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData, Route, Alias) {
 
   var routeParams = Route();
 
@@ -11,11 +11,17 @@ angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData,
     var lat     = parseFloat(routeParams.lat)   || 0;
     var lng     = parseFloat(routeParams.lng)   || 0;
     var zoom    = parseFloat(routeParams.zoom)  || 2;
-    var layers  = routeParams.layers.split(',') || 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+    var layers  = routeParams.layers.split(',') || Alias.osm;
+
 
     // first layer should always be treated as the basemap
-    var basemap = layers[0];
-    layers = layers.slice(1);
+    var basemap = Alias.find(layers[0]);
+    var overlays = [];
+
+    for(var i = 1, len = layers.length; i<len; ++i) {
+      var o = Alias.find(layers[i]);
+      if (o) overlays.push(o);
+    }
 
     $scope.center = {
       lat: lat,
