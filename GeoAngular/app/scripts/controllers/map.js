@@ -34,8 +34,10 @@ angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData,
     setParams(params);
   });
 
+//  $scope.changeTiles =
+
   leafletData.getMap().then(function(map) {
-    map.on('move',function(){ // moveend is good too
+    map.on('moveend',function(){ // move is good too
       var c = map.getCenter();
       Route({
         lat: c.lat.toFixed(6),
