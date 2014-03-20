@@ -44,34 +44,4 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location) {
     return params;
   };
 
-
-//  {
-//    get: function () {
-//      return params;
-//    },
-//
-//    /**
-//     * This will replace the internal params object completely.
-//     * @param routeParams
-//     */
-//    set: function (routeParams) {
-//      params = routeParams;
-//      updateLocation();
-//      $rootScope.$broadcast('route-update', params);
-//    },
-//
-//    /**
-//     * You can provide a subset or superset of params and
-//     * the object will be updated accordingly.
-//     * @param routeParams
-//     */
-//    update: function (routeParams) {
-//      for (var param in routeParams) {
-//        params[param] = routeParams[param];
-//      }
-//      updateLocation();
-//      $rootScope.$broadcast('route-update', params);
-//    }
-//  };
-
 });
