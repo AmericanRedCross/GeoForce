@@ -61,7 +61,9 @@ angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData,
 
 
   function addOverlays(overlays) {
+    console.log('Adding Overlays...');
     console.log(JSON.stringify(overlays));
+
 
   }
 
