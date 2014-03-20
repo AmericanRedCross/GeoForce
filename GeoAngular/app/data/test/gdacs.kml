@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+	<description>
+		The Global Disaster Alert and Coordination System provides near real-time alerts about natural disasters around the world and tools to facilitate response coordination, including news, maps and V. OSOCC. GDACS is a joint initiative of the European Commission and the United Nations.
+    </description>
+    <name>Global Disaster Alert and Coordination system</name>
+    <Folder>
+	<name><![CDATA[ Earthquake in Indonesia]]></name>
+	<Placemark id='EQ_1027880'>
+		<name>Green Alert for  Earthquake in Indonesia </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>128.15,1.17</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>1.17</latitude>
+			<longitude>128.15</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Wed, 19 Mar 2014 21:34:41 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">1.17,128.15 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.6M, Depth:9.6km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">607160 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027880">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Indonesia]]></name>
+	<Placemark id='EQ_1027857'>
+		<name>Green Alert for  Earthquake in Indonesia </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>126.79,4.15</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>4.15</latitude>
+			<longitude>126.79</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Wed, 19 Mar 2014 14:56:48 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">4.15,126.79 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.8M, Depth:56.05km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">232590 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027857">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Tropical Cyclone MIKE-14]]></name>
+	<Placemark id='TC_43801'>
+		<name>Green Alert for  Tropical Cyclone MIKE-14 </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#TC_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>-157.90,-24.30</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>-24.30</latitude>
+			<longitude>-157.90</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Wed, 19 Mar 2014 18:00:00 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">-24.30,-157.90 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Tropical Storm (maximum wind speed of 64 km/h) </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">Population affected by Category 1 (120 km/h) wind speeds or higher is 0</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=TC&eventid=43801">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Tropical Cyclone</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Iran, Islamic Republic of]]></name>
+	<Placemark id='EQ_1027805'>
+		<name>Green Alert for  Earthquake in Iran, Islamic Republic of </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>52.71,27.74</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>27.74</latitude>
+			<longitude>52.71</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Tue, 18 Mar 2014 19:01:29 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">27.74,52.71 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.7M, Depth:6.38km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">387453 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027805">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Japan]]></name>
+	<Placemark id='EQ_1027804'>
+		<name>Green Alert for  Earthquake in Japan </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>140.16,35.74</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>35.74</latitude>
+			<longitude>140.16</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Tue, 18 Mar 2014 17:24:42 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">35.74,140.16 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.6M, Depth:62.73km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">38310288 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027804">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Philippines]]></name>
+	<Placemark id='EQ_1027776'>
+		<name>Green Alert for  Earthquake in Philippines </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>126.21,9.91</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>9.91</latitude>
+			<longitude>126.21</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Tue, 18 Mar 2014 09:48:05 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">9.91,126.21 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.6M, Depth:92.4km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">741464 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027776">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in United States]]></name>
+	<Placemark id='EQ_1027720'>
+		<name>Green Alert for  Earthquake in United States </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>-118.49,34.13</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>34.13</latitude>
+			<longitude>-118.49</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Mon, 17 Mar 2014 13:25:36 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">34.13,-118.49 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.72M, Depth:8.49km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">14931173 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027720">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Philippines]]></name>
+	<Placemark id='EQ_1027689'>
+		<name>Green Alert for  Earthquake in Philippines </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>125.32,9.50</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>9.50</latitude>
+			<longitude>125.32</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Mon, 17 Mar 2014 05:30:14 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">9.50,125.32 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 5.1M, Depth:84.63km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">2089092 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027689">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Near Coast Of Northern Chile]]></name>
+	<Placemark id='EQ_1027687'>
+		<name>White Alert for  Earthquake in Near Coast Of Northern Chile </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_White</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>-70.87,-20.00</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>-20.00</latitude>
+			<longitude>-70.87</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Mon, 17 Mar 2014 05:11:34 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">-20.00,-70.87 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 6.2M, Depth:17km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">225015 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027687">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       <Placemark id='EQ_1027687_Intensity'>
+   <name>Earthquake Intensity VI (estimated)</name>
+   <snippet></snippet>
+   <styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Intensity</styleUrl>
+   <LineString>
+	   <extrude>0</extrude>
+	   <coordinates>
+	      -70.423,-20.003,30 -70.43,-19.929,30 -70.45,-19.858,30 -70.484,-19.791,30 -70.529,-19.731,30 -70.584,-19.678,30 -70.649,-19.636,30 -70.72,-19.605,30 -70.796,-19.586,30 -70.874,-19.579,30 -70.952,-19.586,30 -71.028,-19.605,30 -71.1,-19.636,30 -71.164,-19.678,30 -71.219,-19.731,30 -71.265,-19.791,30 -71.298,-19.858,30 -71.318,-19.929,30 -71.325,-20.003,30 -71.318,-20.077,30 -71.298,-20.148,30 -71.265,-20.215,30 -71.219,-20.275,30 -71.164,-20.328,30 -71.1,-20.37,30 -71.028,-20.401,30 -70.952,-20.42,30 -70.874,-20.427,30 -70.796,-20.42,30 -70.72,-20.401,30 -70.649,-20.37,30 -70.584,-20.328,30 -70.529,-20.275,30 -70.484,-20.215,30 -70.45,-20.148,30 -70.43,-20.077,30 -70.423,-20.003,30 -70.423,-20.003,30
+	   </coordinates>
+   </LineString>
+</Placemark>
+
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Near Coast Of Peru]]></name>
+	<Placemark id='EQ_1027682'>
+		<name>Green Alert for  Earthquake in Near Coast Of Peru </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>-70.42,-17.97</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>-17.97</latitude>
+			<longitude>-70.42</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Mon, 17 Mar 2014 04:14:51 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">-17.97,-70.42 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.8M, Depth:94.49km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">510412 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027682">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Chile]]></name>
+	<Placemark id='EQ_1027667'>
+		<name>Green Alert for  Earthquake in Chile </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>-69.79,-18.85</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>-18.85</latitude>
+			<longitude>-69.79</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Sun, 16 Mar 2014 22:54:09 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">-18.85,-69.79 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.9M, Depth:11.86km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">211501 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027667">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Chile]]></name>
+	<Placemark id='EQ_1027661'>
+		<name>Green Alert for  Earthquake in Chile </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>-70.63,-19.92</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>-19.92</latitude>
+			<longitude>-70.63</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Sun, 16 Mar 2014 21:16:30 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">-19.92,-70.63 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 6.7M, Depth:20km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">232115 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027661">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       <Placemark id='EQ_1027661_Intensity'>
+   <name>Earthquake Intensity VI (estimated)</name>
+   <snippet></snippet>
+   <styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Intensity</styleUrl>
+   <LineString>
+	   <extrude>0</extrude>
+	   <coordinates>
+	      -69.935,-19.925,30 -69.946,-19.812,30 -69.977,-19.702,30 -70.028,-19.599,30 -70.097,-19.506,30 -70.183,-19.426,30 -70.281,-19.361,30 -70.391,-19.313,30 -70.508,-19.283,30 -70.628,-19.273,30 -70.748,-19.283,30 -70.865,-19.313,30 -70.974,-19.361,30 -71.073,-19.426,30 -71.158,-19.506,30 -71.228,-19.599,30 -71.279,-19.702,30 -71.31,-19.812,30 -71.32,-19.925,30 -71.31,-20.038,30 -71.279,-20.147,30 -71.228,-20.25,30 -71.158,-20.343,30 -71.073,-20.423,30 -70.974,-20.489,30 -70.865,-20.537,30 -70.748,-20.566,30 -70.628,-20.576,30 -70.508,-20.566,30 -70.391,-20.537,30 -70.281,-20.489,30 -70.183,-20.423,30 -70.097,-20.343,30 -70.028,-20.25,30 -69.977,-20.147,30 -69.946,-20.038,30 -69.935,-19.925,30 -69.935,-19.925,30
+	   </coordinates>
+   </LineString>
+</Placemark>
+
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Peru]]></name>
+	<Placemark id='EQ_1027654'>
+		<name>Green Alert for  Earthquake in Peru </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>-80.91,-5.63</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>-5.63</latitude>
+			<longitude>-80.91</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Sun, 16 Mar 2014 15:25:16 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">-5.63,-80.91 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.6M, Depth:51.53km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">992210 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027654">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Iran, Islamic Republic of]]></name>
+	<Placemark id='EQ_1027652'>
+		<name>Green Alert for  Earthquake in Iran, Islamic Republic of </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>57.64,28.13</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>28.13</latitude>
+			<longitude>57.64</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Sun, 16 Mar 2014 14:34:40 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">28.13,57.64 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.5M, Depth:10km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">555900 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027652">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+ <Folder>
+	<name><![CDATA[ Earthquake in Poland]]></name>
+	<Placemark id='EQ_1027634'>
+		<name>Green Alert for  Earthquake in Poland </name>
+       <snippet></snippet>
+		<styleUrl>http://www.gdacs.org/styles/kmlstyle.kml#EQ_Green</styleUrl>
+		<Style><scale>1</scale></Style>
+		<Point><coordinates>16.20,51.59</coordinates></Point>
+		<LookAt>
+			<heading>50</heading>
+			<tilt>60</tilt>
+			<range>150000</range>
+			<latitude>51.59</latitude>
+			<longitude>16.20</longitude>
+		</LookAt>
+		<description>
+			<![CDATA[
+                            <table align="center" >
+                			    <tr>
+                                    <th valign="top">Date</th>
+                                    <td valign="top">Sun, 16 Mar 2014 06:32:24 GMT</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Location</th>
+                			        <td valign="top">51.59,16.20 (lat,lon)</td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top">Severity</th>
+                			        <td valign="top">Magnitude 4.5M, Depth:1km </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Population</th>
+                			        <td valign="top">4085240 people within 100km</td>
+                                </tr>
+                                <tr>
+                                    <th valign="top">Details</th>
+                                    <td valign="top"><a href="http://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1027634">GDACS Report</a></td>
+                                </tr>
+                            </table>
+                         <p>Provided by <a href='http://www.gdacs.org'>GDACS</a></p>]]>
+		</description>
+	</Placemark>
+   <Folder>
+       <name>Earthquake</name>
+       
+   </Folder>
+</Folder>
+
+    <ScreenOverlay>
+       <name>Last Updated</name>
+       <Icon>
+          <href>http://dmaweb3.jrc.it/GDACS/createkmlimage.aspx?timestamp=2014-03-20 03:nn&amp;text=Green EQ Indonesia&amp;Backgroundcolor=Green</href>
+       </Icon>
+       <overlayXY x="1" y="0" xunits="fraction" yunits="fraction"/><screenXY x="1" y="0.2" xunits="fraction" yunits="fraction"/><rotationXY x="0" y="0" xunits="fraction" yunits="fraction"/><size x="0" y="0" xunits="fraction" yunits="fraction"/>
+    </ScreenOverlay>
+	</Document>
+</kml>
