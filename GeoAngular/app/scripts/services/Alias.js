@@ -5,11 +5,26 @@
 
 angular.module('GeoAngular').service('Alias', function () {
 
+  /**
+   * Basemaps
+   * @type {string}
+   */
   this.osm = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+  this.osmhot = 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
   this.natgeo = 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}';
   this.usgstopo = 'http://services.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}';
   this.esriortho = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-  this.mapbox = 'http://{s}.tiles.mapbox.com/v3/tmcw.map-7s15q36b/{z}/{x}/{y}.png';
+  this.redcross = 'https://{s}.tiles.mapbox.com/v3/americanredcross.hcji22de/{z}/{x}/{y}.png';
+
+
+  /**
+   * KML
+   */
+  this.gdacs = 'http://www.gdacs.org/xml/gdacs.kml';
+  this.earthquakes = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml';
+
+
+
 
   /**
    * For layers, we try and get an alias for everything, so if it's a URL that
