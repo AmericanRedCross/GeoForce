@@ -21,12 +21,12 @@ module.exports = {
     /**
      * Shows how many projects there are and the sum of all of the budgets.
      */
-    allMoneyInWorld: "Select Count(Name), Sum(Total_Budget__c) From Project__c",
+    allMoneyInWorld: "Select Count(Name) project_count, Sum(Total_Budget__c) total_budget From Project__c",
 
     /**
      *
      */
-    numProjAndBudgetPerCountry: "Select Count(Name), Sum(Total_Budget__c), Location__r.Admin_0__c From Project__c Group By Location__r.Admin_0__c",
+    numProjAndBudgetPerCountry: "Select Count(Name) project_count, Sum(Total_Budget__c) total_budget, Location__r.Admin_0__c From Project__c Group By Location__r.Admin_0__c",
 
     /**
      * These commented out queries do not work. Please do not submit queries that do not
@@ -40,7 +40,7 @@ module.exports = {
     /**
      * Shows all of the projects grouped by country
      */
-    projGroupedByCountry: "Select Location__r.Admin_0__c, Count(Name), Sum(Total_Budget__c) From Project__c Group By Location__r.Admin_0__c",
+    projGroupedByCountry: "Select Location__r.Admin_0__c, Count(Name) project_count, Sum(Total_Budget__c) total_budget From Project__c Group By Location__r.Admin_0__c",
 
     /**
      * Shows all of the data (fields) for a given project.
