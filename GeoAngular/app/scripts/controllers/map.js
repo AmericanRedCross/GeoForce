@@ -23,9 +23,11 @@ angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData,
       zoom: zoom
     };
     $scope.defaults = {
-      tileLayer: basemap,
       scrollWheelZoom: true
     }
+    $scope.tiles = {
+      url: basemap
+    };
   }
 
   setParams(routeParams);
@@ -34,7 +36,10 @@ angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData,
     setParams(params);
   });
 
-//  $scope.changeTiles =
+  $scope.$on('route-update', function (event, params) {
+    setParams(params);
+  });
+
 
   leafletData.getMap().then(function(map) {
     map.on('moveend',function(){ // move is good too

@@ -34,6 +34,9 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location) {
         console.log(JSON.stringify(params));
         init = false;
       } else {
+        // Angular is trolling Route. We dont want to do 3 broadcasts of the same thing.
+        if (angular.equals(params,routeParams)) return params;
+
         angular.extend(params, routeParams);
         updateLocation();
         $rootScope.$broadcast('route-update', params);
