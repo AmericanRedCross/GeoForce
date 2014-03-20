@@ -24,6 +24,23 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
         ')/stories/' + params.stories);
   }
 
+  /**
+   * Simple object equality test. angular.equals is expensive.
+   * @param obj1
+   * @param obj2
+   * @returns {boolean}
+   */
+  function equals(obj1, obj2) {
+    if (Object.keys(obj1).length !== Object.keys(obj2).length)
+      return false;
+    for (var key in obj1) {
+      if (obj1[key] !== obj2[key])
+        return false;
+    }
+    return true;
+  }
+
+
   return function(routeParams) {
     // only do this stuff if we have an arg in the fn call
     if (typeof routeParams !== 'undefined' && routeParams !== null) {
@@ -34,9 +51,8 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
         console.log(JSON.stringify(params));
         init = false;
       } else {
-        // Angular is trolling Route. We dont want to do 3 broadcasts of the same thing.
-        if (angular.equals(params,routeParams)) return params;
-
+        // Angular is trolling Route. We don't want to do 3 broadcasts of the same thing.
+        if ( equals(params,routeParams) ) return params;
         angular.extend(params, routeParams);
         updateLocation();
         $rootScope.$broadcast('route-update', params);
@@ -46,5 +62,6 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
     }
     return params;
   };
+
 
 });
