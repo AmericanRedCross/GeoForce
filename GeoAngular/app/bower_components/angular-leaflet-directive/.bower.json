@@ -1,0 +1,51 @@
+{
+  "name": "angular-leaflet-directive",
+  "description": "AngularJS directive to embed an interact with maps managed by Leaflet library",
+  "keywords": [
+    "angularjs",
+    "javascript",
+    "directive",
+    "leaflet"
+  ],
+  "main": [
+    "dist/angular-leaflet-directive.js",
+    "dist/angular-leaflet-directive.min.js"
+  ],
+  "dependencies": {
+    "angular": "1.2.6",
+    "jquery": "2.1.0",
+    "bootstrap": "3.0.x",
+    "angular-route": "1.2.6",
+    "angular-animate": "1.2.6",
+    "angular-mocks": "1.2.6",
+    "leaflet-dist": "0.7.x",
+    "leaflet.markerclusterer": "0.4",
+    "leaflet.draw": "0.2.2",
+    "Leaflet.label": "0.2.1",
+    "leaflet-tilelayer-geojson": "*",
+    "Leaflet.awesome-markers": "*",
+    "leaflet-plugins": "1.0.1"
+  },
+  "ignore": [
+    "**/.*",
+    "src",
+    "doc",
+    "examples",
+    "test",
+    "*.md",
+    "Gruntfile.js",
+    "package.json",
+    "bower.json"
+  ],
+  "homepage": "https://github.com/tombatossals/angular-leaflet-directive",
+  "version": "0.7.5",
+  "_release": "0.7.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.7.5",
+    "commit": "27a6b824fd75321805894a3ec811fb9133acae83"
+  },
+  "_source": "git://github.com/tombatossals/angular-leaflet-directive.git",
+  "_target": "0.7.5",
+  "_originalSource": "angular-leaflet-directive"
+}

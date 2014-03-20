@@ -28,7 +28,7 @@
       "type": "AggregateResult"
     },
     "Admin_0__c": "Haiti",
-    "expr0": 2,
+    "expr0": 1,
     "expr1": 0
   },
   {
@@ -36,7 +36,7 @@
       "type": "AggregateResult"
     },
     "Admin_0__c": "India",
-    "expr0": 3,
+    "expr0": 2,
     "expr1": 0
   },
   {
@@ -68,7 +68,7 @@
       "type": "AggregateResult"
     },
     "Admin_0__c": "United States",
-    "expr0": 1,
+    "expr0": 2,
     "expr1": 0
   },
   {
@@ -85,14 +85,14 @@
     },
     "Admin_0__c": "Zambia",
     "expr0": 1,
-    "expr1": 203000
+    "expr1": 200000
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": null,
-    "expr0": 225,
-    "expr1": 10161102
+    "expr0": 237,
+    "expr1": 10063502
   }
 ]
