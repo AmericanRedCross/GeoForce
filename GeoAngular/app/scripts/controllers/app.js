@@ -6,7 +6,6 @@ angular.module('GeoAngular').controller('AppCtrl', function($scope, $routeParams
   $routeParams.layers = $routeParams.layers.replace('http//', 'http://');
 
   $scope.routeParams = $routeParams;
-  Route($routeParams);
   $scope.$on('route-update', function (event, params) {
     $scope.routeParams = params;
   });

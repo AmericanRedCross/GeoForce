@@ -7,27 +7,32 @@ angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData,
 
   var routeParams = Route();
 
-  $scope.test = 'here';
-  routeParams.stories = 'inmapctr';
+  function setParams(routeParams) {
+    var lat     = parseFloat(routeParams.lat)   || 0;
+    var lng     = parseFloat(routeParams.lng)   || 0;
+    var zoom    = parseFloat(routeParams.zoom)  || 2;
+    var layers  = routeParams.layers.split(',') || 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
 
-  var lat     = parseFloat(routeParams.lat)   || 0;
-  var lng     = parseFloat(routeParams.lng)   || 0;
-  var zoom    = parseFloat(routeParams.zoom)  || 2;
-  var layers  = routeParams.layers.split(',') || 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+    // first layer should always be treated as the basemap
+    var basemap = layers[0];
+    layers = layers.slice(1);
 
-  // first layer should always be treated as the basemap
-  var basemap = layers[0];
-  layers = layers.slice(1);
-
-  $scope.center = {
-    lat: lat,
-    lng: lng,
-    zoom: zoom
-  };
-  $scope.defaults = {
-    tileLayer: basemap,
-    scrollWheelZoom: true
+    $scope.center = {
+      lat: lat,
+      lng: lng,
+      zoom: zoom
+    };
+    $scope.defaults = {
+      tileLayer: basemap,
+      scrollWheelZoom: true
+    }
   }
+
+  setParams(routeParams);
+
+  $scope.$on('route-init', function (event, params) {
+    setParams(params);
+  });
 
   leafletData.getMap().then(function(map) {
     map.on('move',function(){ // moveend is good too
