@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').factory('Route', function ($rootScope, $location) {
+angular.module('GeoAngular').factory('Route', function ($rootScope, $location, Alias) {
 
   var init = true;
 
@@ -12,7 +12,7 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location) {
     lat: '45',
     lng: '0',
     zoom: '4',
-    layers: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+    layers: Alias.osm,
     stories: 'Route' //NH TODO take out, just for debugging...
   };
 
