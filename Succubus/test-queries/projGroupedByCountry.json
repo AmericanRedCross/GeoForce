@@ -4,95 +4,95 @@
       "type": "AggregateResult"
     },
     "Admin_0__c": "Belize",
-    "expr0": 1,
-    "expr1": 0
+    "project_count": 1,
+    "total_budget": 0
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "Colombia",
-    "expr0": 1,
-    "expr1": 0
+    "project_count": 1,
+    "total_budget": 0
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "Ecuador",
-    "expr0": 1,
-    "expr1": 0
+    "project_count": 1,
+    "total_budget": 0
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "Haiti",
-    "expr0": 1,
-    "expr1": 0
+    "project_count": 1,
+    "total_budget": 0
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "India",
-    "expr0": 2,
-    "expr1": 0
+    "project_count": 2,
+    "total_budget": 0
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "Nigeria",
-    "expr0": 1,
-    "expr1": 1200
+    "project_count": 1,
+    "total_budget": 1200
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "Tanzania",
-    "expr0": 2,
-    "expr1": 0
+    "project_count": 2,
+    "total_budget": 0
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "Uganda",
-    "expr0": 17,
-    "expr1": 20000
+    "project_count": 17,
+    "total_budget": 20000
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "United States",
-    "expr0": 2,
-    "expr1": 0
+    "project_count": 2,
+    "total_budget": 0
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "Vietnam",
-    "expr0": 4,
-    "expr1": 0
+    "project_count": 4,
+    "total_budget": 0
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "Zambia",
-    "expr0": 1,
-    "expr1": 200000
+    "project_count": 1,
+    "total_budget": 200000
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": null,
-    "expr0": 237,
-    "expr1": 10063502
+    "project_count": 237,
+    "total_budget": 10063502
   }
 ]
