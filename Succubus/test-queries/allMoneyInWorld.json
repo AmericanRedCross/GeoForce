@@ -3,7 +3,7 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "expr0": 270,
-    "expr1": 10284702
+    "project_count": 270,
+    "total_budget": 10284702
   }
 ]
