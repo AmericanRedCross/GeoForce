@@ -3,6 +3,9 @@
  *     on Mon Mar 17 2014
  */
 
+// global map object used for debugging only
+m = {};
+
 angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData, Route, Alias) {
 
   var routeParams = Route();
@@ -22,7 +25,8 @@ angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData,
       var o = Alias.find(layers[i]);
       if (o) overlays.push(o);
     }
-    addOverlays(overlays);
+    if (Array.isArray(overlays) && overlays.length > 0)
+      addOverlays(overlays);
 
     $scope.center = {
       lat: lat,
@@ -49,6 +53,7 @@ angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData,
 
 
   leafletData.getMap().then(function(map) {
+    m = map;
     map.on('moveend',function(){ // move is good too
       var c = map.getCenter();
       Route({
@@ -61,10 +66,38 @@ angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData,
 
 
   function addOverlays(overlays) {
-    console.log('Adding Overlays...');
-    console.log(JSON.stringify(overlays));
+    leafletData.getMap().then(function(map) {
+      console.log('Adding Overlays...' + JSON.stringify(overlays));
+      for(var i= 0,len=overlays.length;i<len;++i){
+        var o = overlays[i];
+
+        // KML
+        if (o.slice(o.length-3) === 'kml') {
+
+         omnivore.kml(o).on('ready', function(p) {
+           // when this is fired, the layer
+           // is done being initialized
+           console.log('kml ready');
+           console.log(p);
+
+         }).on('error', function(e) {
+           console.warn('Error loading kml. Trying php proxy...');
+
+           omnivore.kml('proxy.php?'+o).on('ready', function(p) {
+             console.log('kml ready');
+             console.log(p);
+           }).on('error', function(e) {
+             console.error('giving up loading kml...');
+           }).addTo(map);
 
 
+         }).addTo(map);
+
+        }
+
+      }
+
+    });
   }
 
 });
