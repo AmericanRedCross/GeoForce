@@ -14,16 +14,32 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   }
 
   function Resource(url, name) {
-
+    this.url = url;
+    this.name = name;
   }
 
   function GeoJSON(url, name) {
-
+    Resource.call(this);
   }
+
+  GeoJSON.prototype = Object.create(Resource.prototype);
+  GeoJSON.prototype.constructor = GeoJSON;
+
+  GeoJSON.fetch = function(cb) {
+    $http.get(url).success(function(data, status) {
+      cb(data);
+    });
+  }
+
+
 
   function KML(url, name) {
+    Resource.call(this);
 
   }
+
+  KML.prototype = Object.create(Resource.prototype);
+  KML.prototype.constructor = KML;
 
 
   return {
@@ -41,7 +57,13 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         return null;
       }
       if (type) {
-        return new types[type.toLowerCase()];
+        return new types[type.toLowerCase()]();
+      } else {
+        if (url.slice(url.length - 3).toLowerCase() === 'kml') {
+          return new KML(url, name);
+        }
+        // NH TODO Check a bit more into if this resource is valid GeoJSON
+        return new GeoJSON(url, name);
       }
     }
   };
