@@ -83,12 +83,11 @@ angular.module('GeoAngular').controller('MapCtrl', function($scope, leafletData,
          }).on('error', function(e) {
            console.warn('Error loading kml. Trying php proxy...');
 
-           omnivore.kml('proxy.php?'+o).on('ready', function(p) {
-             console.log('kml ready');
-             console.log(p);
-           }).on('error', function(e) {
+           var layer = omnivore.kml('proxy.php?'+o).on('error', function(e) {
              console.error('giving up loading kml...');
-           }).addTo(map);
+           })
+
+           layer.addTo(map);
 
 
          }).addTo(map);
