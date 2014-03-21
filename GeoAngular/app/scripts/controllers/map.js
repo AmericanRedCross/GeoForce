@@ -6,7 +6,7 @@
 // global map object used for debugging only
 m = {};
 
-angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Route, Alias) {
+angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Route, Alias, VectorProvider) {
 
   var routeParams = Route();
 
@@ -19,12 +19,8 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
     // first layer should always be treated as the basemap
     var basemap = Alias.find(layers[0]) || Alias.redcross;
-    var overlays = [];
+    var overlays = layers.slice(1);
 
-    for (var i = 1, len = layers.length; i < len; ++i) {
-      var o = Alias.find(layers[i]);
-      if (o) overlays.push(o);
-    }
     if (Array.isArray(overlays) && overlays.length > 0)
       addOverlays(overlays);
 
@@ -40,8 +36,8 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
       url: basemap
     };
   }
-
   setParams(routeParams);
+
 
   $scope.$on('route-init', function (event, params) {
     setParams(params);
@@ -100,6 +96,11 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
 
         }).addTo(map);
+  }
+
+
+  function addGeoJson(url) {
+
   }
 
 });
