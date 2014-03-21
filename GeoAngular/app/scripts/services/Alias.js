@@ -37,7 +37,7 @@ angular.module('GeoAngular').service('Alias', function () {
    * @returns {*}
    */
   this.find = function(name) {
-    var val = this[name.toLowerCase()];
+    var val = this[name] || this[name.toLowerCase()];
     if (typeof val !== 'undefined' && val !== null) {
       return val;
     } else {
