@@ -1,7 +1,7 @@
 ﻿//////////Utilities
 
 //Common and settings should be used by all sub-modules
-var express = require('express'), common = require("../../common"), settings = require('../../settings');
+var express = require('express'), common = require("../../common"), settings = require('../../settings'),  request = require('request');
 
 var mapnik;
 try {
@@ -231,6 +231,21 @@ exports.app = function (passport) {
             //send to view
             res.jsonp({ error: "No WKT specified." });
         }
+    });
+
+    app.use('/services/utilities/proxy', function(req, res) {
+        var args = {};
+
+        if (req.method.toLowerCase() == "post") {
+            //If a post, then arguments will be members of the this.req.body property
+            args = req.body;
+        } else if (req.method.toLowerCase() == "get") {
+            //If request is a get, then args will be members of the this.req.query property
+            args = req.query;
+        }
+
+        var url = args.url;
+        req.pipe(request(url)).pipe(res);
     });
 
     return app;
