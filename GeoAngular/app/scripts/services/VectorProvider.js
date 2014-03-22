@@ -18,29 +18,53 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     this.name = name;
   }
 
+  Resource.prototype._fetch = function(cb) {
+    $http.get(this.url).success(function (data, status) {
+      cb(data, this.name, this.url);
+    });
+  }
+
   function GeoJSON(url, name) {
-    Resource.call(this);
+    Resource.call(this, url, name);
   }
 
   GeoJSON.prototype = Object.create(Resource.prototype);
   GeoJSON.prototype.constructor = GeoJSON;
 
-  GeoJSON.fetch = function(cb) {
-    $http.get(url).success(function(data, status) {
-      cb(data);
-    });
+  GeoJSON.prototype.fetch = function (cb) {
+    this._fetch(cb);
   }
 
 
-
   function KML(url, name) {
-    Resource.call(this);
-
+    Resource.call(this, url, name);
   }
 
   KML.prototype = Object.create(Resource.prototype);
   KML.prototype.constructor = KML;
 
+  KML.prototype.fetch = function (cb) {
+    $http.get(url).success(function (data, status) {
+      var geoJson = toGeoJSON.kml(data);
+      cb(geoJson);
+    }).error(function () {
+        console.log("Trying proxy for " + this.name);
+        //NH TODO proxy url
+        $http.get('' + url).success(function (data, status) {
+          var geoJson = toGeoJSON.kml(data);
+          cb(geoJson);
+        }).error(function () {
+            //NH TODO proxy url
+            $http.get('' + url).success(function (data, status) {
+              console.log("Trying proxy2 for " + this.name);
+              var geoJson = toGeoJSON.kml(data);
+              cb(geoJson);
+            }).error(function() {
+                console.log('I give up: ' + this.name);
+              });
+          });
+      });
+  }
 
   return {
     /**
@@ -50,7 +74,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
      * @param resourceName
      * @param type
      */
-    createResource: function(resourceName, type) {
+    createResource: function (resourceName, type) {
       var url = Alias.find(resourceName);
       if (url === null) {
         console.error('VectorProvider: Invalid Resource Name. Check Alias File...');
