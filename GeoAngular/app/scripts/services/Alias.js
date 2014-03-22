@@ -3,6 +3,9 @@
  *       on 3/18/14.
  */
 
+/**
+ * All of the aliases need to be lowercase.
+ */
 angular.module('GeoAngular').service('Alias', function () {
 
   /**
@@ -18,6 +21,11 @@ angular.module('GeoAngular').service('Alias', function () {
   this.pinterest = 'http://{s}.tiles.mapbox.com/v3/pinterest.map-ho21rkos/{z}/{x}/{y}.png';
   this.mapboxaerial = 'http://{s}.tiles.mapbox.com/v3/spatialdev.map-hozgh18d/{z}/{x}/{y}.png';
 
+
+  /**
+   * GeoJSON
+   */
+  this.phl = 'data/test/phl.geojson';
 
   /**
    * KML

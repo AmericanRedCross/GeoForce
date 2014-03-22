@@ -10,31 +10,43 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
   var routeParams = Route();
 
+  var lastLayersStr = '';
+
   function setParams(routeParams) {
     var lat = parseFloat(routeParams.lat) || 0;
     var lng = parseFloat(routeParams.lng) || 0;
     var zoom = parseFloat(routeParams.zoom) || 2;
-    var layers = routeParams.layers.split(',') || Alias.redcross;
-
+    var layersStr = routeParams.layers;
+    var layers = layersStr.split(',') || Alias.redcross;
 
     // first layer should always be treated as the basemap
     var basemap = Alias.find(layers[0]) || Alias.redcross;
     var overlays = layers.slice(1);
 
-    if (Array.isArray(overlays) && overlays.length > 0)
-      addOverlays(overlays);
+    $scope.layers = {
+      overlays: {}
+    };
+
+    if (lastLayersStr !== layersStr) {
+      console.log('Setting layers.');
+      if (Array.isArray(overlays) && overlays.length > 0)
+        addOverlays(overlays);
+
+      $scope.defaults = {
+        scrollWheelZoom: true
+      }
+      $scope.tiles = {
+        url: basemap
+      };
+    }
 
     $scope.center = {
       lat: lat,
       lng: lng,
       zoom: zoom
     };
-    $scope.defaults = {
-      scrollWheelZoom: true
-    }
-    $scope.tiles = {
-      url: basemap
-    };
+
+    lastLayersStr = layersStr;
   }
   setParams(routeParams);
 
@@ -62,22 +74,42 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
 
   function addOverlays(overlays) {
-    leafletData.getMap().then(function (map) {
-      console.log('Adding Overlays...' + JSON.stringify(overlays));
-      for (var i = 0, len = overlays.length; i < len; ++i) {
-        var o = overlays[i];
-
-        // KML
-        if (o.slice(o.length - 3) === 'kml') {
-          addKml(o);
+    for (var i = 0, len = overlays.length; i < len; ++i) {
+      var o = overlays[i];
+      var vecRes = VectorProvider.createResource(o);
+      vecRes.fetch(function(geojson, name){
+        $scope.geojson = {
+          data: geojson,
+          style: {
+            fillColor: "green",
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+          }
         }
+      })
+    }
 
-      }
-
-    });
+    // NH TODO: Put this in VectorProvider
+//    leafletData.getMap().then(function (map) {
+//      console.log('Adding Overlays...' + JSON.stringify(overlays));
+//      for (var i = 0, len = overlays.length; i < len; ++i) {
+//        var o = overlays[i];
+//
+//        // KML
+//        if (o.slice(o.length - 3) === 'kml') {
+//          addKml(o);
+//        }
+//
+//      }
+//
+//    });
   }
 
 
+  // NH TODO: Put this stuff in VectorProvider
   function addKml(url) {
     omnivore.kml(o).on('ready',function (p) {
       // when this is fired, the layer
@@ -96,11 +128,6 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
 
         }).addTo(map);
-  }
-
-
-  function addGeoJson(url) {
-
   }
 
 });
