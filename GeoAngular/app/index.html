@@ -28,7 +28,7 @@
 
     <!-- Add your site or application content here -->
     <div ng-controller="MapCtrl">
-        <leaflet width="100%" height="550px" center="center" defaults="defaults" tiles="tiles"></leaflet>
+        <leaflet width="100%" height="550px" center="center" defaults="defaults" tiles="tiles" layers="layers" geojson="geojson"></leaflet>
     </div>
 
     <div class="container" ng-view=""></div>
@@ -68,10 +68,12 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/lib/togeojson.js"></script>
     <script src="scripts/lib/leaflet-omnivore.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/services/Alias.js"></script>
     <script src="scripts/services/Route.js"></script>
+    <script src="scripts/services/VectorProvider.js"></script>
     <script src="scripts/controllers/landing.js"></script>
     <script src="scripts/controllers/app.js"></script>
     <script src="scripts/controllers/map.js"></script>
