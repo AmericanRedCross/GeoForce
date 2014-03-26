@@ -37,6 +37,7 @@
         <div id="AppContainer">
             <!-- NavBar is the vertical & left-hand (west) panel controlled by the jQuery Layout plugin. -->
             <div id="NavBar" class="ui-layout-west">
+                    <div id="ARCLogo"></div>
                     <div class="NavButtonGroup" class="btn-group">
                         <button type="button" class="btn btn-default">
                             <i data-icon="b"></i>
@@ -57,6 +58,12 @@
                 </div>
             <!-- MapCtrl is the center (center) panel controlled by the jQuery Layout plugin, and is also where the map lives. -->
                 <div ng-controller="MapCtrl" id="MapCtrl" class="ui-layout-center">
+                    <div id="ARCCircle">
+                        <div class="AppTitle">GeoForce</div>
+                        <div class="Description">Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi
+                            welsh onion daikon amaranth tatsoi tomatillo melon azuki bean.</div>
+                        <button type="button" class="btn btn-default btn-cta">Start Exploring<div class="arrow"></div></button>
+                    </div>
                     <leaflet class="BlurryWindow" width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" layers="layers" geojson="geojson"></leaflet>
                 </div>
         </div>
