@@ -20,76 +20,11 @@
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/fonts.css">
+    <link rel="stylesheet" href="styles/comp.css">
       <!-- endbuild -->
     <!--font-family: 'Open Sans', sans-serif;-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <style>
-        /* use this panel when developing to preview css changes using live edit in webstorm */
-        html, body{
-            height:100%;
-            width:100%;
-        }
 
-        #AppContainer{
-            height:100%;
-            width:100%;
-        }
-
-        .container{
-            display: none;
-        }
-
-        /* NavBar Buttons */
-
-        .NavButtonGroup{
-            margin-top: 100px;
-        }
-        
-        .NavButtonGroup button:hover, .NavButtonGroup button.on {
-            color: #9b232c!important;
-        }
-
-        .NavButtonGroup button.on {
-            background-color: #fff;
-        }
-
-        .NavButtonGroup button {
-            padding: 10px 16px;
-            color: #3c3c3c;
-            cursor: pointer;
-            border-bottom: 1px solid #c7c7c7;
-            min-height: 32px;
-            padding-top: 20px;
-        }
-
-        ..NavButtonGroup button i{
-            font-family: 'geoforce';
-            font-style: normal;
-        }
-
-        /* Not for IE8 and below */
-        .NavButtonGroup button:first-of-type{
-            border-top: 1px solid #c7c7c7;
-        }
-
-        .btn{
-            border-radius: 0px;
-        }
-       
-        /*End NavBar Buttons */
-
-
-        /* Blurry Window */
-        .BlurryWindow {
-            -webkit-filter: blur(4px);
-            -moz-filter: blur(4px);
-            -o-filter: blur(4px);
-            -ms-filter: blur(4px);
-            filter: blur(4px);
-            opacity: 1;
-        }
-        /* End Blurry Window */
-    </style>
   </head>
   <body ng-app="GeoAngular">
     <!--[if lt IE 7]>
@@ -190,8 +125,8 @@
           north__spacing_open: 0
       });
 
-      //resize left(west panel) to be 55px wide.
-      layout.sizePane("west", 55);
+      //resize left(west panel) to be 59px wide.
+      layout.sizePane("west", 59);
 
   </script>
 </body>

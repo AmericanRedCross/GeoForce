@@ -1,8 +1,74 @@
-/* css file for comp.html */
-
-/* NavBar Styling */
-#NavBar{
-    width: 100px;
-    float:left;
+/* use this panel when developing to preview css changes using live edit in webstorm */
+html, body{
+    height:100%;
+    width:100%;
 }
-/* End NavBar Styling */
+
+#AppContainer{
+    height:100%;
+    width:100%;
+}
+
+.container{
+    display: none;
+}
+
+/* NavBar & Buttons */
+#NavBar{
+    background: url(../images/navbar_stripes.png) repeat-y;
+}
+
+.NavButtonGroup{
+    margin-top: 167px;
+}
+
+.NavButtonGroup button:hover, .NavButtonGroup button.on {
+    color: #9b232c!important;
+}
+
+.NavButtonGroup button.on {
+    background-color: #fff;
+}
+
+.NavButtonGroup button {
+    padding: 12px 16px;
+    color: #3c3c3c;
+    cursor: pointer;
+    border-bottom: 1px solid #c7c7c7;
+    min-height: 32px;
+    width: 59px;
+    background: none !important;
+}
+
+.NavButtonGroup button i{
+    font-family: 'geoforce';
+    font-style: normal;
+    font-size: 26px;
+}
+
+/* Not for IE8 and below */
+.NavButtonGroup button:first-of-type{
+    border-top: 1px solid #c7c7c7;
+}
+
+.NavButtonGroup .btn{
+    border-radius: 0px !important;
+}
+
+.NavButtonGroup .btn-default{
+    border-color: #c7c7c7;
+}
+
+/*End NavBar Buttons */
+
+
+/* Blurry Window */
+.BlurryWindow {
+    -webkit-filter: blur(4px);
+    -moz-filter: blur(4px);
+    -o-filter: blur(4px);
+    -ms-filter: blur(4px);
+    filter: blur(4px);
+    opacity: 1;
+}
+/* End Blurry Window */
