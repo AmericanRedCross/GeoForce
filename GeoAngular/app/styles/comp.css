@@ -13,13 +13,18 @@ html, body{
     display: none;
 }
 
+/* Logo */
+
+
+/*End Logo*/
+
 /* NavBar & Buttons */
 #NavBar{
     background: url(../images/navbar_stripes.png) repeat-y;
 }
 
 .NavButtonGroup{
-    margin-top: 167px;
+    margin-top: 165px;
 }
 
 .NavButtonGroup button:hover, .NavButtonGroup button.on {
@@ -31,13 +36,16 @@ html, body{
 }
 
 .NavButtonGroup button {
-    padding: 12px 16px;
+    padding: 13px 16px 10px 16px;
     color: #3c3c3c;
     cursor: pointer;
     border-bottom: 1px solid #c7c7c7;
     min-height: 32px;
     width: 59px;
     background: none !important;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
 }
 
 .NavButtonGroup button i{
