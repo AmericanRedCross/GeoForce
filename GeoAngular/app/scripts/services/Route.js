@@ -17,11 +17,13 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
   };
 
   function updateLocation() {
-    $location.path( '/map@' + params.lat +
-        ',' + params.lng +
-        ',' + params.zoom +
-        '(' + params.layers +
-        ')/stories/' + params.stories);
+    var path = '/map@' + params.lat +
+      ',' + params.lng +
+      ',' + params.zoom +
+      '(' + params.layers + ')';
+    if (params.stories) path += '/stories/' + params.stories;
+
+    $location.path(path);
   }
 
   /**

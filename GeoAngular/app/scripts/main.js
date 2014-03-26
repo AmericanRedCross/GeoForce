@@ -7,14 +7,18 @@ angular.module('GeoAngular', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute'
   $routeProvider.when('/', {
 //        templateUrl: 'views/landing.html',
 //        controller: 'LandingCtrl'
-    redirectTo: '/map@0,0,2(redcross,phl)/stories/test'
+    redirectTo: '/map@0,0,2(redcross,phl)'
 
-  }).when('/map@:lat,:lng,:zoom(:layers*)\/stories/:stories', {
+  }).when('/map@:lat,:lng,:zoom(:layers*)', {
         templateUrl: 'views/app.html',
         controller: 'AppCtrl'
 
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/stories/:stories', {
+        templateUrl: 'views/stories.html',
+        controller: 'AppCtrl'
+
   }).otherwise({
-    redirectTo: '/map@0,0,2(redcross)/stories/test'
+    redirectTo: '/map@0,0,2(redcross, phl)'
   });
 
 });
