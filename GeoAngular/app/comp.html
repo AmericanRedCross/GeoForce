@@ -1,0 +1,198 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/lib.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
+    <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/fonts.css">
+      <!-- endbuild -->
+    <!--font-family: 'Open Sans', sans-serif;-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <style>
+        /* use this panel when developing to preview css changes using live edit in webstorm */
+        html, body{
+            height:100%;
+            width:100%;
+        }
+
+        #AppContainer{
+            height:100%;
+            width:100%;
+        }
+
+        .container{
+            display: none;
+        }
+
+        /* NavBar Buttons */
+
+        .NavButtonGroup{
+            margin-top: 100px;
+        }
+        
+        .NavButtonGroup button:hover, .NavButtonGroup button.on {
+            color: #9b232c!important;
+        }
+
+        .NavButtonGroup button.on {
+            background-color: #fff;
+        }
+
+        .NavButtonGroup button {
+            padding: 10px 16px;
+            color: #3c3c3c;
+            cursor: pointer;
+            border-bottom: 1px solid #c7c7c7;
+            min-height: 32px;
+            padding-top: 20px;
+        }
+
+        ..NavButtonGroup button i{
+            font-family: 'geoforce';
+            font-style: normal;
+        }
+
+        /* Not for IE8 and below */
+        .NavButtonGroup button:first-of-type{
+            border-top: 1px solid #c7c7c7;
+        }
+
+        .btn{
+            border-radius: 0px;
+        }
+       
+        /*End NavBar Buttons */
+
+
+        /* Blurry Window */
+        .BlurryWindow {
+            -webkit-filter: blur(4px);
+            -moz-filter: blur(4px);
+            -o-filter: blur(4px);
+            -ms-filter: blur(4px);
+            filter: blur(4px);
+            opacity: 1;
+        }
+        /* End Blurry Window */
+    </style>
+  </head>
+  <body ng-app="GeoAngular">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+
+    <!-- AppContainer is the wrapper for the jQuery Layout plugin. -->
+        <div id="AppContainer">
+            <!-- NavBar is the vertical & left-hand (west) panel controlled by the jQuery Layout plugin. -->
+            <div id="NavBar" class="ui-layout-west">
+                    <div class="NavButtonGroup" class="btn-group">
+                        <button type="button" class="btn btn-default">
+                            <i data-icon="b"></i>
+                        </button>
+                        <button type="button" class="btn btn-default">
+                            <i data-icon="d"></i>
+                        </button>
+                        <button type="button" class="btn btn-default">
+                            <i data-icon="e"></i>
+                        </button>
+                        <button type="button" class="btn btn-default">
+                            <i data-icon="f"></i>
+                        </button>
+                        <button type="button" class="btn btn-default">
+                            <i data-icon="g"></i>
+                        </button>
+                    </div>
+                </div>
+            <!-- MapCtrl is the center (center) panel controlled by the jQuery Layout plugin, and is also where the map lives. -->
+                <div ng-controller="MapCtrl" id="MapCtrl" class="ui-layout-center BlurryWindow">
+                    <leaflet width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" layers="layers" geojson="geojson"></leaflet>
+                </div>
+        </div>
+
+
+
+        <div class="container" ng-view=""></div>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-XXXXX-X');
+       ga('send', 'pageview');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/lib.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-mocks/angular-mocks.js"></script>
+    <script src="bower_components/leaflet-dist/leaflet.js"></script>
+    <script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
+    <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+    <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/lib/togeojson.js"></script>
+    <script src="scripts/lib/leaflet-omnivore.js"></script>
+    <script src="scripts/lib/jquery.layout-latest.min.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/services/Alias.js"></script>
+    <script src="scripts/services/Route.js"></script>
+    <script src="scripts/services/VectorProvider.js"></script>
+    <script src="scripts/controllers/landing.js"></script>
+    <script src="scripts/controllers/app.js"></script>
+    <script src="scripts/controllers/map.js"></script>
+    <!-- endbuild -->
+
+  <script type="application/javascript">
+      //Use this block while developing with Live Edit to try out javascript
+
+      //set up jQuery layout
+      var layout = $('#AppContainer').layout({
+          applyDefaultStyles: false,
+          west__resizable: false,
+          west__closable: false,
+
+          west__spacing_open: 0,
+          north__spacing_open: 0
+      });
+
+      //resize left(west panel) to be 55px wide.
+      layout.sizePane("west", 55);
+
+  </script>
+</body>
+</html>
