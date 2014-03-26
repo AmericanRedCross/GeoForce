@@ -15,4 +15,6 @@
     border-radius: 0;
     float:right;
     padding: 17px 19px;
+    background-color: white;
+    display: none;
 }
