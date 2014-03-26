@@ -25,10 +25,13 @@ html, body{
 /* NavBar & Buttons */
 #NavBar{
     background: url(../images/navbar_stripes.png) repeat-y;
+    overflow: visible;
+    z-index: 1 !important;
 }
 
 .NavButtonGroup{
     margin-top: 108px;
+    border-top: 1px solid #c7c7c7;
 }
 
 .NavButtonGroup a:hover, .NavButtonGroup a.on {
@@ -60,7 +63,7 @@ html, body{
 
 /* Not for IE8 and below */
 .NavButtonGroup a:first-of-type{
-    border-top: 1px solid #c7c7c7;
+
 }
 
 .NavButtonGroup .btn{
@@ -72,6 +75,42 @@ html, body{
 }
 
 /*End NavBar Buttons */
+
+
+/* NavBar Flyout Tooltips */
+.NavigationTooltipContainer {
+    position: absolute;
+    top: 165px;
+    z-index: 1;
+    left: 59px;
+    overflow: hidden;
+}
+
+.flyout {
+    padding: 10px 25px;
+    background-color: #ed1b2e;
+    color: #fff;
+    text-transform: uppercase;
+    font-family: oswaldregular;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    height: 61px;
+    -moz-box-shadow:    inset 15px -2px 17px -17px #000000;
+    -webkit-box-shadow: inset 15px -2px 17px -17px #000000;
+    box-shadow:         inset 15px -2px 17px -17px #000000;
+    margin-left: -250px;
+    visibility: hidden;
+    line-height: 42px;
+}
+
+.flyout.on{
+    -moz-transition:all .5s ease; /* This is the animation TO THE RIGHT for the flyouts */
+    -webkit-transition:all .5s ease; /* This is the animation TO THE RIGHT for the flyouts */
+    margin-left: 0px;
+    visibility: visible;
+}
+/* End NavBar Tooltips */
 
 
 /* Blurry Window */
