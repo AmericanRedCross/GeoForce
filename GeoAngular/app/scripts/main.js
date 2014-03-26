@@ -14,8 +14,12 @@ angular.module('GeoAngular', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute'
         controller: 'AppCtrl'
 
   }).when('/map@:lat,:lng,:zoom(:layers*)\/stories/:stories', {
-        templateUrl: 'views/stories.html',
+        templateUrl: 'views/app.html',
         controller: 'AppCtrl'
+
+  }).when('/stories/:stories', {
+        templateUrl: 'views/stories.html',
+        controller: 'StoriesCtrl'
 
   }).otherwise({
     redirectTo: '/map@0,0,2(redcross, phl)'
