@@ -31,15 +31,15 @@ html, body{
     margin-top: 108px;
 }
 
-.NavButtonGroup button:hover, .NavButtonGroup button.on {
+.NavButtonGroup a:hover, .NavButtonGroup a.on {
     color: #ed1b2e!important;
 }
 
-.NavButtonGroup button.on {
+.NavButtonGroup a.on {
     background-color: #fff;
 }
 
-.NavButtonGroup button {
+.NavButtonGroup a {
     padding: 13px 16px 10px 16px;
     color: #3c3c3c;
     cursor: pointer;
@@ -52,14 +52,14 @@ html, body{
     border-right: 0px;
 }
 
-.NavButtonGroup button i{
+.NavButtonGroup a i{
     font-family: 'geoforce';
     font-style: normal;
     font-size: 26px;
 }
 
 /* Not for IE8 and below */
-.NavButtonGroup button:first-of-type{
+.NavButtonGroup a:first-of-type{
     border-top: 1px solid #c7c7c7;
 }
 
@@ -76,12 +76,12 @@ html, body{
 
 /* Blurry Window */
 .BlurryWindow {
-    -webkit-filter: blur(4px);
-    -moz-filter: blur(4px);
-    -o-filter: blur(4px);
-    -ms-filter: blur(4px);
-    filter: blur(4px);
-    opacity: 1;
+    /*-webkit-filter: blur(4px);*/
+    /*-moz-filter: blur(4px);*/
+    /*-o-filter: blur(4px);*/
+    /*-ms-filter: blur(4px);*/
+    /*filter: blur(4px);*/
+    /*opacity: 1;*/
 }
 /* End Blurry Window */
 

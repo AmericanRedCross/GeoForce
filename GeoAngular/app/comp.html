@@ -18,9 +18,9 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/fonts.css">
     <link rel="stylesheet" href="styles/comp.css">
+    <link rel="stylesheet" href="styles/side-view.css">
       <!-- endbuild -->
     <!--font-family: 'Open Sans', sans-serif;-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
@@ -39,21 +39,21 @@
             <div id="NavBar" class="ui-layout-west">
                     <div id="ARCLogo"></div>
                     <div class="NavButtonGroup" class="btn-group">
-                        <button type="button" class="btn btn-default">
+                        <a href="#/stories/buttontest" type="button" class="btn btn-default">
                             <i data-icon="b"></i>
-                        </button>
-                        <button type="button" class="btn btn-default">
+                        </a>
+                        <a href="#/stories/buttontest" type="button" class="btn btn-default">
                             <i data-icon="d"></i>
-                        </button>
-                        <button type="button" class="btn btn-default">
+                        </a>
+                        <a href="#/stories/buttontest" type="button" class="btn btn-default">
                             <i data-icon="e"></i>
-                        </button>
-                        <button type="button" class="btn btn-default">
+                        </a>
+                            <a href="#/stories/buttontest" type="button" class="btn btn-default">
                             <i data-icon="f"></i>
-                        </button>
-                        <button type="button" class="btn btn-default">
+                            </a>
+                        <a href="#/stories/buttontest" type="button" class="btn btn-default">
                             <i data-icon="g"></i>
-                        </button>
+                        </a>
                     </div>
                 </div>
             <!-- MapCtrl is the center (center) panel controlled by the jQuery Layout plugin, and is also where the map lives. -->
@@ -68,9 +68,7 @@
                 </div>
         </div>
 
-
-
-        <div class="container" ng-view=""></div>
+        <div class="side-view" ng-view=""></div>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
