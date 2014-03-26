@@ -1,11 +1,103 @@
-Stories
+<button class="side-view-close btn btn-lg btn-danger"><span class="glyphicon glyphicon-chevron-left"></span></button>
+<div class="container stories-container">
 
-This is app.html.<br/>
-lat: {{routeParams.lat}}<br/>
-lng: {{routeParams.lng}}<br/>
-zoom: {{routeParams.zoom}}<br/>
-layers: {{routeParams.layers}}<br/>
-stories: {{routeParams.stories}}<br/>
+    <div class="row">
+        <div class="col-md-11">
+            <h2>STORIES <small>Veggies es bonus vobis, proinde vos postulo essum.</small></h2>
+        </div>
+        <!--<div class="col-md-1">-->
+            <!--<button class="btn btn-lg btn-danger"><span class="glyphicon glyphicon-chevron-left"></span></button>-->
+        <!--</div>-->
+    </div>
 
-Layers:<input ng-model="routeParams.layers">
-Stories:<input ng-model="routeParams.stories">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Filter stories by:</h3>
+                </div>
+                <div class="panel-body">
+                    <form>
+                        <fieldset>
+                            <h4>Extent:</h4>
+
+                            <label class="checkbox">
+                                <input type="checkbox" value="all">
+                                All
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="africa">
+                                Africa
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="amee">
+                                AMEE
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="global">
+                                Global
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="lac">
+                                LAC
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="usa">
+                                USA
+                            </label>
+
+                        </fieldset>
+                        <br/>
+                        <fieldset>
+                            <h4>Keywords:</h4>
+
+                            <input class="form-control" type="text" placeholder="Search keywords...">
+
+                            <label class="checkbox">
+                                <input type="checkbox" value="all">
+                                All
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="lorem">
+                                Lorem ipsum
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="desdolore">
+                                Des Dolore
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="disasterpreparedness">
+                                Disaster Preparedness
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="disasterresponse">
+                                Disaster Response
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="haiti">
+                                Haiti
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="programmap">
+                                Program Map
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" value="restoringfamilylinks">
+                                Restoring Family Links
+                            </label>
+
+
+                        </fieldset>
+                    </form>
+                    <!--<h4>Extent:</h4>-->
+                    <!--<h4>Keywords:</h4>-->
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-8">
+            .col-md-8 This is the first one the first column.
+
+        </div>
+    </div>
+</div>

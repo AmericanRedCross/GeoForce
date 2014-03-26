@@ -3,6 +3,16 @@
     top: 0px;
     bottom: 0px;
     left: 59px;
-    background-color: white;
-    display: none;
+    background-color: #F2F2F2;
+}
+
+.stories-container {
+    width: 700px;
+}
+
+.side-view-close {
+    background-color: #EA2035;
+    border-radius: 0;
+    float:right;
+    padding: 17px 19px;
 }
