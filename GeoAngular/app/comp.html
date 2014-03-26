@@ -36,24 +36,42 @@
     <!-- AppContainer is the wrapper for the jQuery Layout plugin. -->
         <div id="AppContainer">
             <!-- NavBar is the vertical & left-hand (west) panel controlled by the jQuery Layout plugin. -->
-            <div id="NavBar" class="ui-layout-west">
+            <div id="NavBar" class="ui-layout-west" ng-controller="NavBarCtrl">
                     <div id="ARCLogo"></div>
                     <div class="NavButtonGroup" class="btn-group">
-                        <a href="#/stories/buttontest" type="button" class="btn btn-default">
+                        <a href="#/stories/buttontest" type="button" class="btn btn-default" ng-mouseenter="isStoriesActive = true" ng-mouseleave="isStoriesActive=false">
                             <i data-icon="b"></i>
                         </a>
-                        <a href="#/stories/buttontest" type="button" class="btn btn-default">
+                        <a href="#/stories/buttontest" type="button" class="btn btn-default" ng-mouseenter="isLayersActive = true" ng-mouseleave="isLayersActive=false">
                             <i data-icon="d"></i>
                         </a>
-                        <a href="#/stories/buttontest" type="button" class="btn btn-default">
+                        <a href="#/stories/buttontest" type="button" class="btn btn-default" ng-mouseenter="isFiltersActive = true" ng-mouseleave="isFiltersActive=false">
                             <i data-icon="e"></i>
                         </a>
-                            <a href="#/stories/buttontest" type="button" class="btn btn-default">
+                            <a href="#/stories/buttontest" type="button" class="btn btn-default" ng-mouseenter="isLegendActive = true" ng-mouseleave="isLegendActive=false">
                             <i data-icon="f"></i>
                             </a>
-                        <a href="#/stories/buttontest" type="button" class="btn btn-default">
+                        <a href="#/stories/buttontest" type="button" class="btn btn-default" ng-mouseenter="isBasemapsActive = true" ng-mouseleave="isBasemapsActive=false">
                             <i data-icon="g"></i>
                         </a>
+                    </div>
+                    <div class="NavigationTooltipContainer">
+                        <!-- the container for the sliding nav button tooltips -->
+                        <div class="flyout" ng-class="{on: isStoriesActive}">
+                            Stories
+                        </div>
+                        <div class="flyout" ng-class="{on: isLayersActive}">
+                            Layers
+                        </div>
+                        <div class="flyout" ng-class="{on: isFiltersActive}">
+                            Filters
+                        </div>
+                        <div class="flyout" ng-class="{on: isLegendActive}">
+                            Legend
+                        </div>
+                        <div class="flyout" ng-class="{on: isBasemapsActive}">
+                            Basemaps
+                        </div>
                     </div>
                 </div>
             <!-- MapCtrl is the center (center) panel controlled by the jQuery Layout plugin, and is also where the map lives. -->
@@ -115,6 +133,7 @@
     <script src="scripts/controllers/landing.js"></script>
     <script src="scripts/controllers/app.js"></script>
     <script src="scripts/controllers/map.js"></script>
+    <script src="scripts/controllers/navbar.js"></script>
     <!-- endbuild -->
 
   <script type="application/javascript">
