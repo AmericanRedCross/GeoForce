@@ -23,9 +23,9 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
     var basemap = Alias.find(layers[0]) || Alias.redcross;
     var overlays = layers.slice(1);
 
-    $scope.layers = {
-      overlays: {}
-    };
+//    $scope.layers = {
+//      overlays: {}
+//    };
 
     if (lastLayersStr !== layersStr) {
       console.log('Setting layers.');
