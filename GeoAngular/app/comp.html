@@ -38,7 +38,7 @@
             <!-- NavBar is the vertical & left-hand (west) panel controlled by the jQuery Layout plugin. -->
             <div id="NavBar" class="ui-layout-west" ng-controller="NavBarCtrl">
                     <div id="ARCLogo"></div>
-                    <div class="NavButtonGroup" class="btn-group">
+                    <div class="NavButtonGroup btn-group">
                         <a href="#/stories/buttontest" type="button" class="btn btn-default" ng-mouseenter="isStoriesActive = true" ng-mouseleave="isStoriesActive=false">
                             <i data-icon="b"></i>
                         </a>
@@ -51,26 +51,40 @@
                             <a href="#/stories/buttontest" type="button" class="btn btn-default" ng-mouseenter="isLegendActive = true" ng-mouseleave="isLegendActive=false">
                             <i data-icon="f"></i>
                             </a>
-                        <a href="#/stories/buttontest" type="button" class="btn btn-default" ng-mouseenter="isBasemapsActive = true" ng-mouseleave="isBasemapsActive=false">
-                            <i data-icon="g"></i>
+                    </div>
+                    <div class="NavigationTooltipContainer main">
+                        <div id="FlyoutLogoPlaceHolder"></div>
+                        <!-- the container for the sliding nav button tooltips -->
+                        <div class="NavFlyoutGroup">
+                            <div class="flyout" ng-class="{on: isStoriesActive}">
+                                Stories
+                            </div>
+                            <div class="flyout" ng-class="{on: isLayersActive}">
+                                Layers
+                            </div>
+                            <div class="flyout" ng-class="{on: isFiltersActive}">
+                                Filters
+                            </div>
+                            <div class="flyout" ng-class="{on: isLegendActive}">
+                                Legend
+                            </div>
+                            <div class="flyout" ng-class="{on: isBasemapsActive}">
+                                Basemaps
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="NavButtonGroup btn-group bottom">
+                        <a href="#/stories/buttontest" type="button" class="btn btn-default" ng-mouseenter="isInfoActive = true" ng-mouseleave="isInfoActive=false">
+                            <i data-icon="o"></i>
                         </a>
                     </div>
-                    <div class="NavigationTooltipContainer">
-                        <!-- the container for the sliding nav button tooltips -->
-                        <div class="flyout" ng-class="{on: isStoriesActive}">
-                            Stories
-                        </div>
-                        <div class="flyout" ng-class="{on: isLayersActive}">
-                            Layers
-                        </div>
-                        <div class="flyout" ng-class="{on: isFiltersActive}">
-                            Filters
-                        </div>
-                        <div class="flyout" ng-class="{on: isLegendActive}">
-                            Legend
-                        </div>
-                        <div class="flyout" ng-class="{on: isBasemapsActive}">
-                            Basemaps
+                    <div class="NavigationTooltipContainer bottom">
+                        <div class="NavFlyoutGroup">
+                            <div class="flyout" ng-class="{on: isInfoActive}">
+                                Info
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -14,11 +14,17 @@ html, body{
 /* Logo */
 #ARCLogo{
     background: url(../images/arc_logo.png) no-repeat;
-    height:48px;
     width:48px;
     margin: 0px auto;
+
+}
+
+/* Keep The logo dimensions the same in the flyout panel to keep the flyouts aligned with the buttons */
+#FlyoutLogoPlaceHolder, #ARCLogo{
+    height:48px;
     margin-top: 9px;
 }
+
 
 /*End Logo*/
 
@@ -29,9 +35,19 @@ html, body{
     z-index: 1 !important;
 }
 
+.NavButtonGroup, .NavFlyoutGroup{
+    margin-top: 108px;
+}
+
 .NavButtonGroup{
+    border-top: 1px solid #c7c7c7;
+}
+
+.NavButtonGroup.bottom{
     margin-top: 108px;
     border-top: 1px solid #c7c7c7;
+    bottom: 0px;
+    position: absolute;
 }
 
 .NavButtonGroup a:hover, .NavButtonGroup a.on {
@@ -80,10 +96,22 @@ html, body{
 /* NavBar Flyout Tooltips */
 .NavigationTooltipContainer {
     position: absolute;
-    top: 165px;
     z-index: 1;
-    left: 59px;
     overflow: hidden;
+}
+
+.NavigationTooltipContainer{
+    left: 59px;
+}
+
+.NavigationTooltipContainer.main{
+    top: 0;
+    height: 100%;
+}
+
+.NavigationTooltipContainer.bottom{
+    position: absolute;
+    bottom:0px;
 }
 
 .flyout {
@@ -104,11 +132,21 @@ html, body{
     line-height: 42px;
 }
 
+
 .flyout.on{
     -moz-transition:all .5s ease; /* This is the animation TO THE RIGHT for the flyouts */
     -webkit-transition:all .5s ease; /* This is the animation TO THE RIGHT for the flyouts */
     margin-left: 0px;
     visibility: visible;
+}
+
+/* The Flyout for the info panel */
+.bottom .flyout{
+
+}
+
+.bottom .flyout.on{
+    margin-left: 0px;
 }
 /* End NavBar Tooltips */
 
@@ -180,3 +218,23 @@ html, body{
 
 
 /* End Giant Circle */
+
+/* Override Leaflet Zoom In/Out Defaults */
+.leaflet-bar a:first-child {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    color: #ed1b2e;
+}
+
+.leaflet-bar a:last-child {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom: none;
+    color: #ed1b2e;
+}
+.leaflet-bar {
+    box-shadow: none;
+    border-radius: 0px;
+}
+
+/* End Override Leaflet Zoom In/Out */
