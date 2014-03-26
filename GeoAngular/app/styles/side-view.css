@@ -4,6 +4,7 @@
     bottom: 0px;
     left: 59px;
     background-color: #F2F2F2;
+    overflow: auto;
 }
 
 .stories-container {
