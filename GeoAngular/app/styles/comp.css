@@ -28,8 +28,23 @@ html, body{
     border-radius: 0px;
 }
 
+.leaflet-bar a, .leaflet-bar a:hover {
+    width: 33px;
+    height: 33px;
+    line-height: 33px;
+    border: 1px solid #d3d3d3;
+}
+
 .leaflet-control-attribution {
     display: none;
+}
+
+.leaflet-left .leaflet-control {
+    margin-left: 30px;
+}
+
+.leaflet-top .leaflet-control {
+    margin-top: 30px;
 }
 
 /* End Override Leaflet Zoom In/Out */
@@ -73,23 +88,56 @@ html, body{
 #ThemeSelectorMenu{
     position: absolute;
     z-index: 2;
-    right: 100px;
-    bottom: 150px;
-    width: 200px;
+    right: 40px;
+    bottom: 25px;
     left: auto;
+    font-family: oswaldregular;
 }
 
-.dropdown-menu > li > a {
+#ThemeSelectorMenu .dropdown-toggle{
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+
+#ThemeSelectorMenu .dropdown-menu {
+    padding: 0;
+}
+
+#ThemeSelectorMenu .dropdown-menu > li > a, #ThemeSelectorMenu .dropdown-toggle {
     text-transform: uppercase;
+    padding: 10px 20px;
+    font-size: 20px;
+    color: #3f3f3f;
 }
 
-.dropdown-menu > li{
-    border: 1px solid #000;
+#ThemeSelectorMenu .dropdown-menu > li > a:hover, #ThemeSelectorMenu .dropdown-menu > li > a:focus, #ThemeSelectorMenu .dropdown-toggle {
+    color: #ed1b2e;
+    text-decoration: none;
+    background-color: #fff;
+}
+
+#ThemeSelectorMenu .dropdown-menu > li{
+    border: 1px solid #d3d3d3;
+    min-width: 172px;
 }
 
 #ThemeMenu{
     text-align:center;
-    font-family: oswaldregular;
+}
+
+#ThemeSelectorMenu .menu-selection{
+    float: left;
+    cursor:pointer;
+}
+
+#ThemeSelectorMenu .dropdown-toggle {
+    min-width: 172px;
+    text-align: center;
 }
 
 /* End Theme Selector Menu */

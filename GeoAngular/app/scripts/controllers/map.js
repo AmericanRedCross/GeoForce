@@ -14,6 +14,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   var lastLayersStr = '';
   $scope.blur = ''
 
+  //Init activeTheme property
+  $scope.activeTheme = "Projects";
+
+
   function setParams(routeParams) {
     if (routeParams.landing) {
       console.log('landing');
