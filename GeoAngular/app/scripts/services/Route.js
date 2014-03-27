@@ -51,7 +51,7 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
     }
     var idx = loc.indexOf(')') + 1;
     loc = loc.slice(0,idx);
-    if (!routeFragment) routeFragment = '/';
+    if (!routeFragment) routeFragment = '';
     else if (routeFragment[0] !== '/') routeFragment = '/' + routeFragment;
     return loc + routeFragment;
   }
