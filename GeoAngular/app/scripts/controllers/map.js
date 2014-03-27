@@ -7,6 +7,7 @@
 m = {};
 
 angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Route, Alias, VectorProvider) {
+  console.log('MapCtrl');
 
   var routeParams = Route.get();
 
