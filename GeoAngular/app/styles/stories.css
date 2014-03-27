@@ -1,3 +1,68 @@
 .stories-container {
     width: 700px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100%;
+}
+
+.titleWrapper{
+    margin-top: 20px;
+}
+
+.side-view .title {
+    font-size: 20px;
+    font-family: oswaldregular;
+    padding-left: 16px;
+    float: left;
+}
+
+.side-view .description {
+    float: left;
+    padding-left: 20px;
+    line-height: 31px;
+}
+
+.thumbnail-container{
+    width: auto;
+}
+
+.thumbnail{
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    border: none;
+}
+
+.thumbnail .image{
+    padding: 8px;
+    background-color: #fff;
+    -moz-box-shadow:    0px 0px 6px 1px #ccc;
+    -webkit-box-shadow: 0px 0px 6px 1px #ccc;
+    box-shadow: 0px 0px 6px 1px #ccc;
+}
+
+.thumbnail .image img{
+width: 100%;
+}
+
+.thumbnail .caption{
+    padding: 0px;
+    padding-top: 10px;
+}
+
+.nopaddingnomargin {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.nopadding{
+    padding: 0 !important;
+}
+
+.RCRed{
+   color: #ed1b2e;
+}
+
+.thumbnail .item-arrow{
+    line-height: 27px;
 }
