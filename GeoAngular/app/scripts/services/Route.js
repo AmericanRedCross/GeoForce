@@ -9,9 +9,9 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
 
   // default route parameters. gets reset by AppCtrl.
   var params = {
-    lat: '45',
-    lng: '0',
-    zoom: '4',
+    lat: 45,
+    lng: 0,
+    zoom: 4,
     layers: Alias.osm
   };
 
