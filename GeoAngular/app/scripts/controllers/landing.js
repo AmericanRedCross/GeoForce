@@ -7,6 +7,6 @@ angular.module('GeoAngular').controller('LandingCtrl', function($scope, $routePa
 
   $routeParams.landing = true;
 
-  Route($routeParams);
+  Route.update($routeParams);
 
 });

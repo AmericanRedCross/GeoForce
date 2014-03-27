@@ -8,7 +8,7 @@ m = {};
 
 angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Route, Alias, VectorProvider) {
 
-  var routeParams = Route();
+  var routeParams = Route.get();
 
   var lastLayersStr = '';
   $scope.blur = ''
@@ -71,7 +71,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
     m = map;
     map.on('moveend', function () { // move is good too
       var c = map.getCenter();
-      Route({
+      Route.update({
         lat: c.lat.toFixed(6),
         lng: c.lng.toFixed(6),
         zoom: map.getZoom()
