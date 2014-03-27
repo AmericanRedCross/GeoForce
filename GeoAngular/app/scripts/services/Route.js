@@ -74,6 +74,17 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
       // NH good way to test if outsiders are messing with inside
 //    return angular.extend({},params);
       return params;
+    },
+    getMapPathAppended: function(routeFragment) {
+      var loc = $location.path();
+      if (loc.indexOf('map@') === -1) {
+        console.error('appendMapPath failed. You are currently not at a valid location with a map route');
+        loc = '/map@0,0,2(redcross)';
+      }
+      var idx = loc.indexOf(')') + 1;
+      loc = '#' + loc.slice(0,idx);
+      if (routeFragment[0] !== '/') routeFragment = '/' + routeFragment;
+      return loc + routeFragment;
     }
   };
 
