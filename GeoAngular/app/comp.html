@@ -96,6 +96,7 @@
                     </div>
                 </div>
             <!-- MapCtrl is the center (center) panel controlled by the jQuery Layout plugin, and is also where the map lives. -->
+
                 <div ng-controller="MapCtrl" id="MapCtrl" class="ui-layout-center">
                     <!-- Upper Right Toolbar in Map -->
                     <div id="MapUpperRightToolbarWrapper">
@@ -110,19 +111,20 @@
                     <!-- Bottom Right Theme Selector -->
                     <nav id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
                         <div class="navbar-header">
-                            <a class="navbar-brand" href="#">View By</a>
+                            <a class="navbar-brand"href="javascript: return false;">View By:</a>
                         </div>
-                        <div>
+                        <div class="menu-selection">
                             <ul class="nav navbar-nav">
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        THEME <b class="caret"></b>
-                                    </a>
+                                    <span class="dropdown-toggle" data-toggle="dropdown">
+                                        {{activeTheme}}
+                                    </span>
                                     <ul id="ThemeMenu" class="dropdown-menu">
-                                        <li><a href="#">PROJECT HEALTH</a></li>
-                                        <li><a href="#">Disasters</a></li>
-                                        <li><a href="#">Risks</a></li>
-                                        <li><a href="#">Pipeline</a></li>
+                                        <li ng-click="activeTheme='Project Health'"><a href="javascript: return false;">PROJECT HEALTH</a></li>
+                                        <li ng-click="activeTheme='Disasters'"><a href="javascript: return false;">Disasters</a></li>
+                                        <li ng-click="activeTheme='Risks'"><a href="javascript: return false;">Risks</a></li>
+                                        <li ng-click="activeTheme='Pipeline'"><a href="javascript: return false;">Pipeline</a></li>
+                                        <li ng-click="activeTheme='Projects'"><a href="javascript: return false;">Projects</a></li>
                                     </ul>
                                 </li>
                             </ul>
