@@ -5,9 +5,11 @@
 angular.module('GeoAngular', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute', 'leaflet-directive']).config(function($routeProvider){
 
   $routeProvider.when('/', {
-//        templateUrl: 'views/landing.html',
-//        controller: 'LandingCtrl'
-    redirectTo: '/map@0,0,2(redcross,phl)'
+    redirectTo: '/landing'
+
+  }).when('/landing', {
+        templateUrl: 'views/landing.html',
+        controller: 'LandingCtrl'
 
   }).when('/map@:lat,:lng,:zoom(:layers*)', {
         templateUrl: 'views/app.html',
