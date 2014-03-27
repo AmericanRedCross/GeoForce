@@ -41,16 +41,16 @@
             <div id="NavBar" class="ui-layout-west" ng-controller="NavBarCtrl">
                     <div id="ARCLogo"></div>
                     <div class="NavButtonGroup btn-group">
-                        <button type="button" class="btn btn-default" ng-mouseenter="isStoriesActive = true" ng-mouseleave="isStoriesActive=false">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isStoriesActive = true" ng-mouseleave="isStoriesActive=false" ng-click="navTo('stories')">
                             <i data-icon="b"></i>
                         </button>
-                        <button type="button" class="btn btn-default" ng-mouseenter="isLayersActive = true" ng-mouseleave="isLayersActive=false">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isLayersActive = true" ng-mouseleave="isLayersActive=false" ng-click="navTo('layers')">
                             <i data-icon="d"></i>
                         </button>
-                        <button type="button" class="btn btn-default" ng-mouseenter="isFiltersActive = true" ng-mouseleave="isFiltersActive=false">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isFiltersActive = true" ng-mouseleave="isFiltersActive=false" ng-click="navTo('filters')">
                             <i data-icon="e"></i>
                         </button>
-                        <button type="button" class="btn btn-default" ng-mouseenter="isLegendActive = true" ng-mouseleave="isLegendActive=false">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isLegendActive = true" ng-mouseleave="isLegendActive=false" ng-click="navTo('legend')">
                             <i data-icon="f"></i>
                         </button>
                     </div>
@@ -78,7 +78,7 @@
 
                     </div>
                     <div class="NavButtonGroup btn-group bottom">
-                        <button type="button" class="btn btn-default" ng-mouseenter="isInfoActive = true" ng-mouseleave="isInfoActive=false">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isInfoActive = true" ng-mouseleave="isInfoActive=false" ng-click="navTo('info')">
                             <i data-icon="o"></i>
                         </button>
                     </div>
