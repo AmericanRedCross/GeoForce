@@ -55,7 +55,8 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
         init = false;
       } else {
         // Angular is trolling Route. We don't want to do 3 broadcasts of the same thing.
-        if ( equals(params,routeParams) ) return params;
+        //NH TODO: Figure out why this is true when initial landing link is clicked
+//        if ( equals(params,routeParams) ) return params;
         angular.extend(params, routeParams);
         updateLocation();
         $rootScope.$broadcast('route-update', params);
@@ -63,6 +64,8 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
         console.log(JSON.stringify(params));
       }
     }
+    // NH good way to test if outsiders are messing with inside
+//    return angular.extend({},params);
     return params;
   };
 
