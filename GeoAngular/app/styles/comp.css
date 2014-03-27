@@ -183,3 +183,36 @@ html, body{
 }
 
 /* End Override Leaflet Zoom In/Out */
+
+/* Map Top Right Toolbar */
+
+#MapUpperRightToolbarWrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+}
+
+#MapUpperRightToolbarWrapper div {
+    float: left;
+    background-color: #43484a;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 14px 40px;
+    font-size: 21px;
+    font-family: oswaldregular;
+    cursor:pointer;
+}
+
+#MapUpperRightToolbarWrapper div.light{
+    background-color:#666666;
+}
+
+#MapUpperRightToolbarWrapper .search{
+    font-size: 26px;
+    padding: 10px 17px;
+    border-left: 1px solid #fff;
+    height: 58px;
+    line-height: 47px;
+}
+/* End Map Top Right Toolbar */
