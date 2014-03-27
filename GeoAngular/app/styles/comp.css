@@ -271,3 +271,30 @@ html, body{
     line-height: 47px;
 }
 /* End Map Top Right Toolbar */
+
+
+
+/* Theme Selector Menu */
+#ThemeSelectorMenu{
+    position: absolute;
+    z-index: 2;
+    right: 100px;
+    bottom: 150px;
+    width: 200px;
+    left: auto;
+}
+
+.dropdown-menu > li > a {
+    text-transform: uppercase;
+}
+
+.dropdown-menu > li{
+    border: 1px solid #000;
+}
+
+#ThemeMenu{
+    text-align:center;
+    font-family: oswaldregular;
+}
+
+/* End Theme Selector Menu */
