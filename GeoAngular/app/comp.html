@@ -96,12 +96,35 @@
                             welsh onion daikon amaranth tatsoi tomatillo melon azuki bean.</div>
                         <button type="button" class="btn btn-default btn-cta">Start Exploring<div class="arrow"></div></button>
                     </div>
+                    <!-- Upper Right Toolbar in Map -->
                     <div id="MapUpperRightToolbarWrapper">
                         <div>World</div>
                         <div class="light">Upload Data</div>
                         <div class="light">Export</div>
                         <div class="search" data-icon="m"></div>
                     </div>
+
+                    <!-- Bottom Right Theme Selector -->
+                    <nav id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="#">View By</a>
+                        </div>
+                        <div>
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        THEME <b class="caret"></b>
+                                    </a>
+                                    <ul id="ThemeMenu" class="dropdown-menu">
+                                        <li><a href="#">PROJECT HEALTH</a></li>
+                                        <li><a href="#">Disasters</a></li>
+                                        <li><a href="#">Risks</a></li>
+                                        <li><a href="#">Pipeline</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
                     <leaflet class="BlurryWindow" width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" layers="layers" geojson="geojson"></leaflet>
                 </div>
         </div>
