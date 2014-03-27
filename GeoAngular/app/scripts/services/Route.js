@@ -12,8 +12,7 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
     lat: '45',
     lng: '0',
     zoom: '4',
-    layers: Alias.osm,
-    stories: 'Route' //NH TODO take out, just for debugging...
+    layers: Alias.osm
   };
 
   function updateLocation() {
