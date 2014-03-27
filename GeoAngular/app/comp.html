@@ -91,6 +91,12 @@
                 </div>
             <!-- MapCtrl is the center (center) panel controlled by the jQuery Layout plugin, and is also where the map lives. -->
                 <div ng-controller="MapCtrl" id="MapCtrl" class="ui-layout-center">
+                    <div id="MapUpperRightToolbarWrapper">
+                        <div>World</div>
+                        <div class="light">Upload Data</div>
+                        <div class="light">Export</div>
+                        <div class="search" data-icon="m"></div>
+                    </div>
                     <leaflet class="BlurryWindow" width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" layers="layers" geojson="geojson"></leaflet>
                 </div>
         </div>
