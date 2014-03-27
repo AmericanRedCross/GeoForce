@@ -28,6 +28,10 @@ html, body{
     border-radius: 0px;
 }
 
+.leaflet-control-attribution {
+    display: none;
+}
+
 /* End Override Leaflet Zoom In/Out */
 
 /* Map Top Right Toolbar */
