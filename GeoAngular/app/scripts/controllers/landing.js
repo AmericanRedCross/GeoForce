@@ -1,4 +1,5 @@
 angular.module('GeoAngular').controller('LandingCtrl', function($scope, $routeParams, $location, Route) {
+  console.log('LandingCtrl');
 
   // weird bug where redirect peels out '://{s' when ':' is there
   // $routeParams.layers We just dont have the : in main.js so that

@@ -4,7 +4,8 @@
  */
 
 angular.module('GeoAngular').controller('StoriesCtrl', function($scope, $routeParams, $location, Route) {
+  console.log('StoriesCtrl');
 
-
+  $scope.navTo = Route.navTo;
 
 });
