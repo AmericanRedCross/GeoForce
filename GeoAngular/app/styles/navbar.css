@@ -36,15 +36,15 @@
     position: absolute;
 }
 
-.NavButtonGroup a:hover, .NavButtonGroup a.on {
+.NavButtonGroup button:hover, .NavButtonGroup button.on {
     color: #ed1b2e!important;
 }
 
-.NavButtonGroup a.on {
+.NavButtonGroup button.on {
     background-color: #fff;
 }
 
-.NavButtonGroup a {
+.NavButtonGroup button {
     padding: 13px 16px 10px 16px;
     color: #3c3c3c;
     cursor: pointer;
@@ -57,14 +57,14 @@
     border-right: 0px;
 }
 
-.NavButtonGroup a i{
+.NavButtonGroup button i{
     font-family: 'geoforce';
     font-style: normal;
     font-size: 26px;
 }
 
 /* Not for IE8 and below */
-.NavButtonGroup a:first-of-type{
+.NavButtonGroup button:first-of-type{
 
 }
 
