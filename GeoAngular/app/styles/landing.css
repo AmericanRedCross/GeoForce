@@ -54,8 +54,8 @@
 
 /* End Giant Circle */
 
-/* Blurry Window */
-.BlurryWindow {
+/* Blurry Window BlurryWindow */
+.blur {
     -webkit-filter: blur(4px);
     -moz-filter: blur(4px);
     -o-filter: blur(4px);

@@ -11,8 +11,15 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   var routeParams = Route();
 
   var lastLayersStr = '';
+  $scope.blur = ''
 
   function setParams(routeParams) {
+    if (routeParams.landing) {
+      console.log('landing');
+      $scope.blur = 'blur';
+    } else {
+      $scope.blur = '';
+    }
     var lat = parseFloat(routeParams.lat) || 0;
     var lng = parseFloat(routeParams.lng) || 0;
     var zoom = parseFloat(routeParams.zoom) || 2;
