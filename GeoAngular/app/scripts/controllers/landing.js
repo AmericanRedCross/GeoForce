@@ -1,14 +1,18 @@
-(function() {'use strict';
+angular.module('GeoAngular').controller('LandingCtrl', function($scope, $routeParams, $location, Route) {
 
-angular.module('GeoAngular').controller('LandingCtrl', LandingCtrl);
+//  // weird bug where redirect peels out '://{s' when ':' is there
+//  // $routeParams.layers We just dont have the : in main.js so that
+//  // part of the path does not go away...
+//  $routeParams.layers = $routeParams.layers.replace('http//', 'http://');
+//
+//  $scope.routeParams = $routeParams;
+//  $scope.$on('route-update', function (event, params) {
+//    $scope.routeParams = params;
+//  });
+//
+//  // Update the route when the model is updated.
+//  $scope.$watchCollection('routeParams', function(newParams, oldParams) {
+//    Route(newParams);
+//  });
 
-
-function LandingCtrl($scope) {
-    $scope.awesomeThings = [
-        'HTML5 Boilerplate',
-        'AngularJS',
-        'Karma'
-    ];
-}
-
-})();
+});

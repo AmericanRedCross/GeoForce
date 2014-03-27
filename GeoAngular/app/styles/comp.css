@@ -152,18 +152,6 @@ html, body{
 /* End NavBar Tooltips */
 
 
-/* Blurry Window */
-.BlurryWindow {
-    -webkit-filter: blur(4px);
-    -moz-filter: blur(4px);
-    -o-filter: blur(4px);
-    -ms-filter: blur(4px);
-    filter: blur(4px);
-    opacity: 1;
-}
-/* End Blurry Window */
-
-
 /* Override Leaflet Zoom In/Out Defaults */
 .leaflet-bar a:first-child {
     border-top-left-radius: 0px;
