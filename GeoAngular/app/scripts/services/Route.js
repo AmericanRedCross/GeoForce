@@ -22,6 +22,7 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
       ',' + params.zoom +
       '(' + params.layers + ')';
     if (params.stories) path += '/stories/' + params.stories;
+    if (params.landing) path += '/landing';
 
     $location.path(path);
   }
