@@ -12,7 +12,7 @@ angular.module('GeoAngular').controller('AppCtrl', function($scope, $routeParams
 
   // Update the route when the model is updated.
   $scope.$watchCollection('routeParams', function(newParams, oldParams) {
-    Route(newParams);
+    Route.update(newParams);
   });
 
 });
