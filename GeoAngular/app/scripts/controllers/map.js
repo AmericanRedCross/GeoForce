@@ -8,11 +8,18 @@ m = {};
 
 angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Route, Alias, VectorProvider) {
 
-  var routeParams = Route();
+  var routeParams = Route.get();
 
   var lastLayersStr = '';
+  $scope.blur = ''
 
   function setParams(routeParams) {
+    if (routeParams.landing) {
+      console.log('landing');
+      $scope.blur = 'blur';
+    } else {
+      $scope.blur = '';
+    }
     var lat = parseFloat(routeParams.lat) || 0;
     var lng = parseFloat(routeParams.lng) || 0;
     var zoom = parseFloat(routeParams.zoom) || 2;
@@ -64,7 +71,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
     m = map;
     map.on('moveend', function () { // move is good too
       var c = map.getCenter();
-      Route({
+      Route.update({
         lat: c.lat.toFixed(6),
         lng: c.lng.toFixed(6),
         zoom: map.getZoom()
