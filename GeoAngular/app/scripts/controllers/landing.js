@@ -10,4 +10,6 @@ angular.module('GeoAngular').controller('LandingCtrl', function($scope, $routePa
 
   Route.update($routeParams);
 
+  $scope.navTo = Route.navTo;
+
 });
