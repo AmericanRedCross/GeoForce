@@ -44,29 +44,37 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
   }
 
 
-  return function(routeParams) {
-    // only do this stuff if we have an arg in the fn call
-    if (typeof routeParams !== 'undefined' && routeParams !== null) {
-      if (init) {
-        params = routeParams;
-        $rootScope.$broadcast('route-init', params);
-        console.log('route-init');
-        console.log(JSON.stringify(params));
-        init = false;
-      } else {
-        // Angular is trolling Route. We don't want to do 3 broadcasts of the same thing.
-        //NH TODO: Figure out why this is true when initial landing link is clicked
-//        if ( equals(params,routeParams) ) return params;
-        angular.extend(params, routeParams);
-        updateLocation();
-        $rootScope.$broadcast('route-update', params);
-        console.log('route-update');
-        console.log(JSON.stringify(params));
-      }
-    }
-    // NH good way to test if outsiders are messing with inside
+  return {
+    updateLocation: updateLocation,
+    get: function() {
+      // NH good way to test if outsiders are messing with inside
 //    return angular.extend({},params);
-    return params;
+      return params;
+    },
+    update: function(routeParams) {
+      // only do this stuff if we have an arg in the fn call
+      if (typeof routeParams !== 'undefined' && routeParams !== null) {
+        if (init) {
+          params = routeParams;
+          $rootScope.$broadcast('route-init', params);
+          console.log('route-init');
+          console.log(JSON.stringify(params));
+          init = false;
+        } else {
+          // Angular is trolling Route. We don't want to do 3 broadcasts of the same thing.
+          //NH TODO: Figure out why this is true when initial landing link is clicked
+//        if ( equals(params,routeParams) ) return params;
+          angular.extend(params, routeParams);
+          updateLocation();
+          $rootScope.$broadcast('route-update', params);
+          console.log('route-update');
+          console.log(JSON.stringify(params));
+        }
+      }
+      // NH good way to test if outsiders are messing with inside
+//    return angular.extend({},params);
+      return params;
+    }
   };
 
 
