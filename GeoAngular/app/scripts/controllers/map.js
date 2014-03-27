@@ -76,11 +76,25 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
     m = map;
     map.on('moveend', function () { // move is good too
       var c = map.getCenter();
-      Route.update({
-        lat: c.lat.toFixed(6),
-        lng: c.lng.toFixed(6),
-        zoom: map.getZoom()
-      });
+      var lat = parseFloat(c.lat.toFixed(6));
+      var lng = parseFloat(c.lng.toFixed(6));
+      var zoom = map.getZoom();
+
+      var params = Route.get();
+
+      if (   params.lat  !== lat
+          || params.lng  !== lng
+          || params.zoom !== zoom ) {
+
+        console.log('map lat,lng,zoom !== params');
+        Route.update({
+          lat: parseFloat(c.lat.toFixed(6)),
+          lng: parseFloat(c.lng.toFixed(6)),
+          zoom: map.getZoom()
+        });
+
+      }
+
     });
   });
 
