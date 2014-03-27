@@ -23,6 +23,39 @@ angular.module('GeoAngular', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute'
     templateUrl: 'views/stories.html',
     controller: 'StoriesCtrl'
 
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/layers', {
+    templateUrl: 'views/layers.html',
+    controller: 'LayersCtrl'
+
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/layers/:layers', {
+    templateUrl: 'views/layers.html',
+    controller: 'LayersCtrl'
+
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/filters', {
+    templateUrl: 'views/filters.html',
+    controller: 'FiltersCtrl'
+
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/filters/:filters', {
+    templateUrl: 'views/filters.html',
+    controller: 'FiltersCtrl'
+
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/legend', {
+    templateUrl: 'views/legend.html',
+    controller: 'StoriesCtrl'
+
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/legend/:legend', {
+    templateUrl: 'views/legend.html',
+    controller: 'StoriesCtrl'
+
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/info', {
+    templateUrl: 'views/info.html',
+    controller: 'InfoCtrl'
+
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/info/:info', {
+    templateUrl: 'views/info.html',
+    controller: 'InfoCtrl'
+
+
   }).otherwise({
     redirectTo: '/map@0,0,2(redcross,phl)'
   });
