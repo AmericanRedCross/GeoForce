@@ -4,12 +4,13 @@
     bottom: 0px;
     left: 59px;
     background-color: #F2F2F2;
-    overflow: auto;
 }
 
 .side-view-close {
     background-color: #EA2035;
     border-radius: 0;
-    float:right;
+    float: right;
     padding: 17px 19px;
+    font-size: 20px;
+    line-height: 1;
 }

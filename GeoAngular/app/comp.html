@@ -58,6 +58,9 @@
                         <button type="button" class="btn btn-default" ng-mouseenter="isLegendActive = true" ng-mouseleave="isLegendActive=false" ng-click="navTo('legend')">
                             <i data-icon="f"></i>
                         </button>
+                        <button type="button" class="btn btn-default" ng-mouseenter="isBasemapsActive = true" ng-mouseleave="isBasemapsActive=false" ng-click="navTo('basemaps')">
+                            <i data-icon="g"></i>
+                        </button>
                     </div>
                     <div class="NavigationTooltipContainer main">
                         <div id="FlyoutLogoPlaceHolder"></div>
@@ -78,7 +81,6 @@
                             <div class="flyout" ng-class="{on: isBasemapsActive}">
                                 Basemaps
                             </div>
-
                         </div>
 
                     </div>
