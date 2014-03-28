@@ -71,6 +71,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
     setParams(params);
   });
 
+  $scope.$on('remove-blur', function (event) {
+    $scope.blur = '';
+  });
+
 
   leafletData.getMap().then(function (map) {
     m = map;
