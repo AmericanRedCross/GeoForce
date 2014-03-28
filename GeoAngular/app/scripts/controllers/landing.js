@@ -18,15 +18,4 @@ angular.module('GeoAngular').controller('LandingCtrl', function($scope, $rootSco
     $rootScope.$broadcast('route-update');
   });
 
-  function updateLocation() {
-    var path = '/map@' + RouteParams.lat +
-      ',' + RouteParams.lng +
-      ',' + RouteParams.zoom +
-      '(' + RouteParams.layers + ')';
-    if (RouteParams.stories) path += '/stories/' + RouteParams.stories;
-    if (RouteParams.landing) path += '/landing';
-
-    $location.path(path);
-  }
-
 });

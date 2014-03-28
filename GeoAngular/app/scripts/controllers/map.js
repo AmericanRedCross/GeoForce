@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Alias, VectorProvider, RouteParser) {
+angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Alias, VectorProvider) {
   console.log('MapCtrl');
 
   $scope.routeParams = window.RouteParams;
