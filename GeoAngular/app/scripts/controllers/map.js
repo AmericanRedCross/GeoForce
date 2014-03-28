@@ -12,7 +12,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   var routeParams = Route.get();
 
   var lastLayersStr = '';
-  $scope.blur = ''
+  $scope.blur = '';
 
   //Init activeTheme property
   $scope.activeTheme = "Projects";
@@ -46,7 +46,8 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
       $scope.defaults = {
         scrollWheelZoom: true
-      }
+      };
+
       $scope.tiles = {
         url: basemap
       };
@@ -74,7 +75,6 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   $scope.$on('remove-blur', function (event) {
     $scope.blur = '';
   });
-
 
   leafletData.getMap().then(function (map) {
     m = map;
@@ -104,23 +104,29 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
 
   function addOverlays(overlays) {
-    for (var i = 0, len = overlays.length; i < len; ++i) {
-      var o = overlays[i];
-      var vecRes = VectorProvider.createResource(o);
-      vecRes.fetch(function(geojson, name){
-        $scope.geojson = {
-          data: geojson,
-          style: {
-            fillColor: "green",
-            weight: 2,
-            opacity: 1,
-            color: 'white',
-            dashArray: '3',
-            fillOpacity: 0.7
+    leafletData.getMap().then(function (map) {
+
+      for (var i = 0, len = overlays.length; i < len; ++i) {
+        var o = overlays[i];
+        var vecRes = VectorProvider.createResource(o);
+        vecRes.fetch(function(geojson, name){
+          $scope.geojson = {
+            data: geojson,
+            style: {
+              fillColor: "green",
+              weight: 2,
+              opacity: 1,
+              color: 'white',
+              dashArray: '3',
+              fillOpacity: 0.7
+            }
           }
-        }
-      })
-    }
+        });
+      }
+
+    });
+
+
 
     // NH TODO: Put this in VectorProvider
 //    leafletData.getMap().then(function (map) {
