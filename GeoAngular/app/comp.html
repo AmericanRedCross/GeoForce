@@ -134,6 +134,25 @@
                         </div>
                     </nav>
 
+                    <div id="DetailsWrapper" ng-class="{on: detailsVisible}">
+                        <div id="DetailsButtonWrapper">
+                            <div id="DetailsNub" data-icon="l" ng-click="detailsVisible = !detailsVisible">
+                            </div>
+                            <div id="PreviousItem" ng-class="{flipOpen: detailsVisible}" data-icon="j" ng-click="">
+                            </div>
+                            <div id="NextItem" ng-class="{flipOpen: detailsVisible}" data-icon="k" ng-click="">
+                            </div>
+                        </div>
+                        <div id="DetailsPanel">
+                            <div class="container auto">
+                                <button class="side-view-close btn btn-lg btn-danger" ng-click="detailsVisible=false"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                                <div class="title">
+                                    {{selectedFeatureTitle}}
+                                </div>
+                                <div class="InnerContainer"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
         </div>
 

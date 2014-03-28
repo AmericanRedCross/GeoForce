@@ -141,3 +141,116 @@ html, body{
 }
 
 /* End Theme Selector Menu */
+
+/* Details Panel */
+#DetailsWrapper{
+    position:absolute;
+    right: -300px;
+    top: 165px;
+    cursor:pointer;
+    -moz-transition:all .5s ease .3s; /* This is the animation TO THE RIGHT for the details wrapper */
+    -webkit-transition:all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
+}
+
+#DetailsWrapper.on{
+    right: 0;
+    -moz-transition:all .5s ease; /* This is the animation TO THE LEFT for the details wrapper */
+    -webkit-transition:all .5s ease; /* This is the animation TO THE LEFT for the details */
+}
+
+#NextItem, #PreviousItem{
+    background-color: #fff;
+    border:1px solid #d3d3d3;
+    -webkit-transform: translateX(100%) rotateY(180deg);
+    -moz-transition:all .5s ease; /* This is the animation IN for the button */
+    -webkit-transition:all .5s ease; /* This is the animation IN for the button */
+}
+#PreviousItem{
+    border-top: none;
+}
+
+/*#NextItem{
+    -webkit-transform: translateY(-200%);
+}
+
+#PreviousItem{
+    -webkit-transform: translateY(-100%);
+}*/
+
+
+#NextItem.flipOpen{
+    -webkit-transform: translateX(0%) rotateY(-180deg);
+    -moz-transition:all .3s ease .5s; /* This is the animation Out for the button */
+    -webkit-transition:all .3s ease .5s; /* This is the animation Out for the button */
+}
+
+#PreviousItem.flipOpen{
+    -webkit-transform: translateX(0%) rotateY(-180deg);
+    -moz-transition:all .3s ease .3s; /* This is the animation Out for the button */
+    -webkit-transition:all .3s ease .3s; /* This is the animation Out for the button */
+}
+
+#DetailsButtonWrapper{
+    float: left;
+}
+
+#DetailsButtonWrapper div{
+    padding: 20px;
+    line-height: 10px;
+}
+
+ #DetailsNub{
+     color: #ed1b2e;
+     padding: 20px;
+     background-color: #fff;
+ }
+
+.on #DetailsNub{
+    background-color: red;
+    color: #fff;
+}
+
+
+
+
+
+
+ #DetailsPanel{
+     float: left;
+     padding: 15px;
+     padding-top: 74px;
+     background-color: #efefef;
+     width: 300px;
+     min-height: 400px;
+     margin-top: -88px;
+     border: 1px solid #d3d3d3;
+ }
+
+ .auto{
+     width: auto;
+ }
+
+#DetailsWrapper .side-view-close {
+    background-color: #EA2035;
+    border-radius: 0;
+    padding: 11px;
+    font-size: 13px;
+    line-height: 1;
+    position: absolute;
+    top: -88px;
+    right: 0px;
+}
+
+#DetailsWrapper .InnerContainer{
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #d3d3d3;
+}
+
+#DetailsPanel .title {
+    margin: 5px 0;
+    font-size: 19px;
+    text-transform: uppercase;
+    font-family: oswaldregular;
+}
+/* End Details Panel*/

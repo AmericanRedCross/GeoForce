@@ -17,6 +17,9 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   //Init activeTheme property
   $scope.activeTheme = "Projects";
 
+  //Init selectedFeatureTitle property
+  $scope.selectedFeatureTitle = "Philippines";
+
 
   function setParams(routeParams) {
     if (routeParams.landing) {
