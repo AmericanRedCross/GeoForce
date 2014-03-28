@@ -73,8 +73,11 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
           init = false;
         } else {
           // Angular is trolling Route. We don't want to do 3 broadcasts of the same thing.
-          //NH TODO: Figure out why this is true when initial landing link is clicked
-//        if ( equals(params,routeParams) ) return params;
+          if ( equals(params,routeParams) ) {
+            params.landing = null;
+            $rootScope.$broadcast('remove-blur');
+            return params;
+          }
           angular.extend(params, routeParams);
           updateLocation();
           $rootScope.$broadcast('route-update', params);
