@@ -16,13 +16,23 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   function Resource(url, name) {
     this.url = url;
     this.name = name;
+    this.srcData = null;
+    this.geojson = null;
   }
 
   Resource.prototype._fetch = function(cb) {
-    $http.get(this.url).success(function (data, status) {
-      cb(data, this.name, this.url);
-    });
-  }
+    if (typeof this.geojson !== 'undefined' && this.geojson !== null) {
+      cb(this.geojson, this.name, this.url);
+    } else {
+      $http.get(this.url).success(function (data, status) {
+        this.srcData = data;
+        cb(data, this.name, this.url);
+      }).error(function() {
+        console.log("Trying proxy for " + this.name);
+
+      });
+    }
+  };
 
   function GeoJSON(url, name) {
     Resource.call(this, url, name);
@@ -32,7 +42,10 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   GeoJSON.prototype.constructor = GeoJSON;
 
   GeoJSON.prototype.fetch = function (cb) {
-    this._fetch(cb);
+    this._fetch(function(data) {
+      this.geojson = data;
+      cb(data);
+    });
   }
 
 
@@ -44,26 +57,10 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   KML.prototype.constructor = KML;
 
   KML.prototype.fetch = function (cb) {
-    $http.get(url).success(function (data, status) {
-      var geoJson = toGeoJSON.kml(data);
-      cb(geoJson);
-    }).error(function () {
-        console.log("Trying proxy for " + this.name);
-        //NH TODO proxy url
-        $http.get('' + url).success(function (data, status) {
-          var geoJson = toGeoJSON.kml(data);
-          cb(geoJson);
-        }).error(function () {
-            //NH TODO proxy url
-            $http.get('' + url).success(function (data, status) {
-              console.log("Trying proxy2 for " + this.name);
-              var geoJson = toGeoJSON.kml(data);
-              cb(geoJson);
-            }).error(function() {
-                console.log('I give up: ' + this.name);
-              });
-          });
-      });
+    this._fetch(function(data) {
+      this.geojson = toGeoJSON.kml(data);
+      cb(this.geojson);
+    });
   }
 
   return {
