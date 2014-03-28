@@ -55,6 +55,13 @@ angular.module('GeoAngular', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute'
     templateUrl: 'views/info.html',
     controller: 'InfoCtrl'
 
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/basemaps', {
+      templateUrl: 'views/basemaps.html',
+      controller: 'BasemapsCtrl'
+
+  }).when('/map@:lat,:lng,:zoom(:layers*)\/basemaps/:basemaps', {
+      templateUrl: 'views/basemaps.html',
+      controller: 'BasemapsCtrl'
 
   }).otherwise({
     redirectTo: '/map@0,0,2(redcross,phl)'

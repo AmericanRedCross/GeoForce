@@ -26,6 +26,7 @@ angular.module('GeoAngular').service('Alias', function () {
    * GeoJSON
    */
   this.phl = 'data/test/phl.geojson';
+  this.projectsbycountry = 'data/test/vw_projects_by_country.geojson';
 
   /**
    * KML
