@@ -56,8 +56,13 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   }
   setParams();
 
-  $scope.$watchCollection('routeParams', function(newParams, oldParams) {
-    console.log('map.js $watchCollection(routeParams). Updating Map...');
+  $scope.$on('landing-route-update', function() {
+    console.log('map.js landing-route-update Updating Map...');
+    setParams();
+  });
+
+  $scope.$on('app-route-update', function() {
+    console.log('map.js app-route-update Updating Map...');
     setParams();
   });
 

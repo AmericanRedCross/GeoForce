@@ -15,8 +15,7 @@ angular.module('GeoAngular').controller('LandingCtrl', function($scope, $rootSco
 
   // Update the route when the model is updated.
   $scope.$watchCollection('routeParams', function(newParams, oldParams) {
-//    console.log('landing.js $watchCollection(routeParams). Updating Location...');
-//    updateLocation();
+    $rootScope.$broadcast('landing-route-update');
   });
 
   function updateLocation() {

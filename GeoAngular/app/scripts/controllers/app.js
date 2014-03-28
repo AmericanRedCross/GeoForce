@@ -1,4 +1,4 @@
-angular.module('GeoAngular').controller('AppCtrl', function($scope, $routeParams, $location) {
+angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, $routeParams, $location) {
   console.log('AppCtrl');
 
   // weird bug where redirect peels out '://{s' when ':' is there
@@ -9,10 +9,11 @@ angular.module('GeoAngular').controller('AppCtrl', function($scope, $routeParams
   window.RouteParams = $routeParams;
   $scope.routeParams = window.RouteParams;
 
-  RouteParams.blur = false;
+  RouteParams.landing = false;
 
   // Update the route when the model is updated.
   $scope.$watchCollection('routeParams', function(newParams, oldParams) {
+    $rootScope.$broadcast('app-route-update');
     console.log('app.js $watchCollection(routeParams). Updating Location...');
     updateLocation();
   });
