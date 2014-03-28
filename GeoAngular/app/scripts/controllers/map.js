@@ -56,15 +56,11 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   }
   setParams();
 
-  $scope.$on('landing-route-update', function() {
-    console.log('map.js landing-route-update Updating Map...');
+  $scope.$on('route-update', function() {
+    console.log('map.js route-update Updating Map...');
     setParams();
   });
 
-  $scope.$on('app-route-update', function() {
-    console.log('map.js app-route-update Updating Map...');
-    setParams();
-  });
 
   leafletData.getMap().then(function (map) {
     map.on('moveend', function () { // move is good too
