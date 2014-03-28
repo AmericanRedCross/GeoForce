@@ -1,4 +1,4 @@
-angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, $routeParams, $location) {
+angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, $routeParams, $location, RouteParser) {
   console.log('AppCtrl');
 
   // weird bug where redirect peels out '://{s' when ':' is there
@@ -13,20 +13,27 @@ angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, 
 
   // Update the route when the model is updated.
   $scope.$watchCollection('routeParams', function(newParams, oldParams) {
+    console.log('app.js $watchCollection(routeParams).');
     $rootScope.$broadcast('route-update');
-    console.log('app.js $watchCollection(routeParams). Updating Location...');
     updateLocation();
   });
 
   function updateLocation() {
-    var path = '/map@' + RouteParams.lat +
-      ',' + RouteParams.lng +
-      ',' + RouteParams.zoom +
-      '(' + RouteParams.layers + ')';
-    if (RouteParams.stories) path += '/stories/' + RouteParams.stories;
-    if (RouteParams.landing) path += '/landing';
+    var oldParams = RouteParser();
+    if (  oldParams.lat !== RouteParams.lat   ||
+          oldParams.lng !== RouteParams.lng   ||
+          oldParams.zoom !== RouteParams.zoom ||
+          oldParams.layers !== RouteParams.layers  ) {
 
-    $location.path(path);
+      console.log('Updating location...');
+      var path = '/map@' + RouteParams.lat +
+        ',' + RouteParams.lng +
+        ',' + RouteParams.zoom +
+        '(' + RouteParams.layers + ')';
+
+      $location.path(path);
+    }
+
   }
 
 });
