@@ -3,13 +3,10 @@
  *     on Mon Mar 17 2014
  */
 
-// global map object used for debugging only
-m = {};
-
-angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Route, Alias, VectorProvider) {
+angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Alias, VectorProvider, RouteParser) {
   console.log('MapCtrl');
 
-  var routeParams = Route.get();
+  $scope.routeParams = window.RouteParams;
 
   var lastLayersStr = '';
   $scope.blur = '';
@@ -18,17 +15,17 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   $scope.activeTheme = "Projects";
 
 
-  function setParams(routeParams) {
-    if (routeParams.landing) {
+  function setParams() {
+    if (RouteParams.landing) {
       console.log('landing');
       $scope.blur = 'blur';
     } else {
       $scope.blur = '';
     }
-    var lat = parseFloat(routeParams.lat) || 0;
-    var lng = parseFloat(routeParams.lng) || 0;
-    var zoom = parseFloat(routeParams.zoom) || 2;
-    var layersStr = routeParams.layers;
+    var lat = parseFloat(RouteParams.lat)   || 0;
+    var lng = parseFloat(RouteParams.lng)   || 0;
+    var zoom = parseFloat(RouteParams.zoom) || 2;
+    var layersStr = RouteParams.layers;
     var layers = layersStr.split(',') || Alias.redcross;
 
     // first layer should always be treated as the basemap
@@ -57,42 +54,28 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
     lastLayersStr = layersStr;
   }
-  setParams(routeParams);
+  setParams();
 
-
-  $scope.$on('route-init', function (event, params) {
-    setParams(params);
-  });
-
-  $scope.$on('route-update', function (event, params) {
-    setParams(params);
-  });
-
-  $scope.$on('remove-blur', function (event) {
-    $scope.blur = '';
+  $scope.$watchCollection('routeParams', function(newParams, oldParams) {
+    console.log('map.js $watchCollection(routeParams). Updating Map...');
+    setParams();
   });
 
   leafletData.getMap().then(function (map) {
-    m = map;
     map.on('moveend', function () { // move is good too
       var c = map.getCenter();
-      var lat = parseFloat(c.lat.toFixed(6));
-      var lng = parseFloat(c.lng.toFixed(6));
-      var zoom = map.getZoom();
+      var lat = c.lat.toFixed(6);
+      var lng = c.lng.toFixed(6);
+      var zoom = map.getZoom().toString();
 
-      var params = Route.get();
+      if (   RouteParams.lat  !== lat
+          || RouteParams.lng  !== lng
+          || RouteParams.zoom !== zoom ) {
 
-      if (   params.lat  !== lat
-          || params.lng  !== lng
-          || params.zoom !== zoom ) {
-
-        console.log('map lat,lng,zoom !== params');
-        Route.update({
-          lat: parseFloat(c.lat.toFixed(6)),
-          lng: parseFloat(c.lng.toFixed(6)),
-          zoom: map.getZoom()
-        });
-
+        console.log('map: lat,lng,zoom !== RouteParams');
+        RouteParams.lat = lat;
+        RouteParams.lng = lng;
+        RouteParams.zoom = zoom;
       }
 
     });
