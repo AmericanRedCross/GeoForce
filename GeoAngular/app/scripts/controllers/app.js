@@ -1,4 +1,4 @@
-angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, $routeParams, $location, Route) {
+angular.module('GeoAngular').controller('AppCtrl', function($scope, $routeParams, $location) {
   console.log('AppCtrl');
 
   // weird bug where redirect peels out '://{s' when ':' is there
@@ -6,14 +6,26 @@ angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, 
   // part of the path does not go away...
   $routeParams.layers = $routeParams.layers.replace('http//', 'http://');
 
-  $scope.routeParams = $routeParams;
-  $scope.$on('route-update', function (event, params) {
-    $scope.routeParams = params;
-  });
+  window.RouteParams = $routeParams;
+  $scope.routeParams = window.RouteParams;
+
+  RouteParams.blur = false;
 
   // Update the route when the model is updated.
   $scope.$watchCollection('routeParams', function(newParams, oldParams) {
-    Route.update(newParams);
+    console.log('app.js $watchCollection(routeParams). Updating Location...');
+    updateLocation();
   });
+
+  function updateLocation() {
+    var path = '/map@' + RouteParams.lat +
+      ',' + RouteParams.lng +
+      ',' + RouteParams.zoom +
+      '(' + RouteParams.layers + ')';
+    if (RouteParams.stories) path += '/stories/' + RouteParams.stories;
+    if (RouteParams.landing) path += '/landing';
+
+    $location.path(path);
+  }
 
 });
