@@ -3,44 +3,29 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').factory('Route', function ($rootScope, $location, Alias) {
+angular.module('GeoAngular').factory('Route', function ($location) {
 
-  var init = true;
-
-  // default route parameters. gets reset by AppCtrl.
-  var params = {
-    lat: 45,
-    lng: 0,
-    zoom: 4,
-    layers: Alias.osm
-  };
-
-  function updateLocation() {
-    var path = '/map@' + params.lat +
-      ',' + params.lng +
-      ',' + params.zoom +
-      '(' + params.layers + ')';
-    if (params.stories) path += '/stories/' + params.stories;
-    if (params.landing) path += '/landing';
-
-    $location.path(path);
-  }
-
-  /**
-   * Simple object equality test. angular.equals is expensive.
-   * @param obj1
-   * @param obj2
-   * @returns {boolean}
-   */
-  function equals(obj1, obj2) {
-    if (Object.keys(obj1).length !== Object.keys(obj2).length)
-      return false;
-    for (var key in obj1) {
-      if (obj1[key] !== obj2[key])
-        return false;
+  function parseRoute() {
+    var path = $location.path();
+    var coords = path.slice(path.indexOf('@')+1,path.indexOf('(')).split(',');
+    var lat =  coords[0] || '0';
+    var lng =  coords[1] || '0';
+    var zoom = coords[2] || '2';
+    var layers = path.slice(path.indexOf('(')+1,path.indexOf(')')) || Alias.redcross;
+    var landing = false;
+    if (path.indexOf('landing') != -1) {
+      landing = true;
     }
-    return true;
+
+    return {
+      lat: lat,
+      lng: lng,
+      zoom: zoom,
+      layers: layers,
+      landing: landing
+    };
   }
+
 
   function getMapPathAppended(routeFragment) {
     var loc = $location.path();
@@ -56,45 +41,32 @@ angular.module('GeoAngular').factory('Route', function ($rootScope, $location, A
   }
 
   return {
-    updateLocation: updateLocation,
-    get: function() {
-      // NH good way to test if outsiders are messing with inside
-//    return angular.extend({},params);
-      return params;
-    },
-    update: function(routeParams) {
-      // only do this stuff if we have an arg in the fn call
-      if (typeof routeParams !== 'undefined' && routeParams !== null) {
-        if (init) {
-          params = routeParams;
-          $rootScope.$broadcast('route-init', params);
-          console.log('route-init');
-          console.log(JSON.stringify(params));
-          init = false;
-        } else {
-          // Angular is trolling Route. We don't want to do 3 broadcasts of the same thing.
-          if ( equals(params,routeParams) ) {
-            params.landing = null;
-            $rootScope.$broadcast('remove-blur');
-            return params;
-          }
-          angular.extend(params, routeParams);
-          updateLocation();
-          $rootScope.$broadcast('route-update', params);
-          console.log('route-update');
-          console.log(JSON.stringify(params));
-        }
-      }
-      // NH good way to test if outsiders are messing with inside
-//    return angular.extend({},params);
-      return params;
-    },
+    parseRoute: parseRoute,
     getMapPathAppended: getMapPathAppended,
+
+    updateLocation: function() {
+      var oldParams = parseRoute();
+      if (  oldParams.lat !== RouteParams.lat   ||
+        oldParams.lng !== RouteParams.lng   ||
+        oldParams.zoom !== RouteParams.zoom ||
+        oldParams.layers !== RouteParams.layers  ) {
+
+        console.log('Updating location...');
+        var path = '/map@' + RouteParams.lat +
+          ',' + RouteParams.lng +
+          ',' + RouteParams.zoom +
+          '(' + RouteParams.layers + ')';
+
+        $location.path(path);
+      }
+    },
+
     navTo: function(routeFragment) {
       var path = getMapPathAppended(routeFragment);
       console.log('navTo: ' + path);
       $location.path(path);
     }
+
   };
 
 
