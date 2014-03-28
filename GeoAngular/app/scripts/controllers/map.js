@@ -14,6 +14,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   //Init activeTheme property
   $scope.activeTheme = "Projects";
 
+  var layersStr = null;
 
   function setParams() {
     if (RouteParams.landing) {
@@ -25,7 +26,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
     var lat = parseFloat(RouteParams.lat)   || 0;
     var lng = parseFloat(RouteParams.lng)   || 0;
     var zoom = parseFloat(RouteParams.zoom) || 2;
-    var layersStr = RouteParams.layers;
+    layersStr = RouteParams.layers;
     var layers = layersStr.split(',') || Alias.redcross;
 
     // first layer should always be treated as the basemap
@@ -57,8 +58,19 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   setParams();
 
   $scope.$on('route-update', function() {
-    console.log('map.js route-update Updating Map...');
-    setParams();
+    var c = $scope.center;
+    var lat = c.lat.toFixed(6);
+    var lng = c.lng.toFixed(6);
+    var zoom = c.zoom.toString();
+    if (   RouteParams.lat    !== lat
+        || RouteParams.lng    !== lng
+        || RouteParams.zoom   !== zoom
+        || RouteParams.layers !== layersStr ) {
+
+      console.log('map.js route-update Updating Map...');
+      setParams();
+    }
+
   });
 
 
