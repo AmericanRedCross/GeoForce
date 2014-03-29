@@ -150,12 +150,14 @@ html, body{
     cursor:pointer;
     -moz-transition:all .5s ease .3s; /* This is the animation TO THE RIGHT for the details wrapper */
     -webkit-transition:all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
+    -ms-transition:all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
 }
 
 #DetailsWrapper.on{
     right: 0;
     -moz-transition:all .5s ease; /* This is the animation TO THE LEFT for the details wrapper */
     -webkit-transition:all .5s ease; /* This is the animation TO THE LEFT for the details */
+    -ms-transition:all .5s ease; /* This is the animation TO THE LEFT for the details wrapper */
 }
 
 
@@ -172,27 +174,41 @@ html, body{
 
 #PreviousItem {
     border-top: none;
+    transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
     -webkit-transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
+    -ms-transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
     -moz-transition: all .1s ease .2s; /* Putting it away - take .1 second to roll up the button (faster than the bottom to give the impression that it's speeding up), delay it .2 (to wait for the bottom button to roll up in .2 sec */
     -webkit-transition: all .1s ease .2s; /* Putting it away - take .1 second to roll up the button (faster than the bottom to give the impression that it's speeding up), delay it .2 (to wait for the bottom button to roll up in .2 sec */
+    -ms-transition: all .1s ease .2s; /* Putting it away - take .1 second to roll up the button (faster than the bottom to give the impression that it's speeding up), delay it .2 (to wait for the bottom button to roll up in .2 sec */
+
 }
 
 #NextItem {
+    transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
     -webkit-transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
+    -ms-transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
     -moz-transition: all .2s ease;  /* Putting it away - take .2 second to roll up the button (slower than the top button), no delay, it's the first item in the transition chain */
     -webkit-transition: all .2s ease; /* Putting it away - take .2 second to roll up the button (slower than the top button), no delay, it's the first item in the transition chain */
+    -ms-transition: all .2s ease; /* Putting it away - take .2 second to roll up the button (slower than the top button), no delay, it's the first item in the transition chain */
 }
 
 #PreviousItem.flipOpen {
+    transform: translateY(0%) rotateX(0deg); /* End flat (0 deg) and in place on the Y axis  */
     -webkit-transform: translateY(0%) rotateX(0deg); /* End flat (0 deg) and in place on the Y axis  */
+    -ms-transform: translateY(0%) rotateX(0deg); /* End flat (0 deg) and in place on the Y axis  */
     -moz-transition: all .1s ease .3s; /* Taking it out - take .1 second to roll down the button (faster than the bottom button), .3s delay (.3 to wait for the entire panel to come out), it's 2nd in the transition chain */
     -webkit-transition: all .1s ease .3s; /* Taking it out - take .1 second to roll down the button (faster than the bottom button), .3s delay (.3 to wait for the entire panel to come out), it's 2nd in the transition chain */
+    -ms-transition: all .1s ease .3s; /* Taking it out - take .1 second to roll down the button (faster than the bottom button), .3s delay (.3 to wait for the entire panel to come out), it's 2nd in the transition chain */
+
 }
 
 #NextItem.flipOpen {
+    transform: translateY(0%) rotateX(0deg); /* End flat (0 deg) and in place on the Y axis  */
     -webkit-transform: translateY(0%) rotateX(0deg); /* End flat (0 deg) and in place on the Y axis  */
+    -ms-transform: translateY(0%) rotateX(0deg); /* End flat (0 deg) and in place on the Y axis  */
     -moz-transition: all .2s ease .4s; /* Taking it out - take .2 second to roll down the button (slower than the top button to give the impression that its slowing down), .4s delay (.3 to wait for the entire panel to come out, .1 for the top button to unfurl), it's last in the transition chain */
     -webkit-transition: all .2s ease .4s; /* Taking it out - take .2 second to roll down the button (slower than the top button to give the impression that its slowing down), .4s delay (.3 to wait for the entire panel to come out, .1 for the top button to unfurl), it's last in the transition chain */
+    -ms-transition: all .2s ease .4s; /* Taking it out - take .2 second to roll down the button (slower than the top button to give the impression that its slowing down), .4s delay (.3 to wait for the entire panel to come out, .1 for the top button to unfurl), it's last in the transition chain */
 }
 
 /* To flip right to left */
