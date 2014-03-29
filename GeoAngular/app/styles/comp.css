@@ -20,7 +20,7 @@ html, body{
 .leaflet-bar a:last-child {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-    border-bottom: none;
+    border-bottom: 1px solid #d3d3d3;
     color: #ed1b2e;
 }
 .leaflet-bar {
@@ -31,7 +31,7 @@ html, body{
 .leaflet-bar a, .leaflet-bar a:hover {
     width: 33px;
     height: 33px;
-    line-height: 33px;
+    line-height: 30px;
     border: 1px solid #d3d3d3;
 }
 
