@@ -158,37 +158,64 @@ html, body{
     -webkit-transition:all .5s ease; /* This is the animation TO THE LEFT for the details */
 }
 
-#NextItem, #PreviousItem{
-    background-color: #fff;
-    border:1px solid #d3d3d3;
-    -webkit-transform: translateX(100%) rotateY(180deg);
-    -moz-transition:all .5s ease; /* This is the animation IN for the button */
-    -webkit-transition:all .5s ease; /* This is the animation IN for the button */
-}
+
 #PreviousItem{
     border-top: none;
 }
 
-/*#NextItem{
-    -webkit-transform: translateY(-200%);
+/* Flipping Top Down */
+
+#NextItem, #PreviousItem {
+    background-color: #fff;
+    border: 1px solid #d3d3d3;
 }
 
-#PreviousItem{
-    -webkit-transform: translateY(-100%);
-}*/
+#PreviousItem {
+    border-top: none;
+    -webkit-transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
+    -moz-transition: all .1s ease .2s; /* Putting it away - take .1 second to roll up the button (faster than the bottom to give the impression that it's speeding up), delay it .2 (to wait for the bottom button to roll up in .2 sec */
+    -webkit-transition: all .1s ease .2s; /* Putting it away - take .1 second to roll up the button (faster than the bottom to give the impression that it's speeding up), delay it .2 (to wait for the bottom button to roll up in .2 sec */
+}
 
+#NextItem {
+    -webkit-transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
+    -moz-transition: all .2s ease;  /* Putting it away - take .2 second to roll up the button (slower than the top button), no delay, it's the first item in the transition chain */
+    -webkit-transition: all .2s ease; /* Putting it away - take .2 second to roll up the button (slower than the top button), no delay, it's the first item in the transition chain */
+}
+
+#PreviousItem.flipOpen {
+    -webkit-transform: translateY(0%) rotateX(0deg); /* End flat (0 deg) and in place on the Y axis  */
+    -moz-transition: all .1s ease .3s; /* Taking it out - take .1 second to roll down the button (faster than the bottom button), .3s delay (.3 to wait for the entire panel to come out), it's 2nd in the transition chain */
+    -webkit-transition: all .1s ease .3s; /* Taking it out - take .1 second to roll down the button (faster than the bottom button), .3s delay (.3 to wait for the entire panel to come out), it's 2nd in the transition chain */
+}
+
+#NextItem.flipOpen {
+    -webkit-transform: translateY(0%) rotateX(0deg); /* End flat (0 deg) and in place on the Y axis  */
+    -moz-transition: all .2s ease .4s; /* Taking it out - take .2 second to roll down the button (slower than the top button to give the impression that its slowing down), .4s delay (.3 to wait for the entire panel to come out, .1 for the top button to unfurl), it's last in the transition chain */
+    -webkit-transition: all .2s ease .4s; /* Taking it out - take .2 second to roll down the button (slower than the top button to give the impression that its slowing down), .4s delay (.3 to wait for the entire panel to come out, .1 for the top button to unfurl), it's last in the transition chain */
+}
+
+/* To flip right to left */
+/*
+#NextItem, #PreviousItem{
+    background-color: #fff;
+    border:1px solid #d3d3d3;
+    -webkit-transform: translateX(100%) rotateY(180deg);
+    -moz-transition:all .5s ease; *//* This is the animation IN for the button *//*
+    -webkit-transition:all .5s ease; *//* This is the animation IN for the button *//*
+}
 
 #NextItem.flipOpen{
     -webkit-transform: translateX(0%) rotateY(-180deg);
-    -moz-transition:all .3s ease .5s; /* This is the animation Out for the button */
-    -webkit-transition:all .3s ease .5s; /* This is the animation Out for the button */
+    -moz-transition:all .3s ease .5s; *//* This is the animation Out for the button *//*
+    -webkit-transition:all .3s ease .5s; *//* This is the animation Out for the button *//*
 }
 
 #PreviousItem.flipOpen{
     -webkit-transform: translateX(0%) rotateY(-180deg);
-    -moz-transition:all .3s ease .3s; /* This is the animation Out for the button */
-    -webkit-transition:all .3s ease .3s; /* This is the animation Out for the button */
-}
+    -moz-transition:all .3s ease .3s; *//* This is the animation Out for the button *//*
+    -webkit-transition:all .3s ease .3s; *//* This is the animation Out for the button *//*
+}*/
 
 #DetailsButtonWrapper{
     float: left;
