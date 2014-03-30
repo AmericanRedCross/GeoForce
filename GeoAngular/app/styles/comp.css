@@ -296,4 +296,25 @@ html, body{
     text-transform: uppercase;
     font-family: oswaldregular;
 }
+
+#DetailsPanel .InnerContainer .heading{
+    color: #6d6e70;
+    font-family: oswaldregular;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+
+#DetailsPanel .InnerContainer ul {
+    list-style:none;
+    padding-left:0;
+}​
+
+ #DetailsPanel .InnerContainer li {
+     margin: 10px 0;
+ }​
+
+#DetailsPanel .InnerContainer .section {
+   margin: 20px 0;
+}​
 /* End Details Panel*/
