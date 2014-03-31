@@ -5,7 +5,7 @@
 angular.module('GeoAngular', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute', 'leaflet-directive']).config(function($routeProvider){
 
   $routeProvider.when('/', {
-    redirectTo: '/map@0,0,2(pinterest,phl)/landing'
+    redirectTo: '/map@0,0,2(pinterest,gdacstest)/landing'
 
   }).when('/map@:lat,:lng,:zoom(:layers*)\/landing', {
         templateUrl: 'views/landing.html',
