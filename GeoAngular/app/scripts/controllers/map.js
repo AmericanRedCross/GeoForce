@@ -22,8 +22,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
 
   var layersStr = null;
+  var prevOverlays = null;
+  var overlays = null;
 
-  function setParams() {
+  function redraw() {
     if (RouteParams.landing) {
       console.log('landing');
       $scope.blur = 'blur';
@@ -38,12 +40,12 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
     // first layer should always be treated as the basemap
     var basemap = LayerConfig.find(layers[0]) || LayerConfig.redcross;
-    var overlays = layers.slice(1);
+    overlays = layers.slice(1);
 
     if (lastLayersStr !== layersStr) {
       console.log('Setting layers.');
       if (Array.isArray(overlays) && overlays.length > 0)
-        addOverlays(overlays);
+        drawOverlays();
 
       $scope.defaults = {
         scrollWheelZoom: true
@@ -62,7 +64,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
     lastLayersStr = layersStr;
   }
-  setParams();
+  redraw();
 
   $scope.$on('route-update', function() {
     var c = $scope.center;
@@ -75,7 +77,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
         || RouteParams.layers !== layersStr ) {
 
       console.log('map.js route-update Updating Map...');
-      setParams();
+      redraw();
     }
 
   });
@@ -102,7 +104,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   });
 
 
-  function addOverlays(overlays) {
+  function drawOverlays() {
     leafletData.getMap().then(function (map) {
 
       for (var i = 0, len = overlays.length; i < len; ++i) {
@@ -110,7 +112,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
         var vecRes = VectorProvider.createResource(o);
         vecRes.fetch(function(geojson){
 
-          L.geoJson(geojson, {
+          nhvar = L.geoJson(geojson, {
             style: L.mapbox.simplestyle.style,
             pointToLayer: function(feature, latlon) {
               if (!feature.properties) feature.properties = {};
@@ -124,6 +126,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
         });
       }
+      prevOverlays = overlays;
 
     });
   }

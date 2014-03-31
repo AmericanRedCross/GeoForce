@@ -80,7 +80,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
   return {
     /**
-     * You can explicity name the type of resource. If not,
+     * You can explicitly name the type of resource. If not,
      * we will figure it out for you...
      *
      * @param resourceName
