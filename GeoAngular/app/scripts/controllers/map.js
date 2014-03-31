@@ -104,17 +104,19 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
         var o = overlays[i];
         var vecRes = VectorProvider.createResource(o);
         vecRes.fetch(function(geojson){
-          $scope.geojson = {
-            data: geojson,
-            style: {
-              fillColor: "green",
-              weight: 2,
-              opacity: 1,
-              color: 'white',
-              dashArray: '3',
-              fillOpacity: 0.7
+
+          L.geoJson(geojson, {
+            style: L.mapbox.simplestyle.style,
+            pointToLayer: function(feature, latlon) {
+              if (!feature.properties) feature.properties = {};
+              return L.mapbox.marker.style(feature, latlon);
             }
+          }).eachLayer(add).addTo(map);
+
+          function add(l) {
+
           }
+
         });
       }
 
