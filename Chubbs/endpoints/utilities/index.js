@@ -1,7 +1,7 @@
 ﻿//////////Utilities
 
 //Common and settings should be used by all sub-modules
-var express = require('express'), common = require("../../common"), settings = require('../../settings'),  request = require('request');
+var express = require('express'), common = require("../../common"), settings = require('../../settings');
 
 var mapnik;
 try {
@@ -99,13 +99,13 @@ exports.app = function (passport) {
                 values: []
             };
 
-            common.executePgQuery(query, function (result) {
+            common.executePgQuery(query, function (err, result) {
                 var features = [];
 
                 //check for error
-                if (result.status == "error") {
+                if (err) {
                     //Report error and exit.
-                    args.errorMessage = result.message;
+                    args.errorMessage = err.text;
                 } else {
                     //a-ok
                     //Check which format was specified
@@ -184,13 +184,13 @@ exports.app = function (passport) {
                 values: []
             };
 
-            common.executePgQuery(query, function (result) {
+            common.executePgQuery(query, function (err, result) {
                 var features = [];
 
                 //check for error
-                if (result.status == "error") {
+                if (err) {
                     //Report error and exit.
-                    res.jsonp({ error: result.message });
+                    res.jsonp(err);
                 } else {
                     //a-ok
                     //Check which format was specified
@@ -233,7 +233,7 @@ exports.app = function (passport) {
         }
     });
 
-    app.use('/services/utilities/proxy', function(req, res) {
+    app.use('/services/utilities/proxy', function (req, res) {
         var args = {};
 
         if (req.method.toLowerCase() == "post") {
