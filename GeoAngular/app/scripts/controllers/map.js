@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Alias, VectorProvider) {
+angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, LayerConfig, VectorProvider) {
   console.log('MapCtrl');
 
   $scope.routeParams = window.RouteParams;
@@ -29,10 +29,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
     var lng = parseFloat(RouteParams.lng)   || 0;
     var zoom = parseFloat(RouteParams.zoom) || 2;
     layersStr = RouteParams.layers;
-    var layers = layersStr.split(',') || Alias.redcross;
+    var layers = layersStr.split(',') || LayerConfig.redcross;
 
     // first layer should always be treated as the basemap
-    var basemap = Alias.find(layers[0]) || Alias.redcross;
+    var basemap = LayerConfig.find(layers[0]) || LayerConfig.redcross;
     var overlays = layers.slice(1);
 
     if (lastLayersStr !== layersStr) {
@@ -103,7 +103,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
       for (var i = 0, len = overlays.length; i < len; ++i) {
         var o = overlays[i];
         var vecRes = VectorProvider.createResource(o);
-        vecRes.fetch(function(geojson, name){
+        vecRes.fetch(function(geojson){
           $scope.geojson = {
             data: geojson,
             style: {
