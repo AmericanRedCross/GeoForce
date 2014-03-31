@@ -4,9 +4,9 @@
  */
 
 /**
- * All of the aliases need to be lowercase.
+ * All of the layer names need to be lowercase.
  */
-angular.module('GeoAngular').service('Alias', function () {
+angular.module('GeoAngular').service('LayerConfig', function () {
 
   /**
    * Basemaps
@@ -24,9 +24,32 @@ angular.module('GeoAngular').service('Alias', function () {
 
   /**
    * GeoJSON
+   *
+   * Note: Specifying the properties extends the properties object of the retrieved GeoJSON.
+   * Styling adheres to the Github/Mapbox GeoJSON Styling Spec:
+   *
+   * https://help.github.com/articles/mapping-geojson-files-on-github
+   * https://github.com/mapbox/simplestyle-spec/tree/master/1.1.0
+   *
    */
-  this.phl = 'data/test/phl.geojson';
-  this.projectsbycountry = 'data/test/vw_projects_by_country.geojson';
+  this.phl = {
+    type: 'geojson',
+    url: 'data/test/phl.geo.json',
+    properties: {
+      "title": 'The Philippines',
+      "stroke": 'white',
+      "stroke-width": 2,
+      "dash-array": '3',
+      "stroke-opacity": 1,
+      "fill": "green",
+      "fill-opacity": 0.7
+    }
+  };
+
+  this.projectsbycountry = {
+    type: 'geojson',
+    url: 'data/test/vw_projects_by_country.geojson'
+  };
 
   /**
    * KML

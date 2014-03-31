@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').factory('Route', function ($location) {
+angular.module('GeoAngular').factory('Route', function ($location, LayerConfig) {
 
   function parseRoute() {
     var path = $location.path();
@@ -11,7 +11,7 @@ angular.module('GeoAngular').factory('Route', function ($location) {
     var lat =  coords[0] || '0';
     var lng =  coords[1] || '0';
     var zoom = coords[2] || '2';
-    var layers = path.slice(path.indexOf('(')+1,path.indexOf(')')) || Alias.redcross;
+    var layers = path.slice(path.indexOf('(')+1,path.indexOf(')')) || LayerConfig.redcross;
     var landing = false;
     if (path.indexOf('landing') != -1) {
       landing = true;

@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, Alias, VectorProvider) {
+angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, LayerConfig, VectorProvider) {
   console.log('MapCtrl');
 
   $scope.routeParams = window.RouteParams;
@@ -22,8 +22,9 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
 
   var layersStr = null;
+  var overlayNames = [];
 
-  function setParams() {
+  function redraw() {
     if (RouteParams.landing) {
       console.log('landing');
       $scope.blur = 'blur';
@@ -34,16 +35,16 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
     var lng = parseFloat(RouteParams.lng)   || 0;
     var zoom = parseFloat(RouteParams.zoom) || 2;
     layersStr = RouteParams.layers;
-    var layers = layersStr.split(',') || Alias.redcross;
+    var layers = layersStr.split(',') || LayerConfig.redcross;
 
     // first layer should always be treated as the basemap
-    var basemap = Alias.find(layers[0]) || Alias.redcross;
-    var overlays = layers.slice(1);
+    var basemap = LayerConfig.find(layers[0]) || LayerConfig.redcross;
+    overlayNames = layers.slice(1);
 
     if (lastLayersStr !== layersStr) {
       console.log('Setting layers.');
-      if (Array.isArray(overlays) && overlays.length > 0)
-        addOverlays(overlays);
+      if (Array.isArray(overlayNames) && overlayNames.length > 0)
+        drawOverlays();
 
       $scope.defaults = {
         scrollWheelZoom: true
@@ -62,7 +63,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
     lastLayersStr = layersStr;
   }
-  setParams();
+  redraw();
 
   $scope.$on('route-update', function() {
     var c = $scope.center;
@@ -75,7 +76,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
         || RouteParams.layers !== layersStr ) {
 
       console.log('map.js route-update Updating Map...');
-      setParams();
+      redraw();
     }
 
   });
@@ -102,25 +103,44 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   });
 
 
-  function addOverlays(overlays) {
+  var overlays = [];
+
+  /**
+   * NH TODO: Make sure that the overlays draw in the correct order rather
+   *          than the order from which they happen to be fetched.
+   *          Also be smart with inserting new layers instead of redrawing
+   *          everything...
+   */
+  function drawOverlays() {
     leafletData.getMap().then(function (map) {
 
-      for (var i = 0, len = overlays.length; i < len; ++i) {
-        var o = overlays[i];
-        var vecRes = VectorProvider.createResource(o);
-        vecRes.fetch(function(geojson, name){
-          $scope.geojson = {
-            data: geojson,
-            style: {
-              fillColor: "green",
-              weight: 2,
-              opacity: 1,
-              color: 'white',
-              dashArray: '3',
-              fillOpacity: 0.7
+      for (var h = 0, len = overlays.length; h < len; ++h) {
+        map.removeLayer(overlays[h]);
+      }
+
+      for (var i = 0, len = overlayNames.length; i < len; ++i) {
+
+        // need to fetch data and redraw layer
+        var vecRes = VectorProvider.createResource(overlayNames[i]);
+        vecRes.fetch(function(geojson){
+
+          var geojsonLayer = L.geoJson(geojson, {
+            style: L.mapbox.simplestyle.style,
+            pointToLayer: function(feature, latlon) {
+              if (!feature.properties) feature.properties = {};
+              return L.mapbox.marker.style(feature, latlon);
             }
+          }).eachLayer(add).addTo(map);
+
+          function add(l) {
+
           }
+
+          geojsonLayer.name = name;
+          overlays.push(geojsonLayer);
+
         });
+
       }
 
     });
