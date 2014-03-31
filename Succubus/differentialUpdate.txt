@@ -1,0 +1,35 @@
+-- This is the pseudo-code/logic for doing a differential update of the data (that is, only updating the rows that have been updated recently)
+-- Realized that this was opening up other issues, so for now we're going to shelve this idea and always reload all data.
+
+DO $$DECLARE
+
+lastupdated timestamp without time zone;
+sfid_exists integer;
+
+BEGIN
+	sfid_exists:= -1;
+	--See if SalesForce ID Exists in table
+	sfid_exists:= 1 FROM <table> WHERE sfid = <sfid>;
+	IF(sfid_exists = -1) THEN
+		--Doesn't exist, exit, then add row
+		_insertRows
+	ELSE
+		--It exists, check the date and update if it's old
+		lastupdated := lastupdated from <table> WHERE sfid = <sfid>;
+		IF(lastupdated IS NULL) THEN
+			--Assume the date is old, update the row
+			_updateRows
+
+		ELSE
+			--update existing row, IF last updated in DB is less than SalesForce last updated
+			IF(lastupdated < <last udpated from salesforce>) THEN
+				--Date is stale, update rows.
+				_updateRows
+			ELSE
+				--Up to date
+				--Do nothing
+			END IF;
+		END IF;
+	END IF;
+
+END$$;
