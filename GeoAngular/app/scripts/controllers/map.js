@@ -22,8 +22,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
 
   var layersStr = null;
-  var prevOverlays = null;
-  var overlays = null;
+  var overlayNames = [];
 
   function redraw() {
     if (RouteParams.landing) {
@@ -40,11 +39,11 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
     // first layer should always be treated as the basemap
     var basemap = LayerConfig.find(layers[0]) || LayerConfig.redcross;
-    overlays = layers.slice(1);
+    overlayNames = layers.slice(1);
 
     if (lastLayersStr !== layersStr) {
       console.log('Setting layers.');
-      if (Array.isArray(overlays) && overlays.length > 0)
+      if (Array.isArray(overlayNames) && overlayNames.length > 0)
         drawOverlays();
 
       $scope.defaults = {
@@ -104,15 +103,28 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   });
 
 
+  var overlays = [];
+
+  /**
+   * NH TODO: Make sure that the overlays draw in the correct order rather
+   *          than the order from which they happen to be fetched.
+   *          Also be smart with inserting new layers instead of redrawing
+   *          everything...
+   */
   function drawOverlays() {
     leafletData.getMap().then(function (map) {
 
-      for (var i = 0, len = overlays.length; i < len; ++i) {
-        var o = overlays[i];
-        var vecRes = VectorProvider.createResource(o);
+      for (var h = 0, len = overlays.length; h < len; ++h) {
+        map.removeLayer(overlays[h]);
+      }
+
+      for (var i = 0, len = overlayNames.length; i < len; ++i) {
+
+        // need to fetch data and redraw layer
+        var vecRes = VectorProvider.createResource(overlayNames[i]);
         vecRes.fetch(function(geojson){
 
-          nhvar = L.geoJson(geojson, {
+          var geojsonLayer = L.geoJson(geojson, {
             style: L.mapbox.simplestyle.style,
             pointToLayer: function(feature, latlon) {
               if (!feature.properties) feature.properties = {};
@@ -124,9 +136,12 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
           }
 
+          geojsonLayer.name = name;
+          overlays.push(geojsonLayer);
+
         });
+
       }
-      prevOverlays = overlays;
 
     });
   }
