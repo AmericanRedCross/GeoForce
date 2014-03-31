@@ -18,4 +18,15 @@ angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, 
     Route.updateLocation();
   });
 
+  //RW - Need to figure out where to put this:
+  /*var resizeTracker;
+    window.resize =function () {
+        map.invalidateSize();
+
+        clearTimeout(resizeTracker);
+        resizeTracker = setTimeout(function () {
+            map.invalidateSize();
+        }, 100);
+    };*/
+
 });

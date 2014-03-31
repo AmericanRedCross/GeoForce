@@ -151,7 +151,18 @@
                                 <div class="title">
                                     {{selectedFeatureTitle}}
                                 </div>
-                                <div class="InnerContainer"></div>
+                                <div class="InnerContainer">
+                                    <!-- Repeater Here to List out Headings and List Items -->
+                                    <div class="section" ng-repeat="(group, value) in groupings">
+                                        <div class="heading">{{group}}</div>
+                                        <div class="list" >
+                                            <ul>
+                                                <li ng-repeat="item in value.items"><a ng-href="{{group}}/{{item.id}}">{{item.name}}</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
