@@ -105,7 +105,10 @@
 
                     <!-- Upper Right Toolbar in Map -->
                     <div id="MapUpperRightToolbarWrapper">
-                        <div>World</div>
+                        <div>
+                            <button class="side-view-close btn btn-lg btn-danger" ng-click=""><span class="glyphicon glyphicon-chevron-down"></span></button>
+                            World
+                        </div>
                         <div class="light">Upload Data</div>
                         <div class="light">Export</div>
                         <div class="search" data-icon="m"></div>
@@ -138,7 +141,7 @@
 
                     <div id="DetailsWrapper" ng-class="{on: detailsVisible}">
                         <div id="DetailsButtonWrapper">
-                            <div id="DetailsNub" data-icon="l" ng-click="detailsVisible = !detailsVisible">
+                            <div id="DetailsNub" class="btn btn-lg" data-icon="l" ng-click="detailsVisible = !detailsVisible">
                             </div>
                             <div id="PreviousItem" ng-class="{flipOpen: detailsVisible}" data-icon="j" ng-click="">
                             </div>
