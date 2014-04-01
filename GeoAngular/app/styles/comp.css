@@ -81,6 +81,14 @@ html, body {
     line-height: 47px;
 }
 
+#MapUpperRightToolbarWrapper > div > button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 4px;
+    font-size: 10px;
+}
+
 /* End Map Top Right Toolbar */
 
 /* Theme Selector Menu */
@@ -245,6 +253,7 @@ html, body {
     padding: 20px;
     background-color: #fff;
     cursor:pointer;
+    border-radius: 0px;
 }
 
 .on #DetailsNub {
