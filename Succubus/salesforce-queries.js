@@ -40,7 +40,7 @@ module.exports = {
     /**
      * Shows all of the projects grouped by country
      */
-    projGroupedByCountry: "Select Location__r.Admin_0__c, Count(Name) project_count, Sum(Total_Budget__c) total_budget From Project__c Group By Location__r.Admin_0__c",
+    projGroupedByCountry: "Select Location__r.Admin_0__c, Location__r.GIS_GEO_ID__c, Count(Name) project_count, Sum(Total_Budget__c) total_budget From Project__c Group By Location__r.Admin_0__c, Location__r.GIS_GEO_ID__c",
 
     /**
      * Shows all of the data (fields) for a given project.
