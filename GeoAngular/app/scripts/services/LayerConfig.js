@@ -57,6 +57,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.gdacs = 'http://www.gdacs.org/xml/gdacs.kml';
   this.gdacstest = 'data/test/gdacs.kml';
   this.earthquakes = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml';
+  this.earthquakestest = 'data/test/usgs-earthquakes.kml';
 
 
 

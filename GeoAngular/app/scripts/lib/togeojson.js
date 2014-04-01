@@ -1,6 +1,8 @@
 toGeoJSON = (function() {
     'use strict';
 
+    var xml = null;
+
     var removeSpace = (/\s*/g),
         trimSpace = (/^\s*|\s*$/g),
         splitSpace = (/\s+/);
@@ -68,6 +70,8 @@ toGeoJSON = (function() {
 
     var t = {
         kml: function(doc, o) {
+            xml = doc;
+
             o = o || {};
 
             var gj = fc(),
@@ -144,14 +148,20 @@ toGeoJSON = (function() {
                 return geoms;
             }
             function getPlacemark(root) {
-                var geoms = getGeometry(root), i, properties = {},
-                    name = nodeVal(get1(root, 'name')),
-                    styleUrl = nodeVal(get1(root, 'styleUrl')),
-                    description = nodeVal(get1(root, 'description')),
-                    timeSpan = get1(root, 'TimeSpan'),
-                    extendedData = get1(root, 'ExtendedData'),
-                    lineStyle = get1(root, 'LineStyle'),
-                    polyStyle = get1(root, 'PolyStyle');
+                var geoms = getGeometry(root), i, properties = {};
+                var name = nodeVal(get1(root, 'name'));
+                var styleUrl = nodeVal(get1(root, 'styleUrl'));
+//                var description = nodeVal(get1(root, 'description'));
+                var timeSpan = get1(root, 'TimeSpan');
+                var extendedData = get1(root, 'ExtendedData');
+                var lineStyle = get1(root, 'LineStyle');
+                var polyStyle = get1(root, 'PolyStyle');
+
+                // NH jQuery Override.
+                var $node = $(xml).find('#'+root.id);
+                var description = $node.find('description').html();
+                var color = $node.find('color').html();
+                var scale = $node.find('scale').html();
 
                 if (!geoms.length) return [];
                 if (name) properties.name = name;
@@ -159,7 +169,12 @@ toGeoJSON = (function() {
                     properties.styleUrl = styleUrl;
                     properties.styleHash = styleIndex[styleUrl];
                 }
+
+                // NH Override
                 if (description) properties.description = description;
+                if (color) properties.color = '#' + color;
+                if (scale) properties.scale = parseFloat(scale);
+
                 if (timeSpan) {
                     var begin = nodeVal(get1(timeSpan, 'begin'));
                     var end = nodeVal(get1(timeSpan, 'end'));

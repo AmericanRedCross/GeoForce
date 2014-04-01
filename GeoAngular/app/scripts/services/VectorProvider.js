@@ -73,6 +73,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       self.geojson = toGeoJSON.kml(xml);
       if (typeof self.config.properties === 'object') {
         angular.extend(self.geojson.properties, self.config.properties);
+        self.geojson.properties.srcType = 'kml';
       }
       cb(self.geojson);
     });
