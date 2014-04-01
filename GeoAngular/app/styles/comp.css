@@ -1,14 +1,13 @@
 /* use this panel when developing to preview css changes using live edit in webstorm */
-html, body{
-    height:100%;
-    width:100%;
+html, body {
+    height: 100%;
+    width: 100%;
 }
 
-#AppContainer{
-    height:100%;
-    width:100%;
+#AppContainer {
+    height: 100%;
+    width: 100%;
 }
-
 
 /* Override Leaflet Zoom In/Out Defaults */
 .leaflet-bar a:first-child {
@@ -23,6 +22,7 @@ html, body{
     border-bottom: 1px solid #d3d3d3;
     color: #ed1b2e;
 }
+
 .leaflet-bar {
     box-shadow: none;
     border-radius: 0px;
@@ -66,26 +66,25 @@ html, body{
     padding: 14px 40px;
     font-size: 21px;
     font-family: oswaldregular;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-#MapUpperRightToolbarWrapper div.light{
-    background-color:#666666;
+#MapUpperRightToolbarWrapper div.light {
+    background-color: #666666;
 }
 
-#MapUpperRightToolbarWrapper .search{
+#MapUpperRightToolbarWrapper .search {
     font-size: 26px;
     padding: 10px 17px;
     border-left: 1px solid #fff;
     height: 58px;
     line-height: 47px;
 }
+
 /* End Map Top Right Toolbar */
 
-
-
 /* Theme Selector Menu */
-#ThemeSelectorMenu{
+#ThemeSelectorMenu {
     position: absolute;
     z-index: 2;
     right: 40px;
@@ -94,7 +93,7 @@ html, body{
     font-family: oswaldregular;
 }
 
-#ThemeSelectorMenu .dropdown-toggle{
+#ThemeSelectorMenu .dropdown-toggle {
     display: block;
     padding: 3px 20px;
     clear: both;
@@ -121,18 +120,18 @@ html, body{
     background-color: #fff;
 }
 
-#ThemeSelectorMenu .dropdown-menu > li{
+#ThemeSelectorMenu .dropdown-menu > li {
     border: 1px solid #d3d3d3;
     min-width: 172px;
 }
 
-#ThemeMenu{
-    text-align:center;
+#ThemeMenu {
+    text-align: center;
 }
 
-#ThemeSelectorMenu .menu-selection{
+#ThemeSelectorMenu .menu-selection {
     float: left;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 #ThemeSelectorMenu .dropdown-toggle {
@@ -143,25 +142,23 @@ html, body{
 /* End Theme Selector Menu */
 
 /* Details Panel */
-#DetailsWrapper{
-    position:absolute;
+#DetailsWrapper {
+    position: absolute;
     right: -300px;
     top: 165px;
-    cursor:pointer;
-    -moz-transition:all .5s ease .3s; /* This is the animation TO THE RIGHT for the details wrapper */
-    -webkit-transition:all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
-    -ms-transition:all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
+    -moz-transition: all .5s ease .3s; /* This is the animation TO THE RIGHT for the details wrapper */
+    -webkit-transition: all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
+    -ms-transition: all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
 }
 
-#DetailsWrapper.on{
+#DetailsWrapper.on {
     right: 0;
-    -moz-transition:all .5s ease; /* This is the animation TO THE LEFT for the details wrapper */
-    -webkit-transition:all .5s ease; /* This is the animation TO THE LEFT for the details */
-    -ms-transition:all .5s ease; /* This is the animation TO THE LEFT for the details wrapper */
+    -moz-transition: all .5s ease; /* This is the animation TO THE LEFT for the details wrapper */
+    -webkit-transition: all .5s ease; /* This is the animation TO THE LEFT for the details */
+    -ms-transition: all .5s ease; /* This is the animation TO THE LEFT for the details wrapper */
 }
 
-
-#PreviousItem{
+#PreviousItem {
     border-top: none;
 }
 
@@ -170,13 +167,14 @@ html, body{
 #NextItem, #PreviousItem {
     background-color: #fff;
     border: 1px solid #d3d3d3;
+    cursor:pointer;
 }
 
 #PreviousItem {
     border-top: none;
-    transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
-    -webkit-transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
-    -ms-transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
+    transform: translateY(-50%) rotateX(90deg); /* Start rotated 90 degrees (edge on) and slid up  */
+    -webkit-transform: translateY(-50%) rotateX(90deg); /* Start rotated 90 degrees (edge on) and slid up  */
+    -ms-transform: translateY(-50%) rotateX(90deg); /* Start rotated 90 degrees (edge on) and slid up  */
     -moz-transition: all .1s ease .2s; /* Putting it away - take .1 second to roll up the button (faster than the bottom to give the impression that it's speeding up), delay it .2 (to wait for the bottom button to roll up in .2 sec */
     -webkit-transition: all .1s ease .2s; /* Putting it away - take .1 second to roll up the button (faster than the bottom to give the impression that it's speeding up), delay it .2 (to wait for the bottom button to roll up in .2 sec */
     -ms-transition: all .1s ease .2s; /* Putting it away - take .1 second to roll up the button (faster than the bottom to give the impression that it's speeding up), delay it .2 (to wait for the bottom button to roll up in .2 sec */
@@ -184,10 +182,10 @@ html, body{
 }
 
 #NextItem {
-    transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
-    -webkit-transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
-    -ms-transform: translateY(-50%) rotateX(90deg);  /* Start rotated 90 degrees (edge on) and slid up  */
-    -moz-transition: all .2s ease;  /* Putting it away - take .2 second to roll up the button (slower than the top button), no delay, it's the first item in the transition chain */
+    transform: translateY(-50%) rotateX(90deg); /* Start rotated 90 degrees (edge on) and slid up  */
+    -webkit-transform: translateY(-50%) rotateX(90deg); /* Start rotated 90 degrees (edge on) and slid up  */
+    -ms-transform: translateY(-50%) rotateX(90deg); /* Start rotated 90 degrees (edge on) and slid up  */
+    -moz-transition: all .2s ease; /* Putting it away - take .2 second to roll up the button (slower than the top button), no delay, it's the first item in the transition chain */
     -webkit-transition: all .2s ease; /* Putting it away - take .2 second to roll up the button (slower than the top button), no delay, it's the first item in the transition chain */
     -ms-transition: all .2s ease; /* Putting it away - take .2 second to roll up the button (slower than the top button), no delay, it's the first item in the transition chain */
 }
@@ -233,45 +231,41 @@ html, body{
     -webkit-transition:all .3s ease .3s; *//* This is the animation Out for the button *//*
 }*/
 
-#DetailsButtonWrapper{
+#DetailsButtonWrapper {
     float: left;
 }
 
-#DetailsButtonWrapper div{
+#DetailsButtonWrapper div {
     padding: 20px;
     line-height: 10px;
 }
 
- #DetailsNub{
-     color: #ed1b2e;
-     padding: 20px;
-     background-color: #fff;
- }
+#DetailsNub {
+    color: #ed1b2e;
+    padding: 20px;
+    background-color: #fff;
+    cursor:pointer;
+}
 
-.on #DetailsNub{
+.on #DetailsNub {
     background-color: red;
     color: #fff;
 }
 
+#DetailsPanel {
+    float: left;
+    padding: 15px;
+    padding-top: 74px;
+    background-color: #efefef;
+    width: 300px;
+    min-height: 400px;
+    margin-top: -88px;
+    border: 1px solid #d3d3d3;
+}
 
-
-
-
-
- #DetailsPanel{
-     float: left;
-     padding: 15px;
-     padding-top: 74px;
-     background-color: #efefef;
-     width: 300px;
-     min-height: 400px;
-     margin-top: -88px;
-     border: 1px solid #d3d3d3;
- }
-
- .auto{
-     width: auto;
- }
+.auto {
+    width: auto;
+}
 
 #DetailsWrapper .side-view-close {
     background-color: #EA2035;
@@ -284,7 +278,7 @@ html, body{
     right: 0px;
 }
 
-#DetailsWrapper .InnerContainer{
+#DetailsWrapper .InnerContainer {
     background-color: #fff;
     padding: 10px;
     border: 1px solid #d3d3d3;
@@ -297,24 +291,33 @@ html, body{
     font-family: oswaldregular;
 }
 
-#DetailsPanel .InnerContainer .heading{
+#DetailsPanel .InnerContainer .heading {
     color: #6d6e70;
     font-family: oswaldregular;
     font-size: 16px;
     text-transform: uppercase;
 }
 
-
 #DetailsPanel .InnerContainer ul {
-    list-style:none;
-    padding-left:0;
-}​
+    list-style: none;
+    padding-left: 0;
+}
 
- #DetailsPanel .InnerContainer li {
-     margin: 10px 0;
- }​
+#DetailsPanel .InnerContainer li {
+    margin: 10px 0;
+}
 
 #DetailsPanel .InnerContainer .section {
-   margin: 20px 0;
-}​
+    margin: 20px 0;
+}
+
+.MapIt {
+    background-color: #6d6e70;
+    padding: 2px 4px;
+    float: right;
+    color: #fff;
+    font-size: 12px;
+    cursor:pointer;
+}
+
 /* End Details Panel*/
