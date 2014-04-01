@@ -147,7 +147,8 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
           }).eachLayer(add).addTo(map);
 
           function add(l) {
-            console.log('add');
+            var properties = l.feature.properties;
+            console.log(JSON.stringify(properties));
           }
 
           geojsonLayer.name = name;
