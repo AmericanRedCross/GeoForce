@@ -1,12 +1,12 @@
-angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, $routeParams, Route) {
+angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, $stateParams, Route) {
   console.log('AppCtrl');
 
   // weird bug where redirect peels out '://{s' when ':' is there
   // $routeParams.layers We just dont have the : in main.js so that
   // part of the path does not go away...
-  $routeParams.layers = $routeParams.layers.replace('http//', 'http://');
+  $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
 
-  window.RouteParams = $routeParams;
+  window.RouteParams = $stateParams;
   $scope.routeParams = window.RouteParams;
 
   RouteParams.landing = false;

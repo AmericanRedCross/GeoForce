@@ -111,12 +111,13 @@
                         <div class="search" data-icon="m"></div>
                     </div>
 
-                    <div ng-view=""></div>
+                    <div ui-view="uppermenu"></div>
+
 
                     <!-- Bottom Right Theme Selector -->
                     <nav id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
                         <div class="navbar-header">
-                            <a class="navbar-brand"href="javascript: return false;">View By:</a>
+                            <a class="navbar-brand" href="javascript: return false;">View By:</a>
                         </div>
                         <div class="menu-selection">
                             <ul class="nav navbar-nav">
@@ -136,7 +137,13 @@
                         </div>
                     </nav>
 
+                    <div ui-view="leftmenu"></div>
+
+
                     <div id="DetailsWrapper" ng-class="{on: detailsVisible}">
+
+                        <div ui-view="details"></div>
+
                         <div id="DetailsButtonWrapper">
                             <div id="DetailsNub" data-icon="l" ng-click="detailsVisible = !detailsVisible">
                             </div>
