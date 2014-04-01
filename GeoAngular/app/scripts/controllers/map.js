@@ -108,6 +108,11 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
       }
 
     });
+
+    //Connect the layout onresize end event
+    window.layout.panes.center.bind("layoutpaneonresize_end", function () {
+      map.invalidateSize();
+    });
   });
 
 
