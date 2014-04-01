@@ -25,7 +25,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     this.geojson = null;
   }
 
-  Resource.prototype._fetch = function(cb) {
+  Resource.prototype.fetch = function(cb) {
     if (typeof this.geojson !== 'undefined' && this.geojson !== null) {
       cb();
     } else {
@@ -49,7 +49,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
   GeoJSON.prototype.fetch = function (cb) {
     var self = this;
-    this._fetch(function() {
+    Resource.prototype.fetch.call(this, function() {
       self.geojson = self.srcData;
       if (typeof self.config.properties === 'object') {
         angular.extend(self.geojson.properties, self.config.properties);
@@ -68,7 +68,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
   KML.prototype.fetch = function (cb) {
     var self = this;
-    this._fetch(function() {
+    Resource.prototype.fetch.call(this, function() {
       var xml = $.parseXML(self.srcData);
       self.geojson = toGeoJSON.kml(xml);
       if (typeof self.config.properties === 'object') {
