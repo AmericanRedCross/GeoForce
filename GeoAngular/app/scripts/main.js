@@ -23,7 +23,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
     //NH TODO: do this differently. This way is just nice for deving.
     .when('/landing', '/map@0,0,2(redcross,gdacstest)/landing')
     .when('/main', '/map@0,0,2(redcross,gdacstest)')
-    .otherwise('/map@0,0,2(pinterest,phl)');
+    .otherwise('/map@0,0,2(pinterest,phl)/landing');
 
   $stateProvider
     .state('main', {

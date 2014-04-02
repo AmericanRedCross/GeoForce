@@ -33,12 +33,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   var overlayNames = [];
 
   function redraw() {
-//    if ($state.current.name === 'landing') {
-//      console.log('landing');
-//      $scope.blur = 'blur';
-//    } else {
-//      $scope.blur = '';
-//    }
+
     var lat = parseFloat(RouteParams.lat)   || 0;
     var lng = parseFloat(RouteParams.lng)   || 0;
     var zoom = parseFloat(RouteParams.zoom) || 2;
@@ -74,14 +69,17 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   redraw();
 
   $scope.$on('route-update', function() {
+    if ($scope.blur === 'blur' && $state.current.name !== 'landing') {
+      $scope.blur = '';
+    }
     var c = $scope.center;
     var lat = c.lat.toFixed(6);
     var lng = c.lng.toFixed(6);
     var zoom = c.zoom.toString();
-    if (   RouteParams.lat    !== lat
-        || RouteParams.lng    !== lng
-        || RouteParams.zoom   !== zoom
-        || RouteParams.layers !== layersStr ) {
+    if (   $stateParams.lat    !== lat
+        || $stateParams.lng    !== lng
+        || $stateParams.zoom   !== zoom
+        || $stateParams.layers !== layersStr ) {
 
       console.log('map.js route-update Updating Map...');
       redraw();
@@ -93,10 +91,6 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     $scope.blur = 'blur';
   });
 
-//  $scope.$on('blur', function() {
-//    $scope.blur = 'blur';
-//  });
-
 
   leafletData.getMap().then(function (map) {
     map.on('moveend', function () { // move is good too
@@ -105,14 +99,14 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
       var lng = c.lng.toFixed(6);
       var zoom = map.getZoom().toString();
 
-      if (   RouteParams.lat  !== lat
-          || RouteParams.lng  !== lng
-          || RouteParams.zoom !== zoom ) {
+      if (   $stateParams.lat  !== lat
+          || $stateParams.lng  !== lng
+          || $stateParams.zoom !== zoom ) {
 
         console.log('map: lat,lng,zoom !== RouteParams');
-        RouteParams.lat = lat;
-        RouteParams.lng = lng;
-        RouteParams.zoom = zoom;
+        $stateParams.lat = lat;
+        $stateParams.lng = lng;
+        $stateParams.zoom = zoom;
         $state.go($state.current.name, {
           lat: lat,
           lng: lng,
