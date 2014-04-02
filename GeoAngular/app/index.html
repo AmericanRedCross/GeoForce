@@ -103,6 +103,9 @@
 
                     <leaflet class="{{blur}}" width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" geojson="geojson"></leaflet>
 
+                    <div ui-view="landing"></div>
+
+
                     <!-- Upper Right Toolbar in Map -->
                     <div id="MapUpperRightToolbarWrapper">
                         <div>World</div>
@@ -142,8 +145,6 @@
 
                     <div id="DetailsWrapper" ng-class="{on: detailsVisible}">
 
-                        <div ui-view="details"></div>
-
                         <div id="DetailsButtonWrapper">
                             <div id="DetailsNub" data-icon="l" ng-click="detailsVisible = !detailsVisible">
                             </div>
@@ -155,6 +156,9 @@
                         <div id="DetailsPanel">
                             <div class="container auto">
                                 <button class="side-view-close btn btn-lg btn-danger" ng-click="detailsVisible=false"><span class="glyphicon glyphicon-chevron-right"></span></button>
+
+                                <div ui-view="details"></div>
+
                                 <div class="title">
                                     {{selectedFeatureTitle}}
                                 </div>

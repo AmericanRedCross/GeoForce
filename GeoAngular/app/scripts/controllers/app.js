@@ -1,4 +1,4 @@
-angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, $stateParams, Route) {
+angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, $state, $stateParams, Route) {
   console.log('AppCtrl');
 
   // weird bug where redirect peels out '://{s' when ':' is there

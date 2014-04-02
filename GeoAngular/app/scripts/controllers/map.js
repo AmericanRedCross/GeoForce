@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, LayerConfig, VectorProvider) {
+angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, leafletData, LayerConfig, VectorProvider) {
   console.log('MapCtrl');
 
   $scope.routeParams = window.RouteParams;
@@ -33,7 +33,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   var overlayNames = [];
 
   function redraw() {
-    if (RouteParams.landing) {
+    if ($state.current.name === 'landing') {
       console.log('landing');
       $scope.blur = 'blur';
     } else {
