@@ -11,10 +11,11 @@ angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, 
 
   RouteParams.landing = false;
 
+  $rootScope.$broadcast('route-update');
+
   // Update the route when the model is updated.
-  $scope.$watchCollection('routeParams', function(newParams, oldParams) {
-    console.log('app.js $watchCollection(routeParams).');
-    $rootScope.$broadcast('route-update');
-    Route.updateLocation();
-  });
+//  $scope.$watchCollection('routeParams', function(newParams, oldParams) {
+//    console.log('app.js $watchCollection(routeParams).');
+//    Route.updateLocation();
+//  });
 });

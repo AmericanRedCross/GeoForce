@@ -10,7 +10,8 @@ angular.module('GeoAngular').controller('LandingCtrl', function($scope, $rootSco
 //  $scope.routeParams = window.RouteParams;
 //
   RouteParams.landing = true;
-//  $rootScope.$broadcast('route-update');
+  $rootScope.$broadcast('blur');
+
 //
 //  $scope.navTo = Route.navTo;
 //
