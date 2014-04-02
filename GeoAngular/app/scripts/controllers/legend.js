@@ -5,5 +5,6 @@
 
 angular.module('GeoAngular').controller('LegendCtrl', function($scope) {
   console.log('LegendCtrl');
+  $scope.params = $stateParams;
 
 });

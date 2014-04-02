@@ -5,5 +5,6 @@
 
 angular.module('GeoAngular').controller('InfoCtrl', function($scope) {
   console.log('InfoCtrl');
+  $scope.params = $stateParams;
 
 });

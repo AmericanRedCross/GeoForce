@@ -5,5 +5,6 @@
 
 angular.module('GeoAngular').controller('FiltersCtrl', function($scope) {
   console.log('FiltersCtrl');
+  $scope.params = $stateParams;
 
 });
