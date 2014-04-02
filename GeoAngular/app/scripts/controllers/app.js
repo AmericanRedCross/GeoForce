@@ -7,9 +7,6 @@ angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, 
   // part of the path does not go away...
   $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
 
-  window.RouteParams = $stateParams;
-  $scope.routeParams = window.RouteParams;
-
   $rootScope.$broadcast('route-update');
 
 });

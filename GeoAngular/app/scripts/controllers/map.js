@@ -6,8 +6,6 @@
 angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider, leafletBoundsHelpers) {
   console.log('MapCtrl');
 
-  $scope.routeParams = window.RouteParams;
-
   var lastLayersStr = '';
   $scope.blur = '';
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
@@ -86,11 +84,11 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
   function redraw() {
 
-    var lat = parseFloat(RouteParams.lat)   || 0;
-    var lng = parseFloat(RouteParams.lng)   || 0;
-    var zoom = parseFloat(RouteParams.zoom) || 2;
-    layersStr = RouteParams.layers;
-    var layers = layersStr.split(',') || LayerConfig.redcross;
+    var lat = parseFloat($stateParams.lat)   || 0;
+    var lng = parseFloat($stateParams.lng)   || 0;
+    var zoom = parseFloat($stateParams.zoom) || 2;
+    layersStr = $stateParams.layers || LayerConfig.redcross;
+    var layers = layersStr.split(',');
 
     // first layer should always be treated as the basemap
     var basemap = LayerConfig.find(layers[0]) || LayerConfig.redcross;
@@ -154,7 +152,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
           || $stateParams.lng  !== lng
           || $stateParams.zoom !== zoom ) {
 
-        console.log('map: lat,lng,zoom !== RouteParams');
+        console.log('map: lat,lng,zoom !== $stateParams');
         $stateParams.lat = lat;
         $stateParams.lng = lng;
         $stateParams.zoom = zoom;

@@ -46,16 +46,16 @@ angular.module('GeoAngular').factory('Route', function ($location, LayerConfig) 
 
     updateLocation: function() {
       var oldParams = parseRoute();
-      if (  oldParams.lat !== RouteParams.lat   ||
-        oldParams.lng !== RouteParams.lng   ||
-        oldParams.zoom !== RouteParams.zoom ||
-        oldParams.layers !== RouteParams.layers  ) {
+      if (  oldParams.lat !== $stateParams.lat   ||
+            oldParams.lng !== $stateParams.lng   ||
+            oldParams.zoom !== $stateParams.zoom ||
+            oldParams.layers !== $stateParams.layers  ) {
 
         console.log('Updating location...');
-        var path = '/map@' + RouteParams.lat +
-          ',' + RouteParams.lng +
-          ',' + RouteParams.zoom +
-          '(' + RouteParams.layers + ')';
+        var path = '/map@' + $stateParams.lat +
+          ',' + $stateParams.lng +
+          ',' + $stateParams.zoom +
+          '(' + $stateParams.layers + ')';
 
         $location.path(path);
       }
