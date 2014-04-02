@@ -101,7 +101,9 @@
 
                 <div ng-controller="MapCtrl" id="MapCtrl" class="ui-layout-center">
 
-                    <leaflet class="{{blur}}" width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" geojson="geojson" bounds="bounds"></leaflet>
+                    <div class="windowEffects" ng-class="{grayout: countrySelectorVisible}"></div> <!-- Use this window to gray out or blur the map -->
+
+                    <leaflet class="{{blur}}"   width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" geojson="geojson" bounds="bounds"></leaflet>
 
                     <!-- Upper Right Toolbar in Map -->
                     <div id="MapUpperRightToolbarWrapper">
@@ -119,25 +121,14 @@
                         <div id="RegionArea">
                             <div class="title">Regions:</div>
                             <div class="row content">
-                                <div class="col-md-3">
-                                    Africa
+                                <div class="col-md-4" id="RegionContainer1">
+                                    <div ng-repeat="region in regionList1" ng-click="zoomToExtent(region.geometry.coordinates[0])" class="countryListItem">{{region.properties.arcregion2}}</div>
                                 </div>
-                                <div class="col-md-3">
-                                    Americas
+                                <div class="col-md-4" id="RegionContainer2">
+                                    <div ng-repeat="region in regionList2" ng-click="zoomToExtent(region.geometry.coordinates[0])" class="countryListItem">{{region.properties.arcregion2}}</div>
                                 </div>
-                                <div class="col-md-3">
-
-                                </div>
-                            </div>
-                            <div class="row content">
-                                <div class="col-md-3">
-                                    AMEE
-                                </div>
-                                <div class="col-md-3">
-                                    LAC
-                                </div>
-                                <div class="col-md-3">
-
+                                <div class="col-md-4" id="RegionContainer3">
+                                    <div ng-repeat="region in regionList3" ng-click="zoomToExtent(region.geometry.coordinates[0])" class="countryListItem">{{region.properties.arcregion2}}</div>
                                 </div>
                             </div>
                         </div>
@@ -146,13 +137,13 @@
                             <div class="title">Countries:</div>
                             <div class="row content">
                                 <div class="col-md-4" id="CountryContainer1">
-                                    <div ng-repeat="country in countryList1" ng-click="zoomToCountryExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
+                                    <div ng-repeat="country in countryList1" ng-click="zoomToExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
                                 </div>
                                 <div class="col-md-4" id="CountryContainer2">
-                                    <div ng-repeat="country in countryList2" ng-click="zoomToCountryExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
+                                    <div ng-repeat="country in countryList2" ng-click="zoomToExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
                                 </div>
                                 <div class="col-md-4" id="CountryContainer3">
-                                    <div ng-repeat="country in countryList3" ng-click="zoomToCountryExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
+                                    <div ng-repeat="country in countryList3" ng-click="zoomToExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
                                 </div>
                             </div>
                         </div>

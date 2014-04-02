@@ -10,6 +10,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
   var lastLayersStr = '';
   $scope.blur = '';
+  $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
 
   //Init activeTheme property
   $scope.activeTheme = "Projects";
@@ -23,6 +24,13 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
   $scope.countryList3 = null;
   var vecRes = VectorProvider.createResource("countryextents");
   vecRes.fetch(function(geojson){
+    //Sort alphabetically
+    geojson.features = geojson.features.sort(function(a,b){
+      var textA = a.properties.name_0;
+      var textB = b.properties.name_0;
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
+
     //Break up the file into thirds
     var length = geojson.features.length;
     $scope.countryList1 = geojson.features.slice(0, length/3);
@@ -30,11 +38,34 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
     $scope.countryList3 = geojson.features.slice(((length/3) * 2) + 1, length);
   });
 
-  $scope.zoomToCountryExtent = function(extent){
+  //Initialize the ARC Region selector menu by loading the json file and writing out the names into the panel
+  $scope.regionList1 = null;
+  $scope.regionList2 = null;
+  $scope.regionList3 = null;
+  var vecResRegion = VectorProvider.createResource("arcregionextents");
+  vecResRegion.fetch(function(geojson){
+    //Sort alphabetically
+    geojson.features = geojson.features.sort(function(a,b){
+      var textA = a.properties.arcregion2;
+      var textB = b.properties.arcregion2;
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
+
+    //Break up the file into thirds
+    var length = geojson.features.length;
+    $scope.regionList1 = geojson.features.slice(0, 2);
+    $scope.regionList2 = geojson.features.slice(2, 3);
+    $scope.regionList3 = geojson.features.slice(3, 4);
+  });
+
+  //Function to Zoom to a selected Extent
+  $scope.zoomToExtent = function(extent){
     $scope.bounds = {
       northEast: { lat: extent[2][1], lng: extent[2][0] },
       southWest: { lat: extent[0][1], lng: extent[0][0] }
     };
+    //Trigger the menu to collapse
+    $scope.countrySelectorVisible = false;
   };
 
 
