@@ -48,36 +48,31 @@
                     <div class="NavButtonGroup btn-group">
                         <button type="button" class="btn btn-default"   ng-mouseenter="isStoriesActive = isNotState('stories')"
                                                                         ng-mouseleave="isStoriesActive=false"
-                                                                        ng-click="isStoriesActive=false"
-                                                                        ui-sref="stories(params)"
+                                                                        ng-click="toggleState('stories')"
                                                                         ng-class="{on: isState('stories')}">
                             <i data-icon="b"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isLayersActive = isNotState('layers')"
                                                                         ng-mouseleave="isLayersActive=false"
-                                                                        ng-click="isLayersActive=false"
-                                                                        ui-sref="layers(params)"
+                                                                        ng-click="toggleState('layers')"
                                                                         ng-class="{on: isState('layers')}">
                             <i data-icon="d"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isFiltersActive = isNotState('filters')"
                                                                         ng-mouseleave="isFiltersActive=false"
-                                                                        ng-click="isFiltersActive=false"
-                                                                        ui-sref="filters(params)"
+                                                                        ng-click="toggleState('filters')"
                                                                         ng-class="{on: isState('filters')}">
                             <i data-icon="e"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isLegendActive = isNotState('legend')"
                                                                         ng-mouseleave="isLegendActive=false"
-                                                                        ng-click="isLegendActive=false"
-                                                                        ui-sref="legend(params)"
+                                                                        ng-click="toggleState('legend')"
                                                                         ng-class="{on: isState('legend')}">
                             <i data-icon="f"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isBasemapsActive = isNotState('basemaps')"
                                                                         ng-mouseleave="isBasemapsActive=false"
-                                                                        ng-click="isBasemapsActive=false"
-                                                                        ui-sref="basemaps(params)"
+                                                                        ng-click="toggleState('basemaps')"
                                                                         ng-class="{on: isState('basemaps')}">
                             <i data-icon="g"></i>
                         </button>
@@ -107,8 +102,7 @@
                     <div class="NavButtonGroup btn-group bottom">
                         <button type="button" class="btn btn-default"   ng-mouseenter="isInfoActive = isNotState('info')"
                                                                         ng-mouseleave="isInfoActive=false"
-                                                                        ng-click="isInfoActive=false"
-                                                                        ui-sref="info(params)"
+                                                                        ng-click="toggleState('info')"
                                                                         ng-class="{on: isState('info')}">
                             <i data-icon="o"></i>
                         </button>
