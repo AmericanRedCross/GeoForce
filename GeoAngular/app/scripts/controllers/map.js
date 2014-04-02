@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, leafletData, LayerConfig, VectorProvider) {
+angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider) {
   console.log('MapCtrl');
 
   $scope.routeParams = window.RouteParams;
@@ -33,12 +33,12 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   var overlayNames = [];
 
   function redraw() {
-    if ($state.current.name === 'landing') {
-      console.log('landing');
-      $scope.blur = 'blur';
-    } else {
-      $scope.blur = '';
-    }
+//    if ($state.current.name === 'landing') {
+//      console.log('landing');
+//      $scope.blur = 'blur';
+//    } else {
+//      $scope.blur = '';
+//    }
     var lat = parseFloat(RouteParams.lat)   || 0;
     var lng = parseFloat(RouteParams.lng)   || 0;
     var zoom = parseFloat(RouteParams.zoom) || 2;
@@ -89,6 +89,14 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
   });
 
+  $scope.$on('blur', function() {
+    $scope.blur = 'blur';
+  });
+
+//  $scope.$on('blur', function() {
+//    $scope.blur = 'blur';
+//  });
+
 
   leafletData.getMap().then(function (map) {
     map.on('moveend', function () { // move is good too
@@ -105,6 +113,11 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
         RouteParams.lat = lat;
         RouteParams.lng = lng;
         RouteParams.zoom = zoom;
+        $state.go($state.current.name, {
+          lat: lat,
+          lng: lng,
+          zoom: zoom
+        });
       }
 
     });
