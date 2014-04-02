@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider, leafletBoundsHelpers) {
+angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider) {
   console.log('MapCtrl');
 
   var lastLayersStr = '';

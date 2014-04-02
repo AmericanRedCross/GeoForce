@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('LegendCtrl', function($scope, $routeParams, $location, Route) {
+angular.module('GeoAngular').controller('LegendCtrl', function($scope) {
   console.log('LegendCtrl');
-  $scope.navTo = Route.navTo;
+
 });
