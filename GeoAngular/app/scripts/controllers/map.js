@@ -16,56 +16,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   //Init selectedFeatureTitle property
   $scope.selectedFeatureTitle = "Philippines";
 
-  //Initialize the country selector menu by loading the json file and writing out the names into the panel
-  $scope.countryList1 = null;
-  $scope.countryList2 = null;
-  $scope.countryList3 = null;
-  var vecRes = VectorProvider.createResource("countryextents");
-  vecRes.fetch(function(geojson){
-    //Sort alphabetically
-    geojson.features = geojson.features.sort(function(a,b){
-      var textA = a.properties.name_0;
-      var textB = b.properties.name_0;
-      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-    });
-
-    //Break up the file into thirds
-    var length = geojson.features.length;
-    $scope.countryList1 = geojson.features.slice(0, length/3);
-    $scope.countryList2 = geojson.features.slice(length/3 + 1, (length/3) * 2);
-    $scope.countryList3 = geojson.features.slice(((length/3) * 2) + 1, length);
-  });
-
-  //Initialize the ARC Region selector menu by loading the json file and writing out the names into the panel
-  $scope.regionList1 = null;
-  $scope.regionList2 = null;
-  $scope.regionList3 = null;
-  var vecResRegion = VectorProvider.createResource("arcregionextents");
-  vecResRegion.fetch(function(geojson){
-    //Sort alphabetically
-    geojson.features = geojson.features.sort(function(a,b){
-      var textA = a.properties.arcregion2;
-      var textB = b.properties.arcregion2;
-      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-    });
-
-    //Break up the file into thirds
-    var length = geojson.features.length;
-    $scope.regionList1 = geojson.features.slice(0, 2);
-    $scope.regionList2 = geojson.features.slice(2, 3);
-    $scope.regionList3 = geojson.features.slice(3, 4);
-  });
-
-  //Function to Zoom to a selected Extent
-  $scope.zoomToExtent = function(extent){
-    $scope.bounds = {
-      northEast: { lat: extent[2][1], lng: extent[2][0] },
-      southWest: { lat: extent[0][1], lng: extent[0][0] }
-    };
-    //Trigger the menu to collapse
-    $scope.countrySelectorVisible = false;
+  $scope.toggleState = function(stateName) {
+    var state = $state.current.name !== stateName ? stateName : 'main';
+    $state.go(state, $stateParams);
   };
-
 
   //Initialize the dummy project/disaster click results - this needs to be moved to a new controller
   $scope.groupings = { 'Projects': { items: [
@@ -118,6 +72,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   }
   redraw();
 
+
+  /***
+   * Broadcast Listeners.
+   */
   $scope.$on('route-update', function() {
     if ($scope.blur === 'blur' && $state.current.name !== 'landing') {
       $scope.blur = '';
@@ -141,6 +99,19 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     $scope.blur = 'blur';
   });
 
+  $scope.$on('zoom-to-extent', function(event, extent) {
+    console.log('map broadcast received: zoom-to-extent');
+
+    $scope.bounds = {
+      northEast: { lat: extent[2][1], lng: extent[2][0] },
+      southWest: { lat: extent[0][1], lng: extent[0][0] }
+    };
+  });
+
+
+  /**
+   * Native Leaflet Map Object
+   */
   leafletData.getMap().then(function (map) {
     map.on('moveend', function () { // move is good too
       var c = map.getCenter();

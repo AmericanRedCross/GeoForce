@@ -129,7 +129,7 @@
 
                     <!-- Upper Right Toolbar in Map -->
                     <div id="MapUpperRightToolbarWrapper">
-                        <div class="btn" ng-click="countrySelectorVisible = !countrySelectorVisible">
+                        <div class="btn" ng-click="toggleState('zoom-extent')">
                             <button class="side-view-close btn btn-lg btn-danger" ng-click=""><span class="glyphicon glyphicon-chevron-down"></span></button>
                             World
                         </div>
@@ -138,42 +138,8 @@
                         <div class="search" data-icon="m"></div>
                     </div>
 
-                    <!--NH TODO: put subsequent html in this view-->
                     <div ui-view="uppermenu"></div>
-                    
-                    <!-- Upper Right Toolbar in Map -->
-                    <div id="CountrySelectorPanelWrapper" ng-class="{on: countrySelectorVisible}">
-                        <div id="RegionArea">
-                            <div class="title">Regions:</div>
-                            <div class="row content">
-                                <div class="col-md-4" id="RegionContainer1">
-                                    <div ng-repeat="region in regionList1" ng-click="zoomToExtent(region.geometry.coordinates[0])" class="countryListItem">{{region.properties.arcregion2}}</div>
-                                </div>
-                                <div class="col-md-4" id="RegionContainer2">
-                                    <div ng-repeat="region in regionList2" ng-click="zoomToExtent(region.geometry.coordinates[0])" class="countryListItem">{{region.properties.arcregion2}}</div>
-                                </div>
-                                <div class="col-md-4" id="RegionContainer3">
-                                    <div ng-repeat="region in regionList3" ng-click="zoomToExtent(region.geometry.coordinates[0])" class="countryListItem">{{region.properties.arcregion2}}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="horizontal-separator"></div>
-                        <div id="CountryArea">
-                            <div class="title">Countries:</div>
-                            <div class="row content">
-                                <div class="col-md-4" id="CountryContainer1">
-                                    <div ng-repeat="country in countryList1" ng-click="zoomToExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
-                                </div>
-                                <div class="col-md-4" id="CountryContainer2">
-                                    <div ng-repeat="country in countryList2" ng-click="zoomToExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
-                                </div>
-                                <div class="col-md-4" id="CountryContainer3">
-                                    <div ng-repeat="country in countryList3" ng-click="zoomToExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
 
                     <!-- Bottom Right Theme Selector -->
                     <nav id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom" role="navigation">

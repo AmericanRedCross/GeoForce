@@ -132,7 +132,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
           template: 'in zoom-extent state',
           controller: 'MainCtrl'
         },
-        'landing': {
+        'uppermenu': {
           templateUrl: 'views/zoom-extent.html',
           controller: 'ZoomExtentCtrl'
         }
