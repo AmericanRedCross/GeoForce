@@ -12,11 +12,17 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
   // 'contacts.list' or one of its decendents is active.
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
+
+  window.$state = $state;
+  window.$stateParams = $stateParams;
+
 });
 
 GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider
-    .when('/redirect', '/map@0,0,2(redcross,gdacstest)')
+    //NH TODO: do this differently. This way is just nice for deving.
+    .when('/landing', '/map@0,0,2(redcross,gdacstest)/landing')
+    .when('/main', '/map@0,0,2(redcross,gdacstest)')
     .otherwise('/map@0,0,2(pinterest,phl)');
 
   $stateProvider
@@ -24,20 +30,24 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       url: '/map@:lat,:lng,:zoom(*layers)',
       views: {
         'details': {
-          template: 'main.js details view in main state',
+          template: 'in main state',
           controller: 'AppCtrl'
         }
       }
     })
-//    .state('test', {
-//      url: '/test',
-//      views: {
-//        'details': {
-//          template: 'main.js details view in test state',
-//          controller: 'AppCtrl'
-//        }
-//      }
-//    });
+    .state('landing', {
+      url: '/map@:lat,:lng,:zoom(*layers)/landing',
+      views: {
+        'details': {
+          template: 'in landing state',
+          controller: 'AppCtrl'
+        },
+        'landing': {
+          templateUrl: 'views/landing.html',
+          controller: 'LandingCtrl'
+        }
+      }
+    });
 
 });
 
