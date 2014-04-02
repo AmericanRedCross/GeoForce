@@ -5,5 +5,6 @@
 
 angular.module('GeoAngular').controller('BasemapsCtrl', function($scope) {
   console.log('BasemapsCtrl');
+  $scope.params = $stateParams;
 
 });

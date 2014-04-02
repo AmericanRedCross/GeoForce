@@ -5,5 +5,6 @@
 
 angular.module('GeoAngular').controller('LayersCtrl', function($scope) {
   console.log('LayersCtrl');
+  $scope.params = $stateParams;
 
 });
