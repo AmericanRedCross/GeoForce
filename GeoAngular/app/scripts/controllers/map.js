@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, LayerConfig, VectorProvider) {
+angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData, LayerConfig, VectorProvider, leafletBoundsHelpers) {
   console.log('MapCtrl');
 
   $scope.routeParams = window.RouteParams;
@@ -16,6 +16,27 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
 
   //Init selectedFeatureTitle property
   $scope.selectedFeatureTitle = "Philippines";
+
+  //Initialize the country selector menu by loading the json file and writing out the names into the panel
+  $scope.countryList1 = null;
+  $scope.countryList2 = null;
+  $scope.countryList3 = null;
+  var vecRes = VectorProvider.createResource("countryextents");
+  vecRes.fetch(function(geojson){
+    //Break up the file into thirds
+    var length = geojson.features.length;
+    $scope.countryList1 = geojson.features.slice(0, length/3);
+    $scope.countryList2 = geojson.features.slice(length/3 + 1, (length/3) * 2);
+    $scope.countryList3 = geojson.features.slice(((length/3) * 2) + 1, length);
+  });
+
+  $scope.zoomToCountryExtent = function(extent){
+    $scope.bounds = {
+      northEast: { lat: extent[2][1], lng: extent[2][0] },
+      southWest: { lat: extent[0][1], lng: extent[0][0] }
+    };
+  };
+
 
   //Initialize the dummy project/disaster click results - this needs to be moved to a new controller
   $scope.groupings = { 'Projects': { items: [
@@ -113,6 +134,8 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, leafletData
     window.layout.panes.center.bind("layoutpaneonresize_end", function () {
       map.invalidateSize();
     });
+
+
   });
 
 
