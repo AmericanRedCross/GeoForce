@@ -67,6 +67,12 @@ html, body {
     font-size: 21px;
     font-family: oswaldregular;
     cursor: pointer;
+
+}
+
+#MapUpperRightToolbarWrapper .btn{
+    border-radius: 0px;
+    border: 0px;
 }
 
 #MapUpperRightToolbarWrapper div.light {
@@ -81,6 +87,18 @@ html, body {
     line-height: 47px;
 }
 
+#MapUpperRightToolbarWrapper > div > button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 6px;
+    font-size: 6px;
+}
+
+#CountrySelectorPanelWrapper > div.horizontal-separator {
+    border-bottom: 1px solid #b9b8b8;
+    margin: 20px 0;
+}
 /* End Map Top Right Toolbar */
 
 /* Theme Selector Menu */
@@ -245,6 +263,7 @@ html, body {
     padding: 20px;
     background-color: #fff;
     cursor:pointer;
+    border-radius: 0px;
 }
 
 .on #DetailsNub {
@@ -321,3 +340,52 @@ html, body {
 }
 
 /* End Details Panel*/
+
+
+/* Country Selector */
+
+#CountrySelectorPanelWrapper{
+   position:absolute;
+   width: 400px;
+   right: 137px;
+   background-color: #fff;
+    -moz-transition: all .5s ease; /* This is the animation UP for the country selector wrapper */
+    -webkit-transition: all .5s ease; /* This is the animation UP for the country selector wrapper */
+    -ms-transition: all .5s ease; /* This is the animation UP for the country selector wrapper */
+    top: -2775px;
+    padding: 20px 25px;
+}
+
+#CountrySelectorPanelWrapper.on{
+    display:block;
+    top: 58px;
+    -moz-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
+    -webkit-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
+    -ms-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
+}
+
+#CountrySelectorPanelWrapper div.title {
+    text-transform: uppercase;
+    font-family: oswaldregular;
+    font-size: 16px;
+    color: #3f3f3f;
+    margin-bottom: 15px;
+}
+
+#CountrySelectorPanelWrapper .countryListItem {
+    cursor: pointer;
+    margin: 5px 0;
+    color: #3c7fad;
+}
+
+#CountrySelectorPanelWrapper .countryListItem:hover {
+    text-decoration: underline;
+}
+
+#CountryArea .content {
+    height: 208px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* End Country selector */

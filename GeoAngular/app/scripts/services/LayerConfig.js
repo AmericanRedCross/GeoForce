@@ -51,6 +51,12 @@ angular.module('GeoAngular').service('LayerConfig', function () {
     url: 'data/test/vw_projects_by_country.geojson'
   };
 
+  //GADM country extents, level 0
+  this.countryextents = {
+    type: 'geojson',
+    url: 'data/vw_gadm_raw_geom.geojson'
+  };
+
   /**
    * KML
    */
