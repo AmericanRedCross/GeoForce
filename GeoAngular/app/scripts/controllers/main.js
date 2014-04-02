@@ -1,5 +1,5 @@
-angular.module('GeoAngular').controller('AppCtrl', function($scope, $rootScope, $state, $stateParams) {
-  console.log('AppCtrl');
+angular.module('GeoAngular').controller('MainCtrl', function($scope, $rootScope, $state, $stateParams) {
+  console.log('MainCtrl');
 
   // NH TODO: See if this is also the case with ui-router?
   // weird bug where redirect peels out '://{s' when ':' is there
