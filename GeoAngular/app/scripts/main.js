@@ -20,7 +20,6 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
 
 GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider
-    //NH TODO: do this differently. This way is just nice for deving.
     .when('/landing', '/map@0,0,2(redcross,gdacstest)/landing')
     .when('/main', '/map@0,0,2(redcross,gdacstest)')
     .otherwise('/map@0,0,2(pinterest,phl)/landing');
@@ -45,6 +44,84 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
         'landing': {
           templateUrl: 'views/landing.html',
           controller: 'LandingCtrl'
+        }
+      }
+    })
+    .state('stories', {
+      url: '/map@:lat,:lng,:zoom(*layers)/stories',
+      views: {
+        'details': {
+          template: 'in stories state',
+          controller: 'AppCtrl'
+        },
+        'leftmenu': {
+          templateUrl: 'views/stories.html',
+          controller: 'StoriesCtrl'
+        }
+      }
+    })
+    .state('layers', {
+      url: '/map@:lat,:lng,:zoom(*layers)/layers',
+      views: {
+        'details': {
+          template: 'in layers state',
+          controller: 'AppCtrl'
+        },
+        'landing': {
+          templateUrl: 'views/layers.html',
+          controller: 'LayersCtrl'
+        }
+      }
+    })
+    .state('filters', {
+      url: '/map@:lat,:lng,:zoom(*layers)/filters',
+      views: {
+        'details': {
+          template: 'in filters state',
+          controller: 'AppCtrl'
+        },
+        'landing': {
+          templateUrl: 'views/filters.html',
+          controller: 'FiltersCtrl'
+        }
+      }
+    })
+    .state('legend', {
+      url: '/map@:lat,:lng,:zoom(*layers)/legend',
+      views: {
+        'details': {
+          template: 'in legend state',
+          controller: 'AppCtrl'
+        },
+        'landing': {
+          templateUrl: 'views/legend.html',
+          controller: 'LegendCtrl'
+        }
+      }
+    })
+    .state('info', {
+      url: '/map@:lat,:lng,:zoom(*layers)/info',
+      views: {
+        'details': {
+          template: 'in info state',
+          controller: 'AppCtrl'
+        },
+        'landing': {
+          templateUrl: 'views/info.html',
+          controller: 'InfoCtrl'
+        }
+      }
+    })
+    .state('basemaps', {
+      url: '/map@:lat,:lng,:zoom(*layers)/basemaps',
+      views: {
+        'details': {
+          template: 'in basemaps state',
+          controller: 'AppCtrl'
+        },
+        'landing': {
+          templateUrl: 'views/basemaps.html',
+          controller: 'BasemapsCtrl'
         }
       }
     });
