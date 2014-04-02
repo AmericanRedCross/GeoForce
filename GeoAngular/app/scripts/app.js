@@ -30,7 +30,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       views: {
         'details': {
           template: 'in main state',
-          controller: 'AppCtrl'
+          controller: 'MainCtrl'
         }
       }
     })
@@ -39,7 +39,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       views: {
         'details': {
           template: 'in landing state',
-          controller: 'AppCtrl'
+          controller: 'MainCtrl'
         },
         'landing': {
           templateUrl: 'views/landing.html',
@@ -52,7 +52,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       views: {
         'details': {
           template: 'in stories state',
-          controller: 'AppCtrl'
+          controller: 'MainCtrl'
         },
         'leftmenu': {
           templateUrl: 'views/stories.html',
@@ -65,7 +65,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       views: {
         'details': {
           template: 'in layers state',
-          controller: 'AppCtrl'
+          controller: 'MainCtrl'
         },
         'landing': {
           templateUrl: 'views/layers.html',
@@ -78,7 +78,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       views: {
         'details': {
           template: 'in filters state',
-          controller: 'AppCtrl'
+          controller: 'MainCtrl'
         },
         'landing': {
           templateUrl: 'views/filters.html',
@@ -91,7 +91,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       views: {
         'details': {
           template: 'in legend state',
-          controller: 'AppCtrl'
+          controller: 'MainCtrl'
         },
         'landing': {
           templateUrl: 'views/legend.html',
@@ -104,7 +104,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       views: {
         'details': {
           template: 'in info state',
-          controller: 'AppCtrl'
+          controller: 'MainCtrl'
         },
         'landing': {
           templateUrl: 'views/info.html',
@@ -117,11 +117,24 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       views: {
         'details': {
           template: 'in basemaps state',
-          controller: 'AppCtrl'
+          controller: 'MainCtrl'
         },
         'landing': {
           templateUrl: 'views/basemaps.html',
           controller: 'BasemapsCtrl'
+        }
+      }
+    })
+    .state('zoom-extent', {
+      url: '/map@:lat,:lng,:zoom(*layers)/zoom-extent',
+      views: {
+        'details': {
+          template: 'in zoom-extent state',
+          controller: 'MainCtrl'
+        },
+        'landing': {
+          templateUrl: 'views/zoom-extent.html',
+          controller: 'ZoomExtentCtrl'
         }
       }
     });
