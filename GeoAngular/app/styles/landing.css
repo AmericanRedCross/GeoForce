@@ -54,7 +54,14 @@
 
 /* End Giant Circle */
 
-/* Blurry Window BlurryWindow */
+/* Map Window Effects */
+.windowEffects{
+    height: 100%;
+    width: 100%;
+    display:none;
+    position: absolute;
+}
+
 .blur {
     -webkit-filter: blur(4px);
     -moz-filter: blur(4px);
@@ -62,5 +69,13 @@
     -ms-filter: blur(4px);
     filter: blur(4px);
     opacity: 1;
+    display:block;
 }
-/* End Blurry Window */
+
+.grayout{
+    background-color: #000;
+    opacity: 0.5;
+    display: block;
+    z-index: 1;
+}
+/* Map Window Effects */
