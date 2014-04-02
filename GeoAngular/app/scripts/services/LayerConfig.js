@@ -57,6 +57,12 @@ angular.module('GeoAngular').service('LayerConfig', function () {
     url: 'data/vw_gadm_raw_geom.geojson'
   };
 
+  //ARC Region extents
+  this.arcregionextents = {
+    type: 'geojson',
+    url: 'data/arc_regions_dissolved.geojson'
+  };
+
   /**
    * KML
    */

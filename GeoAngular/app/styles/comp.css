@@ -346,14 +346,15 @@ html, body {
 
 #CountrySelectorPanelWrapper{
    position:absolute;
-   width: 400px;
-   right: 137px;
+    width: 536px;
+    right: 0px;
    background-color: #fff;
     -moz-transition: all .5s ease; /* This is the animation UP for the country selector wrapper */
     -webkit-transition: all .5s ease; /* This is the animation UP for the country selector wrapper */
     -ms-transition: all .5s ease; /* This is the animation UP for the country selector wrapper */
     top: -2775px;
     padding: 20px 25px;
+    z-index: 1;
 }
 
 #CountrySelectorPanelWrapper.on{
