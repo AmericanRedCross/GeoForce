@@ -46,19 +46,19 @@
             <div id="NavBar" class="ui-layout-west" ng-controller="NavBarCtrl">
                     <div id="ARCLogo"></div>
                     <div class="NavButtonGroup btn-group">
-                        <button type="button" class="btn btn-default" ng-mouseenter="isStoriesActive = true" ng-mouseleave="isStoriesActive=false" ng-click="navTo('stories')">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isStoriesActive = true" ng-mouseleave="isStoriesActive=false" ui-sref="stories(params)">
                             <i data-icon="b"></i>
                         </button>
-                        <button type="button" class="btn btn-default" ng-mouseenter="isLayersActive = true" ng-mouseleave="isLayersActive=false" ng-click="navTo('layers')">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isLayersActive = true" ng-mouseleave="isLayersActive=false" ui-sref="layers(params)">
                             <i data-icon="d"></i>
                         </button>
-                        <button type="button" class="btn btn-default" ng-mouseenter="isFiltersActive = true" ng-mouseleave="isFiltersActive=false" ng-click="navTo('filters')">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isFiltersActive = true" ng-mouseleave="isFiltersActive=false" ui-sref="filters(params)">
                             <i data-icon="e"></i>
                         </button>
-                        <button type="button" class="btn btn-default" ng-mouseenter="isLegendActive = true" ng-mouseleave="isLegendActive=false" ng-click="navTo('legend')">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isLegendActive = true" ng-mouseleave="isLegendActive=false" ui-sref="legend(params)">
                             <i data-icon="f"></i>
                         </button>
-                        <button type="button" class="btn btn-default" ng-mouseenter="isBasemapsActive = true" ng-mouseleave="isBasemapsActive=false" ng-click="navTo('basemaps')">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isBasemapsActive = true" ng-mouseleave="isBasemapsActive=false" ui-sref="basemaps(params)">
                             <i data-icon="g"></i>
                         </button>
                     </div>
@@ -85,7 +85,7 @@
 
                     </div>
                     <div class="NavButtonGroup btn-group bottom">
-                        <button type="button" class="btn btn-default" ng-mouseenter="isInfoActive = true" ng-mouseleave="isInfoActive=false" ng-click="navTo('info')">
+                        <button type="button" class="btn btn-default" ng-mouseenter="isInfoActive = true" ng-mouseleave="isInfoActive=false" ui-sref="info(params)">
                             <i data-icon="o"></i>
                         </button>
                     </div>
