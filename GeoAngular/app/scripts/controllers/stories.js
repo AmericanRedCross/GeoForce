@@ -3,10 +3,9 @@
  *       on 3/26/14.
  */
 
-angular.module('GeoAngular').controller('StoriesCtrl', function($scope, $routeParams, $location, Route) {
+angular.module('GeoAngular').controller('StoriesCtrl', function($scope, $stateParams) {
   console.log('StoriesCtrl');
-
-  $scope.navTo = Route.navTo;
+  $scope.params = $stateParams;
 
   //resize function
   $scope.resizeStoriesScrollablePanel = function(){

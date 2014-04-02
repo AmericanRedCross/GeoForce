@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('InfoCtrl', function($scope, $routeParams, $location, Route) {
+angular.module('GeoAngular').controller('InfoCtrl', function($scope) {
   console.log('InfoCtrl');
-  $scope.navTo = Route.navTo;
+
 });

@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $routeParams, $location, Route) {
+angular.module('GeoAngular').controller('FiltersCtrl', function($scope) {
   console.log('FiltersCtrl');
-  $scope.navTo = Route.navTo;
+
 });

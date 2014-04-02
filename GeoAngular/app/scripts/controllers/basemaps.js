@@ -3,9 +3,7 @@
  *       on 3/28/14.
  */
 
-angular.module('GeoAngular').controller('BasemapsCtrl', function($scope, $routeParams, $location, Route) {
+angular.module('GeoAngular').controller('BasemapsCtrl', function($scope) {
   console.log('BasemapsCtrl');
-
-  $scope.navTo = Route.navTo;
 
 });
