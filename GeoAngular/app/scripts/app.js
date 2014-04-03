@@ -26,7 +26,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('main', {
-      url: '/map@:lat,:lng,:zoom(*layers)',
+      url: '/map@:lat,:lng,:zoom(*layers)?title',
       views: {
         'details': {
           template: 'in main state',
@@ -126,7 +126,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('zoom-extent', {
-      url: '/map@:lat,:lng,:zoom(*layers)/zoom-extent?extname&extbounds',
+      url: '/map@:lat,:lng,:zoom(*layers)/zoom-extent?title',
       views: {
         'details': {
           template: 'in zoom-extent state',
