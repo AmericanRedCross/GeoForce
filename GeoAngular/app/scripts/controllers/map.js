@@ -7,6 +7,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   console.log('MapCtrl');
 
   var lastLayersStr = '';
+  var title = $scope.title = $stateParams.title || 'World';
   $scope.blur = '';
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
 
@@ -37,7 +38,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   var overlayNames = [];
 
   function redraw() {
-
+    $scope.title = $stateParams.title || 'World';
     var lat = parseFloat($stateParams.lat)   || 0;
     var lng = parseFloat($stateParams.lng)   || 0;
     var zoom = parseFloat($stateParams.zoom) || 2;
@@ -87,6 +88,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     if (   $stateParams.lat    !== lat
         || $stateParams.lng    !== lng
         || $stateParams.zoom   !== zoom
+        || $stateParams.title  !== title
         || $stateParams.layers !== layersStr ) {
 
       console.log('map.js route-update Updating Map...');

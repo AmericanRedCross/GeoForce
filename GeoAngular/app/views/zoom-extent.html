@@ -3,13 +3,28 @@
         <div class="title">Regions:</div>
         <div class="row content">
             <div class="col-md-4" id="RegionContainer1">
-                <div ng-repeat="region in regionList1" ng-click="zoomToExtent(region.geometry.coordinates[0])" class="countryListItem">{{region.properties.arcregion2}}</div>
+                <div    ng-repeat="region in regionList1"
+                        ng-click="zoomToExtent(region.geometry.coordinates[0], region.properties.arcregion2)"
+                        class="countryListItem">
+
+                    {{region.properties.arcregion2}}
+                </div>
             </div>
             <div class="col-md-4" id="RegionContainer2">
-                <div ng-repeat="region in regionList2" ng-click="zoomToExtent(region.geometry.coordinates[0])" class="countryListItem">{{region.properties.arcregion2}}</div>
+                <div    ng-repeat="region in regionList2"
+                        ng-click="zoomToExtent(region.geometry.coordinates[0], region.properties.arcregion2)"
+                        class="countryListItem">
+
+                    {{region.properties.arcregion2}}
+                </div>
             </div>
             <div class="col-md-4" id="RegionContainer3">
-                <div ng-repeat="region in regionList3" ng-click="zoomToExtent(region.geometry.coordinates[0])" class="countryListItem">{{region.properties.arcregion2}}</div>
+                <div    ng-repeat="region in regionList3"
+                        ng-click="zoomToExtent(region.geometry.coordinates[0], region.properties.arcregion2)"
+                        class="countryListItem">
+
+                    {{region.properties.arcregion2}}
+                </div>
             </div>
         </div>
     </div>
@@ -18,13 +33,28 @@
         <div class="title">Countries:</div>
         <div class="row content">
             <div class="col-md-4" id="CountryContainer1">
-                <div ng-repeat="country in countryList1" ng-click="zoomToExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
+                <div    ng-repeat="country in countryList1"
+                        ng-click="zoomToExtent(country.geometry.coordinates[0], country.properties.name_0)"
+                        class="countryListItem">
+
+                    {{country.properties.name_0}}
+                </div>
             </div>
             <div class="col-md-4" id="CountryContainer2">
-                <div ng-repeat="country in countryList2" ng-click="zoomToExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
+                <div    ng-repeat="country in countryList2"
+                        ng-click="zoomToExtent(country.geometry.coordinates[0], country.properties.name_0)"
+                        class="countryListItem">
+
+                    {{country.properties.name_0}}
+                </div>
             </div>
             <div class="col-md-4" id="CountryContainer3">
-                <div ng-repeat="country in countryList3" ng-click="zoomToExtent(country.geometry.coordinates[0])" class="countryListItem">{{country.properties.name_0}}</div>
+                <div    ng-repeat="country in countryList3"
+                        ng-click="zoomToExtent(country.geometry.coordinates[0], country.properties.name_0)"
+                        class="countryListItem">
+
+                    {{country.properties.name_0}}
+                </div>
             </div>
         </div>
     </div>

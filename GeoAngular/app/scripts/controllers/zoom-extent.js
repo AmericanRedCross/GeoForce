@@ -49,11 +49,10 @@ angular.module('GeoAngular').controller('ZoomExtentCtrl', function($scope, $root
   });
 
   //Function to Zoom to a selected Extent
-  $scope.zoomToExtent = function(extent){
-
-    $rootScope.$broadcast('zoom-to-extent', extent);
-
+  $scope.zoomToExtent = function(extent, title){
+    $stateParams.title = title;
     $state.go('main', $stateParams);
+    $rootScope.$broadcast('zoom-to-extent', extent);
   };
 
 });
