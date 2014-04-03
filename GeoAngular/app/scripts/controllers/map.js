@@ -22,6 +22,8 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     $state.go(state, $stateParams);
   };
 
+
+
   //Initialize the dummy project/disaster click results - this needs to be moved to a new controller
   $scope.groupings = { 'Projects': { items: [
     {name: 'Project 1', id: 1},

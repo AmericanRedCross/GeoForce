@@ -13,6 +13,14 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
 
+  $rootScope.isState = function (stateName) {
+    return $state.$current.name === stateName;
+  };
+
+  $rootScope.isNotState = function (stateName) {
+    return $state.$current.name !== stateName;
+  };
+
   window.$state = $state;
   window.$stateParams = $stateParams;
 

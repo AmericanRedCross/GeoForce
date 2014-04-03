@@ -2,13 +2,7 @@ angular.module('GeoAngular').controller('NavBarCtrl', function($scope, $state, $
   console.log('NavBarCtrl');
   $scope.params = $stateParams;
 
-  $scope.isNotState = function (stateName) {
-    return $state.$current.name !== stateName;
-  };
 
-  $scope.isState = function (stateName) {
-    return $state.$current.name === stateName;
-  };
 
   $scope.toggleState = function(stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
