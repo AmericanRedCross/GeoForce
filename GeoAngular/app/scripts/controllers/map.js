@@ -116,7 +116,21 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
   function broadcastBBox() {
     leafletData.getMap().then(function (map) {
-      var str = map.getBounds().toBBoxString();
+      var bounds = map.getBounds();
+      var west = bounds.getWest();
+      var south = bounds.getSouth();
+      var east = bounds.getEast();
+      var north = bounds.getNorth();
+
+      if (west < -180) west = -180;
+      if (south < -90) south = -90;
+      if (east > 180) east = 180;
+      if (north > 90) north = 90;
+
+      var str = west.toFixed(6) + ',' +
+        south.toFixed(6) + ',' +
+        east.toFixed(6) + ',' +
+        north.toFixed(6);
 
       VectorProvider.updateBBox(str);
     });
@@ -177,34 +191,34 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
         // need to fetch data and redraw layer
         var vecRes = VectorProvider.createResource(overlayNames[i]);
-        vecRes.fetch(function(geojson){
+//        vecRes =
 
-          var geojsonLayer = L.geoJson(geojson, {
-            style: L.mapbox.simplestyle.style,
-            pointToLayer: function(feature, latlon) {
-              if (!feature.properties) feature.properties = {};
-              if (feature.properties.scale) {
-                return L.circleMarker(latlon, {
-                  fillColor: feature.properties.color || '#FF0000',
-                  radius: 20 * feature.properties.scale
-                });
-              }
-              return L.mapbox.marker.style(feature, latlon);
-            }
-          }).eachLayer(add).addTo(map);
-
-          function add(l) {
-            var properties = l.feature.properties;
-            console.log(JSON.stringify(properties));
-            l.on('click', function() {
-              console.log('clicked on feature: ' + JSON.stringify(properties));
-            })
-          }
-
-          geojsonLayer.name = name;
-          overlays.push(geojsonLayer);
-
-        });
+//        vecRes.fetch(function(geojson){
+//          var geojsonLayer = L.geoJson(geojson, {
+//            style: L.mapbox.simplestyle.style,
+//            pointToLayer: function(feature, latlon) {
+//              if (!feature.properties) feature.properties = {};
+//              if (feature.properties.scale) {
+//                return L.circleMarker(latlon, {
+//                  fillColor: feature.properties.color || '#FF0000',
+//                  radius: 20 * feature.properties.scale
+//                });
+//              }
+//              return L.mapbox.marker.style(feature, latlon);
+//            }
+//          }).eachLayer(add).addTo(map);
+//
+//          function add(l) {
+//            var properties = l.feature.properties;
+//            console.log(JSON.stringify(properties));
+//            l.on('click', function() {
+//              console.log('clicked on feature: ' + JSON.stringify(properties));
+//            })
+//          }
+//
+//          geojsonLayer.name = name;
+//          overlays.push(geojsonLayer);
+//        });
 
       }
 

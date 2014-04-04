@@ -30,6 +30,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   var bbox = null;
 
   /**
+   * When this is true, we can troll the server with a bounding box.
+   */
+  var trollTime = true;
+
+  /**
    * Every resource that has been instantiated.
    * @type {Array}
    */
@@ -172,7 +177,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     var url = this._bboxurl.replace(':bbox', bbox);
     var self = this;
     $http.get(url, {cache: true}).success(function (idsArr, status) {
-//      self.
+      console.log('idsArr: ' + JSON.stringify(idsArr));
     }).error(function() {
       //NH TODO Deal with proxy logic.
       console.error("Need to try proxy for _fetchForBBox");
@@ -248,11 +253,21 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
      */
     updateBBox: function(bboxStr) {
       bbox = bboxStr;
-      console.log('VectorProvider bbox: ' + bbox);
 
+      console.log('VectorProvider bbox: ' + bbox);
       for(var i = 0, len = bboxResources.length; i < len; ++i) {
         bboxResources[i]._fetchIDsForBBox();
       }
+
+//      if (trollTime) {
+//        trollTime = false;
+//
+//        timeout = setTimeout(function(){
+//
+//          trollTime = true;
+//        }, 250);
+//      }
+
     }
   };
 });

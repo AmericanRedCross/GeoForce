@@ -28,9 +28,9 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
 
 GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider
-    .when('/landing', '/map@0,0,2(redcross,gdacstest)/landing')
-    .when('/main', '/map@0,0,2(redcross,gdacstest)')
-    .otherwise('/map@0,0,2(pinterest,phl)/landing');
+    .when('/landing', '/map@0,0,2(redcross,smartgadm)/landing')
+    .when('/main', '/map@0,0,2(redcross,smartgadm)')
+    .otherwise('/map@0,0,2(pinterest,smartgadm)/landing');
 
   $stateProvider
     .state('main', {
