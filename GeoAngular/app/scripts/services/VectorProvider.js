@@ -167,14 +167,22 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   BBoxGeoJSON.prototype._getFeatures = function (featObj) {
     var url = this._url.replace(':level', featObj.level).replace(':ids', featObj.id);
     // not cached because we only fetch when we dont have the feature in the hash
-    $http.get(url).success(function (feat, status) {
+    $http.get(url).success(function (geojson, status) {
 
-      if (feat.error) {
-        console.error('Unable to fetch feature: ' + feat.error);
+      if (geojson.error) {
+        console.error('Unable to fetch feature: ' + geojson.error);
         return;
       }
-      angular.extend(featObj, feat[0]);
-      console.log('fetched feature: ' + featObj.name);
+      var feat = geojson.features[0];
+      for (var key in featObj) {
+        feat.properties[key] = featObj[key];
+        delete featObj[key];
+      }
+      for (var k in feat) {
+        featObj[k] = feat[k];
+      }
+      angular.extend(featObj, feat);
+      console.log('fetched feature: ' + featObj.properties.name);
 
     }).error(function(err) {
       //NH TODO Deal with proxy logic.
