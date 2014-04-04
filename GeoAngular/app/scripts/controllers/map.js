@@ -71,6 +71,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
       zoom: zoom
     };
 
+    broadcastBBox();
     lastLayersStr = layersStr;
   }
   redraw();
@@ -113,6 +114,19 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   });
 
 
+  function broadcastBBox() {
+    leafletData.getMap().then(function (map) {
+      var bounds = map.getBounds();
+      var str = bounds.getSouth().toFixed(6) + ',' +
+        bounds.getWest().toFixed(6) + ',' +
+        bounds.getNorth().toFixed(6) + ',' +
+        bounds.getEast().toFixed(6);
+
+      VectorProvider.updateBBox(str);
+    });
+  }
+
+
   /**
    * Native Leaflet Map Object
    */
@@ -136,6 +150,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
           lng: lng,
           zoom: zoom
         });
+        broadcastBBox();
       }
 
     });
@@ -185,6 +200,9 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
           function add(l) {
             var properties = l.feature.properties;
             console.log(JSON.stringify(properties));
+            l.on('click', function() {
+              console.log('clicked on feature: ' + JSON.stringify(properties));
+            })
           }
 
           geojsonLayer.name = name;
