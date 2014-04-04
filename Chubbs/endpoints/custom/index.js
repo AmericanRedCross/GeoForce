@@ -131,7 +131,7 @@ exports.app = function(passport) {
         } else {
           //They provided no arguments, so just load the empty page
           //Render HTML page with results at bottom
-          this.args.infoMessage = "No arguments were provided.";
+          this.args.errorMessage = "No arguments were provided.";
           common.respond(this.req, this.res, this.args);
         }
 
