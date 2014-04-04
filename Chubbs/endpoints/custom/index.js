@@ -180,6 +180,7 @@ exports.app = function(passport) {
 		if (err) {
 			//Report error and exit.
 			this.args.errorMessage = err;
+      this();
 		} else {
 			//success
 			//Write out results to page
