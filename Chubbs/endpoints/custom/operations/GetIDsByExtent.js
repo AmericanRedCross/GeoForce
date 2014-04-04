@@ -70,10 +70,7 @@ operation.isInputValid = function (input) {
 }
 
 /*sample bbox zoomed to seattle
-"-122.57377624511719,47.50143120349543,-122.04471588134767,47.68642357794369"
-"minx, miny, maxx, maxy"
-PostGres polygon is 'POLYGON((minx miny, minx maxy, maxx maxy, maxx miny, minx miny))'
-So 'POLYGON((-122.573776 47.50143, -122.573776 47.68642, -122.04471 47.68642, -122.04471 47.50143, -122.573776 47.50143))'*/
+"miny,minx,maxy,maxx"
 operation.convertBBoxToWKT = function(bbox){
    var bboxcoords = bbox.split(',');
    var corners = { minx: bboxcoords[0], miny: bboxcoords[1], maxx: bboxcoords[2], maxy: bboxcoords[3]};
