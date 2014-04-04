@@ -199,7 +199,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
         // need to fetch data and redraw layer
         var vecRes = VectorProvider.createResource(overlayNames[i]);
-//        vecRes =
+        var layer = vecRes.getLayer();
+        debug.layer = layer;
+
+        layer.addTo(map);
 
 //        vecRes.fetch(function(geojson){
 //          var geojsonLayer = L.geoJson(geojson, {
