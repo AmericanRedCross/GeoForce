@@ -30,6 +30,13 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   var bbox = null;
 
   /**
+   * Whenever we get a bbox, we put it in a hash and have it == true.
+   * This is so we can check to see if we have ever requested the given
+   * bbox and only ever ask for it once.
+   */
+  var bboxHash = {};
+
+  /**
    * Every resource that has been instantiated.
    * @type {Array}
    */
@@ -172,7 +179,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     var url = this._bboxurl.replace(':bbox', bbox);
     var self = this;
     $http.get(url, {cache: true}).success(function (idsArr, status) {
-//      self.
+      console.log('idsArr: ' + JSON.stringify(idsArr));
     }).error(function() {
       //NH TODO Deal with proxy logic.
       console.error("Need to try proxy for _fetchForBBox");
@@ -248,11 +255,16 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
      */
     updateBBox: function(bboxStr) {
       bbox = bboxStr;
-      console.log('VectorProvider bbox: ' + bbox);
 
-      for(var i = 0, len = bboxResources.length; i < len; ++i) {
-        bboxResources[i]._fetchIDsForBBox();
+      var alreadyFetched = bboxHash[bboxStr];
+      if (!alreadyFetched) {
+        bboxHash[bboxStr] = true;
+        console.log('VectorProvider bbox: ' + bbox);
+        for(var i = 0, len = bboxResources.length; i < len; ++i) {
+          bboxResources[i]._fetchIDsForBBox();
+        }
       }
+
     }
   };
 });
