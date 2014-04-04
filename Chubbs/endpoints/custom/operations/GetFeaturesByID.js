@@ -1,13 +1,6 @@
 //4.3.2014 - Ryan Whitley
 var flow = require('flow');
-var common = require("../../../common"),
-        settings = require('../../../settings'),
-        shortid = require('shortid');
-
-//Takes in geojson parts, returns counts by landuse type.
-//Arguments are:
-//1. The points
-//3. Country Code
+var common = require("../../../common"),settings = require('../../../settings'),shortid = require('shortid');
 
 var operation = {};
 
@@ -18,11 +11,11 @@ operation.inputs = {};
 
 operation.outputImage = false;
 
-operation.inputs["id_list"] = {}; //comma separated list of ids
+operation.inputs["ids"] = {}; //comma separated list of ids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
-operation.inputs["simplification level"] = {}; //How much to simplify the feature by (in degrees)
+operation.inputs["simplification_level"] = {}; //How much to simplify the feature by (in degrees)
 
-operation.Query = "SELECT ST_AsGeoJSON(geom_simplify_med), guid FROM gadm{{gadm_level}} WHERE guid IN ('{{id_list}}')";
+operation.Query = "SELECT ST_AsGeoJSON(geom_simplify_med) as geom, guid FROM gadm{{gadm_level}} WHERE guid IN ({{ids}})";
 
 operation.execute = flow.define(
     function (args, callback) {
@@ -30,24 +23,25 @@ operation.execute = flow.define(
         this.callback = callback;
         //Step 1
 
-        //Generate UniqueID for this GP Task
+        //Generate UniqueID for this Task
         operation.id = shortid.generate();
 
         //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
         if (operation.isInputValid(args) === true) {
             //prepare bbox string as WKT
-            operation.inputs["bbox"] = args.bbox;
+            operation.inputs["ids"] = args.ids;
             operation.inputs["gadm_level"] = args.gadm_level;
+            operation.inputs["simplification_level"] = args.simplification_level; //currently not using
 
+            //need to wrap ids in single quotes
             //Execute the query
-            var query = { text: operation.Query.replace("{geojson}", operation.inputs["geojson"]).split("{gpid}").join(operation.id).replace("{buffer_distance}", operation.inputs["buffer_distance"]).split("{country}").join(countries[operation.inputs["country_code"]].name), values: [] };
+            var query = { text: operation.Query.replace("{{gadm_level}}",args.gadm_level).replace("{{ids}}",operation.wrapIdsInQuotes(args.ids)) };
             common.executePgQuery(query, this);//Flow to next function when done.
-
         }
         else {
             //Invalid arguments
             //return message
-            callback({text: "Missing or invalid required arguments: bbox"}); //err is first argument
+            callback( "Missing or invalid required arguments: gadm_level or ids"); //err is first argument
         }
     },
     function (err, results) {
@@ -63,7 +57,7 @@ operation.isInputValid = function (input) {
 
     if (input) {
         //make sure we have a bbox.  Other args are optional
-        if (input["bbox"] && input["bbox"].split(",").length == 4) {
+        if (input["ids"] && input["gadm_level"]) {
             //It's got everything we need.
             return true;
         }
@@ -75,8 +69,10 @@ operation.isInputValid = function (input) {
     return isValid;
 }
 
-operation.convertBBoxToWKT = function(bbox){
-
+operation.wrapIdsInQuotes = function(ids){
+    return ids.split(',').map(function(item){
+        return "'" + item + "'";
+    });
 }
 
 module.exports = operation;
