@@ -22,7 +22,7 @@ common.respond = function (req, res, args, callback) {
     else if (args.format && (args.format.toLowerCase() == "json" || args.format.toLowerCase() == "esrijson" || args.format.toLowerCase() == "j")) {
         //Respond with JSON
         if (args.errorMessage) {
-            res.jsonp({ error: args.errorMessage });
+            res.jsonp(500, { error: args.errorMessage });
         }
         else {
             //Send back json file
@@ -36,25 +36,31 @@ common.respond = function (req, res, args, callback) {
         }
     }
     else if (args.format.toLowerCase() == "geojson") {
+				//Set initial header
+				res.setHeader('Content-disposition', 'attachment; filename=' + (args.table || 'download') + '.geojson');
+
         //Responsd with GeoJSON
         if (args.errorMessage) {
-            res.jsonp({ error: args.errorMessage });
+            //res.jsonp(500, { error: args.errorMessage });
+					res.writeHead(500, {
+						'Content-Type': 'application/json'
+					});
+					res.end(JSON.stringify({ error: args.errorMessage }));
         }
         else {
-            //Send back json file
-            res.setHeader('Content-disposition', 'attachment; filename=' + (args.table || 'download') + '.geojson');
-            res.writeHead(200, {
-                'Content-Type': 'application/json'
-            });
-            res.end(JSON.stringify(args.featureCollection));
-            //res.jsonp(args.featureCollection);
-        }
+					//Send back json file
+					res.writeHead(200, {
+						'Content-Type': 'application/json'
+					});
+					res.end(JSON.stringify(args.featureCollection));
+					//res.jsonp(args.featureCollection);
+				}
     }
     else if(args.format && (args.format.toLowerCase() == "shapefile")){
         //Requesting Shapefile Format.
         //If there's an error, return a json
         if (args.errorMessage) {
-            res.jsonp({ error: args.errorMessage });
+            res.jsonp(500, { error: args.errorMessage });
         }
         else {
             //Send back a shapefile
@@ -67,7 +73,7 @@ common.respond = function (req, res, args, callback) {
         //Responsd with CSV
         //If there's an error, return a json
         if (args.errorMessage) {
-            res.jsonp({ error: args.errorMessage });
+            res.jsonp(500, { error: args.errorMessage });
         }
         else {
             var filename = (args.filename || "download") + ".csv";
@@ -82,7 +88,7 @@ common.respond = function (req, res, args, callback) {
     else {
         //If unrecognized format is specified
         if (args.errorMessage) {
-            res.jsonp({ error: args.errorMessage });
+            res.jsonp(500, { error: args.errorMessage });
         }
         else {
             res.jsonp(args.featureCollection);

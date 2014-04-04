@@ -64,7 +64,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   //ARC Region extents
   this.arcregionextents = {
     type: 'geojson',
-    url: 'data/arc_regions_dissolved.geojson'
+    url: 'data/arc_region_extents.geojson'
   };
 
 
