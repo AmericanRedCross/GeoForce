@@ -3,6 +3,8 @@
  *       on 3/28/14.
  */
 
+var debug = {};
+
 //set up jQuery layout
 window.layout = $('#AppContainer').layout({
   applyDefaultStyles: false,
