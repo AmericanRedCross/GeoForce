@@ -36,65 +36,129 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   var resources = [];
   debug.resources = resources;
 
+  /**
+   * Every resource with a bounding box fetching mechanism.
+   * @type {Array}
+   */
+  var bboxResources = [];
+  debug.bboxResources = bboxResources;
+
+
+  /**
+   * All VectorProvider resources are children of this class.
+   * @param config
+   * @constructor
+   */
   function Resource(config) {
-    this.config = config;
-    this.url = null;
+    resources.push(this);
+    this._config = config;
+    this._url = null;
     if (typeof config === 'object') {
-      this.url = config.url;
+      this._url = config.url;
     } else {
-      this.url = config;
+      this._url = config;
     }
-    this.srcData = null;
-    this.geojson = null;
+
+    this._eachLayerCallback = null;
+    this._layer = null;
   }
 
   Resource.prototype.fetch = function(cb) {
-    if (typeof this.geojson !== 'undefined' && this.geojson !== null) {
-      cb();
-    } else {
-      $http.get(this.url, {cache: true}).success(function (data, status) {
-        cb(data);
-      }).error(function() {
-        console.log("Trying proxy for " + this.name);
 
-      });
-    }
+    $http.get(this._url, {cache: true}).success(function (data, status) {
+      cb(data);
+    }).error(function() {
+      //NH TODO Deal with proxy logic.
+      console.log("Trying proxy for " + this.name);
+
+    });
+
   };
 
+  Resource.prototype.getLayer = function () {
+    if (typeof this._layer !== 'undefined' && this._layer !== null) {
+      return this._layer;
+    }
+
+    this._layer = L.geoJson(this._geojson || null, {
+      style: L.mapbox.simplestyle.style,
+      pointToLayer: function(feature, latlon) {
+        if (!feature.properties) feature.properties = {};
+        if (feature.properties.scale) {
+          return L.circleMarker(latlon, {
+            fillColor: feature.properties.color || '#FF0000',
+            radius: 20 * feature.properties.scale
+          });
+        }
+        return L.mapbox.marker.style(feature, latlon);
+      }
+    }).eachLayer(this._eachLayerCallback);
+
+
+    return this._layer;
+  };
+
+  Resource.prototype.eachLayer = function (cb) {
+    this._eachLayerCallback = cb;
+    this._layer.eachLayer(cb);
+  };
+
+
+
+  /**
+   * This is a basic GeoJSON VectorProvider.
+   * @param config
+   * @constructor
+   */
   function GeoJSON(config) {
     Resource.call(this, config);
+    this._geojson = null;
   }
 
   GeoJSON.prototype = Object.create(Resource.prototype);
   GeoJSON.prototype.constructor = GeoJSON;
 
   GeoJSON.prototype.fetch = function (cb) {
+    if (this._geojson && typeof cb === 'function') {
+      cb(this._geojson);
+      return;
+    }
     var self = this;
     Resource.prototype.fetch.call(this, function(data) {
-      self.geojson = data;
-      if (typeof self.config.properties === 'object') {
-        angular.extend(self.geojson.properties, self.config.properties);
+      self._geojson = data;
+      if (typeof self._config.properties === 'object') {
+        angular.extend(self._geojson.properties, self._config.properties);
       }
-      cb(self.geojson);
+      if (self._layer !== 'undefined' && self._layer !== null) {
+        this._layer.addData(self._geojson);
+      }
+      if (typeof cb === 'function') cb(self._geojson);
     });
   };
 
 
   function BBoxGeoJSON(config) {
-    GeoJSON.call(this, config);
-    this.bboxurl = config.bboxurl;
+    Resource.call(this, config);
+    this._bboxurl = config.bboxurl;
+    this._geojsonFetches = [];
+    bboxResources.push(this);
   }
 
-  BBoxGeoJSON.prototype = Object.create(GeoJSON.prototype);
+  BBoxGeoJSON.prototype = Object.create(Resource.prototype);
   BBoxGeoJSON.prototype.constructor = BBoxGeoJSON;
 
-  BBoxGeoJSON.prototype.fetch = function (cb) {
+  BBoxGeoJSON.prototype.getGeoJSONLayer = function (cb) {
+
+  };
+
+  BBoxGeoJSON.prototype._fetchForBBox = function() {
 
   };
 
 
   function KML(config) {
     Resource.call(this, config);
+    this._geojson = null;
   }
 
   KML.prototype = Object.create(Resource.prototype);
@@ -102,14 +166,14 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
   KML.prototype.fetch = function (cb) {
     var self = this;
-    Resource.prototype.fetch.call(this, function() {
-      var xml = $.parseXML(self.srcData);
-      self.geojson = toGeoJSON.kml(xml);
-      if (typeof self.config.properties === 'object') {
-        angular.extend(self.geojson.properties, self.config.properties);
-        self.geojson.properties.srcType = 'kml';
+    Resource.prototype.fetch.call(this, function(data) {
+      var xml = $.parseXML(data);
+      self._geojson = toGeoJSON.kml(xml);
+      if (typeof self._config.properties === 'object') {
+        angular.extend(self._geojson.properties, self._config.properties);
+        self._geojson.properties.srcType = 'kml';
       }
-      cb(self.geojson);
+      if (typeof cb === 'function') cb(self._geojson);
     });
   };
 
@@ -122,7 +186,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
      * @param type
      */
     createResource: function (resourceName, type) {
-      var res = null;
       var config = LayerConfig.find(resourceName);
       if (config === null) {
         console.error('VectorProvider: Invalid Resource Configuration Name. Check LayerConfig File...');
@@ -130,25 +193,32 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       }
       if (type || config.type) {
         // if the resource is just a string, then it should be a url
-        res = new types[(type || config.type).toLowerCase()](config);
-        resources.push(res);
-        return res;
+        return new types[(type || config.type).toLowerCase()](config);
       } else {
         if (config.slice(config.length - 3).toLowerCase() === 'kml') {
-          res = new KML(config);
-          resources.push(res);
-          return res;
+          return new KML(config);
         }
         // NH TODO Check a bit more into if this resource is valid GeoJSON
-        res = new GeoJSON(config);
-        resources.push(res);
-        return res;
+        return new GeoJSON(config);
       }
     },
 
+    /**
+     * When the bounding box of the map changes, VectorProvider needs
+     * to be notified of the current bounding box so it can getch the
+     * latest vector data for the bbox of the map viewport.
+     *
+     * The bbox must be WGS84.
+     *
+     * @param bboxStr "south,west,north,east" === "minX,minY,maxX,maxY"
+     */
     updateBBox: function(bboxStr) {
       bbox = bboxStr;
       console.log('VectorProvider bbox: ' + bbox);
+
+      for(var i = 0, len = bboxResources.length; i < len; ++i) {
+        bboxResources[i].fetchForBBox();
+      }
     }
   };
 });
