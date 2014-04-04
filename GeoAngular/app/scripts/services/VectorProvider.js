@@ -8,10 +8,33 @@
  */
 angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $location, $http, LayerConfig) {
 
+  /**
+   * This is used by the factory to dynamically state the type (class)
+   * that it wants to instantiate.
+   *
+   * @type {{geojson: GeoJSON, bboxgeojson: BBoxGeoJSON, kml: KML}}
+   */
   var types = {
     geojson: GeoJSON,
+    bboxgeojson: BBoxGeoJSON,
     kml: KML
   };
+
+  /**
+   * This is updated by updateBBox. It is then used to query all
+   * VectorProviders that use a bounding box to get additional
+   * features.
+   *
+   * @type {string}
+   */
+  var bbox = null;
+
+  /**
+   * Every resource that has been instantiated.
+   * @type {Array}
+   */
+  var resources = [];
+  debug.resources = resources;
 
   function Resource(config) {
     this.config = config;
@@ -29,10 +52,8 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     if (typeof this.geojson !== 'undefined' && this.geojson !== null) {
       cb();
     } else {
-      var self = this;
-      $http.get(this.url).success(function (data, status) {
-        self.srcData = data;
-        cb();
+      $http.get(this.url, {cache: true}).success(function (data, status) {
+        cb(data);
       }).error(function() {
         console.log("Trying proxy for " + this.name);
 
@@ -49,13 +70,26 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
   GeoJSON.prototype.fetch = function (cb) {
     var self = this;
-    Resource.prototype.fetch.call(this, function() {
-      self.geojson = self.srcData;
+    Resource.prototype.fetch.call(this, function(data) {
+      self.geojson = data;
       if (typeof self.config.properties === 'object') {
         angular.extend(self.geojson.properties, self.config.properties);
       }
       cb(self.geojson);
     });
+  };
+
+
+  function BBoxGeoJSON(config) {
+    GeoJSON.call(this, config);
+    this.bboxurl = config.bboxurl;
+  }
+
+  BBoxGeoJSON.prototype = Object.create(GeoJSON.prototype);
+  BBoxGeoJSON.prototype.constructor = BBoxGeoJSON;
+
+  BBoxGeoJSON.prototype.fetch = function (cb) {
+
   };
 
 
@@ -88,21 +122,33 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
      * @param type
      */
     createResource: function (resourceName, type) {
-      var res = LayerConfig.find(resourceName);
-      if (res === null) {
-        console.error('VectorProvider: Invalid Resource Name. Check LayerConfig File...');
+      var res = null;
+      var config = LayerConfig.find(resourceName);
+      if (config === null) {
+        console.error('VectorProvider: Invalid Resource Configuration Name. Check LayerConfig File...');
         return null;
       }
-      if (type || res.type) {
+      if (type || config.type) {
         // if the resource is just a string, then it should be a url
-        return new types[(type || res.type).toLowerCase()](res);
+        res = new types[(type || config.type).toLowerCase()](config);
+        resources.push(res);
+        return res;
       } else {
-        if (res.slice(res.length - 3).toLowerCase() === 'kml') {
-          return new KML(res);
+        if (config.slice(config.length - 3).toLowerCase() === 'kml') {
+          res = new KML(config);
+          resources.push(res);
+          return res;
         }
         // NH TODO Check a bit more into if this resource is valid GeoJSON
-        return new GeoJSON(res);
+        res = new GeoJSON(config);
+        resources.push(res);
+        return res;
       }
+    },
+
+    updateBBox: function(bboxStr) {
+      bbox = bboxStr;
+      console.log('VectorProvider bbox: ' + bbox);
     }
   };
 });

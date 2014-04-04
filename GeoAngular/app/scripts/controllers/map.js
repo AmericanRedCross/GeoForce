@@ -122,7 +122,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
         bounds.getNorth().toFixed(6) + ',' +
         bounds.getEast().toFixed(6);
 
-//      VectorProvider.
+      VectorProvider.updateBBox(str);
     });
   }
 
@@ -200,6 +200,9 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
           function add(l) {
             var properties = l.feature.properties;
             console.log(JSON.stringify(properties));
+            l.on('click', function() {
+              console.log('clicked on feature: ' + JSON.stringify(properties));
+            })
           }
 
           geojsonLayer.name = name;
