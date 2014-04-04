@@ -20,3 +20,5 @@ window.layout = $('#AppContainer').layout({
 
 //resize left(west panel) to be 59px wide.
 window.layout.sizePane("west", 59);
+
+var wait = false;
