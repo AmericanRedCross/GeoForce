@@ -2,15 +2,12 @@
 
 -- DROP FUNCTION udf_getidsbyextent(integer, character varying);
 
+--test it: select * from udf_getidsbyextent(0, 'POLYGON((-122.57377624511719 47.50143120349543, -122.57377624511719 47.68642357794369, -122.04471588134767 47.68642357794369, -122.04471588134767 47.50143120349543, -122.57377624511719 47.50143120349543))');
+
 CREATE OR REPLACE FUNCTION udf_getidsbyextent(ingadm_level integer, inwkt character varying)
   RETURNS TABLE (level integer, id uuid, name text) AS
 $BODY$
 DECLARE
-inside0 boolean;
-inside1 boolean;
-inside2 boolean;
-inside3 boolean;
-inside4 boolean;
 
 count0 integer;
 count1 integer;

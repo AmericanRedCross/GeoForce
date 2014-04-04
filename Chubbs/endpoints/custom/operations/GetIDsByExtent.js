@@ -69,8 +69,7 @@ operation.isInputValid = function (input) {
     return isValid;
 }
 
-/*sample bbox zoomed to seattle
-"miny,minx,maxy,maxx"
+
 operation.convertBBoxToWKT = function(bbox){
    var bboxcoords = bbox.split(',');
    var corners = { minx: bboxcoords[0], miny: bboxcoords[1], maxx: bboxcoords[2], maxy: bboxcoords[3]};
