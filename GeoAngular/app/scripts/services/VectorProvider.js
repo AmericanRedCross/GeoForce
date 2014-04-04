@@ -30,11 +30,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   var bbox = null;
 
   /**
-   * Whenever we get a bbox, we put it in a hash and have it == true.
-   * This is so we can check to see if we have ever requested the given
-   * bbox and only ever ask for it once.
+   * When this is true, we can troll the server with a bounding box.
    */
-  var bboxHash = {};
+  var trollTime = true;
 
   /**
    * Every resource that has been instantiated.
@@ -256,14 +254,19 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     updateBBox: function(bboxStr) {
       bbox = bboxStr;
 
-      var alreadyFetched = bboxHash[bboxStr];
-      if (!alreadyFetched) {
-        bboxHash[bboxStr] = true;
-        console.log('VectorProvider bbox: ' + bbox);
-        for(var i = 0, len = bboxResources.length; i < len; ++i) {
-          bboxResources[i]._fetchIDsForBBox();
-        }
+      console.log('VectorProvider bbox: ' + bbox);
+      for(var i = 0, len = bboxResources.length; i < len; ++i) {
+        bboxResources[i]._fetchIDsForBBox();
       }
+
+//      if (trollTime) {
+//        trollTime = false;
+//
+//        timeout = setTimeout(function(){
+//
+//          trollTime = true;
+//        }, 250);
+//      }
 
     }
   };
