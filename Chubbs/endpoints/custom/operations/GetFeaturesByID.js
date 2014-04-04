@@ -18,24 +18,11 @@ operation.inputs = {};
 
 operation.outputImage = false;
 
-operation.inputs["ids"] = {}; //comma separated list of ids
-operation.inputs["simplification level"] = []; //How much to simplify the feature by (in degrees)
+operation.inputs["id_list"] = {}; //comma separated list of ids
+operation.inputs["gadm_level"] = {}; //gadm_level to search thru
+operation.inputs["simplification level"] = {}; //How much to simplify the feature by (in degrees)
 
-operation.Query = "DO $$DECLARE " +
-"BEGIN " +
-"drop table if exists \"_gptemp{gpid}\"; " +
-"create temporary table \"_gptemp{gpid}\" as  " +
-"select a.landuse, count(b.*) as count " +
-"from {country}_district_landuse a " +
-"inner join (SELECT (ST_Dump(ST_CollectionExtract(ST_GeomFromGeoJson('{geojson}'), 1))).geom as geom " +
-") b on " +
-"st_intersects(a.geom, b.geom) " +
-"GROUP BY a.landuse; " +
-"END$$; " +
-"SELECT * " +
-"FROM \"_gptemp{gpid}\" c ";
-
-
+operation.Query = "SELECT ST_AsGeoJSON(geom_simplify_med), guid FROM gadm{{gadm_level}} WHERE guid IN ('{{id_list}}')";
 
 operation.execute = flow.define(
     function (args, callback) {

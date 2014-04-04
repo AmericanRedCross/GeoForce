@@ -193,7 +193,10 @@ exports.app = function(passport) {
 			} else if (this.args.format && this.args.format.toLowerCase() == "geojson") {
 				//Respond with JSON
 				features = common.formatters.geoJSONFormatter(result.rows, this.args.geom_fields_array);
-			} else if (this.args.format && this.args.format.toLowerCase() == "esrijson") {
+			}else if (this.args.format && this.args.format.toLowerCase() == "json") {
+        //Respond with JSON
+        features = result.rows;
+      }else if (this.args.format && this.args.format.toLowerCase() == "esrijson") {
 				//Respond with esriJSON
 				features = common.formatters.ESRIFeatureSetJSONFormatter(result.rows, this.args.geom_fields_array);
 			}
