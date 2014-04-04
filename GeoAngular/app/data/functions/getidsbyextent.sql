@@ -5,7 +5,7 @@
 --test it: select * from udf_getidsbyextent(0, 'POLYGON((-122.57377624511719 47.50143120349543, -122.57377624511719 47.68642357794369, -122.04471588134767 47.68642357794369, -122.04471588134767 47.50143120349543, -122.57377624511719 47.50143120349543))');
 
 CREATE OR REPLACE FUNCTION udf_getidsbyextent(ingadm_level integer, inwkt character varying)
-  RETURNS TABLE (level integer, id uuid, name text) AS
+  RETURNS TABLE (level integer, guid uuid, name text) AS
 $BODY$
 DECLARE
 
@@ -26,8 +26,6 @@ BEGIN
 	
 
 	--Starting with GADM 0, find if the viewport passed in is completely within any of the boundaries.
-	inside0:= false; -- start assuming we're not inside of a level 0 boundary.
-
 	count0:= count(guid) from gadm0 WHERE ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 	IF(count0 = 1) THEN --start count0 = 1
 
