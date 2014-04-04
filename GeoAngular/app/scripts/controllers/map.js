@@ -116,11 +116,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
   function broadcastBBox() {
     leafletData.getMap().then(function (map) {
-      var bounds = map.getBounds();
-      var str = bounds.getSouth().toFixed(6) + ',' +
-        bounds.getWest().toFixed(6) + ',' +
-        bounds.getNorth().toFixed(6) + ',' +
-        bounds.getEast().toFixed(6);
+      var str = map.getBounds().toBBoxString();
 
       VectorProvider.updateBBox(str);
     });
