@@ -80,31 +80,31 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    */
   this.smartgadm = {
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent:bbox=$bbox'),
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&bbox=:bbox'),
     url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&ids=:ids')
   };
 
   this.gadm0 ={
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent:bbox=$bbox&gadm_level=0'),
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&bbox=:bbox&gadm_level=0'),
     url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&ids=:ids')
   };
 
   this.gadm1 = {
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent:bbox=$bbox&gadm_level=1'),
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&bbox=:bbox&gadm_level=1'),
     url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&ids=:ids')
   };
 
   this.gadm2 = {
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent:bbox=$bbox&gadm_level=2'),
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&bbox=:bbox&gadm_level=2'),
     url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&ids=:ids')
   };
 
   this.gadm3 = {
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent:bbox=$bbox&gadm_level=3'),
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&bbox=:bbox&gadm_level=3'),
     url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&ids=:ids')
   };
 
