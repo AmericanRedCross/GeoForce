@@ -30,11 +30,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   var bbox = null;
 
   /**
-   * When this is true, we can troll the server with a bounding box.
-   */
-  var trollTime = true;
-
-  /**
    * Every resource that has been instantiated.
    * @type {Array}
    */
@@ -162,15 +157,30 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   function BBoxGeoJSON(config) {
     Resource.call(this, config);
     this._bboxurl = config.bboxurl;
-    this._fetchedFeatures = [];
+    this._features = {};
     bboxResources.push(this);
   }
 
   BBoxGeoJSON.prototype = Object.create(Resource.prototype);
   BBoxGeoJSON.prototype.constructor = BBoxGeoJSON;
 
-  BBoxGeoJSON.prototype._getFeatures = function (cb) {
+  BBoxGeoJSON.prototype._getFeatures = function (featObj) {
+    var url = this._url.replace(':level', featObj.level).replace(':ids', featObj.id);
+    // not cached because we only fetch when we dont have the feature in the hash
+    $http.get(url).success(function (feat, status) {
 
+      if (feat.error) {
+        console.error('Unable to fetch feature: ' + feat.error);
+        return;
+      }
+      angular.extend(featObj, feat[0]);
+      console.log('fetched feature: ' + featObj.name);
+
+    }).error(function(err) {
+      //NH TODO Deal with proxy logic.
+      console.error("Unable to fetch feature: " + err);
+
+    });
   };
 
   BBoxGeoJSON.prototype._fetchIDsForBBox = function() {
@@ -178,6 +188,13 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     var self = this;
     $http.get(url, {cache: true}).success(function (idsArr, status) {
       console.log('idsArr: ' + JSON.stringify(idsArr));
+      for (var i=0, len=idsArr.length; i < len; ++i) {
+        var o = idsArr[i];
+        if (!self._features[o.id]) {
+          self._features[o.id] = o;
+          self._getFeatures(o);
+        }
+      }
     }).error(function() {
       //NH TODO Deal with proxy logic.
       console.error("Need to try proxy for _fetchForBBox");
@@ -258,15 +275,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       for(var i = 0, len = bboxResources.length; i < len; ++i) {
         bboxResources[i]._fetchIDsForBBox();
       }
-
-//      if (trollTime) {
-//        trollTime = false;
-//
-//        timeout = setTimeout(function(){
-//
-//          trollTime = true;
-//        }, 250);
-//      }
 
     }
   };

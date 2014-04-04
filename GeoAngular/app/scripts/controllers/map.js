@@ -115,25 +115,33 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
 
   function broadcastBBox() {
-    leafletData.getMap().then(function (map) {
-      var bounds = map.getBounds();
-      var west = bounds.getWest();
-      var south = bounds.getSouth();
-      var east = bounds.getEast();
-      var north = bounds.getNorth();
+    //NH TODO Fixme. Find a better solution than a spin lock.
+    if (!wait) {
+      wait = true;
+      setTimeout(function(){
+        leafletData.getMap().then(function (map) {
+          var bounds = map.getBounds();
+          var west = bounds.getWest();
+          var south = bounds.getSouth();
+          var east = bounds.getEast();
+          var north = bounds.getNorth();
 
-      if (west < -180) west = -180;
-      if (south < -90) south = -90;
-      if (east > 180) east = 180;
-      if (north > 90) north = 90;
+          if (west < -180) west = -180;
+          if (south < -90) south = -90;
+          if (east > 180) east = 180;
+          if (north > 90) north = 90;
 
-      var str = west.toFixed(6) + ',' +
-        south.toFixed(6) + ',' +
-        east.toFixed(6) + ',' +
-        north.toFixed(6);
+          var str = west.toFixed(6) + ',' +
+            south.toFixed(6) + ',' +
+            east.toFixed(6) + ',' +
+            north.toFixed(6);
 
-      VectorProvider.updateBBox(str);
-    });
+          VectorProvider.updateBBox(str);
+        });
+        wait = false;
+      }, 150);
+    }
+
   }
 
 
