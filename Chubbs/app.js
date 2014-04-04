@@ -32,7 +32,6 @@ app.use(require('less-middleware')({
 
 //Items in these folder will be served statically.
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'GPModels')));
 app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
 app.use('/geoangular', express.static('../GeoAngular/app'));
 
@@ -97,6 +96,9 @@ app.use(tiles.app(passport));
 
 var geoprocessing = require('./endpoints/geoprocessing');
 app.use(geoprocessing.app(passport));
+
+var custom = require('./endpoints/custom');
+app.use(custom.app(passport));
 
 var utilities = require('./endpoints/utilities');
 app.use(utilities.app(passport));
