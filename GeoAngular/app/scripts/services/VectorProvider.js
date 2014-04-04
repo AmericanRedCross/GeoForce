@@ -140,19 +140,27 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   function BBoxGeoJSON(config) {
     Resource.call(this, config);
     this._bboxurl = config.bboxurl;
-    this._geojsonFetches = [];
+    this._fetchedFeatures = [];
     bboxResources.push(this);
   }
 
   BBoxGeoJSON.prototype = Object.create(Resource.prototype);
   BBoxGeoJSON.prototype.constructor = BBoxGeoJSON;
 
-  BBoxGeoJSON.prototype.getGeoJSONLayer = function (cb) {
+  BBoxGeoJSON.prototype._getFeatures = function (cb) {
 
   };
 
-  BBoxGeoJSON.prototype._fetchForBBox = function() {
+  BBoxGeoJSON.prototype._fetchIDsForBBox = function() {
+    var url = this._bboxurl.replace(':bbox', bbox);
+    var self = this;
+    $http.get(url, {cache: true}).success(function (idsArr, status) {
+//      self.
+    }).error(function() {
+      //NH TODO Deal with proxy logic.
+      console.error("Need to try proxy for _fetchForBBox");
 
+    });
   };
 
 
@@ -217,7 +225,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       console.log('VectorProvider bbox: ' + bbox);
 
       for(var i = 0, len = bboxResources.length; i < len; ++i) {
-        bboxResources[i].fetchForBBox();
+        bboxResources[i]._fetchIDsForBBox();
       }
     }
   };
