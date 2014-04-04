@@ -63,6 +63,16 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     this._layer = null;
   }
 
+
+  /**
+   * Fetches data from the given url of a resource.
+   * Subclasses then handle the callback accordingly.
+   *
+   * Needs to also try to get a resource via the Chubbs
+   * proxy.
+   *
+   * @param cb
+   */
   Resource.prototype.fetch = function(cb) {
 
     $http.get(this._url, {cache: true}).success(function (data, status) {
@@ -75,6 +85,13 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
   };
 
+
+  /**
+   * Returns the Leaflet GeoJSON Layer associated with the
+   * Resource or creates a new one.
+   *
+   * @returns {null|*}
+   */
   Resource.prototype.getLayer = function () {
     if (typeof this._layer !== 'undefined' && this._layer !== null) {
       return this._layer;
@@ -164,6 +181,15 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   };
 
 
+  /**
+   * A KML Resource fetches KML and parses it with togeojson.js
+   * Note that togeojson.js has bugs and does not accurately parse
+   * some of the KML sources we have tested with. This library has
+   * been modified with my hotfixes.
+   *
+   * @param config
+   * @constructor
+   */
   function KML(config) {
     Resource.call(this, config);
     this._geojson = null;
