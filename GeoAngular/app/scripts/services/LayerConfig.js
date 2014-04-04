@@ -8,6 +8,10 @@
  */
 angular.module('GeoAngular').service('LayerConfig', function () {
 
+  function chubbsPath(relPath) {
+    return 'http://localhost:3000/' + relPath;
+  }
+
   /**
    * Basemaps
    * @type {string}
@@ -61,6 +65,47 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.arcregionextents = {
     type: 'geojson',
     url: 'data/arc_regions_dissolved.geojson'
+  };
+
+
+  /**
+   * BBoxGeoJSON
+   *
+   * This layer type retrieved features that intersect with the map's bounding box.
+   * There must be a backend API that understands this.
+   *
+   * The Chubbs Spatial Server fully comprehends this, others do not.
+   *
+   * @type {{type: string}}
+   */
+  this.smartgadm = {
+    type: 'BBoxGeoJSON',
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&bbox=:bbox'),
+    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&ids=:ids')
+  };
+
+  this.gadm0 ={
+    type: 'BBoxGeoJSON',
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&bbox=:bbox&gadm_level=0'),
+    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&ids=:ids')
+  };
+
+  this.gadm1 = {
+    type: 'BBoxGeoJSON',
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&bbox=:bbox&gadm_level=1'),
+    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&ids=:ids')
+  };
+
+  this.gadm2 = {
+    type: 'BBoxGeoJSON',
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&bbox=:bbox&gadm_level=2'),
+    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&ids=:ids')
+  };
+
+  this.gadm3 = {
+    type: 'BBoxGeoJSON',
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&bbox=:bbox&gadm_level=3'),
+    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&ids=:ids')
   };
 
   /**
