@@ -147,16 +147,18 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         angular.extend(self._geojson.properties, self._config.properties);
       }
 
-      if (!self._layer) {
-        self._getLayer();
-      }
-
-      this._layer.addData(self._geojson);
-
       if (typeof cb === 'function') cb(self._geojson);
     });
   };
 
+  GeoJSON.prototype.getLayer = function() {
+    if (this._layer) return this._layer;
+    var layer =  Resource.prototype.getLayer.call(this);
+    this.fetch(function(geojson){
+      layer.addData(geojson);
+    });
+    return layer;
+  };
 
   function BBoxGeoJSON(config) {
     Resource.call(this, config);
