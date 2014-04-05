@@ -146,9 +146,13 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       if (typeof self._config.properties === 'object') {
         angular.extend(self._geojson.properties, self._config.properties);
       }
-      if (self._layer !== 'undefined' && self._layer !== null) {
-        this._layer.addData(self._geojson);
+
+      if (!self._layer) {
+        self._getLayer();
       }
+
+      this._layer.addData(self._geojson);
+
       if (typeof cb === 'function') cb(self._geojson);
     });
   };
@@ -158,6 +162,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     Resource.call(this, config);
     this._bboxurl = config.bboxurl;
     this._features = {};
+    this._activeLayers = {};
     bboxResources.push(this);
   }
 
@@ -190,7 +195,17 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         console.log('creating layer in _getFeatures');
       }
 
-      self._layer.addData(featObj);
+      var options = self._layer.options;
+      var featLayer = L.GeoJSON.geometryToLayer(featObj, options.pointToLayer, options.coordsToLatLng, options);
+      featLayer.feature = L.GeoJSON.asFeature(featObj);
+      featLayer.defaultOptions = featLayer.options;
+      self._layer.resetStyle(featLayer);
+      if (options.onEachFeature) {
+        options.onEachFeature(featObj, featLayer);
+      }
+      self._layer.addLayer(featLayer);
+      self._activeLayers[featObj.properties.guid] = featLayer;
+
     }).error(function(err) {
       //NH TODO Deal with proxy logic.
       console.error("Unable to fetch feature: " + err);
@@ -205,10 +220,14 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       console.log('idsArr: ' + JSON.stringify(idsArr));
       for (var i=0, len=idsArr.length; i < len; ++i) {
         var o = idsArr[i];
+
+        // adding feature to features hash (all features ever)
         if (!self._features[o.id]) {
           self._features[o.id] = o;
           self._getFeatures(o);
         }
+
+
       }
     }).error(function() {
       //NH TODO Deal with proxy logic.
