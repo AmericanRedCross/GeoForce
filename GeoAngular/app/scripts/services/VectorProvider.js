@@ -60,7 +60,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     }
 
     this._eachLayerCallback = null;
-    this._layer = null;
+    this._geojsonLayer = null;
   }
 
 
@@ -93,11 +93,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    * @returns {null|*}
    */
   Resource.prototype.getLayer = function () {
-    if (typeof this._layer !== 'undefined' && this._layer !== null) {
-      return this._layer;
+    if (typeof this._geojsonLayer !== 'undefined' && this._geojsonLayer !== null) {
+      return this._geojsonLayer;
     }
 
-    this._layer = L.geoJson(this._geojson || null, {
+    this._geojsonLayer = L.geoJson(this._geojson || null, {
       style: L.mapbox.simplestyle.style,
       pointToLayer: function(feature, latlon) {
         if (!feature.properties) feature.properties = {};
@@ -112,12 +112,12 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     }).eachLayer(this._eachLayerCallback);
 
 
-    return this._layer;
+    return this._geojsonLayer;
   };
 
   Resource.prototype.eachLayer = function (cb) {
     this._eachLayerCallback = cb;
-    this._layer.eachLayer(cb);
+    this._geojsonLayer.eachLayer(cb);
   };
 
 
@@ -152,7 +152,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   };
 
   GeoJSON.prototype.getLayer = function() {
-    if (this._layer) return this._layer;
+    if (this._geojsonLayer) return this._geojsonLayer;
     var layer =  Resource.prototype.getLayer.call(this);
     this.fetch(function(geojson){
       layer.addData(geojson);
@@ -160,12 +160,17 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     return layer;
   };
 
+
+
+
+
+
   function BBoxGeoJSON(config) {
     Resource.call(this, config);
     this._bboxurl = config.bboxurl;
     this._features = {};
-    this._layersByLevel = {};
-    this._allLayers = {};
+    this._featureLayersByLevel = {};
+    this._allFeatureLayers = {};
 
     bboxResources.push(this);
   }
@@ -194,28 +199,28 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       angular.extend(featObj, feat);
       console.log('fetched feature: ' + featObj.properties.name);
 
-      if (!self._layer) {
+      if (!self._geojsonLayer) {
         self._getLayer();
         console.log('creating layer in _getFeatures');
       }
 
-      var options = self._layer.options;
+      var options = self._geojsonLayer.options;
       var featLayer = L.GeoJSON.geometryToLayer(featObj, options.pointToLayer, options.coordsToLatLng, options);
       featLayer.feature = L.GeoJSON.asFeature(featObj);
       featLayer.defaultOptions = featLayer.options;
-      self._layer.resetStyle(featLayer);
+      self._geojsonLayer.resetStyle(featLayer);
       if (options.onEachFeature) {
         options.onEachFeature(featObj, featLayer);
       }
-      self._layer.addLayer(featLayer);
+      self._geojsonLayer.addLayer(featLayer);
 
       var props = featObj.properties;
       var level = props.level;
-      if (!self._layersByLevel[level]) {
-        self._layersByLevel[level] = [];
+      if (!self._featureLayersByLevel[level]) {
+        self._featureLayersByLevel[level] = [];
       }
-      self._layersByLevel[level].push(featLayer);
-      self._allLayers[props.guid] = featLayer;
+      self._featureLayersByLevel[level].push(featLayer);
+      self._allFeatureLayers[props.guid] = featLayer;
 
     }).error(function(err) {
       //NH TODO Deal with proxy logic.
@@ -224,7 +229,15 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     });
   };
 
-  BBoxGeoJSON.prototype._fetchIDsForBBox = function() {
+
+  /**
+   * Fetches the feature itinerary based on the current bbox.
+   *
+   * The feature itinerary is a set of features with some properties
+   * such as guid and name. The geometry for each of these features
+   * has not yet been requested. This is done by _getFeatures.
+   */
+  BBoxGeoJSON.prototype.fetchFeatureItinerary = function() {
     var url = this._bboxurl.replace(':bbox', bbox);
     var self = this;
     $http.get(url, {cache: true}).success(function (featItinerary, status) {
@@ -234,20 +247,51 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       for (var i=0, len=featItinerary.length; i < len; ++i) {
         var o = featItinerary[i];
         activeLevels[o.level] = true;
-
-        // adding feature to features hash (all features ever)
         if (!self._features[o.id]) {
+          // adding feature to features hash (all features ever)
           self._features[o.id] = o;
+          // getting the features (including basic, simplified geometry)
           self._getFeatures(o);
         }
-
       }
+      self._removeInactiveLayers(self);
+
     }).error(function() {
       //NH TODO Deal with proxy logic.
       console.error("Need to try proxy for _fetchForBBox");
 
     });
   };
+
+
+  /**
+   * For all of the active layers that we have, remove layers that are
+   * not part of the current set of active levels.
+   *
+   * @private
+   */
+  BBoxGeoJSON.prototype._removeInactiveLayers = function(self) {
+    var activeLevels = this._activeLevels;
+    var featureLayersByLevel = this._featureLayersByLevel;
+    for (var level in featureLayersByLevel) {
+      // if the level is not an active level, remove from map
+      if (!activeLevels[level]) {
+        var layers = featureLayersByLevel[level];
+        for (var i = 0, len = layers.length; i < len; ++i) {
+          var layer = layers[i];
+          self._geojsonLayer.removeLayer(layer);
+          console.log('Removed Layer: ' + layer.feature.properties.name);
+        }
+      }
+      if (typeof layers === 'array' && layers.length > 0) {
+
+      }
+    }
+  };
+
+
+
+
 
 
   /**
@@ -320,7 +364,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
       console.log('VectorProvider bbox: ' + bbox);
       for(var i = 0, len = bboxResources.length; i < len; ++i) {
-        bboxResources[i]._fetchIDsForBBox();
+        bboxResources[i].fetchFeatureItinerary();
       }
 
     }
