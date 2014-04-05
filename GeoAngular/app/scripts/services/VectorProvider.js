@@ -164,7 +164,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     Resource.call(this, config);
     this._bboxurl = config.bboxurl;
     this._features = {};
-    this._activeLayers = {};
+    this._layersByLevel = {};
+    this._allLayers = {};
+
     bboxResources.push(this);
   }
 
@@ -206,7 +208,14 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         options.onEachFeature(featObj, featLayer);
       }
       self._layer.addLayer(featLayer);
-      self._activeLayers[featObj.properties.guid] = featLayer;
+
+      var props = featObj.properties;
+      var level = props.level;
+      if (!self._layersByLevel[level]) {
+        self._layersByLevel[level] = [];
+      }
+      self._layersByLevel[level].push(featLayer);
+      self._allLayers[props.guid] = featLayer;
 
     }).error(function(err) {
       //NH TODO Deal with proxy logic.
@@ -218,17 +227,19 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   BBoxGeoJSON.prototype._fetchIDsForBBox = function() {
     var url = this._bboxurl.replace(':bbox', bbox);
     var self = this;
-    $http.get(url, {cache: true}).success(function (idsArr, status) {
-      console.log('idsArr: ' + JSON.stringify(idsArr));
-      for (var i=0, len=idsArr.length; i < len; ++i) {
-        var o = idsArr[i];
+    $http.get(url, {cache: true}).success(function (featItinerary, status) {
+      console.log('featItinerary: ' + JSON.stringify(featItinerary));
+      var activeLevels = {};
+      self._activeLevels = activeLevels;
+      for (var i=0, len=featItinerary.length; i < len; ++i) {
+        var o = featItinerary[i];
+        activeLevels[o.level] = true;
 
         // adding feature to features hash (all features ever)
         if (!self._features[o.id]) {
           self._features[o.id] = o;
           self._getFeatures(o);
         }
-
 
       }
     }).error(function() {
