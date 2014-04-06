@@ -282,9 +282,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
           self._geojsonLayer.removeLayer(layer);
           console.log('Removed Layer: ' + layer.feature.properties.name);
         }
-      }
-      if (typeof layers === 'array' && layers.length > 0) {
-
+        delete featureLayersByLevel[level];
       }
     }
   };
