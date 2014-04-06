@@ -2906,7 +2906,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_loadTile: function (tile, tilePoint) {
-		tile._geojsonLayer  = this;
+		tile._layer  = this;
 		tile.onload  = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
 
@@ -2938,7 +2938,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_tileOnLoad: function () {
-		var layer = this._geojsonLayer;
+		var layer = this._layer;
 
 		//Only if we are loading an actual image
 		if (this.src !== L.Util.emptyImageUrl) {
@@ -2954,7 +2954,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_tileOnError: function () {
-		var layer = this._geojsonLayer;
+		var layer = this._layer;
 
 		layer.fire('tileerror', {
 			tile: this,
@@ -3102,7 +3102,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	_loadTile: function (tile, tilePoint) {
-		tile._geojsonLayer = this;
+		tile._layer = this;
 		tile._tilePoint = tilePoint;
 
 		this._redrawTile(tile);
