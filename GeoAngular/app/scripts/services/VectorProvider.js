@@ -212,15 +212,8 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       if (options.onEachFeature) {
         options.onEachFeature(featObj, featLayer);
       }
-      self._geojsonLayer.addLayer(featLayer);
 
-      var props = featObj.properties;
-      var level = props.level;
-      if (!self._featureLayersByLevel[level]) {
-        self._featureLayersByLevel[level] = [];
-      }
-      self._featureLayersByLevel[level].push(featLayer);
-      self._allFeatureLayers[props.guid] = featLayer;
+      BBoxGeoJSON_addLayer(self, featLayer);
 
     }).error(function(err) {
       //NH TODO Deal with proxy logic.
@@ -228,6 +221,27 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
     });
   };
+
+
+  /**
+   * Should only be used by BBoxLayer objects.
+   * Consider this a private method.
+   *
+   * @param self
+   * @param featLayer
+   */
+  function BBoxGeoJSON_addLayer(self, featLayer) {
+
+    self._geojsonLayer.addLayer(featLayer);
+
+    var props = featLayer.feature.properties;
+    var level = props.level;
+    if (!self._featureLayersByLevel[level]) {
+      self._featureLayersByLevel[level] = [];
+    }
+    self._featureLayersByLevel[level].push(featLayer);
+    self._allFeatureLayers[props.guid] = featLayer;
+  }
 
 
   /**
@@ -247,11 +261,21 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       for (var i=0, len=featItinerary.length; i < len; ++i) {
         var o = featItinerary[i];
         activeLevels[o.level] = true;
-        if (!self._features[o.id]) {
+        var guid = o.guid || o.id;
+        if (!self._features[guid]) {
           // adding feature to features hash (all features ever)
-          self._features[o.id] = o;
+          self._features[guid] = o;
           // getting the features (including basic, simplified geometry)
           self._getFeatures(o);
+        } else {
+          // NH TODO: Test to see what happens when layers get re-added but the geometry still hasn't gotten here.
+
+          // if we already have a layer and it is not on the map but should be there, add it to the geojson layer
+          var l = self._allFeatureLayers[guid];
+          if (l) {
+            BBoxGeoJSON_addLayer(self, l);
+          }
+
         }
       }
       self._removeInactiveLayers(self);
