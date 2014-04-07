@@ -22,6 +22,12 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     $state.go(state, $stateParams);
   };
 
+	//Default
+	$scope.bounds = {
+		northEast: { lat: 90, lng: 180 },
+		southWest: { lat: -90, lng: -180 }
+	};
+
 
 
   //Initialize the dummy project/disaster click results - this needs to be moved to a new controller
@@ -39,7 +45,8 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   var layersStr = null;
   var overlayNames = [];
 
-  function redraw() {
+	//RW: isInit is a bool that tell us the source of this call
+  function redraw(isInit) {
     $scope.title = $stateParams.title || 'World';
     var lat = parseFloat($stateParams.lat)   || 0;
     var lng = parseFloat($stateParams.lng)   || 0;
@@ -64,17 +71,18 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
         url: basemap
       };
     }
+		//RW:  The following causes the map to reposition, which kicks of the 'end zoom' event again, which fires the redraw function again.
+		//This should only really recenter the map then app inits, not when the map finishes zooming.
+		//Test for it
+		if(isInit == true){
 
-    $scope.center = {
-      lat: lat,
-      lng: lng,
-      zoom: zoom
-    };
+		}
+
 
     broadcastBBox();
     lastLayersStr = layersStr;
   }
-  redraw();
+  redraw(true);
 
 
   /***
@@ -95,7 +103,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
         || $stateParams.layers !== layersStr ) {
 
       console.log('map.js route-update Updating Map...');
-      redraw();
+      redraw(false);
     }
 
   });
@@ -150,6 +158,18 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
    */
   leafletData.getMap().then(function (map) {
     debug.map = map;
+
+		map.whenReady(function() {
+			var lat = parseFloat($stateParams.lat)   || 0;
+			var lng = parseFloat($stateParams.lng)   || 0;
+			var zoom = parseFloat($stateParams.zoom) || 2;
+			$scope.center = {
+				lat: lat,
+				lng: lng,
+				zoom: zoom
+			};
+		});
+
     map.on('moveend', function () { // move is good too
       var c = map.getCenter();
       var lat = c.lat.toFixed(6);
