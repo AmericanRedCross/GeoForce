@@ -179,7 +179,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   BBoxGeoJSON.prototype.constructor = BBoxGeoJSON;
 
   BBoxGeoJSON.prototype._getFeatures = function (featObj) {
-    var url = this._url.replace(':level', featObj.level).replace(':ids', featObj.id);
+    var url = this._url.replace(':level', featObj.level).replace(':ids', featObj.guid);
     var self = this;
     // not cached because we only fetch when we dont have the feature in the hash
     $http.get(url).success(function (geojson, status) {
