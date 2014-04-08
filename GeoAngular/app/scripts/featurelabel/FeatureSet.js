@@ -57,9 +57,12 @@
 
     } else {
 
-      // there is only one polygon, so calculate center
-      var center = calculateCenter(featureLayer._parts);
-      console.log(featureLayer.feature.properties.name + ' polycenter (' + center.x + ', ' + center.y + ')');
+//      // there is only one polygon, so calculate center. also check to see if there are parts
+      if ( featureLayer._parts && featureLayer._parts.length ) {
+        var center = calculateCenter(featureLayer._parts);
+        console.log(featureLayer.feature.properties.name + ' polycenter (' + center.x + ', ' + center.y + ')');
+      }
+
     }
 
   };
@@ -79,7 +82,8 @@
     }
     var centerX = xSum / pointSum;
     var centerY = ySum / pointSum;
-    return L.point(centerX, centerY);
+    var center =  L.point(centerX, centerY);
+    return center.round();
   }
 
   function findMostComplexLayer(layers) {
