@@ -7,6 +7,7 @@ CREATE OR REPLACE FUNCTION udf_getidsbyextent(IN ingadm_level integer, IN inwkt 
 $BODY$
 DECLARE
 
+countarc integer;
 count0 integer;
 count1 integer;
 count2 integer;
@@ -21,27 +22,29 @@ BEGIN
 	wkt:= ST_GeomFromText(inwkt, 4326); --make the geometry
 
 		
-	
+	--Return Red Cross Regions if above level 0
+	countarc:= count(g.guid) from gadm0 g WHERE ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
+	IF(countarc < 3) THEN --start count0 < 3
 
 	--Starting with GADM 0, find if the viewport passed in is completely within any of the boundaries.
 	count0:= count(g.guid) from gadm0 g WHERE ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
-	IF(count0 = 1) THEN --start count0 = 1
+	IF(count0 < 3) THEN --start count0 < 3
 
 			--We're looking at just 1 level 0.  Go down to level 1 and check.
 			count1:= count(g.guid) from gadm1 g WHERE ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
-			IF(count1 = 1) THEN --start count1 = 1
+			IF(count1 < 3) THEN --start count1 < 3
 
 				--We're looking at just 1 level 1.  Go down to level 2 and check.
 				count2:= count(g.guid) from gadm2 g WHERE ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
-				IF(count2 = 1) THEN --start count2 = 1
+				IF(count2 < 3) THEN --start count2 < 3
 
 						--We're looking at just 1 level 2.  Go down to level 3 and check.
 						count3:= count(g.guid) from gadm3 g WHERE ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
-						IF(count3 = 1) THEN --start count3 = 1
+						IF(count3 < 3) THEN --start count3 = 1
 
 								--We're looking at just 1 level 3.  Go down to level 4 and check.
 								count4:= count(g.guid) from gadm4 g WHERE ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
-								IF(count4 = 1) THEN --start count4 = 1
+								IF(count4 < 3) THEN --start count4 = 1
 									--We're inside of a level 4.  Assume we can't go lower than 5. Just return 5s
 									RETURN QUERY SELECT 5, g.guid, name_5 from gadm5 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 
@@ -72,10 +75,10 @@ BEGIN
 			END IF; --count1 = 1
 
 
-	ELSE --count0 = 1
+	ELSE --count0 <= 2
 		--0 or > 1 features.  Just return those.
 		RETURN QUERY SELECT 0, g.guid, name_0 from gadm0 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
-	END IF; --count0 = 1
+	END IF; --count0 <= 2
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE

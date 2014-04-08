@@ -16,6 +16,7 @@ operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 operation.inputs["simplification_level"] = {}; //How much to simplify the feature by (in degrees)
 
 operation.Query = "SELECT ST_AsGeoJSON(geom_simplify_med) as geom, guid FROM gadm{{gadm_level}} WHERE guid IN ({{ids}})";
+operation.ARCQuery = "SELECT ST_AsGeoJSON(geom) as geom, gid FROM arc_regions_dissolved WHERE gid IN ({{ids}})";
 
 operation.execute = flow.define(
     function (args, callback) {
@@ -35,7 +36,13 @@ operation.execute = flow.define(
 
             //need to wrap ids in single quotes
             //Execute the query
-            var query = { text: operation.Query.replace("{{gadm_level}}",args.gadm_level).replace("{{ids}}",operation.wrapIdsInQuotes(args.ids)) };
+            var query;
+					  if(args.gadm_level == -1){
+							query = { text: operation.ARCQuery.replace("{{ids}}", operation.wrapIdsInQuotes(args.ids)) };
+						}
+					else {
+							query = { text: operation.Query.replace("{{gadm_level}}", args.gadm_level).replace("{{ids}}", operation.wrapIdsInQuotes(args.ids)) };
+						}
             common.executePgQuery(query, this);//Flow to next function when done.
         }
         else {
