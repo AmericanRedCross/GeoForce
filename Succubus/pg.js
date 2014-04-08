@@ -50,9 +50,12 @@ function fetchTableNames(cb) {
 }
 
 
-function insertRows(queryTable, rows) {
+function insertRows(queryTable, rows, queryStr) {
 
-    fetchTableNames(function (tables) {
+	//Get an array of proper field names
+	var fields = getTableFieldNamesFromQuery(queryStr);
+
+	fetchTableNames(function (tables) {
         // See if a query table exists.
         if (tables[queryTable]) {
             //It exists. If the query returns any rows, then assume it's good data.
@@ -66,13 +69,13 @@ function insertRows(queryTable, rows) {
                         dropQueryTable(queryTable, function(err){
                             if(!err){
                                 //Create table again
-                                createTable(queryTable, rows, function() {
-                                    _insertRows(queryTable, rows, function(){
+                                createTable(queryTable, rows, fields, function() {
+                                    _insertRows(queryTable, rows, fields, function(){
                                         //After finished inserting rows, (re)build the view
                                         isSpatialTable(rows, function(isSpatial){
                                             if(isSpatial === true){
                                                 //Create a view if table is spatial
-                                                createSpatialView(queryTable, rows, function(err, res){
+                                                createSpatialView(queryTable, rows, fields, function(err, res){
                                                     if(err){
                                                         console.log("Error creating view: " + queryTable + ".  Msg: " + err );
                                                     }
@@ -95,8 +98,8 @@ function insertRows(queryTable, rows) {
         }
         // If not, create the given table and then insert rows.
         else {
-            createTable(queryTable, rows, function() {
-                _insertRows(queryTable, rows);
+            createTable(queryTable, rows, fields,  function() {
+                _insertRows(queryTable, rows, fields);
             });
         }
     });
@@ -111,18 +114,20 @@ function insertRows(queryTable, rows) {
  * @param rows
  * @private
  */
-function _insertRows(queryTable, rows, cb) {
+function _insertRows(queryTable, rows, fields, cb) {
     rows.forEach(function(row){
         var insertStr = "INSERT INTO " + queryTable + " ( ";
         var valStr = "VALUES ( ";
         for (var field in row) {
-            insertStr += field + ', ';
-            valStr += sanitize(row[field]) + ', ';
+					if(isValidColumn(fields, field) == true){
+						insertStr += field + ', ';
+						valStr += sanitize(row[field]) + ', ';
+					}
         }
         insertStr = insertStr.slice(0, insertStr.length-2) + ') ';
         valStr = valStr.slice(0, valStr.length-2) + ');';
-        var sql = insertStr + valStr;
-//        console.log(sql);
+        var sql = insertStr.toLowerCase() + valStr;
+
         query(sql, function(err) {
             console.log(sql);
             if(err){
@@ -146,84 +151,102 @@ function _insertRows(queryTable, rows, cb) {
  * @param rows
  * @param cb
  */
-function createTable(queryTable, rows, cb) {
-    var table = {
-       // fieldName: type
-    };
+function createTable(queryTable, rows, fields, cb) {
+	var table = {
+		// fieldName: type
+	};
 
-    var row = rows[0];
-    var len = rows.length;
+	var row = rows[0];
+	var len = rows.length;
 
-    for (var key in row) {
-        var val = row[key];
+	for (var field in row) {
 
-        // it's a string that may be a stringified object
-        if (typeof val === 'string') {
-            table[key] = 'text';
-        }
+		var val = row[field];
 
-        // it's a number
-        if (typeof val === 'number') {
-            if (isInt(val)) {
-                table[key] = 'integer';
-            } else {
-                table[key] = 'float';
-            }
-        }
+			// it's a string that may be a stringified object
+			if (typeof val === 'string') {
+				table[field] = 'text';
+			}
 
-        // it's a null value, see if you can find a row that has a field that isn't null...
-        else if (typeof val === 'object' && val === null) {
-            for (var i=0; i<len; ++i) {
-                row = rows[i];
-                val = row[key];
-                // its a string that may be a stringified object
-                if (typeof val === 'string') {
-                    table[key] = 'text';
-                    break;
-                }
-                // it's a number
-                if (typeof val === 'number') {
-                    if (isInt(val)) {
-                        table[key] = 'integer';
-                    } else {
-                        table[key] = 'float';
-                    }
-                    break;
-                }
-            }
-            // OK, well... We haven't found what we're looking for. Let's just call it text
-            // and move on with our lives...
-            if (!table[key]) table[key] = 'text';
-        }
-    }
+			// it's a number
+			if (typeof val === 'number') {
+				if (isInt(val)) {
+					table[field] = 'integer';
+				} else {
+					table[field] = 'float';
+				}
+			}
 
-    var sql = "CREATE TABLE " + queryTable + "( ID  SERIAL PRIMARY KEY, ";
-    for (var field in table) {
-        sql += field + ' ' + table[field] + ', ';
-    }
-    sql = sql.slice(0, sql.length-2); // get rid of that last ', '
-    sql += ");";
+			// it's a null value, see if you can find a row that has a field that isn't null...
+			else if (typeof val === 'object' && val === null) {
+				for (var i = 0; i < len; ++i) {
+					row = rows[i];
+					val = row[field];
+					// its a string that may be a stringified object
+					if (typeof val === 'string') {
+						table[field] = 'text';
+						break;
+					}
+					// it's a number
+					if (typeof val === 'number') {
+						if (isInt(val)) {
+							table[field] = 'integer';
+						} else {
+							table[field] = 'float';
+						}
+						break;
+					}
+				}
+				// OK, well... We haven't found what we're looking for. Let's just call it text
+				// and move on with our lives...
+				if (!table[field]) table[field] = 'text';
+			}
+		}
 
-    console.log("Creating table for " + queryTable);
-    console.log(sql);
+	//TODO: Get rid of this workaround.
+	var lowerList = {}; //a lowercase list of field names coming back from salesforce.
 
-    query(sql, function(err, res) {
-        console.log(queryTable + ' successfully created.');
-        console.log(res);
+	var sql = "CREATE TABLE " + queryTable + "( ID  SERIAL PRIMARY KEY, ";
+	for (var field in table) {
+		//Make sure the return field matches one of the whitelisted fields from the original SOQL query, otherwise ignore the property
+		if (isValidColumn(fields, field) == true) {
+			//It's ok.  Let it pass
+			sql += field.toLowerCase() + ' ' + table[field] + ', ';
+			lowerList[field.toLowerCase()] = true; //keep a lower case version
+		}
+	}
 
-        // If we have a location guid, we should make an index on it.
-        // NOTE: We can have this happen whenever, so don't worry about a callback with this.
-        var locationField = 'Location__c';
-        if (typeof row !== 'undefined' && typeof row[locationField] !== 'undefined') {
-            var sql = 'CREATE INDEX idx_'+queryTable+'_location__c ON ' + queryTable + '(' + locationField + ');';
-            query(sql, function(err, res){
-                console.log('Created Index: ' + sql);
-                console.log(res);
-            });
-        }
+	//Add any columns that are defined in the select statement that AREN'T in the table object.
+	fields.forEach(function(field){
+		//Check to see if the field is in the table list.
+		if(!lowerList[field] && field != 'id'){
+			sql += field.toLowerCase() + ' text, ';
+		}
+	});
 
-        cb(err, res);
-    });
+	sql = sql.slice(0, sql.length - 2); // get rid of that last ', '
+	sql += ");";
+
+	console.log("Creating table for " + queryTable);
+	console.log(sql);
+
+	query(sql, function (err, res) {
+		console.log(queryTable + ' successfully created.');
+		console.log(res);
+
+		// If we have a location guid, we should make an index on it.
+		// NOTE: We can have this happen whenever, so don't worry about a callback with this.
+		var locationField = 'Location__c';
+		if (typeof row !== 'undefined' && typeof row[locationField] !== 'undefined') {
+			var sql = 'CREATE INDEX idx_' + queryTable + '_location__c ON ' + queryTable + '(' + locationField + ');';
+			query(sql, function (err, res) {
+				console.log('Created Index: ' + sql);
+				console.log(res);
+			});
+		}
+
+		cb(err, res);
+	});
 }
 
 /**
@@ -236,7 +259,7 @@ function createTable(queryTable, rows, cb) {
  * @param rows
  * @param cb
  */
-function createSpatialView(tableName, rows, cb) {
+function createSpatialView(tableName, rows, fields, cb) {
     var table = {
         // fieldName: type
     };
@@ -245,56 +268,60 @@ function createSpatialView(tableName, rows, cb) {
     var len = rows.length;
     var tableQueryAlias = "a"; //Alias to use in the query to refer to the sf table
 
-    for (var key in row) {
-        var val = row[key];
+	for (var field in row) {
+		var val = row[field];
 
-        // it's a string that may be a stringified object
-        if (typeof val === 'string') {
-            table[key] = 'text';
-        }
+		// it's a string that may be a stringified object
+		if (typeof val === 'string') {
+			table[field] = 'text';
+		}
 
-        // it's a number
-        if (typeof val === 'number') {
-            if (isInt(val)) {
-                table[key] = 'integer';
-            } else {
-                table[key] = 'float';
-            }
-        }
+		// it's a number
+		if (typeof val === 'number') {
+			if (isInt(val)) {
+				table[field] = 'integer';
+			} else {
+				table[field] = 'float';
+			}
+		}
 
-        // it's a null value, see if you can find a row that has a field that isn't null...
-        else if (typeof val === 'object' && val === null) {
-            for (var i=0; i<len; ++i) {
-                row = rows[i];
-                val = row[key];
-                // its a string that may be a stringified object
-                if (typeof val === 'string') {
-                    table[key] = 'text';
-                    break;
-                }
-                // it's a number
-                if (typeof val === 'number') {
-                    if (isInt(val)) {
-                        table[key] = 'integer';
-                    } else {
-                        table[key] = 'float';
-                    }
-                    break;
-                }
-            }
-            // OK, well... We haven't found what we're looking for. Let's just call it text
-            // and move on with our lives...
-            if (!table[key]) table[key] = 'text';
-        }
-    }
+		// it's a null value, see if you can find a row that has a field that isn't null...
+		else if (typeof val === 'object' && val === null) {
+			for (var i = 0; i < len; ++i) {
+				row = rows[i];
+				val = row[field];
+				// its a string that may be a stringified object
+				if (typeof val === 'string') {
+					table[field] = 'text';
+					break;
+				}
+				// it's a number
+				if (typeof val === 'number') {
+					if (isInt(val)) {
+						table[field] = 'integer';
+					} else {
+						table[field] = 'float';
+					}
+					break;
+				}
+			}
+			// OK, well... We haven't found what we're looking for. Let's just call it text
+			// and move on with our lives...
+			if (!table[field]) table[field] = 'text';
+		}
+	}
+
 
     var sql = "CREATE VIEW vw_" + tableName + " AS SELECT ";
     var fields = []; //Array of field names;
     var fieldsString = ""; //Joined string of field names
 
     for (var field in table) {
-        fields.push(tableQueryAlias + "." + field);
-    }
+			//Make sure the return field matches one of the whitelisted fields from the original SOQL query, otherwise ignore the property
+			if (isValidColumn(fields, field)) {
+				fields.push(tableQueryAlias + "." + field.toLowerCase());
+			}
+		}
 
     //Add text_search columns
     fields.push("text_search.*");
@@ -317,11 +344,12 @@ function createSpatialView(tableName, rows, cb) {
 
 
 function insertQuery(sfQueryName) {
-    var queryStr = salesforceQueries[sfQueryName];
-    var queryTable = 'sf_' + S(sfQueryName).underscore().s;
-    salesforce.queryAndFlattenResults(queryStr, function(rows) {
-        insertRows(queryTable, rows);
-    });
+	var queryStr = salesforceQueries[sfQueryName];
+	var queryTable = 'sf_' + S(sfQueryName).underscore().s;
+
+	salesforce.queryAndFlattenResults(queryStr, function (rows) {
+		insertRows(queryTable, rows, queryStr);
+	});
 }
 
 //addPrefix: boolean - specifies whether or not to add the 'sf_' before the incoming table name.
@@ -398,6 +426,47 @@ function isSpatialTable(rows, cb) {
     }
     //Didn't find it
     cb(false);
+}
+
+
+/*
+ ...Becasuse what you ask for in the SOQL queries is not exactly what you get back from the API.
+ This will parse the query statement so we know exactly which fields to use to create the PostGres Tables and Views
+ */
+function getTableFieldNamesFromQuery(queryStr){
+	//break the query string in 1/2 by splitting on the FROM clause.  Take the 1st 1/2 and remove the 'select' statement.
+	//Next, split the remainder by commas, then account for spaces and aliases.
+	var fields = queryStr.toLowerCase().split('from')[0].replace('select','').split(',').map(function(field){
+		//trim
+		field = field.trim();
+
+		//handle fully qualified names
+		if(field.indexOf('.') > -1){
+			field = field.split('.')[1]; //take the last part of the name
+		}
+
+		if(field.indexOf(' ') > -1){
+			field = field.split(' ')[1]; //use the alias
+		}
+
+		return field.trim();
+	});
+
+	return fields;
+}
+
+/*
+...because there are several places where we're getting results from SalesForce API that don't match the original select statement.
+This will tell you if the field is supposed to be going into the DB.
+Filter out id, since we're handling that in a non-dynamic way.
+ */
+function isValidColumn(fields, field){
+	if (fields.indexOf(field.toLowerCase()) > -1) {
+		return true;
+	}
+	else{
+		return false;
+	}
 }
 
 /******************************************************************

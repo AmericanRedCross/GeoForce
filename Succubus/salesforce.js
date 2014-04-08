@@ -82,6 +82,30 @@ function handleResult(result, cb) {
     }
 }
 
+/**
+ *
+ * This function takes in an object and flattens out any properties into an array of strings and numbers
+ * Adds the properties to the original record
+ */
+function extractProperties(object, record) {
+
+	for (var key in object) {
+		if (object.hasOwnProperty(key)) {
+			var val = object[key];
+			if (typeof val === 'object' && val !== null) {
+				//mix in properties of return object.
+				extractProperties(val, record);
+				//AND, remove the original object property now that we've flattened it out.
+				delete record[key];
+			}
+			else {
+				//just write out the property
+				record[key] = val;
+			}
+		}
+	}
+	return record;
+}
 
 module.exports = {};
 
@@ -93,27 +117,31 @@ module.exports = {};
  */
 module.exports.queryAndFlattenResults = function(queryStr, cb) {
 
-    query(queryStr, function(records) {
-        if (typeof records !== 'object' || records.length === 0) {
-            console.warn('No Records for: ' + queryStr);
-            return;
-        }
-        for (var i=0, len=records.length; i < len; ++i) {
-            var record = records[i];
-            for (var key in record) {
-                var val = record[key];
-                if (typeof val === 'object' && val !== null) {
-                    record[key] = JSON.stringify(val);
-                }
-                // our table already has an id field, so we need to rename it
-                if (key.toLowerCase() === 'id') {
-                  record['sf_id'] = val;
-                  delete record[key];
-                }
-            }
-        }
-        cb(records);
-    });
+	console.log("Executing query: " + queryStr)
+	query(queryStr.toLowerCase(), function (records) {
+		if (typeof records !== 'object' || records.length === 0) {
+			console.warn('No Records for: ' + queryStr);
+			return;
+		}
+		for (var i = 0, len = records.length; i < len; ++i) {
+			var record = records[i];
+			for (var key in record) {
+				var val = record[key];
+				if (typeof val === 'object' && val !== null) {
+					extractProperties(val, record);
+					delete record[key];
+				}
+				// our table already has an id field, so we need to rename it
+				if (key.toLowerCase() === 'id') {
+					record['sf_id'] = val;
+					delete record[key];
+				}
+			}
+		}
+
+
+		cb(records);
+	});
 
 }
 

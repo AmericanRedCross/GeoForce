@@ -3,31 +3,17 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "Admin_0__c": "Belize",
-    "project_count": 1,
-    "total_budget": 0
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "Admin_0__c": "Colombia",
-    "project_count": 1,
-    "total_budget": 0
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "Admin_0__c": "Ecuador",
-    "project_count": 1,
-    "total_budget": 0
+    "Admin_0__c": null,
+    "GIS_GEO_ID__c": null,
+    "project_count": 151,
+    "total_budget": 5576
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "Haiti",
+    "GIS_GEO_ID__c": "ca4f7dd8-3023-4e18-b644-13449e14b4b3",
     "project_count": 1,
     "total_budget": 0
   },
@@ -36,38 +22,34 @@
       "type": "AggregateResult"
     },
     "Admin_0__c": "India",
-    "project_count": 2,
-    "total_budget": 0
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "Admin_0__c": "Nigeria",
+    "GIS_GEO_ID__c": "8633894c-8f76-46f3-9567-81dbc242d45a",
     "project_count": 1,
-    "total_budget": 1200
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "Admin_0__c": "Tanzania",
-    "project_count": 2,
     "total_budget": 0
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
-    "Admin_0__c": "Uganda",
-    "project_count": 17,
-    "total_budget": 20000
+    "Admin_0__c": "Russia",
+    "GIS_GEO_ID__c": "3d15f9e2-5d7f-4650-9e4b-54c1f3099c12",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Zimbabwe",
+    "GIS_GEO_ID__c": "78ebd129-eecc-46c1-a165-76c24a4c82e7",
+    "project_count": 2,
+    "total_budget": 168027
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
     "Admin_0__c": "United States",
+    "GIS_GEO_ID__c": "96c186f2-19a2-4faa-889e-25e087d3895c",
     "project_count": 2,
     "total_budget": 0
   },
@@ -75,24 +57,9 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "Admin_0__c": "Vietnam",
-    "project_count": 4,
-    "total_budget": 0
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "Admin_0__c": "Zambia",
+    "Admin_0__c": "United States of America",
+    "GIS_GEO_ID__c": "f054eece-9d26-4749-857f-9b80895ff8c1",
     "project_count": 1,
-    "total_budget": 200000
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "Admin_0__c": null,
-    "project_count": 237,
-    "total_budget": 10063502
+    "total_budget": 0
   }
 ]

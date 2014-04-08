@@ -5,37 +5,13 @@
     },
     "project_count": 1,
     "total_budget": 0,
-    "Admin_0__c": "Belize"
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "project_count": 1,
-    "total_budget": 0,
-    "Admin_0__c": "Colombia"
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "project_count": 1,
-    "total_budget": 0,
-    "Admin_0__c": "Ecuador"
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "project_count": 1,
-    "total_budget": 0,
     "Admin_0__c": "Haiti"
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 2,
+    "project_count": 1,
     "total_budget": 0,
     "Admin_0__c": "India"
   },
@@ -44,24 +20,8 @@
       "type": "AggregateResult"
     },
     "project_count": 1,
-    "total_budget": 1200,
-    "Admin_0__c": "Nigeria"
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "project_count": 2,
     "total_budget": 0,
-    "Admin_0__c": "Tanzania"
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "project_count": 17,
-    "total_budget": 20000,
-    "Admin_0__c": "Uganda"
+    "Admin_0__c": "Russia"
   },
   {
     "attributes": {
@@ -75,24 +35,24 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 4,
-    "total_budget": 0,
-    "Admin_0__c": "Vietnam"
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
     "project_count": 1,
-    "total_budget": 200000,
-    "Admin_0__c": "Zambia"
+    "total_budget": 0,
+    "Admin_0__c": "United States of America"
   },
   {
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 237,
-    "total_budget": 10063502,
+    "project_count": 2,
+    "total_budget": 168027,
+    "Admin_0__c": "Zimbabwe"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 151,
+    "total_budget": 5576,
     "Admin_0__c": null
   }
 ]
