@@ -16,7 +16,7 @@
     this.features.push(featureLayer);
 
     if (!featureLayer._leaflet_id) {
-      console.error(featureLayer.feature.properties.name + ' does not have a _leaflet_id');
+//      console.error(featureLayer.feature.properties.name + ' does not have a _leaflet_id');
     }
 
     // feature consists of one polygon
@@ -80,7 +80,7 @@
 
 //    L.DomUtil.setPosition(icon, point);
 
-    var label = L.label([-1,-1], {icon:icon});
+    var label = L.label([45,-100], {icon:icon}, point);
     label.addTo(debug.map);
   }
 
