@@ -85,7 +85,10 @@
     });
 
     var label = L.label([45,-100], {icon:icon}, point);
-    label.addTo(featureLayer);
+
+    // NH TODO Add to featureLayer instead but make sure that it's a valid feature layer.
+    label.addTo(debug.map);
+
     return label;
   }
 

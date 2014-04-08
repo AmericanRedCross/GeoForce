@@ -315,6 +315,10 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         for (var i = 0, len = layers.length; i < len; ++i) {
           var layer = layers[i];
           self._geojsonLayer.removeLayer(layer);
+
+          // NH TODO Have the label be in the featureLayer
+          if (layer.label) debug.map.removeLayer(layer.label);
+
           console.log('Removed Layer: ' + layer.feature.properties.name);
         }
         delete featureLayersByLevel[level];

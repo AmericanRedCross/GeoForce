@@ -2,22 +2,22 @@
 set geom = ST_Simplify(geom, 0.1);
 
 update gadm0
-set geom_simplify_med = ST_Simplify(geom, 0.1);
+set geom_simplify_med = ST_Simplify(geom, 0.07);
 
 update gadm1
-set geom_simplify_med = ST_SimplifyPreserveTopology(geom, 0.1);
+set geom_simplify_med = ST_SimplifyPreserveTopology(geom, 0.01);
 
 update gadm2
-set geom_simplify_med = (geom);
+set geom_simplify_med = geom;
 
 update gadm3
-set geom_simplify_med = ST_SimplifyPreserveTopology(geom, 0.1);
+set geom_simplify_med = geom;
 
 update gadm4
-set geom_simplify_med = ST_SimplifyPreserveTopology(geom, 0.1);
+set geom_simplify_med = geom;
 
 update gadm5
-set geom_simplify_med = ST_SimplifyPreserveTopology(geom, 0.1);
+set geom_simplify_med = geom;
 
 
 --The above causes self-intersection errors (run this to see them)
