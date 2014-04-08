@@ -52,9 +52,8 @@
         var l = findMostComplexLayer(featureLayer._layers);
 
         if (l) {
-          var center = calculateCenter(l._parts);
-
-          createLabel(center, featureLayer.feature.properties.name);
+          featureLayer.labelCenterPoint = calculateCenter(l._parts);
+          updateLabel(featureLayer);
         }
 
         featureLayer.pathsUpdated = 0;
@@ -64,8 +63,8 @@
 
       // there is only one polygon, so calculate center. also check to see if there are parts
       if ( featureLayer._parts && featureLayer._parts.length ) {
-        var center = calculateCenter(featureLayer._parts);
-        createLabel(center, featureLayer.feature.properties.name);
+        featureLayer.labelCenterPoint = calculateCenter(featureLayer._parts);
+        updateLabel(featureLayer);
       }
 
     }
@@ -78,10 +77,18 @@
 
     var icon = L.divIcon({'html': text});
 
-//    L.DomUtil.setPosition(icon, point);
-
     var label = L.label([45,-100], {icon:icon}, point);
     label.addTo(debug.map);
+    return label;
+  }
+
+
+  function updateLabel(featureLayer) {
+    if ( ! featureLayer.label ) {
+      featureLayer.label = createLabel(featureLayer.labelCenterPoint, featureLayer.feature.properties.name);
+    } else {
+      featureLayer.label.update(featureLayer.labelCenterPoint);
+    }
   }
 
 

@@ -78,6 +78,8 @@ L.Label = L.Class.extend({
     return this.fire('move', { latlng: this._latlng });
   },
 
+
+
   setZIndexOffset: function (offset) {
     this.options.zIndexOffset = offset;
     this.update();
@@ -101,7 +103,10 @@ L.Label = L.Class.extend({
     return this;
   },
 
-  update: function () {
+  update: function (point) {
+    if (point) {
+      this._point = point;
+    }
     if (this._icon) {
 //      var pos = this._map.latLngToLayerPoint(this._latlng).round();
       this._setPos(this._point);
