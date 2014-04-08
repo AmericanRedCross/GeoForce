@@ -72,7 +72,7 @@ function insertRows(queryTable, rows, queryStr) {
                                 createTable(queryTable, rows, fields, function() {
                                     _insertRows(queryTable, rows, fields, function(){
                                         //After finished inserting rows, (re)build the view
-                                        isSpatialTable(rows, function(isSpatial){
+                                        isSpatialTable(fields, function(isSpatial){
                                             if(isSpatial === true){
                                                 //Create a view if table is spatial
                                                 createSpatialView(queryTable, rows, fields, function(err, res){
@@ -414,16 +414,15 @@ function sanitize(val) {
  * @param rows
  * @param cb
  */
-function isSpatialTable(rows, cb) {
-    var row = rows[0];
+function isSpatialTable(fields, cb) {
+    fields.forEach(function(field) {
+			if (field.toLowerCase() == 'gis_geo_id__c') {
+				//it's showtime
+				cb(true);
+				return;
+			}
+		});
 
-    for (var key in row) {
-        if(key.toLowerCase() == 'gis_geo_id__c'){
-            //it's showtime
-            cb(true);
-            return;
-        }
-    }
     //Didn't find it
     cb(false);
 }
