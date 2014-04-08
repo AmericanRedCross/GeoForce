@@ -53,7 +53,8 @@
 
         if (l) {
           var center = calculateCenter(l._parts);
-          featureLayer.label = new L.spatialdev.featurelabel.Label(center, featureLayer.feature.properties.name);
+
+          createLabel(center, featureLayer.feature.properties.name);
         }
 
         featureLayer.pathsUpdated = 0;
@@ -64,12 +65,25 @@
       // there is only one polygon, so calculate center. also check to see if there are parts
       if ( featureLayer._parts && featureLayer._parts.length ) {
         var center = calculateCenter(featureLayer._parts);
-        featureLayer.label = new L.spatialdev.featurelabel.Label(center, featureLayer.feature.properties.name);
+        createLabel(center, featureLayer.feature.properties.name);
       }
 
     }
 
   };
+
+
+  function createLabel(point, text) {
+    console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ')');
+
+    var icon = L.divIcon({'html': text});
+
+//    L.DomUtil.setPosition(icon, point);
+
+    var label = L.label([-1,-1], {icon:icon});
+    label.addTo(debug.map);
+  }
+
 
   function calculateCenter(parts) {
     var xSum = 0;
