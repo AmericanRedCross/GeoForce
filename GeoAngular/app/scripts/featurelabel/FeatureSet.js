@@ -72,7 +72,10 @@
   };
 
 
-  function createLabel(point, text) {
+  function createLabel(featureLayer) {
+    var point = featureLayer.labelCenterPoint;
+    var text = featureLayer.feature.properties.name;
+
     console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ')');
 
     var icon = L.divIcon({
@@ -82,14 +85,14 @@
     });
 
     var label = L.label([45,-100], {icon:icon}, point);
-    label.addTo(debug.map);
+    label.addTo(featureLayer);
     return label;
   }
 
 
   function updateLabel(featureLayer) {
     if ( ! featureLayer.label ) {
-      featureLayer.label = createLabel(featureLayer.labelCenterPoint, featureLayer.feature.properties.name);
+      featureLayer.label = createLabel(featureLayer);
     } else {
       featureLayer.label.update(featureLayer.labelCenterPoint);
     }
@@ -123,6 +126,9 @@
       var l = layers[id];
       var parts = l._parts;
       var pointsLen = 0;
+      if (!parts) {
+        continue;
+      }
       for (var i = 0, len = parts.length; i < len; ++i) {
         pointsLen += parts[i].length;
       }

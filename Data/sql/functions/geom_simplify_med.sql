@@ -44,7 +44,7 @@ select * from UpdateGeometrySRID('gadm5', 'geom_simplify_med', 4326);
 --Since we've smoothed away 34 islands for level 0 in the process, add them back in
 update gadm0 set geom_simplify_med = geom
 where guid NOT IN(
-	select id from udf_getidsbyextent(null, 'POLYGON((-180 -90, -180 90, 180 90, 180 -90, -180 -90))')
+	select guid from udf_getidsbyextent(null, 'POLYGON((-180 -90, -180 90, 180 90, 180 -90, -180 -90))')
 	)
 
 --need to do this for other levels as well.
