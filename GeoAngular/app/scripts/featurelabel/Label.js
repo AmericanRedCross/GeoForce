@@ -25,7 +25,7 @@ L.Label = L.Class.extend({
 
   initialize: function (latlng, options, point) {
     L.setOptions(this, options);
-    this._latlng = L.latLng(latlng);
+//    this._latlng = L.latLng(latlng);
     this._point = point;
   },
 
@@ -66,17 +66,17 @@ L.Label = L.Class.extend({
     this._map = null;
   },
 
-  getLatLng: function () {
-    return this._latlng;
-  },
-
-  setLatLng: function (latlng) {
-    this._latlng = L.latLng(latlng);
-
-    this.update();
-
-    return this.fire('move', { latlng: this._latlng });
-  },
+//  getLatLng: function () {
+//    return this._latlng;
+//  },
+//
+//  setLatLng: function (latlng) {
+//    this._latlng = L.latLng(latlng);
+//
+//    this.update();
+//
+//    return this.fire('move', { latlng: this._latlng });
+//  },
 
 
 
@@ -222,9 +222,9 @@ L.Label = L.Class.extend({
   },
 
   _animateZoom: function (opt) {
-    var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
-
-    this._setPos(pos);
+//    var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
+//
+//    this._setPos(pos);
   },
 
   _initInteraction: function () {
@@ -266,7 +266,8 @@ L.Label = L.Class.extend({
 
     this.fire(e.type, {
       originalEvent: e,
-      latlng: this._latlng
+//      latlng: this._latlng
+      point: this._point
     });
   },
 
@@ -274,7 +275,8 @@ L.Label = L.Class.extend({
     if (e.keyCode === 13) {
       this.fire('click', {
         originalEvent: e,
-        latlng: this._latlng
+//        latlng: this._latlng
+        point: this._point
       });
     }
   },
@@ -283,7 +285,8 @@ L.Label = L.Class.extend({
 
     this.fire(e.type, {
       originalEvent: e,
-      latlng: this._latlng
+//      latlng: this._latlng
+      point: this._point
     });
 
     // TODO proper custom event propagation

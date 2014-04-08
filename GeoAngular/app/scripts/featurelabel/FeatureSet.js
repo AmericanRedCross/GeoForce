@@ -75,7 +75,11 @@
   function createLabel(point, text) {
     console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ')');
 
-    var icon = L.divIcon({'html': text});
+    var icon = L.divIcon({
+      className: 'featurelabel-icon',
+      iconSize: [60,60],
+      html: text
+    });
 
     var label = L.label([45,-100], {icon:icon}, point);
     label.addTo(debug.map);
