@@ -81,7 +81,14 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.smartgadm = {
     type: 'BBoxGeoJSON',
     bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids')
+    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
+    properties: {
+      "stroke": 'white',
+      "stroke-width": 2,
+      "stroke-opacity": 1,
+      "fill": "green",
+      "fill-opacity": 0
+    }
   };
 
   this.gadm0 ={
