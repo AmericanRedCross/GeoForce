@@ -171,6 +171,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     this._features = {};
     this._featureLayersByLevel = {};
     this._allFeatureLayers = {};
+    this._featureLabels = new L.spatialdev.featurelabel.FeatureSet();
 
     bboxResources.push(this);
   }
@@ -189,10 +190,18 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         return;
       }
       var feat = geojson.features[0];
+
+      // putting existing properties into new feature object properties
       for (var key in featObj) {
         feat.properties[key] = featObj[key];
         delete featObj[key];
       }
+
+      // extending properties from the config file
+      for (var key in self._config.properties) {
+        feat.properties[key] = self._config.properties[key];
+      }
+
       for (var k in feat) {
         featObj[k] = feat[k];
       }
@@ -232,7 +241,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    */
   function BBoxGeoJSON_addLayer(self, featLayer) {
 
+    self._featureLabels.addFeature(featLayer);
     self._geojsonLayer.addLayer(featLayer);
+//    self._featureLabels.addFeature(featLayer);
 
     var props = featLayer.feature.properties;
     var level = props.level;

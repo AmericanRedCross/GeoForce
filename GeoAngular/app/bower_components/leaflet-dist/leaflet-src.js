@@ -5600,6 +5600,11 @@ L.Polyline = L.Path.extend({
 		this._simplifyPoints();
 
 		L.Path.prototype._updatePath.call(this);
+
+    if (L.spatialdev && L.spatialdev.featurelabel) {
+      L.spatialdev.featurelabel.pathUpdated(this._leaflet_id);
+    }
+
 	}
 });
 

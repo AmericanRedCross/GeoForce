@@ -1,0 +1,9 @@
+
+.featurelabel-icon {
+    background: red;
+    border: 2px solid white;
+    border-radius: 50%;
+    color: white;
+    padding-top:10px;
+    padding-left: 5px;
+}
