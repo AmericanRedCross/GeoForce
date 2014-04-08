@@ -46,12 +46,12 @@ BEGIN
 								count4:= count(g.guid) from gadm4 g WHERE ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 								IF(count4 < 3) THEN --start count4 = 1
 									--We're inside of a level 4.  Assume we can't go lower than 5. Just return 5s
-									RETURN QUERY SELECT 5, g.guid, name_5 from gadm5 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
+									RETURN QUERY SELECT 5, g.guid::character varying, name_5 from gadm5 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 
 
 								ELSE --count4 = 1
 									--0 or > 1 features.  Just return those.
-									RETURN QUERY SELECT 4, g.guid, name_4 from gadm4 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
+									RETURN QUERY SELECT 4, g.guid::character varying, name_4 from gadm4 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 								END IF; --count4 = 1
 
 
