@@ -23,9 +23,10 @@ L.Label = L.Class.extend({
     riseOffset: 250
   },
 
-  initialize: function (latlng, options) {
+  initialize: function (latlng, options, point) {
     L.setOptions(this, options);
     this._latlng = L.latLng(latlng);
+    this._point = point;
   },
 
   onAdd: function (map) {
@@ -102,8 +103,8 @@ L.Label = L.Class.extend({
 
   update: function () {
     if (this._icon) {
-      var pos = this._map.latLngToLayerPoint(this._latlng).round();
-      this._setPos(pos);
+//      var pos = this._map.latLngToLayerPoint(this._latlng).round();
+      this._setPos(this._point);
     }
 
     return this;
@@ -317,6 +318,6 @@ L.Label = L.Class.extend({
   }
 });
 
-L.label = function (latlng, options) {
-  return new L.Label(latlng, options);
+L.label = function (latlng, options, point) {
+  return new L.Label(latlng, options, point);
 };
