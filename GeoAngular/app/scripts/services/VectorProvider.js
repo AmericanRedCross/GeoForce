@@ -171,6 +171,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     this._features = {};
     this._featureLayersByLevel = {};
     this._allFeatureLayers = {};
+    this._featureLabels = new L.spatialdev.featurelabel.FeatureSet();
 
     bboxResources.push(this);
   }
@@ -232,6 +233,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    */
   function BBoxGeoJSON_addLayer(self, featLayer) {
 
+    self._featureLabels.addFeature(featLayer);
     self._geojsonLayer.addLayer(featLayer);
 
     var props = featLayer.feature.properties;
