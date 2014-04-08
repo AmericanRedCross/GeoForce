@@ -15,6 +15,10 @@
   L.spatialdev.featurelabel.FeatureSet.prototype.addFeature = function (featureLayer) {
     this.features.push(featureLayer);
 
+    if (!featureLayer._leaflet_id) {
+      console.error(featureLayer.feature.properties.name + ' does not have a _leaflet_id');
+    }
+
     // feature consists of one polygon
     if (!featureLayer._layers) {
       var leafletId = featureLayer._leaflet_id;
