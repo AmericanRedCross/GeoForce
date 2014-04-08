@@ -190,10 +190,18 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         return;
       }
       var feat = geojson.features[0];
+
+      // putting existing properties into new feature object properties
       for (var key in featObj) {
         feat.properties[key] = featObj[key];
         delete featObj[key];
       }
+
+      // extending properties from the config file
+      for (var key in self._config.properties) {
+        feat.properties[key] = self._config.properties[key];
+      }
+
       for (var k in feat) {
         featObj[k] = feat[k];
       }
