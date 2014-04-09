@@ -103,16 +103,22 @@
     var label = L.label([45,-100], {icon:icon}, point);
 
     label.on('mouseover', function(e) {
-//      yellow EAED6B
-      featureLayer.setStyle({
-        color: '#EAED6B'
-      });
+      if (!featureLayer.selected) {
+        // yellow EAED6B
+        featureLayer.setStyle({
+          color: '#EAED6B'
+        });
+        featureLayer.bringToFront();
+      }
     });
 
     label.on('mouseout', function(e) {
-      featureLayer.setStyle({
-        color: properties.color || 'white'
-      });
+      if (!featureLayer.selected) {
+        featureLayer.setStyle({
+          color: properties.color || 'white'
+        });
+        featureLayer.bringToFront();
+      }
     });
 
     label.on('click', function (e) {
@@ -120,6 +126,14 @@
       featureLayer.setStyle({
         color: '#d9534f'
       });
+      featureLayer.bringToFront();
+      featureLayer.selected = ! featureLayer.selected;
+      if (!featureLayer.selected) {
+        featureLayer.setStyle({
+          color: properties.color || 'white'
+        });
+        featureLayer.bringToFront();
+      }
       if (properties && properties.onClick && typeof properties.onClick === 'function') {
         properties.onClick(featureLayer);
       }
