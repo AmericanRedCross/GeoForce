@@ -270,13 +270,17 @@ html, body {
 
 #DetailsPanel {
     float: left;
-    padding: 15px;
-    padding-top: 74px;
+    padding: 10px;
+    padding-top: 25px;
     background-color: #efefef;
     width: 300px;
     min-height: 400px;
     margin-top: -88px;
     border: 1px solid #d3d3d3;
+}
+
+#DetailsPanel > .container {
+    padding: 0;
 }
 
 .auto {
@@ -337,3 +341,19 @@ html, body {
 }
 
 /* End Details Panel*/
+
+
+/* Override the Bootstrap Inner-Shadow */
+
+.btn:active, .btn.active {
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.stories-container a.thumbnail:hover, .stories-container a.thumbnail:focus, .stories-container a.thumbnail.active {
+    border: none;
+}
+
+/* End override the Bootstrap Inner-Shadow */
