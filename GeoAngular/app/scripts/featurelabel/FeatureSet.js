@@ -95,7 +95,7 @@
     console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ')');
 
     var icon = L.divIcon({
-      className: 'btn btn-danger featurelabel-icon',
+      className: 'btn btn-danger featurelabel-icon-number',
       iconSize: [60,60],
       html: text
     });

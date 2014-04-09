@@ -331,6 +331,11 @@ html, body {
     margin: 20px 0;
 }
 
+.details-li {
+    width: 215px;
+    display: inline-block;
+}
+
 .MapIt {
     background-color: #6d6e70;
     padding: 2px 4px;

@@ -184,8 +184,6 @@
                             <div class="container auto">
                                 <button class="side-view-close btn btn-lg btn-danger" ng-click="detailsVisible=false"><span class="glyphicon glyphicon-chevron-right"></span></button>
 
-                                <div ui-view="details"></div>
-
                                 <div class="title">
                                     {{selectedFeatureTitle}}
                                 </div>
@@ -196,13 +194,16 @@
                                         <div class="list" >
                                             <ul>
                                                 <li ng-repeat="item in value">
-                                                    <a href="#">{{item.name}}</a><div class="MapIt" ng-click="">Map It</div>
+                                                    <a class="details-li" href="#">{{item.name}}</a><div class="MapIt" ng-click="">Map It</div>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
 
                                 </div>
+
+                                <div ui-view="details"></div>
+
                             </div>
                         </div>
                     </div>
