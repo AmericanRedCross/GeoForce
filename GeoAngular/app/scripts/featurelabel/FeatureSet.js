@@ -106,15 +106,15 @@
     var xSum = 0;
     var ySum = 0;
     var pointSum = 0;
-    for (var i = 0, len = parts.length; i < len; ++i) {
-      var part = parts[i];
-      for (var j = 0, len2 = part.length; j < len2; ++j) {
-        var point = part[j];
-        ++pointSum;
-        xSum += point.x;
-        ySum += point.y;
-      }
+
+    var part = findMostComplexPart(parts);
+    for (var j = 0, len2 = part.length; j < len2; ++j) {
+      var point = part[j];
+      ++pointSum;
+      xSum += point.x;
+      ySum += point.y;
     }
+
     var centerX = xSum / pointSum;
     var centerY = ySum / pointSum;
     var center =  L.point(centerX, centerY);
@@ -142,6 +142,21 @@
     }
 
     return complexLayer;
+  }
+
+  function findMostComplexPart(parts) {
+    var complexPart = parts[0];
+    var maxLen = 0;
+
+    for (var i = 0, len = parts.length; i < len; ++i) {
+      var length = parts[i].length;
+      if (length > maxLen) {
+        maxLen = length;
+        complexPart = parts[i];
+      }
+    }
+
+    return complexPart;
   }
 
 }());
