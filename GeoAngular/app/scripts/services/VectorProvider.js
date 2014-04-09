@@ -332,7 +332,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
     detailsUrl = detailsUrl.replace(':guids', properties.guid);
     $http.get(detailsUrl, {cache: true}).success(function (details) {
-      console.log(JSON.stringify(details));
+
+      $rootScope.$broadcast('feature-details', details);
+
     });
 
   };
