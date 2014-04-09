@@ -81,7 +81,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.allprojects = {
     type: 'BBoxGeoJSON',
     bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: chubbsPath('services/custom/custom_operation?name=getthemefeaturesbyid&format=json&theme=projects&gadm_level=:level&ids=:ids'),
+    url: chubbsPath('services/custom/custom_operation?name=getthemefeaturesbyid&format=geojson&theme=projects&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
       "stroke-width": 2,
@@ -89,7 +89,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "fill": "green",
       "fill-opacity": 0,
       "labelProperty": "project_count",
-      "detailsUrl": chubbsPath('services/custom/custom_operation?name=getprojectsbyguid&format=geojson&guids=:guids'),
+      "detailsUrl": chubbsPath('services/custom/custom_operation?name=getprojectsbyguid&format=json&guids=:guids'),
       "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
     }
   };
