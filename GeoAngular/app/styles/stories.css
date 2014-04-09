@@ -29,6 +29,7 @@
     padding: 0;
     border-radius: 0;
     border-color: #F2F2F2;
+    border: none;
 }
 
 .thumbnail .image{
