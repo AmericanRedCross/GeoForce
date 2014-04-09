@@ -103,11 +103,23 @@
     var label = L.label([45,-100], {icon:icon}, point);
 
     label.on('mouseover', function(e) {
+//      yellow EAED6B
+      featureLayer.setStyle({
+        color: '#EAED6B'
+      });
+    });
 
+    label.on('mouseout', function(e) {
+      featureLayer.setStyle({
+        color: properties.color || 'white'
+      });
     });
 
     label.on('click', function (e) {
-
+      // red cross red #ed1b2e
+      featureLayer.setStyle({
+        color: '#d9534f'
+      });
     });
 
 
