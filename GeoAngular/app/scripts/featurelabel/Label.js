@@ -45,7 +45,7 @@ L.Label = L.Class.extend({
 
   addTo: function (map) {
     if (!map.addLayer) {
-      console.log('whoops');
+      console.log('break');
     }
     map.addLayer(this);
     return this;

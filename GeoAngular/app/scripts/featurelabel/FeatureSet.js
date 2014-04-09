@@ -16,7 +16,7 @@
     this.features.push(featureLayer);
 
     if (!featureLayer._leaflet_id) {
-//      console.error(featureLayer.feature.properties.name + ' does not have a _leaflet_id');
+      console.error(featureLayer.feature.properties.name + ' does not have a _leaflet_id');
     }
 
     // feature consists of one polygon
@@ -34,13 +34,20 @@
       }
     }
 
+    pathUpdated(featureLayer);
   };
 
   L.spatialdev.featurelabel.FeatureSet.prototype._pathUpdated = function (leafletId) {
     var featureLayer = this._pathIdHash[leafletId];
+    pathUpdated(featureLayer);
+  };
 
+  function pathUpdated(featureLayer) {
     // If the id doesnt hash, no path for the features in are feature set apply.
-    if (!featureLayer) return;
+    if (!featureLayer) {
+//      console.error('pathUpdated featureLayer empty');
+      return;
+    }
 
     if (featureLayer._layers) {
 
@@ -68,8 +75,7 @@
       }
 
     }
-
-  };
+  }
 
 
   function createLabel(featureLayer) {
@@ -103,9 +109,6 @@
 
 
   function calculateCenter(parts) {
-    var xSum = 0;
-    var ySum = 0;
-    var pointSum = 0;
 
     var part = findMostComplexPart(parts);
     var center = centroid(part);

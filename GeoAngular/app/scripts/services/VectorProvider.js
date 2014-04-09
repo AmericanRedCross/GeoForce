@@ -243,6 +243,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
     self._featureLabels.addFeature(featLayer);
     self._geojsonLayer.addLayer(featLayer);
+
 //    self._featureLabels.addFeature(featLayer);
 
     var props = featLayer.feature.properties;
