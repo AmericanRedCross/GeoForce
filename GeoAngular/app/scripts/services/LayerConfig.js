@@ -78,6 +78,20 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    *
    * @type {{type: string}}
    */
+  this.allprojects = {
+    type: 'BBoxGeoJSON',
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
+    url: chubbsPath('services/custom/custom_operation?name=getthemefeaturesbyid&format=geojson&theme=projects&gadm_level=:level&ids=:ids'),
+    properties: {
+      "stroke": 'white',
+      "stroke-width": 2,
+      "stroke-opacity": 1,
+      "fill": "green",
+      "fill-opacity": 0,
+      "labelProperty": "project_count"
+    }
+  };
+
   this.smartgadm = {
     type: 'BBoxGeoJSON',
     bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
@@ -87,9 +101,30 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "stroke-width": 2,
       "stroke-opacity": 1,
       "fill": "green",
-      "fill-opacity": 0
+      "fill-opacity": 0,
+      "labelProperty": "name"
     }
+
   };
+
+  this.smartgadmfakecount = {
+    type: 'BBoxGeoJSON',
+    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
+    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
+    properties: {
+      "stroke": 'white',
+      "stroke-width": 2,
+      "stroke-opacity": 1,
+      "fill": "green",
+      "fill-opacity": 0,
+      "labelProperty": function() {
+//        Math.floor(Math.random() * (max - min + 1)) + min
+        return Math.floor(Math.random() * (50 - 1 + 1)) + 1;
+      }
+    }
+
+  };
+
 
   this.gadm0 ={
     type: 'BBoxGeoJSON',

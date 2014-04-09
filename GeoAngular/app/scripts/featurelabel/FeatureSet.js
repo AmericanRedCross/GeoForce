@@ -80,17 +80,36 @@
 
   function createLabel(featureLayer) {
     var point = featureLayer.labelCenterPoint;
-    var text = featureLayer.feature.properties.name;
+
+    var properties = featureLayer.feature.properties;
+    var text = properties.title || properties.name || 'Label';
+    if (properties.labelProperty) {
+      if (typeof properties.labelProperty === 'function') {
+        text = properties.labelProperty();
+      } else {
+        text = properties[properties.labelProperty];
+      }
+
+    }
 
     console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ')');
 
     var icon = L.divIcon({
-      className: 'featurelabel-icon',
+      className: 'btn btn-danger featurelabel-icon',
       iconSize: [60,60],
       html: text
     });
 
     var label = L.label([45,-100], {icon:icon}, point);
+
+    label.on('mouseover', function(e) {
+
+    });
+
+    label.on('click', function (e) {
+
+    });
+
 
     // NH TODO Add to featureLayer instead but make sure that it's a valid feature layer.
     label.addTo(debug.map);

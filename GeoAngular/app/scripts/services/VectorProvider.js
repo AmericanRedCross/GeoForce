@@ -189,6 +189,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         console.error('Unable to fetch feature: ' + geojson.error);
         return;
       }
+
+      if (!geojson.features || geojson.features.length < 1) {
+        return;
+      }
+
       var feat = geojson.features[0];
 
       // putting existing properties into new feature object properties

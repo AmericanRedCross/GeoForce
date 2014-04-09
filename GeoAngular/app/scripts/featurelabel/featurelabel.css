@@ -1,13 +1,9 @@
 
 .featurelabel-icon {
-    background: red;
-    border: 2px solid white;
+    /*background: red;*/
+    /*border: 2px solid white;*/
     border-radius: 50%;
-    color: white;
+    /*color: white;*/
     padding-top:15px;
     padding-left: 7px;
-}
-
-.featurelabel-icon:hover {
-    border-color: yellow;
 }
