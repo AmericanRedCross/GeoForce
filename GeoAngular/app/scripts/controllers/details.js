@@ -32,11 +32,9 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
 
   $scope.$on('feature-details', function (event, featureLayer) {
     var properties = featureLayer.feature.properties;
-
     $scope.selectedFeatureTitle = properties.name;
-
     $scope.groupings = properties.details;
-
+    $scope.detailsVisible = true;
   });
 
 });
