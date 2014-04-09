@@ -120,6 +120,10 @@
       featureLayer.setStyle({
         color: '#d9534f'
       });
+      if (properties && properties.onClick && typeof properties.onClick === 'function') {
+        properties.onClick(featureLayer);
+      }
+
     });
 
 

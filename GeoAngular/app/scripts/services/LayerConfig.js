@@ -88,7 +88,9 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "stroke-opacity": 1,
       "fill": "green",
       "fill-opacity": 0,
-      "labelProperty": "project_count"
+      "labelProperty": "project_count",
+      "detailsUrl": chubbsPath('services/custom/custom_operation?name=getprojectsbyguid&format=geojson&guids=:guids'),
+      "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
     }
   };
 
