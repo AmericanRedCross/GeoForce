@@ -5,9 +5,6 @@
 
 angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider) {
 
-  //Init activeTheme property
-  $scope.activeTheme = "Projects";
-
   //Init selectedFeatureTitle property
   $scope.selectedFeatureTitle = "Philippines";
 
@@ -18,7 +15,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
 
 
 
-  //Initialize the dummy project/disaster click results - this needs to be moved to a new controller
+  //Initialize the dummy project/disaster click results
   $scope.groupings = { 'Projects': { items: [
     {name: 'Project 1', id: 1},
     {name: 'Project 2', id: 2},
@@ -30,4 +27,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
   ]} };
 
 
+  $scope.$on('feature-details', function (event, details) {
+    console.log(JSON.stringify(details));
+  });
 });

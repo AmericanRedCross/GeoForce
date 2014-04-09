@@ -11,6 +11,16 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   $scope.blur = '';
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
 
+  //Init activeTheme property
+  $scope.activeTheme = "Projects";
+
+
+  $scope.toggleState = function(stateName) {
+    var state = $state.current.name !== stateName ? stateName : 'main';
+    $state.go(state, $stateParams);
+  };
+
+
   var layersStr = null;
   var overlayNames = [];
 
