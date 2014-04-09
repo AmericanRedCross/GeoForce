@@ -173,6 +173,10 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     this._allFeatureLayers = {};
     this._featureLabels = new L.spatialdev.featurelabel.FeatureSet();
 
+    if (config.detailsUrl) {
+      this._detailsUrl = config.detailsUrl;
+    }
+
     bboxResources.push(this);
   }
 
@@ -189,6 +193,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         console.error('Unable to fetch feature: ' + geojson.error);
         return;
       }
+
+      if (!geojson.features || geojson.features.length < 1) {
+        return;
+      }
+
       var feat = geojson.features[0];
 
       // putting existing properties into new feature object properties
@@ -200,6 +209,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       // extending properties from the config file
       for (var key in self._config.properties) {
         feat.properties[key] = self._config.properties[key];
+        // LayerConfig will state the name of the BBoxGeoJSON method to be called on click.
+        if (key === 'onClick') {
+          var fnName = self._config.properties[key];
+          feat.properties[key] = self[fnName];
+        }
       }
 
       for (var k in feat) {
@@ -301,6 +315,28 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       console.error("Need to try proxy for _fetchForBBox");
 
     });
+  };
+
+
+  /**
+   * This is called by the onClick event for the featurelabels.
+   * @param featureLayer
+   */
+  BBoxGeoJSON.prototype.fetchFeatureDetails = function(featureLayer) {
+    var properties = featureLayer.feature.properties;
+    var detailsUrl = properties.detailsUrl;
+    if (!detailsUrl) {
+      console.error('We need a detailsUrl to fetchFeatureDetails');
+      return;
+    }
+
+    detailsUrl = detailsUrl.replace(':guids', properties.guid);
+    $http.get(detailsUrl, {cache: true}).success(function (details) {
+
+      $rootScope.$broadcast('feature-details', details);
+
+    });
+
   };
 
 

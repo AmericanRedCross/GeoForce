@@ -14,26 +14,11 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   //Init activeTheme property
   $scope.activeTheme = "Projects";
 
-  //Init selectedFeatureTitle property
-  $scope.selectedFeatureTitle = "Philippines";
 
   $scope.toggleState = function(stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
     $state.go(state, $stateParams);
   };
-
-
-
-  //Initialize the dummy project/disaster click results - this needs to be moved to a new controller
-  $scope.groupings = { 'Projects': { items: [
-    {name: 'Project 1', id: 1},
-    {name: 'Project 2', id: 2},
-    {name: 'Project 3', id: 3},
-    {name: 'RedCross Project', id: 4}
-  ]}, 'Disasters': {items: [
-    {name: 'Oso Landslide', id: 1},
-    {name: 'Hurricane', id: 2}
-  ]} };
 
 
   var layersStr = null;
@@ -204,33 +189,6 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
         debug.layer = layer;
 
         layer.addTo(map);
-
-//        vecRes.fetch(function(geojson){
-//          var geojsonLayer = L.geoJson(geojson, {
-//            style: L.mapbox.simplestyle.style,
-//            pointToLayer: function(feature, latlon) {
-//              if (!feature.properties) feature.properties = {};
-//              if (feature.properties.scale) {
-//                return L.circleMarker(latlon, {
-//                  fillColor: feature.properties.color || '#FF0000',
-//                  radius: 20 * feature.properties.scale
-//                });
-//              }
-//              return L.mapbox.marker.style(feature, latlon);
-//            }
-//          }).eachLayer(add).addTo(map);
-//
-//          function add(l) {
-//            var properties = l.feature.properties;
-//            console.log(JSON.stringify(properties));
-//            l.on('click', function() {
-//              console.log('clicked on feature: ' + JSON.stringify(properties));
-//            })
-//          }
-//
-//          geojsonLayer.name = name;
-//          overlays.push(geojsonLayer);
-//        });
 
       }
 

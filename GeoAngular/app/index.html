@@ -171,7 +171,7 @@
 
 
                     <!-- Right Hand Details Panel -->
-                    <div id="DetailsWrapper" ng-class="{on: detailsVisible}">
+                    <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: detailsVisible}">
                         <div id="DetailsButtonWrapper">
                             <div id="DetailsNub" class="btn btn-lg" data-icon="l" ng-click="detailsVisible = !detailsVisible">
                             </div>
@@ -258,6 +258,7 @@
     <script src="scripts/controllers/landing.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/map.js"></script>
+    <script src="scripts/controllers/details.js"></script>
     <script src="scripts/controllers/navbar.js"></script>
     <script src="scripts/controllers/stories.js"></script>
     <script src="scripts/controllers/layers.js"></script>
