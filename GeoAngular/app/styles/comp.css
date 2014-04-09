@@ -271,7 +271,6 @@ html, body {
 #DetailsPanel {
     float: left;
     padding: 15px;
-    padding-top: 74px;
     background-color: #efefef;
     width: 300px;
     min-height: 400px;
