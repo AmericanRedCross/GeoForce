@@ -1,4 +1,4 @@
-//4.7.2014 - Ryan Whitley
+//4.9.2014 - Ryan Whitley
 var flow = require('flow');
 var common = require("../../../common"),settings = require('../../../settings'),shortid = require('shortid');
 
@@ -6,15 +6,14 @@ var operation = {};
 
 /* METADATA */
 operation.name = "GetProjectsByGUID";
-operation.description = "Gets ECOS Projects based on a GUID.";
+operation.description = "Gets ECOS Projects for a given GADM boundary based on a GUID.";
 operation.inputs = {};
 
 operation.outputImage = false;
 
 operation.inputs["guids"] = {}; //comma separated list of guids
-operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 
-operation.Query = "SELECT project_name FROM gadm{{gadm_level}} WHERE guid IN ({{ids}})";
+operation.Query = "SELECT * FROM sf_all_projects WHERE gis_geo_id__c IN ({{guids}})";
 
 operation.execute = flow.define(
     function (args, callback) {
@@ -28,25 +27,17 @@ operation.execute = flow.define(
         //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
         if (operation.isInputValid(args) === true) {
             //prepare bbox string as WKT
-            operation.inputs["ids"] = args.ids;
-            operation.inputs["gadm_level"] = args.gadm_level;
-            operation.inputs["simplification_level"] = args.simplification_level; //currently not using
+            operation.inputs["guids"] = args.guids;
 
             //need to wrap ids in single quotes
             //Execute the query
-            var query;
-					  if(args.gadm_level == -1){
-							query = { text: operation.ARCQuery.replace("{{ids}}", operation.wrapIdsInQuotes(args.ids)) };
-						}
-					else {
-							query = { text: operation.Query.replace("{{gadm_level}}", args.gadm_level).replace("{{ids}}", operation.wrapIdsInQuotes(args.ids)) };
-						}
+						query = { text: operation.Query.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])) };
             common.executePgQuery(query, this);//Flow to next function when done.
         }
         else {
             //Invalid arguments
             //return message
-            callback("Missing or invalid required arguments: gadm_level or ids"); //err is first argument
+            callback("Missing or invalid required arguments: guids"); //err is first argument
         }
     },
     function (err, results) {
@@ -62,14 +53,11 @@ operation.isInputValid = function (input) {
 
     if (input) {
         //make sure we have a bbox.  Other args are optional
-        if (input["ids"] && input["gadm_level"]) {
+        if (input["guids"]) {
             //It's got everything we need.
             return true;
         }
     }
-
-    //TODO - check that the ST_Extent of the input WKT at least touches the BBox of the country specified.
-    //If not, then respond accordingly.
 
     return isValid;
 }
