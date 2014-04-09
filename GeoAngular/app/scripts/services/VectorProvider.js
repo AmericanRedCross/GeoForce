@@ -267,6 +267,10 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     var self = this;
     $http.get(url, {cache: true}).success(function (featItinerary, status) {
       console.log('featItinerary: ' + JSON.stringify(featItinerary));
+      // if there are no features for the current bounding box
+      if (!featItinerary || featItinerary.length === 0) {
+        return;
+      }
       var activeLevels = {};
       self._activeLevels = activeLevels;
       for (var i=0, len=featItinerary.length; i < len; ++i) {
