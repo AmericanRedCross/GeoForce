@@ -2,7 +2,7 @@
 set geom = ST_Simplify(geom, 0.1);
 
 update gadm0
-set geom_simplify_med = ST_Simplify(geom, 0.07);
+set geom_simplify_med = ST_Simplify(geom, 0.06);
 
 update gadm1
 set geom_simplify_med = ST_SimplifyPreserveTopology(geom, 0.01);
