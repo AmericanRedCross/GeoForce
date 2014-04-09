@@ -108,17 +108,41 @@
     var pointSum = 0;
 
     var part = findMostComplexPart(parts);
-    for (var j = 0, len2 = part.length; j < len2; ++j) {
-      var point = part[j];
-      ++pointSum;
-      xSum += point.x;
-      ySum += point.y;
+    var center = centroid(part);
+
+    return center.round();
+  }
+
+
+//  http://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
+
+  function area(partArr) {
+    var area = 0;
+    var len = partArr.length;
+    for (var i = 0, j = len - 1; i < len; j=i, i++) {
+      var p1 = partArr[j];
+      var p2 = partArr[i];
+
+      area += p1.x * p2.y - p2.x * p1.y;
     }
 
-    var centerX = xSum / pointSum;
-    var centerY = ySum / pointSum;
-    var center =  L.point(centerX, centerY);
-    return center.round();
+    return area / 2;
+  }
+
+  function centroid(partArr) {
+    var len = partArr.length;
+    var x = 0;
+    var y = 0;
+    for (var i = 0, j = len - 1; i < len; j=i, i++) {
+      var p1 = partArr[j];
+      var p2 = partArr[i];
+      var f = p1.x * p2.y - p2.x * p1.y;
+      x += (p1.x + p2.x) * f;
+      y += (p1.y + p2.y) * f;
+    }
+    f = area(partArr) * 6;
+    return L.point(x/f, y/f);
+
   }
 
   function findMostComplexLayer(layers) {
