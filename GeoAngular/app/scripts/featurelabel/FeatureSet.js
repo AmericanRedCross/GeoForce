@@ -39,13 +39,24 @@
 
   L.spatialdev.featurelabel.FeatureSet.prototype._pathUpdated = function (leafletId) {
     var featureLayer = this._pathIdHash[leafletId];
+    // the hash doesn't always catch the id if the graphic has not yet been rendered.
+    if (!featureLayer) {
+      var features = this.features;
+      for (var key in features) {
+        var feat = this.features[key];
+        if (feat._leaflet_id === leafletId) {
+          featureLayer = feat;
+          break;
+        }
+      }
+    }
     pathUpdated(featureLayer);
   };
 
   function pathUpdated(featureLayer) {
     // If the id doesnt hash, no path for the features in are feature set apply.
     if (!featureLayer) {
-//      console.error('pathUpdated featureLayer empty');
+      console.error('pathUpdated featureLayer empty');
       return;
     }
 
