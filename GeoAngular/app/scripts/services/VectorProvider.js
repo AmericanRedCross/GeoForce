@@ -74,13 +74,16 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    * @param cb
    */
   Resource.prototype.fetch = function(cb) {
-
+    var proxyPath = config.proxyPath(this._url);
     $http.get(this._url, {cache: true}).success(function (data, status) {
       cb(data);
     }).error(function() {
-      //NH TODO Deal with proxy logic.
-      console.log("Trying proxy for " + this.name);
-
+      // trying proxy
+      $http.get(proxyPath, {cache: true}).success(function (data, status) {
+        cb(data);
+      }).error(function() {
+        console.error("Unable to fetch from: " + path);
+      });
     });
 
   };
@@ -406,6 +409,15 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       }
       if (typeof cb === 'function') cb(self._geojson);
     });
+  };
+
+  KML.prototype.getLayer = function () {
+    if (this._geojsonLayer) return this._geojsonLayer;
+    var layer =  Resource.prototype.getLayer.call(this);
+    this.fetch(function(geojson){
+      layer.addData(geojson);
+    });
+    return layer;
   };
 
   return {
