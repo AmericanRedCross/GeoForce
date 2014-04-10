@@ -190,6 +190,14 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
         // need to fetch data and redraw layer
         var vecRes = VectorProvider.createResource(overlayNames[i]);
         var layer = vecRes.getLayer();
+
+        // NH TODO Only works for KML. Think through this better.
+        vecRes.eachLayer(function (l) {
+          var props = l.feature.properties;
+
+        });
+
+
         debug.layer = layer;
 
         layer.addTo(map);
