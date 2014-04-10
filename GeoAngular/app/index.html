@@ -184,7 +184,7 @@
                             <div class="container auto">
                                 <button class="side-view-close btn btn-lg btn-danger" ng-click="detailsVisible=false"><span class="glyphicon glyphicon-chevron-right"></span></button>
 
-                                <a ng-show="details" ng-click="showList()">< Back to List</a>
+                                <a ng-show="details" ng-click="showList()" class="back-link">< Back to List</a>
                                 <div class="title">
                                     {{selectedFeatureTitle}}
                                 </div>
@@ -205,8 +205,8 @@
                                     <div class="section scrollable" ng-show="details">
                                         <ul>
                                             <li ng-repeat="(key, value) in details">
-                                                {{key}}:<br/>
-                                                {{value}}<br/>
+                                                <div class="details-key">{{key}}:</div>
+                                                <div class="details-value">{{value}}</div>
                                             </li>
                                         </ul>
                                     </div>

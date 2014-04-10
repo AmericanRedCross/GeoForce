@@ -164,6 +164,7 @@ html, body {
     -moz-transition: all .5s ease .3s; /* This is the animation TO THE RIGHT for the details wrapper */
     -webkit-transition: all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
     -ms-transition: all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
+    transition: all .5s ease .3s;
 }
 
 #DetailsWrapper.on {
@@ -171,6 +172,7 @@ html, body {
     -moz-transition: all .5s ease; /* This is the animation TO THE LEFT for the details wrapper */
     -webkit-transition: all .5s ease; /* This is the animation TO THE LEFT for the details */
     -ms-transition: all .5s ease; /* This is the animation TO THE LEFT for the details wrapper */
+    transition: all .5s ease;
 }
 
 #PreviousItem {
@@ -302,6 +304,11 @@ html, body {
     background-color: #fff;
     padding: 10px;
     border: 1px solid #d3d3d3;
+
+    transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -webkit-transition: all .5s ease;
+    -ms-transition: all .5s ease;
 }
 
 #DetailsPanel .title {
@@ -334,6 +341,19 @@ html, body {
 .details-li {
     width: 215px;
     display: inline-block;
+    cursor: pointer;
+}
+
+#DetailsPanel .back-link{
+    cursor:pointer;
+}
+
+#DetailsPanel .details-key{
+     color: #161616;
+}
+
+#DetailsPanel .details-value{
+    color: #3f3f3f;
 }
 
 .MapIt {
