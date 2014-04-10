@@ -21,6 +21,13 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope) {
     layers: 'ortho,smartgadm'
   };
 
+  $scope.gdacsKml = {
+    lat: 0,
+    lng: 0,
+    zoom: 2,
+    layers: 'osmhot,gdacs'
+  };
+
   $scope.gadm0 = {
     lat: -19.808054,
     lng: 31.508789,
