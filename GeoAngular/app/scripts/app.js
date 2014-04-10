@@ -31,7 +31,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
     .when('/landing', '/map@35.029996,-89.340820,4(redcross,smartgadm)/landing')
     .when('/main', '/map@35.029996,-89.340820,4(redcross,smartgadm)')
     .when('/phl', '/map@11.759815,121.893311,6(redcross,phl)')
-    .otherwise('/map@0,0,2(pinterest,smartgadm)');
+    .otherwise('/map@0,0,2(pinterest)/landing');
 
   $stateProvider
     .state('main', {

@@ -328,7 +328,12 @@ html, body {
 }
 
 #DetailsPanel .InnerContainer .section {
-    margin: 20px 0;
+    margin-bottom: 15px;
+}
+
+.details-li {
+    width: 215px;
+    display: inline-block;
 }
 
 .MapIt {
@@ -357,3 +362,8 @@ html, body {
 }
 
 /* End override the Bootstrap Inner-Shadow */
+
+.scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+}

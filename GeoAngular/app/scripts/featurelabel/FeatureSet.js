@@ -39,13 +39,24 @@
 
   L.spatialdev.featurelabel.FeatureSet.prototype._pathUpdated = function (leafletId) {
     var featureLayer = this._pathIdHash[leafletId];
+    // the hash doesn't always catch the id if the graphic has not yet been rendered.
+    if (!featureLayer) {
+      var features = this.features;
+      for (var key in features) {
+        var feat = this.features[key];
+        if (feat._leaflet_id === leafletId) {
+          featureLayer = feat;
+          break;
+        }
+      }
+    }
     pathUpdated(featureLayer);
   };
 
   function pathUpdated(featureLayer) {
     // If the id doesnt hash, no path for the features in are feature set apply.
     if (!featureLayer) {
-//      console.error('pathUpdated featureLayer empty');
+      console.error('pathUpdated featureLayer empty');
       return;
     }
 
@@ -95,7 +106,7 @@
     console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ')');
 
     var icon = L.divIcon({
-      className: 'btn btn-danger featurelabel-icon',
+      className: $.isNumeric(text) ? 'btn btn-danger featurelabel-icon-number' : 'featurelabel-icon',
       iconSize: [60,60],
       html: text
     });
@@ -103,16 +114,22 @@
     var label = L.label([45,-100], {icon:icon}, point);
 
     label.on('mouseover', function(e) {
-//      yellow EAED6B
-      featureLayer.setStyle({
-        color: '#EAED6B'
-      });
+      if (!featureLayer.selected) {
+        // yellow EAED6B
+        featureLayer.setStyle({
+          color: '#EAED6B'
+        });
+        featureLayer.bringToFront();
+      }
     });
 
     label.on('mouseout', function(e) {
-      featureLayer.setStyle({
-        color: properties.color || 'white'
-      });
+      if (!featureLayer.selected) {
+        featureLayer.setStyle({
+          color: properties.color || 'white'
+        });
+        featureLayer.bringToFront();
+      }
     });
 
     label.on('click', function (e) {
@@ -120,6 +137,14 @@
       featureLayer.setStyle({
         color: '#d9534f'
       });
+      featureLayer.bringToFront();
+      featureLayer.selected = ! featureLayer.selected;
+      if (!featureLayer.selected) {
+        featureLayer.setStyle({
+          color: properties.color || 'white'
+        });
+        featureLayer.bringToFront();
+      }
       if (properties && properties.onClick && typeof properties.onClick === 'function') {
         properties.onClick(featureLayer);
       }

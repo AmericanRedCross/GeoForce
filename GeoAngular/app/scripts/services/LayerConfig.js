@@ -20,7 +20,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.osmhot = 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
   this.natgeo = 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}';
   this.usgstopo = 'http://services.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}';
-  this.esriortho = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+  this.ortho = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
   this.redcross = 'https://{s}.tiles.mapbox.com/v3/americanredcross.hcji22de/{z}/{x}/{y}.png';
   this.pinterest = 'http://{s}.tiles.mapbox.com/v3/pinterest.map-ho21rkos/{z}/{x}/{y}.png';
   this.mapboxaerial = 'http://{s}.tiles.mapbox.com/v3/spatialdev.map-hozgh18d/{z}/{x}/{y}.png';
@@ -81,7 +81,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.allprojects = {
     type: 'BBoxGeoJSON',
     bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: chubbsPath('services/custom/custom_operation?name=getthemefeaturesbyid&format=json&theme=projects&gadm_level=:level&ids=:ids'),
+    url: chubbsPath('services/custom/custom_operation?name=getthemefeaturesbyid&format=geojson&theme=projects&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
       "stroke-width": 2,
@@ -89,7 +89,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "fill": "green",
       "fill-opacity": 0,
       "labelProperty": "project_count",
-      "detailsUrl": chubbsPath('services/custom/custom_operation?name=getprojectsbyguid&format=geojson&guids=:guids'),
+      "detailsUrl": chubbsPath('services/custom/custom_operation?name=getprojectsbyguid&format=json&guids=:guids'),
       "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
     }
   };
