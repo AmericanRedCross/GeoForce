@@ -22,8 +22,8 @@
     "flow": "*",
     "less-middleware": "0.1.15",
     "topojson": "*",
-	"shortid": "*",
-	"cors": "*",
+	  "shortid": "*",
+	  "cors": "*",
     "request": "*"
   },
   "optionalDependencies":{
