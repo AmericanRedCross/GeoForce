@@ -106,7 +106,7 @@
     console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ')');
 
     var icon = L.divIcon({
-      className: 'btn btn-danger featurelabel-icon-number',
+      className: $.isNumeric(text) ? 'btn btn-danger featurelabel-icon-number' : 'featurelabel-icon',
       iconSize: [60,60],
       html: text
     });
