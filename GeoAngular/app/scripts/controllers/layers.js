@@ -15,10 +15,10 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope) {
   };
 
   $scope.smartGadm = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
+    lat: 43.468868,
+    lng: -106.638794,
+    zoom: 9,
+    layers: 'ortho,smartgadm'
   };
 
   $scope.gadm0 = {
