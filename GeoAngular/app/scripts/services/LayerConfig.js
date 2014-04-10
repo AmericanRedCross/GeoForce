@@ -8,10 +8,6 @@
  */
 angular.module('GeoAngular').service('LayerConfig', function () {
 
-  function chubbsPath(relPath) {
-    return 'http://localhost:3000/' + relPath;
-  }
-
   /**
    * Basemaps
    * @type {string}
@@ -80,8 +76,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    */
   this.allprojects = {
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: chubbsPath('services/custom/custom_operation?name=getthemefeaturesbyid&format=geojson&theme=projects&gadm_level=:level&ids=:ids'),
+    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
+    url: config.chubbsPath('services/custom/custom_operation?name=getthemefeaturesbyid&format=geojson&theme=projects&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
       "stroke-width": 2,
@@ -89,15 +85,15 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "fill": "green",
       "fill-opacity": 0,
       "labelProperty": "project_count",
-      "detailsUrl": chubbsPath('services/custom/custom_operation?name=getprojectsbyguid&format=json&guids=:guids'),
+      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectsbyguid&format=json&guids=:guids'),
       "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
     }
   };
 
   this.smartgadm = {
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
+    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
+    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
       "stroke-width": 2,
@@ -111,8 +107,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
 
   this.smartgadmfakecount = {
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
+    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
+    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
       "stroke-width": 2,
@@ -130,26 +126,26 @@ angular.module('GeoAngular').service('LayerConfig', function () {
 
   this.gadm0 ={
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=0'),
-    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids')
+    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=0'),
+    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids')
   };
 
   this.gadm1 = {
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=1'),
-    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids')
+    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=1'),
+    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids')
   };
 
   this.gadm2 = {
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=2'),
-    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids')
+    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=2'),
+    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids')
   };
 
   this.gadm3 = {
     type: 'BBoxGeoJSON',
-    bboxurl: chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=3'),
-    url: chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids')
+    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=3'),
+    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids')
   };
 
   /**
