@@ -159,6 +159,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
     });
 
+    map.on('zoomend', function() {
+      broadcastBBox();
+    });
+
     //Connect the layout onresize end event
     window.layout.panes.center.bind("layoutpaneonresize_end", function () {
       map.invalidateSize();
@@ -189,7 +193,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
         debug.layer = layer;
 
         layer.addTo(map);
-
+//        broadcastBBox();
       }
 
     });
