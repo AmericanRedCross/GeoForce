@@ -13,7 +13,29 @@ operation.outputImage = false;
 operation.inputs["ids"] = {}; //comma separated list of ids
 operation.inputs["theme"] = {}; //string - theme name
 
-operation.Query = "SELECT ST_AsGeoJSON(geom) as geom, project_count, level FROM vw_theme_{{theme}}_gadm WHERE stack_guid IN ({{ids}})";
+//operation.Query = "SELECT ST_AsGeoJSON(geom) as geom, project_count, level FROM vw_theme_{{theme}}_gadm WHERE stack_guid IN ({{ids}})";
+
+operation.Query = "with projects as ( \
+SELECT gadm2.guid FROM gadm2, gadm0, vw_sf_all_projects \
+WHERE gadm0.id_0 = gadm2.id_0 \
+AND gadm2.guid = vw_sf_all_projects.stack_guid \
+AND vw_sf_all_projects.level = '2' \
+AND gadm0.guid::character varying IN ({{ids}}) \
+UNION ALL \
+SELECT gadm1.guid FROM gadm1, gadm0, vw_sf_all_projects \
+WHERE gadm0.id_0 = gadm1.id_0 \
+AND gadm1.guid = vw_sf_all_projects.stack_guid \
+AND vw_sf_all_projects.level = '1' \
+AND gadm0.guid::character varying IN ({{ids}}) \
+UNION ALL \
+SELECT gadm0.guid FROM gadm0, vw_sf_all_projects \
+WHERE gadm0.guid = vw_sf_all_projects.stack_guid \
+AND vw_sf_all_projects.level = '0' \
+AND gadm0.guid::character varying IN ({{ids}}) \
+) \
+SELECT count(guid) as project_count, ST_ASGeoJson((SELECT geom_simplify_med from gadm0 where guid IN ({{ids}}))) as geom \
+FROM projects \
+GROUP by guid";
 
 operation.execute = flow.define(
     function (args, callback) {
@@ -32,7 +54,7 @@ operation.execute = flow.define(
             //need to wrap ids in single quotes
             //Execute the query
             var query;
-						query = { text: operation.Query.replace('{{theme}}', operation.inputs["theme"]).replace("{{ids}}", operation.wrapIdsInQuotes(args.ids)) };
+						query = { text: operation.Query.replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)) };
             common.executePgQuery(query, this);//Flow to next function when done.
         }
         else {
