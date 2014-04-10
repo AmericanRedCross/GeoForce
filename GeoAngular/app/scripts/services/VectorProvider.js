@@ -407,7 +407,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         angular.extend(self._geojson.properties, self._config.properties);
         self._geojson.properties.srcType = 'kml';
       }
-      if (typeof cb === 'function') cb(self._geojson);
+      if (typeof cb === 'function') cb(self._geojson, self);
     });
   };
 
@@ -418,6 +418,17 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       layer.addData(geojson);
     });
     return layer;
+  };
+
+  KML.prototype.eachLayer = function (cb) {
+    this._eachLayerCallback = cb;
+    this.fetch(function(geojson, self){
+      var layers = self._geojsonLayer._layers;
+      for (var key in layers) {
+        var layer = layers[key];
+        cb(layer);
+      }
+    });
   };
 
   return {

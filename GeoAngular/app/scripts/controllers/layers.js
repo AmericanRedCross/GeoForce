@@ -25,7 +25,7 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope) {
     lat: 0,
     lng: 0,
     zoom: 2,
-    layers: 'osmhot,gdacs'
+    layers: 'osmhot,http://www.gdacs.org/xml/gdacs.kml'
   };
 
   $scope.gadm0 = {
