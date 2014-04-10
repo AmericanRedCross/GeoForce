@@ -13,6 +13,8 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     $state.go(state, $stateParams);
   };
 
+  $scope.itemsList = true;
+  $scope.details = false;
 
 
   //Initialize the dummy project/disaster click results
@@ -36,5 +38,24 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     $scope.groupings = properties.details;
     $scope.detailsVisible = true;
   });
+
+  $scope.showDetails = function (item) {
+    $scope.itemsList = false;
+    $scope.details = item;
+    $scope.resizeDetailsPanel();
+  };
+
+  $scope.showList = function () {
+    $scope.itemsList = true;
+    $scope.details = false;
+  };
+
+  $scope.resizeDetailsPanel = function() {
+    var detailsPanelTop = $('#DetailsPanel').offset().top;
+    var themeSelectorTop = $('#ThemeSelectorMenu').offset().top;
+    var height = themeSelectorTop - detailsPanelTop - 10;
+//    $('#DetailsPanel').height(height);
+    $('#InnerContainer').height(height);
+  }
 
 });

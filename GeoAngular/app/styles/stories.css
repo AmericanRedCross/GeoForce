@@ -65,8 +65,3 @@ width: 100%;
 .thumbnail .item-arrow{
     line-height: 27px;
 }
-
-.scrollable{
-    overflow-y: auto;
-    overflow-x: hidden;
-}
