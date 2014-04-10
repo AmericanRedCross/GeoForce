@@ -53,9 +53,14 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
   $scope.resizeDetailsPanel = function() {
     var detailsPanelTop = $('#DetailsPanel').offset().top;
     var themeSelectorTop = $('#ThemeSelectorMenu').offset().top;
-    var height = themeSelectorTop - detailsPanelTop - 10;
-//    $('#DetailsPanel').height(height);
-    $('#InnerContainer').height(height);
+    var height = themeSelectorTop - detailsPanelTop - 10 - 200;
+    $('#DetailsPanel .InnerContainer ').height(height);
   }
+
+	//Connect the layout onresize end event
+	window.layout.panes.center.bind("layoutpaneonresize_end", $scope.resizeDetailsPanel);
+
+	//For Init.
+	$scope.resizeDetailsPanel();
 
 });
