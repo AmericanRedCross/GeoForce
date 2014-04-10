@@ -184,20 +184,31 @@
                             <div class="container auto">
                                 <button class="side-view-close btn btn-lg btn-danger" ng-click="detailsVisible=false"><span class="glyphicon glyphicon-chevron-right"></span></button>
 
+                                <a ng-show="details" ng-click="showList()">< Back to List</a>
                                 <div class="title">
                                     {{selectedFeatureTitle}}
                                 </div>
-                                <div class="InnerContainer">
+
+                                <div class="InnerContainer scrollable">
                                     <!-- Repeater Here to List out Headings and List Items -->
-                                    <div class="section" ng-repeat="(group, value) in groupings">
+                                    <div class="section scrollable" ng-show="itemsList" ng-repeat="(group, value) in groupings">
                                         <div class="heading">{{group}}</div>
                                         <div class="list" >
                                             <ul>
                                                 <li ng-repeat="item in value">
-                                                    <a class="details-li" href="#">{{item.name}}</a><div class="MapIt" ng-click="">Map It</div>
+                                                    <a class="details-li" ng-click="showDetails(item)">{{item.name}}</a><div class="MapIt" ng-click="">Map It</div>
                                                 </li>
                                             </ul>
                                         </div>
+                                    </div>
+
+                                    <div class="section scrollable" ng-show="details">
+                                        <ul>
+                                            <li ng-repeat="(key, value) in details">
+                                                {{key}}:<br/>
+                                                {{value}}<br/>
+                                            </li>
+                                        </ul>
                                     </div>
 
                                 </div>
