@@ -117,7 +117,7 @@ module.exports = {};
  */
 module.exports.queryAndFlattenResults = function(queryStr, cb) {
 
-	console.log("Executing query: " + queryStr)
+	console.log("Executing SOQL query: " + queryStr)
 	query(queryStr.toLowerCase(), function (records) {
 		if (typeof records !== 'object' || records.length === 0) {
 			console.warn('No Records for: ' + queryStr);
