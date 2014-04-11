@@ -5,6 +5,7 @@
 
 var pg                  = require('pg');
 var S                   = require('string');
+var flow                = require('flow');
 var settings            = require('./settings').pg;
 var salesforce          = require('./salesforce');
 var salesforceQueries   = require('./salesforce-queries');
@@ -17,12 +18,14 @@ var conString =     "postgres://" +
                     settings.port + "/" +
                     settings.database;
 
+module.exports = {};
 
-function query(queryStr, cb) {
+var query = module.exports.query = function(queryStr, cb) {
     pg.connect(conString, function(err, client, done) {
         if(err) {
             console.error('error fetching client from pool', err);
         }
+			  console.log(queryStr);
         client.query(queryStr, function(queryerr, result) {
             //call `done()` to release the client back to the pool
             done();
@@ -49,96 +52,156 @@ function fetchTableNames(cb) {
     });
 }
 
+/*
+ Wrap insertRows in a Flow.  Each step is dependant upon the previous.
+ */
+var insertRows = flow.define(
 
-function insertRows(queryTable, rows, queryStr) {
+	function(queryTable, rows, queryStr, cb) {
 
-	//Get an array of proper field names
-	var fields = getTableFieldNamesFromQuery(queryStr);
+		this.queryTable = queryTable;
+		this.rows = rows;
+		this.queryStr = queryStr;
+		this.cb = cb;
 
-	fetchTableNames(function (tables) {
-        // See if a query table exists.
-        if (tables[queryTable]) {
-            //It exists. If the query returns any rows, then assume it's good data.
-            if(rows.length > 0){
-                //Drop the view, then the old table.  Create table again and insert new rows
-                dropView(queryTable, function(err, result){
-                    if(err){
-                        console.log("Error dropping view: " + queryTable + ".  Msg: " + err );
-                    }else{
-                        //Drop table
-                        dropQueryTable(queryTable, function(err){
-                            if(!err){
-                                //Create table again
-                                createTable(queryTable, rows, fields, function() {
-                                    _insertRows(queryTable, rows, fields, function(){
-                                        //After finished inserting rows, (re)build the view
-                                        isSpatialTable(fields, function(isSpatial){
-                                            if(isSpatial === true){
-                                                //Create a view if table is spatial
-                                                createSpatialView(queryTable, rows, fields, function(err, res){
-                                                    if(err){
-                                                        console.log("Error creating view: " + queryTable + ".  Msg: " + err );
-                                                    }
-                                                }) ;
-                                            }
-                                        });
-                                    });
-                                });
-                            }
-                            else{
-                                console.log("Error dropping table: " + queryTable + ".  Msg: " + err );
-                            }
-                        }, false);
-                    }
-                })
-            }
-            else{
-                //If no rows, then don't drop the old table
-            }
-        }
-        // If not, create the given table and then insert rows.
-        else {
-            createTable(queryTable, rows, fields,  function() {
-                _insertRows(queryTable, rows, fields);
-            });
-        }
-    });
+		//Get an array of proper field names
+		this.fields = getTableFieldNamesFromQuery(this.queryStr);
 
-}
+		//Get table names from postgres
+		fetchTableNames(this);
 
+	},function (tables) { //TODO: Only look up table names once.  Move this out of here.
+		// See if a query table exists.
+		if (tables[this.queryTable]) {
+			//It exists. If the query returns any rows, then assume it's good data.
+			if (this.rows.length > 0) {
+				//Drop the view, then the old table.  Create table again and insert new rows
+				dropViewAndTable(this.queryTable, this.rows, this.fields, this);
+			}
+			else {
+				//If no rows (bad data), then don't drop the old table.  Don't do anything.  Exit.
+				this.cb();
+			}
+		}
+		else {// Create the given table and then insert rows.
+			this(); //Flow to next block to create
+		}
+	},function(){
+		//Coming back from dropViewAndTable
+		createTableInsertRowsCreateView(this.queryTable, this.rows, this.fields, this.cb);
+	}
+)
+
+
+/*
+Group together the process of dropping a view and then the corresponding table.
+Each is dependant on the previous step.
+ */
+var dropViewAndTable = flow.define(
+	function(queryTable, rows, fields, cb) {
+		this.queryTable = queryTable;
+		this.rows = rows;
+		this.fields = fields;
+		this.cb = cb;
+
+		dropView(this.queryTable, this);
+	},function (err, result) {
+		//Coming back from dropView
+		if (err) {
+			console.log("Error dropping view: " + this.queryTable + ".  Msg: " + err);
+			this.cb(err);
+		} else {
+			//Drop table
+			dropQueryTable(this.queryTable, this, false);
+		}
+	},function (err) {
+		//Coming back from dropQueryTable
+		if (!err) {
+			//Create table again
+			//Fow now, return
+			this.cb();
+		}
+		else {
+			console.log("Error dropping table: " + this.queryTable + ".  Msg: " + err);
+			this.cb(err);
+		}
+	}
+)
+
+/*
+Group Together the process of creating tables, inserting rows, and creating views.
+Each step is dependant on the previous.
+ */
+var createTableInsertRowsCreateView = flow.define(
+
+	function(queryTable, rows, fields, cb){
+		this.queryTable = queryTable;
+		this.rows = rows;
+		this.fields = fields;
+		this.cb = cb;
+
+		//Create the table
+		createTable(this.queryTable, this.rows, this.fields, this);
+	},function () {
+		//Coming back from createTable
+		//Insert Rows
+		_insertRows(this.queryTable, this.rows, this.fields, this);
+	},function () {
+		//After finished inserting rows, (re)build the view
+		isSpatialTable(this.fields, this);
+	},function (isSpatial) {
+		//Coming back from isSpatialTable
+		if (isSpatial === true) {
+			//Create a view if table is spatial
+			createSpatialView(this.queryTable, this.rows, this.fields, this);
+		}
+		else {
+			//Non spatial
+			this.cb(); //exit to caller
+		}
+	},function (err, res) {
+		if (err) {
+			console.log("Error creating view: " + this.queryTable + ".  Msg: " + err);
+			this.cb(err);
+		}
+		this.cb(); //exit to caller
+	}
+)
 
 /**
  * This is to be called inside of function insertRows only.
  * Consider this private private.
+ * To know when it's done, wrap in a multiplexing flow
  *
  * @param rows
  * @private
  */
-function _insertRows(queryTable, rows, fields, cb) {
-    rows.forEach(function(row){
-        var insertStr = "INSERT INTO " + queryTable + " ( ";
-        var valStr = "VALUES ( ";
-        for (var field in row) {
-					if(isValidColumn(fields, field) == true){
-						insertStr += field + ', ';
-						valStr += sanitize(row[field]) + ', ';
-					}
-        }
-        insertStr = insertStr.slice(0, insertStr.length-2) + ') ';
-        valStr = valStr.slice(0, valStr.length-2) + ');';
-        var sql = insertStr.toLowerCase() + valStr;
+var _insertRows = flow.define(
+	function(queryTable, rows, fields, cb) {
+		this.cb = cb;
 
-        query(sql, function(err) {
-            console.log(sql);
-            if(err){
+		rows.forEach(function (row) {
+			var insertStr = "INSERT INTO " + queryTable + " ( ";
+			var valStr = "VALUES ( ";
+			for (var field in row) {
+				if (isValidColumn(fields, field) == true) {
+					insertStr += field + ', ';
+					valStr += sanitize(row[field]) + ', ';
+				}
+			}
+			insertStr = insertStr.slice(0, insertStr.length - 2) + ') ';
+			valStr = valStr.slice(0, valStr.length - 2) + ');';
+			var sql = insertStr.toLowerCase() + valStr;
 
-            }
-        });
-    });
+			query(sql, this.MULTI()); //MULTI means to wait until all calls finish, and then proceed to next function in flow
+		}.bind(this));
 
-    //Done
-    if(cb) cb();
-}
+
+	},function() {
+		//All queries have finished. We're done
+		if (this.cb) this.cb();
+	}
+)
 
 
 /**
@@ -227,21 +290,15 @@ function createTable(queryTable, rows, fields, cb) {
 	sql = sql.slice(0, sql.length - 2); // get rid of that last ', '
 	sql += ");";
 
-	console.log("Creating table for " + queryTable);
-	console.log(sql);
-
 	query(sql, function (err, res) {
 		console.log(queryTable + ' successfully created.');
-		console.log(res);
-
 		// If we have a location guid, we should make an index on it.
 		// NOTE: We can have this happen whenever, so don't worry about a callback with this.
 		var locationField = 'Location__c';
 		if (typeof row !== 'undefined' && typeof row[locationField] !== 'undefined') {
 			var sql = 'CREATE INDEX idx_' + queryTable + '_location__c ON ' + queryTable + '(' + locationField + ');';
 			query(sql, function (err, res) {
-				console.log('Created Index: ' + sql);
-				console.log(res);
+				console.log('Created Index.');
 			});
 		}
 
@@ -332,23 +389,21 @@ function createSpatialView(tableName, rows, fields, cb) {
     sql += " INNER JOIN text_search on text_search.stack_guid::character varying = " + tableQueryAlias + ".gis_geo_id__c;"
 
     console.log("Creating view for " + tableName);
-    console.log(sql);
-
     query(sql, function(err, res) {
         console.log(tableName + ' successfully created.');
-        console.log(res);
-
         cb(err, res);
     });
 }
 
 
-function insertQuery(sfQueryName) {
+function insertQuery (sfQueryName, cb) {
 	var queryStr = salesforceQueries[sfQueryName];
 	var queryTable = 'sf_' + S(sfQueryName).underscore().s;
 
 	salesforce.queryAndFlattenResults(queryStr, function (rows) {
-		insertRows(queryTable, rows, queryStr);
+		insertRows(queryTable, rows, queryStr, function () {
+			cb();
+		});
 	});
 }
 
@@ -357,8 +412,6 @@ function dropQueryTable(sfQueryName, cb, addPrefix) {
     var queryTable = (addPrefix ? 'sf_' : '') + S(sfQueryName).underscore().s;
     var sql = "DROP TABLE IF EXISTS " + queryTable + ";";
     query(sql, function(err, res) {
-        console.log(sql);
-
         cb(err,res);
     })
 }
@@ -368,17 +421,22 @@ function dropView(sfViewName, cb) {
     var queryView = 'vw_' + S(sfViewName).underscore().s;
     var sql = "DROP VIEW IF EXISTS " + queryView + ";";
     query(sql, function(err, res) {
-        console.log(sql);
-
         cb(err,res);
     })
 }
 
-function insertAllQueryTables() {
-    for (var sfQueryName in salesforceQueries) {
-        insertQuery(sfQueryName);
-    }
-}
+var insertAllQueryTables = flow.define(
+	function(cb) {
+		this.cb = cb;
+		for (var sfQueryName in salesforceQueries) {
+			insertQuery(sfQueryName, this.MULTI());
+		}
+	},
+	function(){
+		//All queries have finished.  call the callback.
+		this.cb();
+	}
+)
 
 
 function dropAllSalesforceTables() {
@@ -481,17 +539,14 @@ function testSimpleSelectQuery() {
 }
 
 
-
-//testSimpleSelectQuery();
-
-//dropAllSalesforceTables()
 setTimeout(null,500);
-//insertQuery('allProjects');
-//insertQuery('allOrganizations');
-//insertQuery('allMoneyInWorld');
-//insertQuery('numProjAndBudgetPerCountry');
-//insertQuery('projGroupedByCountry');
-//insertQuery('allDataForAGivenProject');
-//insertQuery('allDataForAGivenProgram');
 
-insertAllQueryTables();
+module.exports.run = function(cb){
+	//Start the process
+	insertAllQueryTables(function(err){
+		//When we finish, run postprocessing
+		//TODO:  Be smarter about what to do when we encounter an error. Don't need to run all postprocessing if some of the etl bombed.
+		cb(err);
+	});
+}
+

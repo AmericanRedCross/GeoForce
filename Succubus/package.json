@@ -8,6 +8,7 @@
   "dependencies": {
     "jsforce": "1.1.1",
     "pg": "2.11.1",
-    "string": "1.8.0"
+    "string": "1.8.0",
+		"flow": "*"
   }
 }

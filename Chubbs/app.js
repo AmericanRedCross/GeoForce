@@ -33,7 +33,7 @@ app.use(require('less-middleware')({
 //Items in these folder will be served statically.
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
-app.use('/geoangular', express.static('../GeoAngular/app'));
+//app.use('/geoangular', express.static('../GeoAngular/app'));
 
 //Mongoose support for storing authentication credentials
 var mongoose, passport;
