@@ -473,16 +473,23 @@ function sanitize(val) {
  * @param cb
  */
 function isSpatialTable(fields, cb) {
-    fields.forEach(function(field) {
-			if (field.toLowerCase() == 'gis_geo_id__c') {
-				//it's showtime
-				cb(true);
-				return;
-			}
-		});
+	var foundGeoField = false;
 
-    //Didn't find it
-    cb(false);
+	fields.forEach(function (field) {
+		if (field.toLowerCase() == 'gis_geo_id__c') {
+			//it's showtime
+			foundGeoField = true;
+			return;
+		}
+	});
+
+	if (foundGeoField == true) {
+		cb(true);
+	}
+	else {
+		//Didn't find it
+		cb(false);
+	}
 }
 
 
@@ -537,9 +544,6 @@ function testSimpleSelectQuery() {
         console.log(rows);
     });
 }
-
-
-setTimeout(null,500);
 
 module.exports.run = function(cb){
 	//Start the process
