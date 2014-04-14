@@ -48,11 +48,4 @@ angular.module('GeoAngular').controller('ZoomExtentCtrl', function($scope, $root
     $scope.regionList3 = geojson.features.slice(3, 4);
   });
 
-  //Function to Zoom to a selected Extent
-  $scope.zoomToExtent = function(extent, title){
-    $stateParams.title = title;
-    $state.go('main', $stateParams);
-    $rootScope.$broadcast('zoom-to-extent', extent);
-  };
-
 });
