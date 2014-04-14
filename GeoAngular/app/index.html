@@ -56,28 +56,28 @@
                                                                         ng-class="{on: isParam('stories')}">
                             <i data-icon="b"></i>
                         </button>
-                        <button type="button" class="btn btn-default"   ng-mouseenter="isLayersActive = isNotState('layers')"
+                        <button type="button" class="btn btn-default"   ng-mouseenter="isLayersActive = isNotParam('layers-panel')"
                                                                         ng-mouseleave="isLayersActive=false"
-                                                                        ng-click="toggleState('layers')"
-                                                                        ng-class="{on: isState('layers')}">
+                                                                        ng-click="toggleParam('layers-panel')"
+                                                                        ng-class="{on: isParam('layers-panel')}">
                             <i data-icon="d"></i>
                         </button>
-                        <button type="button" class="btn btn-default"   ng-mouseenter="isFiltersActive = isNotState('filters')"
+                        <button type="button" class="btn btn-default"   ng-mouseenter="isFiltersActive = isNotParam('filters')"
                                                                         ng-mouseleave="isFiltersActive=false"
-                                                                        ng-click="toggleState('filters')"
-                                                                        ng-class="{on: isState('filters')}">
+                                                                        ng-click="toggleParam('filters')"
+                                                                        ng-class="{on: isParam('filters')}">
                             <i data-icon="e"></i>
                         </button>
-                        <button type="button" class="btn btn-default"   ng-mouseenter="isLegendActive = isNotState('legend')"
+                        <button type="button" class="btn btn-default"   ng-mouseenter="isLegendActive = isNotParam('legend')"
                                                                         ng-mouseleave="isLegendActive=false"
-                                                                        ng-click="toggleState('legend')"
-                                                                        ng-class="{on: isState('legend')}">
+                                                                        ng-click="toggleParam('legend')"
+                                                                        ng-class="{on: isParam('legend')}">
                             <i data-icon="f"></i>
                         </button>
-                        <button type="button" class="btn btn-default"   ng-mouseenter="isBasemapsActive = isNotState('basemaps')"
+                        <button type="button" class="btn btn-default"   ng-mouseenter="isBasemapsActive = isNotParam('basemaps')"
                                                                         ng-mouseleave="isBasemapsActive=false"
-                                                                        ng-click="toggleState('basemaps')"
-                                                                        ng-class="{on: isState('basemaps')}">
+                                                                        ng-click="toggleParam('basemaps')"
+                                                                        ng-class="{on: isParam('basemaps')}">
                             <i data-icon="g"></i>
                         </button>
                     </div>
@@ -104,10 +104,10 @@
 
                     </div>
                     <div class="NavButtonGroup btn-group bottom">
-                        <button type="button" class="btn btn-default"   ng-mouseenter="isInfoActive = isNotState('info')"
+                        <button type="button" class="btn btn-default"   ng-mouseenter="isInfoActive = isNotParam('info')"
                                                                         ng-mouseleave="isInfoActive=false"
-                                                                        ng-click="toggleState('info')"
-                                                                        ng-class="{on: isState('info')}">
+                                                                        ng-click="toggleParam('info')"
+                                                                        ng-class="{on: isParam('info')}">
                             <i data-icon="o"></i>
                         </button>
                     </div>
@@ -125,10 +125,12 @@
 
                     <div ui-view="leftmenu"></div>
 
+                    <!--Side View-->
                     <div class="side-view">
 
+
                         <!--Stories Panel-->
-                        <div ng-show="isParam('stories')" class="container stories-container">
+                        <div ng-controller="StoriesCtrl" ng-show="isParam('stories')" class="container stories-container">
 
                         <div class="row">
                             <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('stories')"><span class="glyphicon glyphicon-chevron-left"></span></button>
@@ -352,36 +354,71 @@
                         </div>
                         </div>
                         </div>
+                        <!-- End Stories Panel-->
+
+
+                        <!--Layers Panel-->
+                        <div ng-controller="LayersCtrl" ng-show="isParam('layers-panel')" class="container layers-container">
+
+                            <div class="row">
+                                <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('layers-panel')"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <div class="col-md-10 titleWrapper">
+                                    <div class="btn-group-vertical">
+                                        <button type="button" class="btn btn-default" ui-sref="main(allProjects)">All Projects</button>
+                                        <button type="button" class="btn btn-default" ui-sref="main(smartGadm)">Smart GADM</button>
+                                        <button type="button" class="btn btn-default" ui-sref="main(gdacsKml)">GDACS KML</button>
+                                        <button type="button" class="btn btn-default" ui-sref="main(gadm0)">GADM 0</button>
+                                        <button type="button" class="btn btn-default" ui-sref="main(gadm1)">GADM 1</button>
+                                        <button type="button" class="btn btn-default" ui-sref="main(gadm2)">GADM 2</button>
+                                        <button type="button" class="btn btn-default" ui-sref="main(gadm3)">GADM 3</button>
+                                        <button type="button" class="btn btn-default" ui-sref="main(earthquakesKml)">Earthquakes KML</button>
+                                        <button type="button" class="btn btn-default" ui-sref="main(standardGeoJson)">Standard GeoJSON</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--End Layers Panel-->
+
+                        <!--Filters Panel-->
+                        <div ng-controller="FiltersCtrl" ng-show="isParam('filters')">
+                            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters')">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </button>
+                            filters.html
+                        </div>
+                        <!--End Filters Panel-->
+
+                        <!--Legend Panel-->
+                        <div ng-controller="LegendCtrl" ng-show="isParam('legend')">
+                            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('legend')"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                            legend.html
+                        </div>
+                        <!--End Legend Panel-->
+
+                        <!--Basemaps Panel-->
+                        <div ng-controller="BasemapsCtrl" ng-show="isParam('basemaps')">
+                            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('basemaps')"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                            basemaps.html
+                        </div>
+                        <!--End Basemaps Panel-->
+
+                        <!--Info Panel-->
+                        <div ng-controller="InfoCtrl" ng-show="isParam('info')">
+                            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('info')"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                            info.html
+                        </div>
+                        <!--End Info Panel-->
+
+
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    <!--End Side View-->
 
                     <div class="windowEffects" ng-class="{grayout: isParam('zoom-extent')}"></div> <!-- Use this window to gray out the map -->
 
                     <leaflet class="{{blur}}"   width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" geojson="geojson" bounds="bounds"></leaflet>
 
                     <div ui-view="landing"></div>
-
-
-
 
 
                     <!-- Upper Right Toolbar in Map -->

@@ -62,19 +62,19 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('main', {
-      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories',
+      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories&layers-panel&filters&legend&basemaps&info',
       views: {
         'details': {
-          template: 'in main state',
+          templateUrl: 'views/details.html',
           controller: 'MainCtrl'
         }
       }
     })
     .state('landing', {
-      url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories',
+      url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories&layers-panel&filters&legend&basemaps&info',
       views: {
         'details': {
-          template: 'in landing state',
+          templateUrl: 'views/details.html',
           controller: 'MainCtrl'
         },
         'landing': {
@@ -83,71 +83,5 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
         }
       }
     })
-    .state('layers', {
-      url: '/map@:lat,:lng,:zoom(*layers)/layers',
-      views: {
-        'details': {
-          template: 'in layers state',
-          controller: 'MainCtrl'
-        },
-        'landing': {
-          templateUrl: 'views/layers.html',
-          controller: 'LayersCtrl'
-        }
-      }
-    })
-    .state('filters', {
-      url: '/map@:lat,:lng,:zoom(*layers)/filters',
-      views: {
-        'details': {
-          template: 'in filters state',
-          controller: 'MainCtrl'
-        },
-        'landing': {
-          templateUrl: 'views/filters.html',
-          controller: 'FiltersCtrl'
-        }
-      }
-    })
-    .state('legend', {
-      url: '/map@:lat,:lng,:zoom(*layers)/legend',
-      views: {
-        'details': {
-          template: 'in legend state',
-          controller: 'MainCtrl'
-        },
-        'landing': {
-          templateUrl: 'views/legend.html',
-          controller: 'LegendCtrl'
-        }
-      }
-    })
-    .state('info', {
-      url: '/map@:lat,:lng,:zoom(*layers)/info',
-      views: {
-        'details': {
-          template: 'in info state',
-          controller: 'MainCtrl'
-        },
-        'landing': {
-          templateUrl: 'views/info.html',
-          controller: 'InfoCtrl'
-        }
-      }
-    })
-    .state('basemaps', {
-      url: '/map@:lat,:lng,:zoom(*layers)/basemaps',
-      views: {
-        'details': {
-          template: 'in basemaps state',
-          controller: 'MainCtrl'
-        },
-        'landing': {
-          templateUrl: 'views/basemaps.html',
-          controller: 'BasemapsCtrl'
-        }
-      }
-    })
-
 
 });
