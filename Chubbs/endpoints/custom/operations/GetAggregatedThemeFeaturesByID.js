@@ -14,7 +14,7 @@ operation.inputs["ids"] = {}; //comma separated list of ids
 operation.inputs["theme"] = {}; //string - theme name
 operation.inputs["gadm_level"] = {}; //string - gadm_level (0 -5)
 
-operation.Query = "SELECT sum(count{{gadm_level}}) as project_count, guid{{gadm_level}} as guid FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) GROUP BY guid{{gadm_level}}";
+operation.Query = "SELECT sum(count{{gadm_level}}) as project_count, guid{{gadm_level}} as guid, geom{{gadm_level}} FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
 
 operation.execute = flow.define(
     function (args, callback) {
