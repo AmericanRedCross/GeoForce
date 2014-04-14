@@ -20,14 +20,6 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     $state.go(state, $stateParams);
   };
 
-  $scope.zoomExtentPanel = function() {
-    var bool = $stateParams['zoom-extent'];
-    if (!bool) {
-      return false;
-    }
-    return true;
-  };
-
   $scope.toggleZoomExtentPanel = function() {
     var bool = $stateParams['zoom-extent'];
     if (!bool) {

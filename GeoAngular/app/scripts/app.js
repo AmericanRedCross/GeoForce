@@ -17,6 +17,22 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
     return $state.$current.name === stateName;
   };
 
+  $rootScope.isParam = function(paramName) {
+    var bool = $stateParams[paramName];
+    if (!bool) {
+      return false;
+    }
+    return true;
+  };
+
+  $rootScope.isNotParam = function(paramName) {
+    var bool = $stateParams[paramName];
+    if (!bool) {
+      return true;
+    }
+    return false;
+  };
+
   $rootScope.isNotState = function (stateName) {
     return $state.$current.name !== stateName;
   };
