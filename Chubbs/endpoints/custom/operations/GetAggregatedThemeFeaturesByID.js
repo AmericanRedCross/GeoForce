@@ -34,6 +34,9 @@ operation.execute = flow.define(
             //need to wrap ids in single quotes
             //Execute the query
             var query;
+					  if(operation.inputs["gadm_level"] == -1) {
+							operation.inputs["gadm_level"] = "arc";
+					  }
 						query = { text: operation.Query.split('{{gadm_level}}').join(operation.inputs["gadm_level"]).replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)) };
             common.executePgQuery(query, this);//Flow to next function when done.
         }
