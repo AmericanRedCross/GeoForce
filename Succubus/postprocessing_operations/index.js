@@ -37,7 +37,11 @@ INSERT INTO sf_aggregated_gadm_projects_counts(SELECT count(gadm0.guid), gadm0.n
 FROM gadm0, vw_sf_all_projects \
 WHERE gadm0.guid = vw_sf_all_projects.stack_guid \
 AND vw_sf_all_projects.level = '0' \
-GROUP BY gadm0.guid, gadm0.name_0, gadm0.geom_simplify_med);";
+GROUP BY gadm0.guid, gadm0.name_0, gadm0.geom_simplify_med); \
+ALTER TABLE sf_aggregated_gadm_projects_counts ADD COLUMN id SERIAL; \
+UPDATE sf_aggregated_gadm_projects_counts SET id = DEFAULT; \
+ALTER TABLE sf_aggregated_gadm_projects_counts ADD PRIMARY KEY (id); \
+CREATE INDEX idx_sf_projectcounts_id ON sf_aggregated_gadm_projects_counts USING btree (id);";
 
 
 module.exports.run = flow.define(
