@@ -22,6 +22,11 @@ ALTER TABLE vw_theme_projects_gadm \
 OWNER TO postgres;";
 
 
+operations.createAggregateProjectCountsForGADM = "";
+
+operations.
+
+
 
 
 module.exports.run = flow.define(

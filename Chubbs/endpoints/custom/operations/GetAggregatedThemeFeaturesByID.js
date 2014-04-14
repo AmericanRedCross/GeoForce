@@ -4,7 +4,7 @@ var common = require("../../../common"),settings = require('../../../settings'),
 var operation = {};
 
 /* METADATA */
-operation.name = "GetThemeFeaturesByID";
+operation.name = "GetAggregatedThemeFeaturesByID";
 operation.description = "Gets theme-based features and properties based on GADM ID and level.";
 operation.inputs = {};
 
@@ -12,30 +12,12 @@ operation.outputImage = false;
 
 operation.inputs["ids"] = {}; //comma separated list of ids
 operation.inputs["theme"] = {}; //string - theme name
+operation.inputs["gadm_level"] = {}; //string - gadm_level (0 -5)
+
 
 //operation.Query = "SELECT ST_AsGeoJSON(geom) as geom, project_count, level FROM vw_theme_{{theme}}_gadm WHERE stack_guid IN ({{ids}})";
 
-operation.Query = "with projects as ( \
-SELECT gadm2.guid FROM gadm2, gadm0, vw_sf_all_projects \
-WHERE gadm0.id_0 = gadm2.id_0 \
-AND gadm2.guid = vw_sf_all_projects.stack_guid \
-AND vw_sf_all_projects.level = '2' \
-AND gadm0.guid::character varying IN ({{ids}}) \
-UNION ALL \
-SELECT gadm1.guid FROM gadm1, gadm0, vw_sf_all_projects \
-WHERE gadm0.id_0 = gadm1.id_0 \
-AND gadm1.guid = vw_sf_all_projects.stack_guid \
-AND vw_sf_all_projects.level = '1' \
-AND gadm0.guid::character varying IN ({{ids}}) \
-UNION ALL \
-SELECT gadm0.guid FROM gadm0, vw_sf_all_projects \
-WHERE gadm0.guid = vw_sf_all_projects.stack_guid \
-AND vw_sf_all_projects.level = '0' \
-AND gadm0.guid::character varying IN ({{ids}}) \
-) \
-SELECT count(guid) as project_count, ST_ASGeoJson((SELECT geom_simplify_med from gadm0 where guid IN ({{ids}}))) as geom \
-FROM projects \
-GROUP by guid";
+operation.Query = "";
 
 operation.execute = flow.define(
     function (args, callback) {
@@ -50,9 +32,11 @@ operation.execute = flow.define(
         if (operation.isInputValid(args) === true) {
             operation.inputs["ids"] = args.ids;
             operation.inputs["theme"] = args.theme.toLowerCase();
+					  operation.inputs["gadm_level"] = args.gadm_level.toLowerCase();
 
             //need to wrap ids in single quotes
             //Execute the query
+						operation.Query = buildAggregateSQLQuery(operation.inputs["gadm_level"]);
             var query;
 						query = { text: operation.Query.replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)) };
             common.executePgQuery(query, this);//Flow to next function when done.
@@ -60,7 +44,7 @@ operation.execute = flow.define(
         else {
             //Invalid arguments
             //return message
-            callback("Missing or invalid required arguments: theme or ids"); //err is first argument
+            callback("Missing or invalid required arguments: theme or ids or gadm_level"); //err is first argument
         }
     },
     function (err, results) {
@@ -69,13 +53,44 @@ operation.execute = flow.define(
     }
 )
 
+function buildAggregateSQLQuery(viewersLevel){
+	//Build a SQL String to find aggregated projects for a level and those below it.
+	viewersLevel = parseInt(viewersLevel);
+	var levelSQL = []; //Store each statement for a level.
+	for(var i=viewersLevel; i <= 5; i++){
+		levelSQL.push(buildLevelSQL(viewersLevel, i));
+	}
+
+	//Now build the rest of the statement
+	var sql = "with projects as (";
+
+	sql += levelSQL.join(" UNION ALL "); //join all level statements together.
+
+	sql += ") SELECT count(guid) as project_count, where guid IN ({{ids}}))) as geom \
+					FROM projects \
+					GROUP by guid";
+
+	return sql;
+}
+
+function buildLevelSQL(viewersLevel, lowerLevel){
+	//Build a SQL String to find projects for a level.
+	var sql = ("SELECT gadm{{lowerLevel}}.guid FROM  gadm{{viewersLevel}}, " + (viewersLevel == lowerLevel ? "" : "gadm{{lowerLevel}}, ") + " vw_sf_all_projects " +
+		(viewersLevel == lowerLevel ? "" : "WHERE gadm{{viewersLevel}}.id_{{viewersLevel}} = gadm{{lowerLevel}}.id_{{viewersLevel}} ") +
+		"WHERE gadm{{lowerLevel}}.guid = vw_sf_all_projects.stack_guid " +
+		"AND vw_sf_all_projects.level = '{{lowerLevel}}' " +
+		"AND gadm{{viewersLevel}}.guid::character varying IN ({{ids}})").split('{{viewersLevel}}').join(viewersLevel).split('{{lowerLevel}}').join(lowerLevel);
+
+	return sql;
+}
+
 //Make sure arguments are tight before executing
 operation.isInputValid = function (input) {
     //Test to see if inputs are specified
     var isValid = false;
 
     if (input) {
-        if (input["ids"] && input["theme"]) {
+        if (input["ids"] && input["theme"] && input["gadm_level"]) {
             //It's got everything we need.
             return true;
         }
