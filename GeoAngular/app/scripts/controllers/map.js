@@ -20,6 +20,24 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     $state.go(state, $stateParams);
   };
 
+  $scope.zoomExtentPanel = function() {
+    var bool = $stateParams['zoom-extent'];
+    if (!bool) {
+      return false;
+    }
+    return true;
+  };
+
+  $scope.toggleZoomExtentPanel = function() {
+    var bool = $stateParams['zoom-extent'];
+    if (!bool) {
+      $stateParams['zoom-extent'] = 'true';
+    } else {
+      delete $stateParams['zoom-extent'];
+    }
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+  };
 
   var layersStr = null;
   var overlayNames = [];
@@ -74,10 +92,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     var lng = c.lng.toFixed(6);
     var zoom = c.zoom.toString();
     if (   $stateParams.lat    !== lat
-      || $stateParams.lng    !== lng
-      || $stateParams.zoom   !== zoom
-      || $stateParams.title  !== title
-      || $stateParams.layers !== layersStr ) {
+        || $stateParams.lng    !== lng
+        || $stateParams.zoom   !== zoom
+        || $stateParams.title  !== title
+        || $stateParams.layers !== layersStr ) {
 
       console.log('map.js route-update Updating Map...');
       redraw();
@@ -89,14 +107,14 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     $scope.blur = 'blur';
   });
 
-  $scope.$on('zoom-to-extent', function(event, extent) {
-    console.log('map broadcast received: zoom-to-extent');
-
+  $scope.zoomToExtent = function(extent, title){
+    $stateParams.title = title;
+    delete $stateParams['zoom-extent'];
     $scope.bounds = {
       northEast: { lat: extent[2][1], lng: extent[2][0] },
       southWest: { lat: extent[0][1], lng: extent[0][0] }
     };
-  });
+  };
 
 
   function broadcastBBox() {
