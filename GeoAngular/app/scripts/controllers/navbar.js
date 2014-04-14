@@ -8,6 +8,7 @@ angular.module('GeoAngular').controller('NavBarCtrl', function($scope, $state, $
     var state = $state.current.name !== stateName ? stateName : 'main';
     $state.go(state, $stateParams);
     $scope['is'+stateName[0].toUpperCase()+stateName.slice(1)+'Active'] = false;
-  }
+  };
+
 
 });

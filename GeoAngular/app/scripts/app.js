@@ -33,6 +33,17 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
     return false;
   };
 
+  $rootScope.toggleParam = function(paramName) {
+    var bool = $stateParams[paramName];
+    if (!bool) {
+      $stateParams[paramName] = 'true';
+    } else {
+      delete $stateParams[paramName];
+    }
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+  };
+
   $rootScope.isNotState = function (stateName) {
     return $state.$current.name !== stateName;
   };
@@ -51,7 +62,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('main', {
-      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent',
+      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories',
       views: {
         'details': {
           template: 'in main state',
@@ -60,7 +71,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('landing', {
-      url: '/map@:lat,:lng,:zoom(*layers)/landing',
+      url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories',
       views: {
         'details': {
           template: 'in landing state',
@@ -69,19 +80,6 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
         'landing': {
           templateUrl: 'views/landing.html',
           controller: 'LandingCtrl'
-        }
-      }
-    })
-    .state('stories', {
-      url: '/map@:lat,:lng,:zoom(*layers)/stories',
-      views: {
-        'details': {
-          template: 'in stories state',
-          controller: 'MainCtrl'
-        },
-        'leftmenu': {
-          templateUrl: 'views/stories.html',
-          controller: 'StoriesCtrl'
         }
       }
     })
