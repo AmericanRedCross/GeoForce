@@ -14,10 +14,7 @@ operation.inputs["ids"] = {}; //comma separated list of ids
 operation.inputs["theme"] = {}; //string - theme name
 operation.inputs["gadm_level"] = {}; //string - gadm_level (0 -5)
 
-
-//operation.Query = "SELECT ST_AsGeoJSON(geom) as geom, project_count, level FROM vw_theme_{{theme}}_gadm WHERE stack_guid IN ({{ids}})";
-
-operation.Query = "";
+operation.Query = "SELECT sum(count{{gadm_level}}) as project_count, guid{{gadm_level}} as guid FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) GROUP BY guid{{gadm_level}}";
 
 operation.execute = flow.define(
     function (args, callback) {
@@ -36,9 +33,8 @@ operation.execute = flow.define(
 
             //need to wrap ids in single quotes
             //Execute the query
-						operation.Query = buildAggregateSQLQuery(operation.inputs["gadm_level"]);
             var query;
-						query = { text: operation.Query.replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)) };
+						query = { text: operation.Query.split('{{gadm_level}}').join(operation.inputs["gadm_level"]).replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)) };
             common.executePgQuery(query, this);//Flow to next function when done.
         }
         else {
@@ -52,37 +48,6 @@ operation.execute = flow.define(
         this.callback(err, results);
     }
 )
-
-function buildAggregateSQLQuery(viewersLevel){
-	//Build a SQL String to find aggregated projects for a level and those below it.
-	viewersLevel = parseInt(viewersLevel);
-	var levelSQL = []; //Store each statement for a level.
-	for(var i=viewersLevel; i <= 5; i++){
-		levelSQL.push(buildLevelSQL(viewersLevel, i));
-	}
-
-	//Now build the rest of the statement
-	var sql = "with projects as (";
-
-	sql += levelSQL.join(" UNION ALL "); //join all level statements together.
-
-	sql += ") SELECT count(guid) as project_count, where guid IN ({{ids}}))) as geom \
-					FROM projects \
-					GROUP by guid";
-
-	return sql;
-}
-
-function buildLevelSQL(viewersLevel, lowerLevel){
-	//Build a SQL String to find projects for a level.
-	var sql = ("SELECT gadm{{lowerLevel}}.guid FROM  gadm{{viewersLevel}}, " + (viewersLevel == lowerLevel ? "" : "gadm{{lowerLevel}}, ") + " vw_sf_all_projects " +
-		(viewersLevel == lowerLevel ? "" : "WHERE gadm{{viewersLevel}}.id_{{viewersLevel}} = gadm{{lowerLevel}}.id_{{viewersLevel}} ") +
-		"WHERE gadm{{lowerLevel}}.guid = vw_sf_all_projects.stack_guid " +
-		"AND vw_sf_all_projects.level = '{{lowerLevel}}' " +
-		"AND gadm{{viewersLevel}}.guid::character varying IN ({{ids}})").split('{{viewersLevel}}').join(viewersLevel).split('{{lowerLevel}}').join(lowerLevel);
-
-	return sql;
-}
 
 //Make sure arguments are tight before executing
 operation.isInputValid = function (input) {
