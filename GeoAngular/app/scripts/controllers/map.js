@@ -20,17 +20,6 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     $state.go(state, $stateParams);
   };
 
-  $scope.toggleZoomExtentPanel = function() {
-    var bool = $stateParams['zoom-extent'];
-    if (!bool) {
-      $stateParams['zoom-extent'] = 'true';
-    } else {
-      delete $stateParams['zoom-extent'];
-    }
-    var state = $state.current.name || 'main';
-    $state.go(state, $stateParams);
-  };
-
   var layersStr = null;
   var overlayNames = [];
 

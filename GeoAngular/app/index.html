@@ -50,10 +50,10 @@
             <div id="NavBar" class="ui-layout-west" ng-controller="NavBarCtrl">
                     <div id="ARCLogo"></div>
                     <div class="NavButtonGroup btn-group">
-                        <button type="button" class="btn btn-default"   ng-mouseenter="isStoriesActive = isNotState('stories')"
-                                                                        ng-mouseleave="isStoriesActive=false"
-                                                                        ng-click="toggleState('stories')"
-                                                                        ng-class="{on: isState('stories')}">
+                        <button type="button" class="btn btn-default"   ng-mouseenter="isStoriesActive = isNotParam('stories')"
+                                                                        ng-mouseleave="isStoriesActive = false"
+                                                                        ng-click="toggleParam('stories')"
+                                                                        ng-class="{on: isParam('stories')}">
                             <i data-icon="b"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isLayersActive = isNotState('layers')"
@@ -123,6 +123,257 @@
 
                 <div ng-controller="MapCtrl" id="MapCtrl" class="ui-layout-center">
 
+                    <div ui-view="leftmenu"></div>
+
+                    <div class="side-view">
+
+                        <!--Stories Panel-->
+                        <div ng-show="isParam('stories')" class="container stories-container">
+
+                        <div class="row">
+                            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('stories')"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                            <div class="col-md-10 titleWrapper">
+                                <div class="title">STORIES</div> <div class="description">Click on a thumbnail to load a predefined map.</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-4">
+                                23 Stories
+                            </div>
+                        </div>
+                        <div class="row scrollable">
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Filter stories by:</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <form>
+                                        <fieldset>
+                                            <h4>Extent:</h4>
+
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="all">
+                                                All
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="africa">
+                                                Africa
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="amee">
+                                                AMEE
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="global">
+                                                Global
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="lac">
+                                                LAC
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="usa">
+                                                USA
+                                            </label>
+
+                                        </fieldset>
+                                        <br/>
+                                        <fieldset>
+                                            <h4>Keywords:</h4>
+
+                                            <input class="form-control" type="text" placeholder="Search keywords...">
+
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="all">
+                                                All
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="lorem">
+                                                Lorem ipsum
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="desdolore">
+                                                Des Dolore
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="disasterpreparedness">
+                                                Disaster Preparedness
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="disasterresponse">
+                                                Disaster Response
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="haiti">
+                                                Haiti
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="programmap">
+                                                Program Map
+                                            </label>
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="restoringfamilylinks">
+                                                Restoring Family Links
+                                            </label>
+
+
+                                        </fieldset>
+                                    </form>
+                                    <!--<h4>Extent:</h4>-->
+                                    <!--<h4>Keywords:</h4>-->
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a href="#/thumbnail" class="thumbnail">
+                                        <div class="image">
+                                            <img src="images/thumb-tmp.png" alt="...">
+                                        </div>
+                                        <div class="caption">
+                                            <div class="container thumbnail-container">
+                                                <div class="row">
+                                                    <div class="col-md-1 nopaddingnomargin">
+                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                    </div>
+                                                    <div class="col-md-11 nopaddingnomargin">
+                                                        Haiyan Affected Areas Traced by Digital Volunteers
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-offset-1 col-md-11 nopadding">
+                                                        <p>Dec 12 2013</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="#/thumbnail" class="thumbnail">
+                                        <div class="image">
+                                            <img src="images/thumb-tmp.png" alt="...">
+                                        </div>
+                                        <div class="caption">
+                                            <div class="container thumbnail-container">
+                                                <div class="row">
+                                                    <div class="col-md-1 nopaddingnomargin">
+                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                    </div>
+                                                    <div class="col-md-11 nopaddingnomargin">
+                                                        Haiyan Affected Areas Traced by Digital Volunteers
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-offset-1 col-md-11 nopadding">
+                                                        <p>Dec 12 2013</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="#/thumbnail" class="thumbnail">
+                                        <div class="image">
+                                            <img src="images/thumb-tmp.png" alt="...">
+                                        </div>
+                                        <div class="caption">
+                                            <div class="container thumbnail-container">
+                                                <div class="row">
+                                                    <div class="col-md-1 nopaddingnomargin">
+                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                    </div>
+                                                    <div class="col-md-11 nopaddingnomargin">
+                                                        Haiyan Affected Areas Traced by Digital Volunteers
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-offset-1 col-md-11 nopadding">
+                                                        <p>Dec 12 2013</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="#/thumbnail" class="thumbnail">
+                                        <div class="image">
+                                            <img src="images/thumb-tmp.png" alt="...">
+                                        </div>
+                                        <div class="caption">
+                                            <div class="container thumbnail-container">
+                                                <div class="row">
+                                                    <div class="col-md-1 nopaddingnomargin">
+                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                    </div>
+                                                    <div class="col-md-11 nopaddingnomargin">
+                                                        Haiyan Affected Areas Traced by Digital Volunteers
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-offset-1 col-md-11 nopadding">
+                                                        <p>Dec 12 2013</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="#/thumbnail" class="thumbnail">
+                                        <div class="image">
+                                            <img src="images/thumb-tmp.png" alt="...">
+                                        </div>
+                                        <div class="caption">
+                                            <div class="container thumbnail-container">
+                                                <div class="row">
+                                                    <div class="col-md-1 nopaddingnomargin">
+                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                    </div>
+                                                    <div class="col-md-11 nopaddingnomargin">
+                                                        Haiyan Affected Areas Traced by Digital Volunteers
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-offset-1 col-md-11 nopadding">
+                                                        <p>Dec 12 2013</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <div class="windowEffects" ng-class="{grayout: isParam('zoom-extent')}"></div> <!-- Use this window to gray out the map -->
 
                     <leaflet class="{{blur}}"   width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" geojson="geojson" bounds="bounds"></leaflet>
@@ -135,7 +386,7 @@
 
                     <!-- Upper Right Toolbar in Map -->
                     <div id="MapUpperRightToolbarWrapper">
-                        <div class="btn" ng-click="toggleZoomExtentPanel()">
+                        <div class="btn" ng-click="toggleParam('zoom-extent')">
                             <button class="side-view-close btn btn-lg btn-danger" ng-click=""><span class="glyphicon glyphicon-chevron-down"></span></button>
                             {{title}}
                         </div>
@@ -205,7 +456,7 @@
                         </div>
                     </nav>
 
-                    <div ui-view="leftmenu"></div>
+
 
 
                     <!-- Right Hand Details Panel -->
