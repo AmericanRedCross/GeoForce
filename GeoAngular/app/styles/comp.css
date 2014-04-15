@@ -138,10 +138,26 @@ html, body {
 #ThemeSelectorMenu .dropdown-menu > li {
     border: 1px solid #d3d3d3;
     min-width: 172px;
+    -webkit-transform: translateY(50%) rotateX(90deg);
+    -webkit-transition: all .1s ease;
+    background-color: #fff;
+}
+
+/* Unfurl Up */
+#ThemeSelectorMenu .dropdown-menu li.on {
+    -webkit-transform: translateY(0%) rotateX(0deg);
+}
+
+.dropdown-menu {
+    border: 0px;
+    border-radius: 0px
+    -webkit-box-shadow: 0 0 0;
+    box-shadow: 0 0 0;
 }
 
 #ThemeMenu {
     text-align: center;
+    background-color: transparent;
 }
 
 #ThemeSelectorMenu .menu-selection {
