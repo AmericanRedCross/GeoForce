@@ -36,7 +36,13 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
   $rootScope.toggleParam = function(paramName) {
     var bool = $stateParams[paramName];
     if (!bool) {
-      $stateParams[paramName] = 'true';
+      // mutex logic that makes only 1 panel open at a time
+      for (var param in $stateParams) {
+        if ($stateParams[param] === 'open') {
+          $stateParams[param] = null;
+        }
+      }
+      $stateParams[paramName] = 'open';
     } else {
       delete $stateParams[paramName];
     }
