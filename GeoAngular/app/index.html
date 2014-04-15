@@ -130,7 +130,7 @@
 
 
                         <!--Stories Panel-->
-                        <div ng-controller="StoriesCtrl" ng-show="isParam('stories')" class="container stories-container">
+                        <div ng-controller="StoriesCtrl" ng-class="{on: isParam('stories')}" class="navpanel container stories-container">
 
                         <div class="row">
                             <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('stories')"><span class="glyphicon glyphicon-chevron-left"></span></button>
@@ -358,7 +358,7 @@
 
 
                         <!--Layers Panel-->
-                        <div ng-controller="LayersCtrl" ng-show="isParam('layers-panel')" class="container layers-container">
+                        <div ng-controller="LayersCtrl" ng-class="{on: isParam('layers-panel')}" class="navpanel container layers-container">
 
                             <div class="row">
                                 <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('layers-panel')"><span class="glyphicon glyphicon-chevron-left"></span></button>
@@ -381,7 +381,7 @@
                         <!--End Layers Panel-->
 
                         <!--Filters Panel-->
-                        <div ng-controller="FiltersCtrl" ng-show="isParam('filters')">
+                        <div ng-controller="FiltersCtrl" ng-class="{on: isParam('filters')}" class="navpanel container">
                             <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters')">
                                 <span class="glyphicon glyphicon-chevron-left"></span>
                             </button>
@@ -390,21 +390,21 @@
                         <!--End Filters Panel-->
 
                         <!--Legend Panel-->
-                        <div ng-controller="LegendCtrl" ng-show="isParam('legend')">
+                        <div ng-controller="LegendCtrl" ng-class="{on: isParam('legend')}" class="navpanel container">
                             <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('legend')"><span class="glyphicon glyphicon-chevron-left"></span></button>
                             legend.html
                         </div>
                         <!--End Legend Panel-->
 
                         <!--Basemaps Panel-->
-                        <div ng-controller="BasemapsCtrl" ng-show="isParam('basemaps')">
+                        <div ng-controller="BasemapsCtrl" ng-class="{on: isParam('basemaps')}" class="navpanel container">
                             <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('basemaps')"><span class="glyphicon glyphicon-chevron-left"></span></button>
                             basemaps.html
                         </div>
                         <!--End Basemaps Panel-->
 
                         <!--Info Panel-->
-                        <div ng-controller="InfoCtrl" ng-show="isParam('info')">
+                        <div ng-controller="InfoCtrl"  ng-class="{on: isParam('info')}" class="navpanel container">
                             <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('info')"><span class="glyphicon glyphicon-chevron-left"></span></button>
                             info.html
                         </div>

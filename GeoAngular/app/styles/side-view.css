@@ -1,10 +1,37 @@
+.side-view .navpanel {
+    left: -700px;
+    position: absolute;
+    background-color: #F2F2F2;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    transition: all .5s ease;
+    height: 100%;
+    max-width: 700px;
+}
+
+.side-view .navpanel.on {
+    left: 0px;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    transition: all .5s ease;
+}
+
 .side-view {
-    position: fixed;
+    position: absolute;
     top: 0px;
     bottom: 0px;
-    left: 59px;
+    left: 0px;
     background-color: #F2F2F2;
     z-index: 1001;
+}
+.side-view.on {
+    left: 0px;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    transition: all .5s ease;
 }
 
 .side-view-close {
@@ -15,3 +42,4 @@
     font-size: 20px;
     line-height: 1;
 }
+
