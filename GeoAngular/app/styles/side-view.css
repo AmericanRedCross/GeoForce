@@ -43,9 +43,18 @@
     line-height: 1;
 }
 
-.side-view .title {
+.side-view .title{
     font-size: 20px;
     font-family: oswaldregular;
     float: left;
+}.side-view-title-wrapper {
+	margin-top: 20px;
 }
 
+.side-view .thumbnail {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    border-color: #F2F2F2;
+    border: none;
+}
