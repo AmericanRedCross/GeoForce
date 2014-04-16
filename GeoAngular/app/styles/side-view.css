@@ -47,7 +47,10 @@
     font-size: 20px;
     font-family: oswaldregular;
     float: left;
-}.side-view-title-wrapper {
+    text-transform: uppercase;
+}
+
+.side-view-title-wrapper {
 	margin-top: 20px;
 }
 
