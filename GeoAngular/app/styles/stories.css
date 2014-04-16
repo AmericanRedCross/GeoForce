@@ -6,11 +6,8 @@
     margin-top: 20px;
 }
 
-.side-view .title {
-    font-size: 20px;
-    font-family: oswaldregular;
+.stories-container .title{
     padding-left: 16px;
-    float: left;
 }
 
 .side-view .description {

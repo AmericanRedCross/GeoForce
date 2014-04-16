@@ -43,3 +43,9 @@
     line-height: 1;
 }
 
+.side-view .title {
+    font-size: 20px;
+    font-family: oswaldregular;
+    float: left;
+}
+
