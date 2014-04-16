@@ -13,7 +13,7 @@
     text-transform: uppercase;
     font-size: 17px;
     text-align: center;
-    color: #D3D3D3;
+    color: #b1b2b2;
     cursor:pointer;
     border-left: 4px solid transparent;
 }
@@ -29,4 +29,8 @@
 
 .layers-container div.layerGroupPanel.active{
     display:block;
+}
+
+.layers-container .leftButtonColumn, .layerGroupButtonWrapper{
+    height: 100%;
 }
