@@ -2,6 +2,10 @@
     width: 240px;
 }
 
+.basemaps-container .title {
+    padding-left: 16px;
+}
+
 .basemaps-container .image{
     padding: 8px;
     background-color: #fff;
