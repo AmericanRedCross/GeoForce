@@ -12,14 +12,22 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    * Basemaps
    * @type {string}
    */
-  this.osm = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+  this.pinterest = 'http://{s}.tiles.mapbox.com/v3/pinterest.map-ho21rkos/{z}/{x}/{y}.png';
   this.osmhot = 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+  this.redcross = 'https://{s}.tiles.mapbox.com/v3/americanredcross.hcji22de/{z}/{x}/{y}.png';
+  this.streets = 'https://{s}.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png';
+  this.terrain = 'https://{s}.tiles.mapbox.com/v3/examples.map-9ijuk24y/{z}/{x}/{y}.png';
+  this.satellite = 'https://{s}.tiles.mapbox.com/v3/examples.map-qfyrx5r8/{z}/{x}/{y}.png';
+
+  this.mozilla = 'http://{s}.tiles.mapbox.com/v3/mozilla-webprod.e91ef8b3/{z}/{x}/{y}.png';
+  this.github = 'http://{s}.tiles.mapbox.com/v3/github.map-xgq2svrz/{z}/{x}/{y}.png';
+  this.green = 'http://{s}.tiles.mapbox.com/v3/examples.map-3gisupiu/{z}/{x}/{y}.png';
+
   this.natgeo = 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}';
   this.usgstopo = 'http://services.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}';
   this.ortho = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-  this.redcross = 'https://{s}.tiles.mapbox.com/v3/americanredcross.hcji22de/{z}/{x}/{y}.png';
-  this.pinterest = 'http://{s}.tiles.mapbox.com/v3/pinterest.map-ho21rkos/{z}/{x}/{y}.png';
-  this.mapboxaerial = 'http://{s}.tiles.mapbox.com/v3/spatialdev.map-hozgh18d/{z}/{x}/{y}.png';
+
+  this.osm = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
 
 
   /**
