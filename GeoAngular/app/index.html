@@ -398,9 +398,233 @@
                         <!--End Legend Panel-->
 
                         <!--Basemaps Panel-->
-                        <div ng-controller="BasemapsCtrl" ng-class="{on: isParam('basemaps')}" class="navpanel container">
-                            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('basemaps')"><span class="glyphicon glyphicon-chevron-left"></span></button>
-                            basemaps.html
+                        <div ng-controller="BasemapsCtrl" ng-class="{on: isParam('basemaps')}" class="navpanel container basemaps-container">
+
+                            <div class="row">
+                                <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('basemaps')"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <div class="col-md-7 side-view-title-wrapper">
+                                    <div class="title">BASEMAPS</div>
+                                </div>
+                            </div>
+                            <div class="row scrollable">
+
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image active">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Pinterest
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Humanitarian OpenStreetMap
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Red Cross
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Mapbox Streets
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Mapbox Terrain
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Mapbox Satellite
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Mozilla
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Github
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Green Theme
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            National Geographic
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            USGS Topographic
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Orthographic
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="#/thumbnail" class="thumbnail">
+                                            <div class="image">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            OpenStreetMap
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            </div>
+
+
                         </div>
                         <!--End Basemaps Panel-->
 

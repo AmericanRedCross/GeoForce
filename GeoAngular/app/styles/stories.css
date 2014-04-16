@@ -19,15 +19,7 @@
     width: auto;
 }
 
-.thumbnail{
-    background-color: transparent;
-    padding: 0;
-    border-radius: 0;
-    border-color: #F2F2F2;
-    border: none;
-}
-
-.thumbnail .image{
+.stories-container .thumbnail .image{
     padding: 8px;
     background-color: #fff;
     -moz-box-shadow:    0px 0px 6px 1px #ccc;
@@ -35,11 +27,11 @@
     box-shadow: 0px 0px 6px 1px #ccc;
 }
 
-.thumbnail .image img{
-width: 100%;
+.stories-container .thumbnail .image img{
+    width: 100%;
 }
 
-.thumbnail .caption{
+.stories-container .thumbnail .caption{
     padding: 0px;
     padding-top: 10px;
 }
