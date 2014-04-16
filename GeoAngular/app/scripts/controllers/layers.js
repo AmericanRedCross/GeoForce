@@ -7,6 +7,10 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope) {
   console.log('LayersCtrl');
   $scope.params = $stateParams;
 
+	//initialize the state of whether ECOS layers or contextual layers are visible in the layers panel.
+	$scope.isECOSLayersActive = true;
+	$scope.isContextLayersActive = false;
+
   $scope.allProjects = {
     lat: -19.808054,
     lng: 31.508789,
@@ -69,5 +73,16 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope) {
     zoom: 6,
     layers: 'pinterest,allprojects'
   };
+
+	//resize function
+	$scope.resizeLayersScrollablePanel = function(){
+		$(".container.layers-container .scrollable").height($(".container.layers-container").height() - $(".container.layers-container .scrollable").position().top);  //This should respond to window.resize events and will be set during that event to make sure the panel stays
+	}
+
+	//Connect the layout onresize end event
+	window.layout.panes.center.bind("layoutpaneonresize_end", $scope.resizeLayersScrollablePanel);
+
+	//For Init.
+	$scope.resizeLayersScrollablePanel();
 
 });
