@@ -74,15 +74,4 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope) {
     layers: 'pinterest,allprojects'
   };
 
-	//resize function
-	$scope.resizeLayersScrollablePanel = function(){
-		$(".container.layers-container .scrollable").height($(".container.layers-container").height() - $(".container.layers-container .scrollable").position().top);  //This should respond to window.resize events and will be set during that event to make sure the panel stays
-	}
-
-	//Connect the layout onresize end event
-	window.layout.panes.center.bind("layoutpaneonresize_end", $scope.resizeLayersScrollablePanel);
-
-	//For Init.
-	$scope.resizeLayersScrollablePanel();
-
 });
