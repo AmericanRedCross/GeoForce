@@ -152,8 +152,12 @@
     });
 
 
-    // NH TODO Add to featureLayer instead but make sure that it's a valid feature layer.
-    label.addTo(debug.map);
+    if (!featureLayer.addLayer) {
+      console.log('NH FIXME: featureLayer does not have addLayer, directly adding label to map.');
+      label.addTo(debug.map);
+    } else {
+      featureLayer.addLayer(label);
+    }
 
     return label;
   }

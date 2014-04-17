@@ -173,11 +173,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
 
   var overlays = [];
+  debug.overlays = overlays;
 
   /**
-   * NH TODO: Make sure that the overlays draw in the correct order rather
-   *          than the order from which they happen to be fetched.
-   *          Also be smart with inserting new layers instead of redrawing
+   * NH TODO: Be smart with inserting new layers instead of redrawing
    *          everything...
    */
   function drawOverlays() {
@@ -185,6 +184,20 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
       for (var h = 0, len = overlays.length; h < len; ++h) {
         map.removeLayer(overlays[h]);
+
+        // NH FIXME: Labels should remove automatically when removing the layer.
+        // There is an issue where sometimes the featureLayer is not valid so we
+        // directly add the label to the map.
+        var overlay = overlays[h];
+        if (overlay._layers) {
+          for (var key in overlay._layers) {
+            var label = overlay._layers[key].label;
+            if (label) {
+              map.removeLayer(label);
+            }
+          }
+        }
+
       }
 
       for (var i = 0, len = overlayNames.length; i < len; ++i) {
@@ -199,11 +212,8 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
         });
 
-
-        debug.layer = layer;
-
+        overlays.push(layer);
         layer.addTo(map);
-//        broadcastBBox();
       }
 
     });
@@ -222,7 +232,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 		else{
 			$scope.refurlThemes();
 		}
-	}
+	};
 
 	$scope.unfurlThemes = function(){
 		$scope.refurlThemes();
@@ -233,13 +243,13 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 				$(self).addClass("on");
 			}, index*150);
 		});
-	}
+	};
 
 	//Refurl?
 	$scope.refurlThemes = function(){
 		//Try jQuery to remove the 'on' class to each of the theme LI elements on a timer.
 		$('#ThemeSelectorMenu .dropdown-menu li').removeClass("on");
-	}
+	};
 
 	/*
 	End Theme Menu Animations
