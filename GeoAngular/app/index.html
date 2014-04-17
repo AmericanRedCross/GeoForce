@@ -825,10 +825,16 @@
 
                     <!-- Upper Right Toolbar in Map -->
                     <div id="MapUpperRightToolbarWrapper">
-                        <div class="btn" ng-click="toggleParam('zoom-extent')">
-                            <button class="side-view-close btn btn-lg btn-danger" ng-click=""><span class="glyphicon glyphicon-chevron-down"></span></button>
-                            {{title}}
+                        <button class="side-view-close btn btn-lg btn-danger" ng-click=""><span class="glyphicon glyphicon-chevron-down"></span></button>
+                        <div class="breadcrumbs-container">
+                            <div class="world" ng-click="toggleParam('zoom-extent')">
+                                {{title}}
+                            </div>
+                            <div class="stack">
+                                United States
+                            </div>
                         </div>
+
                         <div class="light">Upload Data</div>
                         <div class="light">Export</div>
                         <div class="search" data-icon="m"></div>
