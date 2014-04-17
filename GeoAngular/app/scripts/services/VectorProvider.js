@@ -189,64 +189,70 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   BBoxGeoJSON.prototype._getFeatures = function (featObj) {
     var url = this._url.replace(':level', featObj.level).replace(':ids', featObj.guid);
     var self = this;
+    var proxyPath = config.proxyPath(url);
+
     // not cached because we only fetch when we dont have the feature in the hash
     $http.get(url).success(function (geojson, status) {
-
-      if (geojson.error) {
-        console.error('Unable to fetch feature: ' + geojson.error);
-        return;
-      }
-
-      if (!geojson.features || geojson.features.length < 1) {
-        return;
-      }
-
-      var feat = geojson.features[0];
-
-      // putting existing properties into new feature object properties
-      for (var key in featObj) {
-        feat.properties[key] = featObj[key];
-        delete featObj[key];
-      }
-
-      // extending properties from the config file
-      for (var key in self._config.properties) {
-        feat.properties[key] = self._config.properties[key];
-        // LayerConfig will state the name of the BBoxGeoJSON method to be called on click.
-        if (key === 'onClick') {
-          var fnName = self._config.properties[key];
-          feat.properties[key] = self[fnName];
-        }
-      }
-
-      for (var k in feat) {
-        featObj[k] = feat[k];
-      }
-      angular.extend(featObj, feat);
-      console.log('fetched feature: ' + featObj.properties.name);
-
-      if (!self._geojsonLayer) {
-        self._getLayer();
-        console.log('creating layer in _getFeatures');
-      }
-
-      var options = self._geojsonLayer.options;
-      var featLayer = L.GeoJSON.geometryToLayer(featObj, options.pointToLayer, options.coordsToLatLng, options);
-      featLayer.feature = L.GeoJSON.asFeature(featObj);
-      featLayer.defaultOptions = featLayer.options;
-      self._geojsonLayer.resetStyle(featLayer);
-      if (options.onEachFeature) {
-        options.onEachFeature(featObj, featLayer);
-      }
-
-      BBoxGeoJSON_addLayer(self, featLayer);
-
+      BBoxGeoJSON_processFeatures(self, featObj, geojson);
     }).error(function(err) {
-      //NH TODO Deal with proxy logic.
-      console.error("Unable to fetch feature: " + err);
-
+      $http.get(proxyPath).success(function (geojson, status) {
+        BBoxGeoJSON_processFeatures(self, featObj, geojson);
+      }).error(function (err) {
+        console.error('Unable to getFeatures: ' + url);
+      });
     });
   };
+
+  function BBoxGeoJSON_processFeatures(self, featObj, geojson) {
+    if (geojson.error) {
+      console.error('Unable to fetch feature: ' + geojson.error);
+      return;
+    }
+
+    if (!geojson.features || geojson.features.length < 1) {
+      return;
+    }
+
+    var feat = geojson.features[0];
+
+    // putting existing properties into new feature object properties
+    for (var key in featObj) {
+      feat.properties[key] = featObj[key];
+      delete featObj[key];
+    }
+
+    // extending properties from the config file
+    for (var key in self._config.properties) {
+      feat.properties[key] = self._config.properties[key];
+      // LayerConfig will state the name of the BBoxGeoJSON method to be called on click.
+      if (key === 'onClick') {
+        var fnName = self._config.properties[key];
+        feat.properties[key] = self[fnName];
+      }
+    }
+
+    for (var k in feat) {
+      featObj[k] = feat[k];
+    }
+    angular.extend(featObj, feat);
+    console.log('fetched feature: ' + featObj.properties.name);
+
+    if (!self._geojsonLayer) {
+      self._getLayer();
+      console.log('creating layer in _getFeatures');
+    }
+
+    var options = self._geojsonLayer.options;
+    var featLayer = L.GeoJSON.geometryToLayer(featObj, options.pointToLayer, options.coordsToLatLng, options);
+    featLayer.feature = L.GeoJSON.asFeature(featObj);
+    featLayer.defaultOptions = featLayer.options;
+    self._geojsonLayer.resetStyle(featLayer);
+    if (options.onEachFeature) {
+      options.onEachFeature(featObj, featLayer);
+    }
+
+    BBoxGeoJSON_addLayer(self, featLayer);
+  }
 
 
   /**
@@ -282,43 +288,48 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   BBoxGeoJSON.prototype.fetchFeatureItinerary = function() {
     var url = this._bboxurl.replace(':bbox', bbox);
     var self = this;
+    var proxyPath = config.proxyPath(url);
     $http.get(url, {cache: true}).success(function (featItinerary, status) {
-      console.log('featItinerary: ' + JSON.stringify(featItinerary));
-      // if there are no features for the current bounding box
-      if (!featItinerary || featItinerary.length === 0) {
-        return;
-      }
-      var activeLevels = {};
-      self._activeLevels = activeLevels;
-      for (var i=0, len=featItinerary.length; i < len; ++i) {
-        var o = featItinerary[i];
-        activeLevels[o.level] = true;
-        var guid = o.guid || o.id;
-        if (!self._features[guid]) {
-          // adding feature to features hash (all features ever)
-          self._features[guid] = o;
-          // getting the features (including basic, simplified geometry)
-          self._getFeatures(o);
-        } else {
-          // NH TODO: Test to see what happens when layers get re-added but the geometry still hasn't gotten here.
-
-          // if we already have a layer and it is not on the map but should be there, add it to the geojson layer
-          var l = self._allFeatureLayers[guid];
-          if (l) {
-            BBoxGeoJSON_addLayer(self, l);
-          }
-
-        }
-      }
-      self._removeInactiveLayers(self);
-
+      BBoxGeoJSON_processFeatureItinerary(self, featItinerary);
     }).error(function() {
-      //NH TODO Deal with proxy logic.
-      console.error("Need to try proxy for _fetchForBBox");
-
+      $http.get(proxyPath, {cache: true}).success(function (featItinerary, status) {
+        BBoxGeoJSON_processFeatureItinerary(self, featItinerary);
+      }).error(function() {
+        console.error("Unable to fetchFeatureItinerary: " + url);
+      });
     });
   };
 
+  function BBoxGeoJSON_processFeatureItinerary(self, featItinerary) {
+    console.log('featItinerary: ' + JSON.stringify(featItinerary));
+    // if there are no features for the current bounding box
+    if (!featItinerary || featItinerary.length === 0) {
+      return;
+    }
+    var activeLevels = {};
+    self._activeLevels = activeLevels;
+    for (var i=0, len=featItinerary.length; i < len; ++i) {
+      var o = featItinerary[i];
+      activeLevels[o.level] = true;
+      var guid = o.guid || o.id;
+      if (!self._features[guid]) {
+        // adding feature to features hash (all features ever)
+        self._features[guid] = o;
+        // getting the features (including basic, simplified geometry)
+        self._getFeatures(o);
+      } else {
+        // NH TODO: Test to see what happens when layers get re-added but the geometry still hasn't gotten here.
+
+        // if we already have a layer and it is not on the map but should be there, add it to the geojson layer
+        var l = self._allFeatureLayers[guid];
+        if (l) {
+          BBoxGeoJSON_addLayer(self, l);
+        }
+
+      }
+    }
+    self._removeInactiveLayers(self);
+  }
 
   /**
    * This is called by the onClick event for the featurelabels.
