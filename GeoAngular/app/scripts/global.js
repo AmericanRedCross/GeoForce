@@ -22,3 +22,5 @@ window.layout = $('#AppContainer').layout({
 window.layout.sizePane("west", 59);
 
 var wait = false;
+
+var mapMoveEnd = false;
