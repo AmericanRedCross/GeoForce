@@ -37,8 +37,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
     if (lastLayersStr !== layersStr) {
       console.log('Setting layers.');
-      if (Array.isArray(overlayNames) && overlayNames.length > 0)
-        drawOverlays();
+      drawOverlays();
 
       $scope.defaults = {
         scrollWheelZoom: true
@@ -72,7 +71,10 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     var lat = c.lat.toFixed(6);
     var lng = c.lng.toFixed(6);
     var zoom = c.zoom.toString();
-    if (   $stateParams.lat    !== lat
+    if (mapMoveEnd) {
+      console.log('moveend true');
+      mapMoveEnd = false;
+    } else if (   $stateParams.lat    !== lat
         || $stateParams.lng    !== lng
         || $stateParams.zoom   !== zoom
         || $stateParams.title  !== title
@@ -148,11 +150,8 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
         $stateParams.lat = lat;
         $stateParams.lng = lng;
         $stateParams.zoom = zoom;
-        $state.go($state.current.name, {
-          lat: lat,
-          lng: lng,
-          zoom: zoom
-        });
+        mapMoveEnd = true;
+        $state.go($state.current.name, $stateParams);
         broadcastBBox();
       }
     });
