@@ -493,8 +493,8 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image active">
+                                        <a ng-click="swapBasemap('pinterest')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('pinterest')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -509,8 +509,8 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('osmhot')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('osmhot')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -525,24 +525,8 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
-                                                <img src="images/thumb-tmp.png" alt="...">
-                                            </div>
-                                            <div class="caption">
-                                                <div class="container thumbnail-container">
-                                                    <div class="row">
-                                                        <div class="col-md-11 nopaddingnomargin">
-                                                            Red Cross
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('streets')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('streets')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -557,8 +541,8 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('terrain')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('terrain')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -573,8 +557,8 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('satellite')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('satellite')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -589,8 +573,8 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('mozilla')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('mozilla')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -605,8 +589,8 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('github')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('pinterest')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -621,8 +605,8 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('green')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('green')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -637,8 +621,88 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('dark')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('dark')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Dark Theme
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('osm')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('osm')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Standard OpenStreetMap
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('osmcycle')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('osmcycle')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Cycle OpenStreetMap
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('osmtransport')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('osmtransport')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Transport OpenStreetMap
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('osmmapquest')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('osmmapquest')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            MapQuest OpenStreetMap
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('natgeo')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('natgeo')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -653,8 +717,8 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('usgstopo')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('usgstopo')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -669,8 +733,8 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('ortho')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('ortho')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
@@ -685,22 +749,53 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a href="#/thumbnail" class="thumbnail">
-                                            <div class="image">
+                                        <a ng-click="swapBasemap('ocean')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('ocean')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            OpenStreetMap
+                                                            Ocean
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </a>
                                     </div>
-
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('lightgray')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('lightgray')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Light Gray (No Labels)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('esritopo')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('esritopo')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Esri Topographic
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
 
