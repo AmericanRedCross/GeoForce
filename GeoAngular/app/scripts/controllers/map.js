@@ -7,7 +7,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   console.log('MapCtrl');
 
   var lastLayersStr = '';
-  var title = $scope.title = $stateParams.title || 'World';
+	var title = $scope.title = $stateParams.title || 'World';
   $scope.blur = '';
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
 
@@ -155,10 +155,6 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
         });
         broadcastBBox();
       }
-
-			//Update Breadcrumbs
-			getAdminStack({lat: lat, lng: lng});
-
     });
 
     map.on('zoomend', function() {
@@ -255,22 +251,5 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 	End Theme Menu Animations
 	 */
 
-	/* Handle Requests to Update Breadcrumbs */
-
-	function getAdminStack(point){
-		var args = {
-			format: 'GeoJSON',
-			datasource: 'gadm',
-			wkt: 'POINT(' + point.lng + ' ' + point.lat + ')'
-		};
-
-		$.post('https://webviz.redcross.org/services/getAdminStack', args).done(function (data) {
-			//Callback on success
-			console.log(data);
-		})
-		//
-	}
-
-	/* End Breadcrumb Update section */
 
 });
