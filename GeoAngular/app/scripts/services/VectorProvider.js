@@ -248,7 +248,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     });
   };
 
-
   /**
    * Should only be used by BBoxLayer objects.
    * Consider this a private method.
@@ -294,6 +293,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       for (var i=0, len=featItinerary.length; i < len; ++i) {
         var o = featItinerary[i];
         activeLevels[o.level] = true;
+				if(o.iscenter == true){
+					$rootScope.$broadcast('center-feature', o);
+				}
         var guid = o.guid || o.id;
         if (!self._features[guid]) {
           // adding feature to features hash (all features ever)
@@ -459,7 +461,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
     /**
      * When the bounding box of the map changes, VectorProvider needs
-     * to be notified of the current bounding box so it can getch the
+     * to be notified of the current bounding box so it can fetch the
      * latest vector data for the bbox of the map viewport.
      *
      * The bbox must be WGS84.

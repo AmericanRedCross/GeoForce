@@ -7,7 +7,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   console.log('MapCtrl');
 
   var lastLayersStr = '';
-  var title = $scope.title = $stateParams.title || 'World';
+	var title = $scope.title = $stateParams.title || 'World';
   $scope.blur = '';
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
 
@@ -157,7 +157,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
       }
 
 			//Update Breadcrumbs
-			getAdminStack({lat: lat, lng: lng});
+			//getAdminStack({lat: lat, lng: lng});
 
     });
 
