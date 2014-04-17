@@ -181,6 +181,20 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
       for (var h = 0, len = overlays.length; h < len; ++h) {
         map.removeLayer(overlays[h]);
+
+        // NH FIXME: Labels should remove automatically when removing the layer.
+        // There is an issue where sometimes the featureLayer is not valid so we
+        // directly add the label to the map.
+        var overlay = overlays[h];
+        if (overlay._layers) {
+          for (var key in overlay._layers) {
+            var label = overlay._layers[key].label;
+            if (label) {
+              map.removeLayer(label);
+            }
+          }
+        }
+
       }
 
       for (var i = 0, len = overlayNames.length; i < len; ++i) {
