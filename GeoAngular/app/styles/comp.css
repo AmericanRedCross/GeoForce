@@ -58,13 +58,13 @@ html, body {
     z-index: 2;
 }
 
-#MapUpperRightToolbarWrapper div {
+#MapUpperRightToolbarWrapper > div {
     float: left;
     background-color: #43484a;
     color: #fff;
     text-transform: uppercase;
-    padding: 14px 40px;
-    font-size: 21px;
+    padding: 7px 40px;
+    font-size: 14px;
     font-family: oswaldregular;
     cursor: pointer;
 
@@ -75,28 +75,42 @@ html, body {
     border: 0px;
 }
 
+#MapUpperRightToolbarWrapper button{
+    font-size: 12px;
+    float: left;
+    padding: 10px;
+}
+
 #MapUpperRightToolbarWrapper div.light {
     background-color: #666666;
 }
 
 #MapUpperRightToolbarWrapper .search {
-    font-size: 26px;
-    padding: 10px 17px;
+    font-size: 20px;
+    padding: 4px 17px;
     border-left: 1px solid #fff;
-    height: 58px;
-    line-height: 47px;
+    height: 34px;
+    line-height: 33px;
 }
-
-#MapUpperRightToolbarWrapper > div > button {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 6px;
-    font-size: 6px;
-}
-
 
 /* End Map Top Right Toolbar */
+
+/* Breadcrumbs */
+div.breadcrumbs-container {
+    min-width: 500px;
+    -webkit-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    transition: all .5s ease;
+    padding: 7px 10px !important;
+}
+
+div.breadcrumbs-container div {
+    float: left;
+    padding: 0 10px;
+}
+
+/* End Breadcrumbs */
 
 /* Theme Selector Menu */
 #ThemeSelectorMenu {
