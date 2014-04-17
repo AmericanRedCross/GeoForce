@@ -95,23 +95,6 @@ html, body {
 
 /* End Map Top Right Toolbar */
 
-/* Breadcrumbs */
-div.breadcrumbs-container {
-    min-width: 500px;
-    -webkit-transition: all .5s ease;
-    -ms-transition: all .5s ease;
-    -moz-transition: all .5s ease;
-    transition: all .5s ease;
-    padding: 7px 10px !important;
-}
-
-div.breadcrumbs-container div {
-    float: left;
-    padding: 0 10px;
-}
-
-/* End Breadcrumbs */
-
 /* Theme Selector Menu */
 #ThemeSelectorMenu {
     position: absolute;
