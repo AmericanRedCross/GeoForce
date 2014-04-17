@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('LayersCtrl', function($scope) {
+angular.module('GeoAngular').controller('LayersCtrl', function($scope, $stateParams) {
   console.log('LayersCtrl');
   $scope.params = $stateParams;
 

@@ -22,12 +22,21 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.mozilla = 'http://{s}.tiles.mapbox.com/v3/mozilla-webprod.e91ef8b3/{z}/{x}/{y}.png';
   this.github = 'http://{s}.tiles.mapbox.com/v3/github.map-xgq2svrz/{z}/{x}/{y}.png';
   this.green = 'http://{s}.tiles.mapbox.com/v3/examples.map-3gisupiu/{z}/{x}/{y}.png';
+  this.dark = 'http://{s}.tiles.mapbox.com/v3/spatialdev.map-c9z2cyef/{z}/{x}/{y}.png';
+
+  this.osm = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+  this.osmcycle = 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png';
+  this.osmtransport = 'http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png';
+  this.osmmapquest = 'http://otile3.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png';
 
   this.natgeo = 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}';
   this.usgstopo = 'http://services.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}';
   this.ortho = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+  this.ocean = 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}';
+  this.lightgray = 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+  this.esritopo = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}';
 
-  this.osm = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+
 
 
   /**

@@ -1,6 +1,7 @@
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
- *       on 4/16/14.
+ *        and Ryan Whitley      <rwhitley@spatialdev.com>
+ *         on 4/16/14.
  */
 
 angular.module('GeoAngular').controller('SideViewCtrl', function($scope) {
