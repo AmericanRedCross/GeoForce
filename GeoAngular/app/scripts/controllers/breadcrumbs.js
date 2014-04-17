@@ -45,11 +45,11 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 
 				//Store in the hash.
 				if(breadCrumbFeatures[featObj.level]){
-					breadCrumbFeatures[featObj.level][featObj.stack_guid] = stackObj;
+					breadCrumbFeatures[featObj.level][stackObj.stack_guid] = stackObj;
 				}
 				else{
 					breadCrumbFeatures[featObj.level] = {};
-					breadCrumbFeatures[featObj.level][featObj.stack_guid] = stackObj;
+					breadCrumbFeatures[featObj.level][stackObj.stack_guid] = stackObj;
 				}
 
 
