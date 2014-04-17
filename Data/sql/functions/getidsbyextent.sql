@@ -1,9 +1,11 @@
 ﻿-- Function: udf_getidsbyextent(integer, character varying)
 
-DROP FUNCTION udf_getidsbyextent(integer, character varying);
+-- DROP FUNCTION udf_getidsbyextent(integer, character varying);
+
+-- TEST: select * from udf_getidsbyextent(null, 'POLYGON((-130.660400 40.245992, -130.660400 47.953145, -110.214844 47.953145, -110.214844 40.245992, -130.660400 40.245992))');
 
 CREATE OR REPLACE FUNCTION udf_getidsbyextent(IN ingadm_level integer, IN inwkt character varying)
-  RETURNS TABLE(level integer, guid character varying, name text) AS
+  RETURNS TABLE(level integer, guid character varying, name text, iscenter boolean) AS
 $BODY$
 DECLARE
 
@@ -46,38 +48,38 @@ BEGIN
 								count4:= count(g.guid) from gadm4 g WHERE ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 								IF(count4 < 3) THEN --start count4 = 1
 									--We're inside of a level 4.  Assume we can't go lower than 5. Just return 5s
-									RETURN QUERY SELECT 5, g.guid::character varying, name_5 from gadm5 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
+									RETURN QUERY SELECT 5, g.guid::character varying, name_5, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom_simplify_med) THEN true ELSE false END as iscenter from gadm5 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 
 
 								ELSE --count4 = 1
 									--0 or > 1 features.  Just return those.
-									RETURN QUERY SELECT 4, g.guid::character varying, name_4 from gadm4 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
+									RETURN QUERY SELECT 4, g.guid::character varying, name_4, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom_simplify_med) THEN true ELSE false END as iscenter from gadm4 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 								END IF; --count4 = 1
 
 
 
 						ELSE --count3 = 1
 							--0 or > 1 features.  Just return those.
-							RETURN QUERY SELECT 3, g.guid::character varying, name_3 from gadm3 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
+							RETURN QUERY SELECT 3, g.guid::character varying, name_3, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom_simplify_med) THEN true ELSE false END as iscenter from gadm3 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 						END IF; --count3 = 1
 
 
 				ELSE --count2 = 1
 					--0 or > 1 features.  Just return those.
-					RETURN QUERY SELECT 2, g.guid::character varying, name_2 from gadm2 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
+					RETURN QUERY SELECT 2, g.guid::character varying, name_2, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom_simplify_med) THEN true ELSE false END as iscenter from gadm2 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 				END IF; --count2 = 1
 
 
 
 			ELSE --count1 = 1
 				--0 or > 1 features.  Just return those.
-				RETURN QUERY SELECT 1, g.guid::character varying, name_1 from gadm1 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
+				RETURN QUERY SELECT 1, g.guid::character varying, name_1, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom_simplify_med) THEN true ELSE false END as iscenter from gadm1 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 			END IF; --count1 = 1
 
 
 	ELSE --count0 <= 2
 		--0 or > 1 features.  Just return those.
-		RETURN QUERY SELECT 0, g.guid::character varying, name_0 from gadm0 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
+		RETURN QUERY SELECT 0, g.guid::character varying, name_0, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom_simplify_med) THEN true ELSE false END as iscenter from gadm0 g where ST_Intersects(wkt, geom_simplify_med) AND year = 2012;
 	END IF; --count0 <= 2
 
 

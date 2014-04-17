@@ -338,8 +338,8 @@ exports.app = function(passport) {
 			//The result of execute Admin Stack Search
 			//successful search
 			if (err) {
-				log(result.message.text);
-				this.args.errorMessage = "error: " + result.message.text;
+				common.log(err);
+				this.args.errorMessage = "error: " + err;
 				common.respond(this.req, this.res, this.args);
 			}
 			else {
