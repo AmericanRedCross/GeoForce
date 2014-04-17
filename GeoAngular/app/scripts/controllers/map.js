@@ -37,8 +37,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
     if (lastLayersStr !== layersStr) {
       console.log('Setting layers.');
-      if (Array.isArray(overlayNames) && overlayNames.length > 0)
-        drawOverlays();
+      drawOverlays();
 
       $scope.defaults = {
         scrollWheelZoom: true
