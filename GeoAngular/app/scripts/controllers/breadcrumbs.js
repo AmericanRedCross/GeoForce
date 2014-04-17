@@ -17,7 +17,7 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 		//See if the feature stack has already been stored
 		if(breadCrumbFeatures[featObj.level] && breadCrumbFeatures[featObj.level][featObj.guid]){
 			//Already have it
-			updateBreadCrumbs(featObj);
+			updateBreadCrumbs(breadCrumbFeatures[featObj.level][featObj.guid]);
 		}
 		else{
 			//Go fetch it
@@ -38,18 +38,18 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 				}
 
 
-				var featObj = geojson.features[0].properties;
+				var stackObj = geojson.features[0].properties;
 
 				//Update
-				updateBreadCrumbs(featObj);
+				updateBreadCrumbs(stackObj);
 
 				//Store in the hash.
 				if(breadCrumbFeatures[featObj.level]){
-					breadCrumbFeatures[featObj.level][featObj.guid] = featObj;
+					breadCrumbFeatures[featObj.level][featObj.stack_guid] = stackObj;
 				}
 				else{
 					breadCrumbFeatures[featObj.level] = {};
-					breadCrumbFeatures[featObj.level][featObj.guid] = featObj;
+					breadCrumbFeatures[featObj.level][featObj.stack_guid] = stackObj;
 				}
 
 

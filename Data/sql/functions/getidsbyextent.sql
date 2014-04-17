@@ -4,6 +4,7 @@
 
 -- TEST: select * from udf_getidsbyextent(null, 'POLYGON((-130.660400 40.245992, -130.660400 47.953145, -110.214844 47.953145, -110.214844 40.245992, -130.660400 40.245992))');
 
+
 CREATE OR REPLACE FUNCTION udf_getidsbyextent(IN ingadm_level integer, IN inwkt character varying)
   RETURNS TABLE(level integer, guid character varying, name text, iscenter boolean) AS
 $BODY$
@@ -23,7 +24,7 @@ BEGIN
 
 	wkt:= ST_GeomFromText(inwkt, 4326); --make the geometry
 
-		
+
 	--Return Red Cross Regions if above level 0
 	countarc:= count(g.gid) from arc_regions_dissolved g WHERE ST_Intersects(wkt, geom);
 	IF(countarc < 3) THEN --start count0 < 3
@@ -85,7 +86,7 @@ BEGIN
 
 	ELSE
 	--Show ARC Regions (-1 corresponds to ARC Regions)
-		RETURN QUERY SELECT -1, g.gid::character varying, arcregion2::text from arc_regions_dissolved g where ST_Intersects(wkt, geom);
+		RETURN QUERY SELECT -1, g.gid::character varying, arcregion2::text, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom) THEN true ELSE false END as iscenter from arc_regions_dissolved g where ST_Intersects(wkt, geom);
 	END IF;
 END;
 $BODY$
