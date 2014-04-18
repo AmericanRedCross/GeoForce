@@ -413,10 +413,7 @@ html, body {
     color: #a5a5a5;
     font-size: 20px;
     text-align: center;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 20px;
-    badding-bottom: 20px;
+    padding: 20px 30px;
     cursor: pointer;
 }
 

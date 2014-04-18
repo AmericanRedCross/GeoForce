@@ -82,7 +82,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       $http.get(proxyPath, {cache: true}).success(function (data, status) {
         cb(data);
       }).error(function() {
-        console.error("Unable to fetch from: " + path);
+        console.error("Unable to fetch from: " + proxyPath);
       });
     });
 
