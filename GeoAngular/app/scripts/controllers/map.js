@@ -6,6 +6,8 @@
 angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider) {
   console.log('MapCtrl');
 
+  $scope.params = $stateParams;
+
   var lastLayersStr = '';
 	var title = $scope.title = $stateParams.title || 'World';
   $scope.blur = '';

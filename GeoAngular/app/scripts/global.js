@@ -21,6 +21,19 @@ window.layout = $('#AppContainer').layout({
 //resize left(west panel) to be 59px wide.
 window.layout.sizePane("west", 59);
 
-var wait = false;
+window.wait = false;
+window.mapMoveEnd = false;
 
-var mapMoveEnd = false;
+window.gists = {};
+gists.append = function (gistData) {
+  var gistsStr = localStorage.getItem('gists');
+  var gists = JSON.parse(gistsStr);
+  gists[gistsData.id] = gistData;
+  gistsStr = JSON.stringify(gists);
+  localStorage.setItem('gists',gistsStr);
+};
+
+gists.fetch = function() {
+  var str = localStorage.getItem('gists');
+  return JSON.parse(str);
+};

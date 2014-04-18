@@ -42,6 +42,7 @@ angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $s
           $scope.gistHtmlUrl = data.html_url;
           $scope.disabled = true;
           $scope.showUploadedUrl = true;
+          window.gists.append(data);
 
         }).error(function (data, status, headers, config) {
           $scope.showAlert = true;
@@ -61,8 +62,12 @@ angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $s
     }
 
     $stateParams.layers = $stateParams.layers + ',' + newUrl;
-    $state.go('main', $stateParams);
-    $('#uploadModal').modal('hide');
+    $('#uploadModal').modal('hide').on('hidden.bs.modal', function(e) {
+      $state.go('main', $stateParams);
+    });
+
   };
+
+  $('#uploadModal').modal('show');
 
 });

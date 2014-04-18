@@ -1,0 +1,58 @@
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form role="form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="uploadModalLabel">Upload Data</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div ng-show="showAlert" class="alert alert-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <strong>Upload Failed!</strong> Please make sure that your file is of the following formats: GeoJSON, KML, or CSV.<br/>
+                        <strong ng-show="errorMessage">Error Message:</strong>
+                        <pre ng-show="errorMessage">{{errorMessage}}</pre>
+                    </div>
+
+                    <p>The following formats are supported: GeoJSON, KML, and CSV. Mapfolio can either fetch data directly from a Remote URL or upload as a Github Gist.</p>
+
+                    <div class="form-group">
+                        <label for="remoteUrl">Remote URL</label>
+                        <input type="remoteUrl" class="form-control" id="remoteUrl" ng-model="remoteUrl" placeholder="http://yourlocalgov.gov/some-feature.geojson" ng-disabled="disabled" />
+                    </div>
+
+                    <h4 class="center">or</h4>
+
+                    <div ng-click="upload()" class="dnd-box">
+                        DRAG AND DROP<br/>or<br/>
+                        CLICK TO CHOOSE FILE
+                    </div>
+
+                    <!--This is a super ugly control, so we are just having the div above-->
+                    <!--fire a click on it and hide this actual element.-->
+                    <input ng-show="false" type="file" id="upload-file-input">
+
+                    <div ng-show="showProgress" class="progress">
+                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percent}}%">
+                            {{percent}}% Complete
+                        </div>
+                    </div>
+
+                    <div ng-show="showUploadedUrl" class="form-group has-success has-feedback">
+                        <label class="control-label" for="inputSuccess2">File uploaded to</label>
+                        <input type="text" class="form-control" id="inputSuccess2" ng-model="gistRawUrl" select-on-click />
+                        <a ng-href="{{gistHtmlUrl}}" target="_blank">View Data on Github</a>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button ng-click="addToMap()" type="button" class="btn btn-danger">Add to Map</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
