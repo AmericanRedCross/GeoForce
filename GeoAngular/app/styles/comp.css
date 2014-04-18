@@ -417,3 +417,26 @@ div.breadcrumbs-container div {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.center {
+    text-align: center;
+}
+
+.dnd-box {
+    border: 3px dashed #ccc;
+    width: 350px;
+    margin: 20px auto;
+    background-color: #F6ECED;
+    color: #a5a5a5;
+    font-size: 20px;
+    text-align: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 20px;
+    badding-bottom: 20px;
+    cursor: pointer;
+}
+
+.dnd-box input {
+    padding-top: 10px;
+}

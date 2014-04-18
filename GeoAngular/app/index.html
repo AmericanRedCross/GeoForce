@@ -46,7 +46,7 @@
     <!-- Add your site or application content here -->
 
     <!-- AppContainer is the wrapper for the jQuery Layout plugin. -->
-        <div id="AppContainer">
+    <div id="AppContainer">
             <!-- NavBar is the vertical & left-hand (west) panel controlled by the jQuery Layout plugin. -->
             <div id="NavBar" class="ui-layout-west" ng-controller="NavBarCtrl">
                     <div id="ARCLogo"></div>
@@ -841,7 +841,9 @@
                             </div>
                         </div>
 
-                        <div class="light">Upload Data</div>
+                        <div class="light" data-toggle="modal" data-target="#uploadModal">
+                            Upload Data
+                        </div>
                         <div class="light">Export</div>
                         <div class="search" data-icon="m"></div>
                     </div>
@@ -878,9 +880,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
 
 
 
@@ -959,6 +958,62 @@
                         </div>
                     </div>
                 </div>
+
+            <div ng-controller="UploadCtrl" class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form role="form">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="uploadModalLabel">Upload Data</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <div ng-show="showAlert" class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <strong>Upload Failed!</strong> Please make sure that your file is of the following formats: GeoJSON, KML, or CSV.
+                                </div>
+
+                                <p>The following formats are supported: GeoJSON, KML, and CSV. This upload will be stored on Github as a Gist.</p>
+
+                                <div class="form-group">
+                                    <label for="remoteUrl">Remote URL</label>
+                                    <input type="remoteUrl" class="form-control" id="remoteUrl" placeholder="http://yourlocalgov.gov/some-feature.geojson">
+                                </div>
+
+                                <h4 class="center">or</h4>
+
+                                <div ng-click="upload()" class="dnd-box">
+                                    DRAG AND DROP<br/>or<br/>
+                                    <div class="form-group">
+                                        CLICK TO CHOOSE FILE
+                                        <input ng-show="false" type="file" id="upload-file-input">
+                                    </div>
+                                </div>
+
+                                <div ng-show="showProgress" class="progress">
+                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                        <span class="sr-only">80% Complete</span>
+                                    </div>
+                                </div>
+
+                                <div ng-show="showUploadedUrl" class="form-group has-success has-feedback">
+                                    <label class="control-label" for="inputSuccess2">File uploaded to</label>
+                                    <input type="text" class="form-control" id="inputSuccess2" value="https://gist.githubusercontent.com/hallahan/11018371/raw/655310df2d5aaacd7165e5efb670c7602115c7a9/washington.geojson">
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Add to Map</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
 
 
@@ -1024,6 +1079,7 @@
     <script src="scripts/controllers/basemaps.js"></script>
     <script src="scripts/controllers/breadcrumbs.js"></script>
     <script src="scripts/controllers/zoom-extent.js"></script>
+    <script src="scripts/controllers/upload.js"></script>
     <!-- endbuild -->
 
     <!--<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>-->
