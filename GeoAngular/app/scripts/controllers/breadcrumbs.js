@@ -8,7 +8,8 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 
 	var title = $scope.title = $stateParams.title || 'World';
 
-	var fullStackURL = config.chubbsPath('services/getAdminStack?format=json&adminlevel=:adminlevel&stackid=:guid&datasource=gadm');
+	//var fullStackURL = config.chubbsPath('services/getAdminStack?format=json&adminlevel=:adminlevel&stackid=:guid&datasource=gadm');
+	var fullStackURL = config.chubbsPath('services/custom/custom_operation?name=GetBreadCrumbsWithThemeCountsByID&format=json&gadm_level=:adminlevel&ids=:guid&datasource=gadm&theme=projects');
 
 	var breadCrumbFeatures = {}; //Store results of the stack lookup here so we can reuse.
 
@@ -17,7 +18,7 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 		//See if the feature stack has already been stored
 		if(breadCrumbFeatures[featObj.level] && breadCrumbFeatures[featObj.level][featObj.guid]){
 			//Already have it
-			updateBreadCrumbs(breadCrumbFeatures[featObj.level][featObj.guid]);
+			updateBreadCrumbs(breadCrumbFeatures[featObj.level][featObj.guid], featObj.level);
 		}
 		else{
 			//Go fetch it
@@ -26,30 +27,25 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 			var self = this;
 
 			// Fetch from the server only if we don't have it in the hash
-			$http.get(url).success(function (geojson, status) {
+			$http.get(url).success(function (result, status) {
 
-				if (geojson.error) {
-					console.error('Unable to fetch feature: ' + geojson.error);
+				if (!result || result.error) {
+					console.error('Unable to fetch feature: ' + result.error);
 					return;
 				}
 
-				if (!geojson.features || geojson.features.length < 1) {
-					return;
-				}
-
-
-				var stackObj = geojson.features[0].properties;
+				var properties = result[0];
 
 				//Update
-				updateBreadCrumbs(stackObj);
+				updateBreadCrumbs(properties, featObj.level);
 
 				//Store in the hash.
 				if(breadCrumbFeatures[featObj.level]){
-					breadCrumbFeatures[featObj.level][stackObj.stack_guid] = stackObj;
+					breadCrumbFeatures[featObj.level][properties["guid" + featObj.level]] = properties;
 				}
 				else{
 					breadCrumbFeatures[featObj.level] = {};
-					breadCrumbFeatures[featObj.level][stackObj.stack_guid] = stackObj;
+					breadCrumbFeatures[featObj.level][properties["guid" + featObj.level]] = properties;
 				}
 
 
@@ -61,19 +57,28 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 
 	});
 
-	function updateBreadCrumbs(featObj) {
+	function updateBreadCrumbs(featObj, level) {
 		//Update The Breadcrumb display
-		$scope.level = featObj.level;
-
 		//Clear lower level scope items in case we've zoomed out
-		for (var x = featObj.level; x <= 5; x++) {
+		for (var x = level; x <= 5; x++) {
 			//null out any level values that are LOWER than what we're currently looking at
 			$scope["level" + x] = "";
+			$scope["guid" + x] = "";
+
+			if(x == -1){
+				$scope["levelarc"] = featObj["namearc"];
+				$scope["guidarc"] = featObj["guidarc"];
+			}
 		}
 
 		//using the requested level, dig out the properties for that level and ones above it
-		for (var i = featObj.level; i >= 0; i--) {
-			$scope["level" + i] = featObj["adm" + i + "_name"];
+		for (var i = level; i >= 0; i--) {
+			if(i == -1){
+				$scope["levelarc"] = featObj["namearc"];
+				$scope["guidarc"] = featObj["guidarc"];
+			}
+			$scope["level" + i] = featObj["name" + i];
+			$scope["guid" + i] = featObj["guid" + i];
 		}
 	}
 

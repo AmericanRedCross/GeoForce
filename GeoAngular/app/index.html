@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="styles/filters.css">
     <link rel="stylesheet" href="styles/legend.css">
     <link rel="stylesheet" href="styles/basemaps.css">
+    <link rel="stylesheet" href="styles/breadcrumbs.css">
     <link rel="stylesheet" href="styles/info.css">
     <link rel="stylesheet" href="styles/zoom-extent.css">
       <!-- endbuild -->
@@ -831,13 +832,26 @@
                                 {{title}}
                             </div>
                             <div class="stack">
-                                <div class="bc-arcregion">{{arcregion}}</div>
-                                <div class="bc-level0">{{level0}}</div>
-                                <div class="bc-level1">{{level1}}</div>
-                                <div class="bc-level2">{{level2}}</div>
-                                <div class="bc-level3">{{level3}}</div>
-                                <div class="bc-level4">{{level4}}</div>
-                                <div class="bc-level5">{{level5}}</div>
+                                <div class="bc-arrow" ng-show="arcregion" data-icon="k"></div>
+                                <div class="bc arcregion" ng-click="zoomToGUID(guidarc)">{{arcregion}}</div>
+
+                                <div class="bc-arrow" ng-show="level0" data-icon="k"></div>
+                                <div class="bc level0" ng-click="zoomToGUID('{{guid0}}')">{{level0}}</div>
+
+                                <div class="bc-arrow" ng-show="level1" data-icon="k"></div>
+                                <div class="bc level1" ng-click="zoomToGUID('{{guid1}}')">{{level1}}</div>
+
+                                <div class="bc-arrow" ng-show="level2" data-icon="k"></div>
+                                <div class="bc level2" ng-click="zoomToGUID('{{guid2}}')">{{level2}}</div>
+
+                                <div class="bc-arrow" ng-show="level3" data-icon="k"></div>
+                                <div class="bc level3" ng-click="zoomToGUID('{{guid3}}')">{{level3}}</div>
+
+                                <div class="bc-arrow" ng-show="level4" data-icon="k"></div>
+                                <div class="bc level4" ng-click="zoomToGUID('{{guid4}}')">{{level4}}</div>
+
+                                <div class="bc-arrow" ng-show="level5" data-icon="k"></div>
+                                <div class="bc level5" ng-click="zoomToGUID('{{guid5}}')">{{level5}}</div>
                             </div>
                         </div>
 

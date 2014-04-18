@@ -156,9 +156,9 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
       }
     });
 
-    map.on('zoomend', function() {
-      broadcastBBox();
-    });
+//    map.on('zoomend', function() {
+//      broadcastBBox();
+//    });
 
     //Connect the layout onresize end event
     window.layout.panes.center.bind("layoutpaneonresize_end", function () {

@@ -1,0 +1,20 @@
+/* Breadcrumbs */
+div.breadcrumbs-container {
+    min-width: 500px;
+    -webkit-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    transition: all .5s ease;
+    padding: 7px 10px !important;
+}
+
+div.breadcrumbs-container div {
+    float: left;
+    padding: 0 10px;
+}
+
+div.breadcrumbs-container .stack .bc:hover{
+    text-decoration: underline;
+}
+
+/* End Breadcrumbs */
