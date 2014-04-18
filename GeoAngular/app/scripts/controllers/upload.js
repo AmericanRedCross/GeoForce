@@ -3,13 +3,14 @@
  *       on 4/17/14.
  */
 
-angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http) {
+angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $state, $stateParams) {
   console.log('UploadCtrl');
 
   $scope.showAlert = false;
   $scope.showProgress = false;
   $scope.showUploadedUrl = false;
   $scope.percent = 10;
+  $scope.disabled = false;
 
   $scope.upload = function() {
     $("#upload-file-input").click().change(function(evt) {
@@ -39,7 +40,7 @@ angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http) {
           $scope.showProgress = false;
           $scope.gistRawUrl = data.files[fileName].raw_url;
           $scope.gistHtmlUrl = data.html_url;
-
+          $scope.disabled = true;
           $scope.showUploadedUrl = true;
 
         }).error(function (data, status, headers, config) {
@@ -52,6 +53,16 @@ angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http) {
     });
   };
 
+  $scope.addToMap = function () {
+    var newUrl = $scope.gistRawUrl || $scope.remoteUrl;
+    if (!newUrl) {
+      $scope.showAlert = true;
+      return;
+    }
 
+    $stateParams.layers = $stateParams.layers + ',' + newUrl;
+    $state.go('main', $stateParams);
+    $('#uploadModal').modal('hide');
+  };
 
 });

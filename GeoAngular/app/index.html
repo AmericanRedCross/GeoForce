@@ -986,15 +986,15 @@
                                 <div ng-show="showAlert" class="alert alert-danger alert-dismissable">
                                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                     <strong>Upload Failed!</strong> Please make sure that your file is of the following formats: GeoJSON, KML, or CSV.<br/>
-                                    <strong>Error Message:</strong>
-                                    <pre>{{errorMessage}}</pre>
+                                    <strong ng-show="errorMessage">Error Message:</strong>
+                                    <pre ng-show="errorMessage">{{errorMessage}}</pre>
                                 </div>
 
                                 <p>The following formats are supported: GeoJSON, KML, and CSV. Mapfolio can either fetch data directly from a Remote URL or upload as a Github Gist.</p>
 
                                 <div class="form-group">
                                     <label for="remoteUrl">Remote URL</label>
-                                    <input type="remoteUrl" class="form-control" id="remoteUrl" placeholder="http://yourlocalgov.gov/some-feature.geojson">
+                                    <input type="remoteUrl" class="form-control" id="remoteUrl" ng-model="remoteUrl" placeholder="http://yourlocalgov.gov/some-feature.geojson" ng-disabled="disabled">
                                 </div>
 
                                 <h4 class="center">or</h4>
