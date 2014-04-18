@@ -994,7 +994,7 @@
 
                                 <div class="form-group">
                                     <label for="remoteUrl">Remote URL</label>
-                                    <input type="remoteUrl" class="form-control" id="remoteUrl" ng-model="remoteUrl" placeholder="http://yourlocalgov.gov/some-feature.geojson" ng-disabled="disabled">
+                                    <input type="remoteUrl" class="form-control" id="remoteUrl" ng-model="remoteUrl" placeholder="http://yourlocalgov.gov/some-feature.geojson" ng-disabled="disabled" />
                                 </div>
 
                                 <h4 class="center">or</h4>
@@ -1016,7 +1016,7 @@
 
                                 <div ng-show="showUploadedUrl" class="form-group has-success has-feedback">
                                     <label class="control-label" for="inputSuccess2">File uploaded to</label>
-                                    <input type="text" class="form-control" id="inputSuccess2" ng-model="gistRawUrl">
+                                    <input type="text" class="form-control" id="inputSuccess2" ng-model="gistRawUrl" select-on-click />
                                     <a ng-href="{{gistHtmlUrl}}" target="_blank">View Data on Github</a>
                                 </div>
 

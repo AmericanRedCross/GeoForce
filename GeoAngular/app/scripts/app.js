@@ -91,3 +91,14 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
     })
 
 });
+
+GeoAngular.directive('selectOnClick', function () {
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      element.on('click', function () {
+        this.select();
+      });
+    }
+  };
+});
