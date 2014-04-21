@@ -28,7 +28,8 @@ window.gists = {};
 gists.append = function (gistData) {
   var gistsStr = localStorage.getItem('gists');
   var gists = JSON.parse(gistsStr);
-  gists[gistsData.id] = gistData;
+  if (!gists) gists = {};
+  gists[gistData.id] = gistData;
   gistsStr = JSON.stringify(gists);
   localStorage.setItem('gists',gistsStr);
 };
