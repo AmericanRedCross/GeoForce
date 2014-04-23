@@ -3,9 +3,41 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 1,
+    "project_count": 2,
     "total_budget": 0,
+    "Admin_0__c": "Antarctica"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 2,
+    "total_budget": 2000000,
+    "Admin_0__c": "Canada"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 2,
+    "total_budget": 5000,
     "Admin_0__c": "Haiti"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 3,
+    "total_budget": 506000,
+    "Admin_0__c": "India"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 2,
+    "total_budget": 0,
+    "Admin_0__c": "Kazakhstan"
   },
   {
     "attributes": {
@@ -13,7 +45,15 @@
     },
     "project_count": 1,
     "total_budget": 0,
-    "Admin_0__c": "India"
+    "Admin_0__c": "Kenya"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 2,
+    "total_budget": 0,
+    "Admin_0__c": "Kyrgyzstan"
   },
   {
     "attributes": {
@@ -27,8 +67,24 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 2,
+    "project_count": 5,
     "total_budget": 0,
+    "Admin_0__c": "Tanzania"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 1,
+    "total_budget": 0,
+    "Admin_0__c": "Uganda"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 6,
+    "total_budget": 10350,
     "Admin_0__c": "United States"
   },
   {
@@ -43,7 +99,15 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 2,
+    "project_count": 12,
+    "total_budget": 0,
+    "Admin_0__c": "Vietnam"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 3,
     "total_budget": 168027,
     "Admin_0__c": "Zimbabwe"
   },
@@ -51,8 +115,8 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 151,
-    "total_budget": 5576,
+    "project_count": 229,
+    "total_budget": 2601676,
     "Admin_0__c": null
   }
 ]

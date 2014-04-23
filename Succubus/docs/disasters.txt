@@ -1,0 +1,25 @@
+Fields Needed                                   ECOS Field
+=============                                   ==========
+
+Disaster Name                                   Name
+Disaster Date                                   Date__c
+Disaster Type                                   Disaster_Type__c
+Category                                        Category__c
+Number of People Affected                       People_Affected__c
+
+Request for Assistance:
+
+Beneficiaries Targeted Individuals
+Beneficiaries Reached Individuals
+Total ARC
+Cash Contributions on RFA
+Requested Amount
+% for ARC Amt.
+Sum Total of Supplies
+
+Display Criteria:
+
+By Disaster Type
+By Timeframe (fiscal year or quarter)
+By Region
+

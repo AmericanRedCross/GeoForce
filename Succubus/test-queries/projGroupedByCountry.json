@@ -5,8 +5,17 @@
     },
     "Admin_0__c": null,
     "GIS_GEO_ID__c": null,
-    "project_count": 151,
-    "total_budget": 5576
+    "project_count": 229,
+    "total_budget": 2601676
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Haiti",
+    "GIS_GEO_ID__c": "8857fa2b-1348-435b-9638-747d55ea062b",
+    "project_count": 1,
+    "total_budget": 5000
   },
   {
     "attributes": {
@@ -22,7 +31,7 @@
       "type": "AggregateResult"
     },
     "Admin_0__c": "India",
-    "GIS_GEO_ID__c": "8633894c-8f76-46f3-9567-81dbc242d45a",
+    "GIS_GEO_ID__c": "346725e2-cf5c-4d66-a264-1acd42811756",
     "project_count": 1,
     "total_budget": 0
   },
@@ -30,8 +39,125 @@
     "attributes": {
       "type": "AggregateResult"
     },
+    "Admin_0__c": "India",
+    "GIS_GEO_ID__c": "361e9f05-2816-42d0-b6df-5872049d14e9",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "India",
+    "GIS_GEO_ID__c": "8633894c-8f76-46f3-9567-81dbc242d45a",
+    "project_count": 1,
+    "total_budget": 506000
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Kenya",
+    "GIS_GEO_ID__c": "362a9277-813c-435a-a92b-743f145877ca",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Canada",
+    "GIS_GEO_ID__c": "23650c9c-4b18-471d-8df5-cb9103d1a35e",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Canada",
+    "GIS_GEO_ID__c": "c12b237a-d2da-48f4-a9e0-e07249dd811a",
+    "project_count": 1,
+    "total_budget": 2000000
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
     "Admin_0__c": "Russia",
     "GIS_GEO_ID__c": "3d15f9e2-5d7f-4650-9e4b-54c1f3099c12",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Uganda",
+    "GIS_GEO_ID__c": "3d698eb3-9d85-405a-a994-253cd7edf25c",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Vietnam",
+    "GIS_GEO_ID__c": "2d22f410-65e2-4d4e-a763-a757e24f9d7e",
+    "project_count": 11,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Vietnam",
+    "GIS_GEO_ID__c": "c6f7d5df-c579-46a3-b94d-9951bd4fa4f5",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Tanzania",
+    "GIS_GEO_ID__c": "164cd352-75f8-4c3e-8eb0-0d210de1155a",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Tanzania",
+    "GIS_GEO_ID__c": "95273a07-0f54-43a3-a9f3-1d8446ed6ae9",
+    "project_count": 2,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Tanzania",
+    "GIS_GEO_ID__c": "97f072c3-91bc-4ebf-9024-ab8ad36de39b",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Tanzania",
+    "GIS_GEO_ID__c": "bc6ea110-5597-4a8e-9083-d11cb2fcd7c2",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Zimbabwe",
+    "GIS_GEO_ID__c": "62ab7276-ffa4-48ce-a0e1-e5787e1202df",
     "project_count": 1,
     "total_budget": 0
   },
@@ -48,9 +174,63 @@
     "attributes": {
       "type": "AggregateResult"
     },
+    "Admin_0__c": "Antarctica",
+    "GIS_GEO_ID__c": "bb09ca9c-0c2d-43e6-9bac-8ad8275e160a",
+    "project_count": 2,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Kazakhstan",
+    "GIS_GEO_ID__c": "32cf7e12-b7c4-4eab-9d5b-e2d6a8a3889a",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Kazakhstan",
+    "GIS_GEO_ID__c": "451aab6e-50f6-4104-a626-d215d9e3c741",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Kyrgyzstan",
+    "GIS_GEO_ID__c": "26e18a1c-7ac0-42fd-b070-438e0552e2b3",
+    "project_count": 2,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "United States",
+    "GIS_GEO_ID__c": "53f08e36-654f-4176-8cbe-2afa4a52e21f",
+    "project_count": 3,
+    "total_budget": 10350
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
     "Admin_0__c": "United States",
     "GIS_GEO_ID__c": "96c186f2-19a2-4faa-889e-25e087d3895c",
     "project_count": 2,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "United States",
+    "GIS_GEO_ID__c": "ace58408-4f4d-4059-b0e6-910737b0abcd",
+    "project_count": 1,
     "total_budget": 0
   },
   {
