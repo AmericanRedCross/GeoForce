@@ -37,7 +37,7 @@ var query = module.exports.query = function(queryStr, cb) {
             cb((err || queryerr), (result && result.rows ? result.rows : result));
         });
     });
-}
+};
 
 
 function fetchTableNames(cb) {
@@ -90,7 +90,7 @@ var insertRows = flow.define(
 		//Coming back from dropViewAndTable
 		createTableInsertRowsCreateView(this.queryTable, this.rows, this.fields, this.cb);
 	}
-)
+);
 
 
 /*
@@ -126,7 +126,7 @@ var dropViewAndTable = flow.define(
 			this.cb(err);
 		}
 	}
-)
+);
 
 /*
 Group Together the process of creating tables, inserting rows, and creating views.
@@ -166,7 +166,7 @@ var createTableInsertRowsCreateView = flow.define(
 		}
 		this.cb(); //exit to caller
 	}
-)
+);
 
 /**
  * This is to be called inside of function insertRows only.
@@ -201,7 +201,7 @@ var _insertRows = flow.define(
 		//All queries have finished. We're done
 		if (this.cb) this.cb();
 	}
-)
+);
 
 
 /**
