@@ -149,11 +149,11 @@ var createTableInsertRowsCreateView = flow.define(
 	},function () {
 		//After finished inserting rows, (re)build the view
 		isSpatialTable(this.fields, this);
-	},function (isSpatial) {
+	},function (spatialCol) {
 		//Coming back from isSpatialTable
-		if (isSpatial === true) {
+		if (spatialCol) {
 			//Create a view if table is spatial
-			createSpatialView(this.queryTable, this.rows, this.fields, this);
+			createSpatialView(this.queryTable, this.rows, this.fields, spatialCol, this);
 		}
 		else {
 			//Non spatial
@@ -316,7 +316,7 @@ function createTable(queryTable, rows, fields, cb) {
  * @param rows
  * @param cb
  */
-function createSpatialView(tableName, rows, fields, cb) {
+function createSpatialView(tableName, rows, fields, spatialCol, cb) {
     var table = {
         // fieldName: type
     };
@@ -386,7 +386,7 @@ function createSpatialView(tableName, rows, fields, cb) {
     //Join field names
     sql += fields.join(",");
     sql += " FROM " + tableName + " " + tableQueryAlias;
-    sql += " INNER JOIN text_search on text_search.stack_guid::character varying = " + tableQueryAlias + ".gis_geo_id__c;"
+    sql += " INNER JOIN text_search on text_search.stack_guid::character varying = " + tableQueryAlias + "."+spatialCol+";";
 
     console.log("Creating view for " + tableName);
     query(sql, function(err, res) {
@@ -476,15 +476,15 @@ function isSpatialTable(fields, cb) {
 	var foundGeoField = false;
 
 	fields.forEach(function (field) {
-		if (field.toLowerCase() == 'gis_geo_id__c') {
+		if (field.toLowerCase().indexOf('gis_geo_id__c') != -1) {
 			//it's showtime
-			foundGeoField = true;
+			foundGeoField = field;
 			return;
 		}
 	});
 
-	if (foundGeoField == true) {
-		cb(true);
+	if (foundGeoField) {
+		cb(foundGeoField);
 	}
 	else {
 		//Didn't find it
@@ -505,9 +505,7 @@ function getTableFieldNamesFromQuery(queryStr){
 		field = field.trim();
 
 		//handle fully qualified names
-		if(field.indexOf('.') > -1){
-			field = field.split('.')[1]; //take the last part of the name
-		}
+    field = field.replace('.','_');
 
 		if(field.indexOf(' ') > -1){
 			field = field.split(' ')[1]; //use the alias

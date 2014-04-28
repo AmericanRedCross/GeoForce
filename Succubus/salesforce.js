@@ -87,20 +87,27 @@ function handleResult(result, cb) {
  * This function takes in an object and flattens out any properties into an array of strings and numbers
  * Adds the properties to the original record
  */
-function extractProperties(object, record) {
-
-	for (var key in object) {
-		if (object.hasOwnProperty(key)) {
-			var val = object[key];
+function extractProperties(key, object, record) {
+  // the attributes object is of no use for us
+  if (key === 'attributes') {
+    return record;
+  }
+	for (var k in object) {
+		if (object.hasOwnProperty(k)) {
+      // the attributes object is of no use for us
+      if (k === 'attributes') {
+        continue;
+      }
+			var val = object[k];
 			if (typeof val === 'object' && val !== null) {
 				//mix in properties of return object.
-				extractProperties(val, record);
+				extractProperties(key+'_'+k, val, record);
 				//AND, remove the original object property now that we've flattened it out.
-				delete record[key];
+				delete record[k];
 			}
 			else {
 				//just write out the property
-				record[key] = val;
+				record[key+'_'+k] = val;
 			}
 		}
 	}
@@ -128,7 +135,7 @@ module.exports.queryAndFlattenResults = function(queryStr, cb) {
 			for (var key in record) {
 				var val = record[key];
 				if (typeof val === 'object' && val !== null) {
-					extractProperties(val, record);
+					extractProperties(key, val, record);
 					delete record[key];
 				}
 				// our table already has an id field, so we need to rename it
@@ -143,5 +150,5 @@ module.exports.queryAndFlattenResults = function(queryStr, cb) {
 		cb(records);
 	});
 
-}
+};
 
