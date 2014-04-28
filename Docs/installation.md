@@ -212,7 +212,7 @@ module.exports = settings;
 
 ### 4. Fill in proper settings for Succubus (Succubus/settings.js)
 
-```
+```js
 ﻿module.exports = {
 
     // PostGIS Database Connection

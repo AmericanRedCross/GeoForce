@@ -13,7 +13,7 @@ operation.outputImage = false;
 
 operation.inputs["guids"] = {}; //comma separated list of guids
 
-operation.Query = "SELECT * FROM sf_all_projects WHERE gis_geo_id__c IN ({{guids}})";
+operation.Query = "SELECT * FROM sf_project WHERE gis_geo_id__c IN ({{guids}})";
 
 operation.execute = flow.define(
     function (args, callback) {

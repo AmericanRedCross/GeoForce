@@ -32,6 +32,50 @@ var metaFields =
 "SystemModstamp, " +
 "CreatedDate";
 
+var projectFields =
+"Allow_Project_Creation__c, " +
+"AP_Codes__c, " +
+"Budget_Status__c, " +
+"Business_Unit__c, " +
+"Concept_start_date__c, " +
+"Consolidated_Record_Type__c, " +
+"National_Society_Contractors__c, " +
+"Disaster__r.Id, " +                    // just store a disaster id so we can build up everything we need by joining to disasters table
+"External_Title__c, " +
+"Human_Resource_Status__c, " +
+"Inactive_AP_Codes__c, " +
+"Is_OFAC__c, " +
+"ISD_Region__c, " +
+"Is_Test_Data__c, " +
+"Is_USG_Funded__c, " +
+"Overall_Status__c, " +
+"Phase__c, " +
+"Phase_Name__c, " +
+"Project_Close_out_Date__c, " +
+"End_Date__c, " +
+"Start_Date__c, " +
+"Project_Program_Implementation__c, " +
+"Locations__c, " +
+"Proposal_Approved_On__c, " +
+"Proposal_Submitted_On__c, " +
+"Scope_Status__c, " +
+"Sector__c, " +
+"Staffing_Level__c, " +
+"Stage_Name__c, " +
+"Stakeholder_Status__c, " +
+"Status__c, " +
+"Status_As_Of__c, " +
+"Sub_Sector__c, " +
+"Summary__c, " +
+"Target_Beneficiaries_Direct__c, " +
+"Target_Beneficiaries_Indirect__c, " +
+"Target_Beneficiaries_Rollup_Type__c, " +
+"Timeline_Status__c, " +
+"Total_Budget__c, " +
+"Type__c, " +
+"USG_Contract_Number__c";
+
+
 var locationFields =
 "Location__r.Admin_0__c, " +
 "Location__r.Admin_1__c, " +
@@ -101,7 +145,7 @@ module.exports = {
   /**
    * Selects all of the fields from every project.
    */
-  project: "Select " + metaFields + ", Target_Beneficiaries_Indirect__c, Target_Beneficiaries_Direct__c, Summary__c, Sub_Sector__c, Start_Date__c, End_Date__c, Sector__c, Phase_Name__c, " + locationFields + ", ISD_Region__c From Project__c",
+  project: "Select " + metaFields + ", " + locationFields + ", " + projectFields + " From Project__c",
 
 
   /**
@@ -126,6 +170,14 @@ module.exports = {
    * A given disaster may have many disaster locations. You may join by Disaster__r.Id
    */
   disasterLocation: "Select " + metaFields + ", Disaster__r.Id, " + locationFields + " From Disaster_Location__c",
+
+
+  /**
+   * Selects the ProjectLocation table for the many to many with locations and projects. This should be used instead
+   * of directly looking up the Location relation in Project, because there can actually be many locations for a project.
+   * However, there are currently no fields in the ProjectLocation table.
+   */
+  projectLocation: "Select " + metaFields + ", Project__r.Id, " + locationFields + " From Project_Location__c",
 
 
   /**
