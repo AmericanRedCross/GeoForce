@@ -513,7 +513,7 @@ function getTableFieldNamesFromQuery(queryStr){
 
 		return field.trim();
 	});
-
+  fields.unshift('sf_id');
 	return fields;
 }
 
