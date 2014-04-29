@@ -14,6 +14,10 @@
  * SELECT * FROM sf_request_for_assistance
  * WHERE disaster__r_id = 'a0Fd000000TjiIzEAJ';
  *
+ * Example Endpoint:
+ *
+ * http://localhost:3000/services/custom/custom_operation?name=getdisastersbyguid&format=json&guids=13501e00-c3a0-4772-b060-66a9c80c3702&pretty=true
+ *
  */
 
 var flow = require('flow');
