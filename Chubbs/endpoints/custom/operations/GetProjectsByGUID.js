@@ -31,7 +31,7 @@ operation.execute = flow.define(
 
             //need to wrap ids in single quotes
             //Execute the query
-						query = { text: operation.Query.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])) };
+						var query = { text: operation.Query.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])) };
             common.executePgQuery(query, this);//Flow to next function when done.
         }
         else {
@@ -44,7 +44,7 @@ operation.execute = flow.define(
         //Step 2 - get the results and pass back to calling function
         this.callback(err, results);
     }
-)
+);
 
 //Make sure arguments are tight before executing
 operation.isInputValid = function (input) {
@@ -60,12 +60,12 @@ operation.isInputValid = function (input) {
     }
 
     return isValid;
-}
+};
 
 operation.wrapIdsInQuotes = function(ids){
     return ids.split(',').map(function(item){
         return "'" + item + "'";
     });
-}
+};
 
 module.exports = operation;
