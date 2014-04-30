@@ -62,12 +62,17 @@ angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $s
     }
 
     $stateParams.layers = $stateParams.layers + ',' + newUrl;
-    $('#uploadModal').modal('hide').on('hidden.bs.modal', function(e) {
+    $('#uploadModal').modal('hide');
+    $('#uploadModal').on('hidden.bs.modal', function(e) {
       $state.go('main', $stateParams);
     });
 
   };
 
   $('#uploadModal').modal('show');
+
+  $('#uploadModal').on('hidden.bs.modal', function(e) {
+    $state.go('main', $stateParams);
+  });
 
 });
