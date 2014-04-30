@@ -14,7 +14,7 @@ var operations = {};
 
 //Drop/Create Theme Views used by the client app
 operations.createThemeViews =
-"CREATE OR REPLACE VIEW vw_theme_projects_gadm AS \
+"CREATE OR REPLACE VIEW vw_theme_project_gadm AS \
     SELECT  text_search.name, \
             text_search.level, \
             text_search.country, \
@@ -30,12 +30,12 @@ operations.createThemeViews =
             text_search.geom, \
             text_search.fullname, \
             text_search.stack_guid; \
-    ALTER TABLE vw_theme_projects_gadm \
+    ALTER TABLE vw_theme_project_gadm \
     OWNER TO postgres;";
 
 //Create the aggregated project counts by all gaul levels, with counts rolled up to parents
 operations.createAggregateProjectCountsForGADM =
-"DROP TABLE IF EXISTS sf_aggregated_gadm_projects_counts; \
+"DROP TABLE IF EXISTS sf_aggregated_gadm_project_counts; \
 SELECT  0 as countARC, \
         ''::character varying as nameARC, \
         0 as guidARC, \
@@ -51,7 +51,7 @@ SELECT  0 as countARC, \
         gadm2.name_2 as name2, \
         gadm2.guid as guid2, \
         gadm2.geom_simplify_med as geom2 \
-INTO    sf_aggregated_gadm_projects_counts \
+INTO    sf_aggregated_gadm_project_counts \
 FROM    gadm0,gadm1,gadm2, vw_sf_project \
 WHERE   gadm0.id_0 = gadm1.id_0 \
   AND   gadm1.id_1 = gadm2.id_1 \
@@ -69,7 +69,7 @@ GROUP BY gadm0.guid, \
         gadm0.geom_simplify_med;  \
 \
 \
-INSERT INTO sf_aggregated_gadm_projects_counts \
+INSERT INTO sf_aggregated_gadm_project_counts \
   ( SELECT 0 as countARC, \
           ''::character varying as nameARC,\
           0 as guidARC, \
@@ -99,7 +99,7 @@ INSERT INTO sf_aggregated_gadm_projects_counts \
           gadm0.geom_simplify_med ); \
 \
 \
-INSERT INTO sf_aggregated_gadm_projects_counts\
+INSERT INTO sf_aggregated_gadm_project_counts\
   ( SELECT 0 as countARC, \
            ''::character varying as nameARC, \
            0 as guidARC, \
@@ -120,22 +120,22 @@ INSERT INTO sf_aggregated_gadm_projects_counts\
              gadm0.geom_simplify_med); \
 \
 \
-ALTER TABLE sf_aggregated_gadm_projects_counts ADD COLUMN id SERIAL; \
+ALTER TABLE sf_aggregated_gadm_project_counts ADD COLUMN id SERIAL; \
 \
 \
-UPDATE sf_aggregated_gadm_projects_counts SET id = DEFAULT; \
+UPDATE sf_aggregated_gadm_project_counts SET id = DEFAULT; \
 \
 \
-ALTER TABLE sf_aggregated_gadm_projects_counts ADD PRIMARY KEY (id); \
+ALTER TABLE sf_aggregated_gadm_project_counts ADD PRIMARY KEY (id); \
 \
 \
-CREATE INDEX idx_sf_projectcounts_id ON sf_aggregated_gadm_projects_counts USING btree (id); \
+CREATE INDEX idx_sf_projectcounts_id ON sf_aggregated_gadm_project_counts USING btree (id); \
 \
 \
-UPDATE sf_aggregated_gadm_projects_counts SET geom0 = ST_BUFFER(geom0, 0); \
+UPDATE sf_aggregated_gadm_project_counts SET geom0 = ST_BUFFER(geom0, 0); \
 \
 \
-UPDATE sf_aggregated_gadm_projects_counts \
+UPDATE sf_aggregated_gadm_project_counts \
 SET nameARC = a.arcregion2, countarc = count0, guidarc = a.gid, geomarc = a.geom \
 FROM ARC_REGIONS_DISSOLVED a \
 WHERE ST_INTERSECTS(a.geom, geom0);";

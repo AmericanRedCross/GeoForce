@@ -94,7 +94,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.allprojects = {
     type: 'BBoxGeoJSON',
     bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: config.chubbsPath('services/custom/custom_operation?name=getthemefeaturesbyid&format=geojson&theme=projects&gadm_level=:level&ids=:ids'),
+    url: config.chubbsPath('services/custom/custom_operation?name=getthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
       "stroke-width": 2,
@@ -102,7 +102,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "fill": "green",
       "fill-opacity": 0,
       "labelProperty": "project_count",
-      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectsbyguid&format=json&guids=:guids'),
+      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids'),
       "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
     }
   };
@@ -110,7 +110,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
 	this.aggregatedprojects = {
 		type: 'BBoxGeoJSON',
 		bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-		url: config.chubbsPath('services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=projects&gadm_level=:level&ids=:ids'),
+		url: config.chubbsPath('services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids'),
 		properties: {
 			"stroke": 'white',
 			"stroke-width": 2,
@@ -118,7 +118,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
 			"fill": "green",
 			"fill-opacity": 0,
 			"labelProperty": "project_count",
-			"detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectsbyguid&format=json&guids=:guids'),
+			"detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids'),
 			"onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
 		}
 	};

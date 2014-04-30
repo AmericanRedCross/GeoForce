@@ -13,12 +13,12 @@ module.exports = {};
 var operations = {};
 
 //Drop Theme Views used by the client app
-operations.dropThemeViews = "DROP VIEW IF EXISTS vw_theme_projects_gadm;";
+operations.dropThemeViews = "DROP VIEW IF EXISTS vw_theme_project_gadm;";
 
 module.exports.run = flow.define(
 	function(cb) {
 		this.cb = cb;
-		console.log("Starting preprocessing operations.")
+		console.log("Starting preprocessing operations.");
 		for (var operation in operations) {
 			ecosetl.query(operations[operation], this.MULTI());
 		}
