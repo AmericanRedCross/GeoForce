@@ -345,7 +345,15 @@ UPDATE sf_aggregated_gadm_project_counts SET id = DEFAULT; \
 ALTER TABLE sf_aggregated_gadm_project_counts ADD PRIMARY KEY (id); \
 \
 \
+DROP INDEX IF EXISTS idx_sf_projectcounts_id; \
 CREATE INDEX idx_sf_projectcounts_id ON sf_aggregated_gadm_project_counts USING btree (id); \
+CREATE INDEX idx_sf_projectcounts_guidarc ON sf_aggregated_gadm_project_counts USING btree (guidarc); \
+CREATE INDEX idx_sf_projectcounts_guid0 ON sf_aggregated_gadm_project_counts USING btree (guid0); \
+CREATE INDEX idx_sf_projectcounts_guid1 ON sf_aggregated_gadm_project_counts USING btree (guid1); \
+CREATE INDEX idx_sf_projectcounts_guid2 ON sf_aggregated_gadm_project_counts USING btree (guid2); \
+CREATE INDEX idx_sf_projectcounts_guid3 ON sf_aggregated_gadm_project_counts USING btree (guid3); \
+CREATE INDEX idx_sf_projectcounts_guid4 ON sf_aggregated_gadm_project_counts USING btree (guid4); \
+CREATE INDEX idx_sf_projectcounts_guid5 ON sf_aggregated_gadm_project_counts USING btree (guid5); \
 \
 \
 UPDATE sf_aggregated_gadm_project_counts SET geom0 = ST_BUFFER(geom0, 0); \
@@ -356,6 +364,7 @@ SET nameARC = a.arcregion2, countarc = count0, guidarc = a.gid, geomarc = a.geom
 FROM ARC_REGIONS_DISSOLVED a \
 WHERE ST_INTERSECTS(a.geom, geom0);";
 
+//operations.vacuum = "VACUUM ANALYZE;";
 
 module.exports.run = flow.define(
 	function(cb) {
