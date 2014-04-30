@@ -27,5 +27,5 @@ module.exports.run = flow.define(
 		//When all have finished
 		this.cb();
 	}
-)
+);
 

@@ -3,8 +3,9 @@
  *     on Tue April 10th, 2014
  */
 
+var preprocessing = require('./preprocessing_operations');
 var ecosetl = require('./pg.js');
-var postprocessing = require('./postprocessing_operations'), preprocessing = require('./preprocessing_operations');
+var postprocessing = require('./postprocessing_operations');
 
 //Run preprocessing operations, then ETL, followed by postprocessing operations
 preprocessing.run(function(){
