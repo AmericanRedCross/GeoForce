@@ -14,7 +14,7 @@ preprocessing.run(function(){
 	console.log("Starting ETL.");
 	//Start ETL
 	ecosetl.run(function(err){
-		console.log("ETL Complete.");
+		console.log("ETL Complete. Moving on to Postprocessing.");
 
 		//when ETL is done, try postprocessing commands
 		postprocessing.run(function(){
