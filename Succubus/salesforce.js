@@ -58,12 +58,6 @@ function query(queryStr, cb) {
 
 // Actually do the query.
 function execQuery(queryStr,cb) {
-//        conn.query(queryStr, function(err, result) {
-//            if (err) {
-//                return console.error('QUERY FAILED: ' + queryStr + '\n' + err + '\n');
-//            }
-//            handleResult(result, cb, []);
-//        });
     var records = [];
     conn.query(queryStr)
         .on("record", function(record) {

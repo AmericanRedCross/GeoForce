@@ -403,9 +403,7 @@ function insertQuery (sfQueryName, cb) {
 	salesforce.queryAndFlattenResults(queryStr, function (rows) {
 		if(rows && rows.length > 0)
         {
-            insertRows(queryTable, rows, queryStr, function () {
-                cb();
-            });
+            insertRows(queryTable, rows, queryStr, cb);
         }
         else{
             cb();
@@ -447,6 +445,7 @@ function insertAllQueryTables (cb){
         insertQuery(sfQueryName, this);
     },function(err){
         //After every iteration is complete.
+            console.log("Finished processing a SOQL Query.")
     },
     function(){
         //When all are done.
