@@ -36,7 +36,7 @@ operation.execute = flow.define(
             //need to wrap ids in single quotes
             //Execute the query
             var query;
-						query = { text: operation.BuildSQLQuery(operation.inputs["gadm_level"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)) };
+			query = { text: operation.BuildSQLQuery(operation.inputs["gadm_level"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)) };
             common.executePgQuery(query, this);//Flow to next function when done.
         }
         else {
