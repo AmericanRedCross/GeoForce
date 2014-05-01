@@ -3,7 +3,7 @@
  *     on Tue Mar 11 2014
  */
 
-var jsforce = require('jsforce');
+var jsforce = require('jsforce'), flow = require('flow');
 var settings = require('./settings').salesforce;
 
 
@@ -46,41 +46,58 @@ function connect(cb) {
 function query(queryStr, cb) {
     // Check if we are connected. If so, go for it...
     if (conn.accessToken) {
-        execQuery();
+        execQuery(queryStr,cb);
     }
     // Otherwise, we needa connect before we can query...
     else {
         connect(function(){
-            execQuery();
-        });
-    }
-
-    // Actually do the query.
-    function execQuery() {
-        conn.query(queryStr, function(err, result) {
-            if (err) {
-                return console.error('QUERY FAILED: ' + queryStr + '\n' + err + '\n');
-            }
-            handleResult(result, cb);
+            execQuery(queryStr, cb);
         });
     }
 }
 
+// Actually do the query.
+function execQuery(queryStr,cb) {
+    var records = [];
+    conn.query(queryStr)
+        .on("record", function(record) {
+            if(records.length == 0){ console.log("Getting results for " + queryStr) }
+            records.push(record);
+            console.log("adding record. " + records.length)
+        })
+        .on("end", function(query) {
+            console.log("total in database : " + query.totalSize);
+            console.log("total fetched : " + query.totalFetched);
+            cb(records);
+        })
+        .on("error", function(err) {
+            console.error(err);
+        })
+        .run({ autoFetch : true});
+}
 
-function handleResult(result, cb) {
+function handleResult(result, cb, recordsCollection) {
+    var that = this;
+
+    //Add new records to the collection of old records
+    if(result && result.records){
+        recordsCollection = recordsCollection.concat(result.records);
+    }
+
     if (!result.done) {
         // you can use the locator to fetch next records set.
         // Connection#queryMore()
         console.log("next records URL : " + result.nextRecordsUrl);
-
-        conn.queryMore(result.nextRecordsUrl, function(err, result) {
-            cb(result.records);
-            handleResult(result, cb);
+        conn.queryMore(result.nextRecordsUrl, function (err, nextResult) {
+            console.log("Fetched " + nextResult.records.length + " more.");
+            handleResult(nextResult, cb, recordsCollection);
         });
+        console.log("After querymore.");
+
     } else {
-        cb(result.records);
+        cb(recordsCollection);
     }
-}
+};
 
 /**
  *
@@ -128,7 +145,8 @@ module.exports.queryAndFlattenResults = function(queryStr, cb) {
 	query(queryStr.toLowerCase(), function (records) {
 		if (typeof records !== 'object' || records.length === 0) {
 			console.warn('No Records for: ' + queryStr);
-			return;
+            cb([]); //return empty array
+            return;
 		}
 		for (var i = 0, len = records.length; i < len; ++i) {
 			var record = records[i];

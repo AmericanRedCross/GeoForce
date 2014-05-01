@@ -234,7 +234,7 @@ function createTable(queryTable, rows, fields, cb) {
 			// it's a number
 			if (typeof val === 'number') {
 				if (isInt(val)) {
-					table[field] = 'integer';
+					table[field] = 'bigint';
 				} else {
 					table[field] = 'float';
 				}
@@ -253,7 +253,7 @@ function createTable(queryTable, rows, fields, cb) {
 					// it's a number
 					if (typeof val === 'number') {
 						if (isInt(val)) {
-							table[field] = 'integer';
+							table[field] = 'bigint';
 						} else {
 							table[field] = 'float';
 						}
@@ -336,7 +336,7 @@ function createSpatialView(tableName, rows, fields, spatialCol, cb) {
 		// it's a number
 		if (typeof val === 'number') {
 			if (isInt(val)) {
-				table[field] = 'integer';
+				table[field] = 'bigint';
 			} else {
 				table[field] = 'float';
 			}
@@ -355,7 +355,7 @@ function createSpatialView(tableName, rows, fields, spatialCol, cb) {
 				// it's a number
 				if (typeof val === 'number') {
 					if (isInt(val)) {
-						table[field] = 'integer';
+						table[field] = 'bigint';
 					} else {
 						table[field] = 'float';
 					}
@@ -401,9 +401,13 @@ function insertQuery (sfQueryName, cb) {
 	var queryTable = 'sf_' + S(sfQueryName).underscore().s;
 
 	salesforce.queryAndFlattenResults(queryStr, function (rows) {
-		insertRows(queryTable, rows, queryStr, function () {
-			cb();
-		});
+		if(rows && rows.length > 0)
+        {
+            insertRows(queryTable, rows, queryStr, cb);
+        }
+        else{
+            cb();
+        }
 	});
 }
 
@@ -425,19 +429,29 @@ function dropView(sfViewName, cb) {
     })
 }
 
-var insertAllQueryTables = flow.define(
-	function(cb) {
-		this.cb = cb;
-		for (var sfQueryName in salesforceQueries) {
-			insertQuery(sfQueryName, this.MULTI());
-		}
-	},
-	function(){
-		//All queries have finished.  call the callback.
-		this.cb();
-	}
-)
+var prepQueryTables = function (){
+    //Take in the object and return an array
+    var queryArr = [];
+    for (var sfQueryName in salesforceQueries) {
+        queryArr.push(sfQueryName);
+    }
+    return queryArr;
+}
 
+function insertAllQueryTables (cb){
+
+    var tables = prepQueryTables();
+    flow.serialForEach(tables, function(sfQueryName){
+        insertQuery(sfQueryName, this);
+    },function(err){
+        //After every iteration is complete.
+            console.log("Finished processing a SOQL Query.")
+    },
+    function(){
+        //When all are done.
+        cb();
+    });
+}
 
 function dropAllSalesforceTables() {
     for (var sfQueryName in salesforceQueries) {
