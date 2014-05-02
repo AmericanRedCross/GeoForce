@@ -5,14 +5,6 @@ INTO sf_gadm_guids
 FROM gadm0,gadm1,gadm2
 WHERE   gadm0.id_0 = gadm1.id_0 AND gadm1.id_1 = gadm2.id_1 AND gadm2.id_0 = gadm1.id_0;
 
---There are no ARCRegions tied to projects in ECOS.  This is just theoretical
---INSERT INTO sf_aggregated_gadm_projects_counts(
---SELECT  a.arcregion2 as nameARC, a.gid as guidARC, a.geom as geomARC, 0 as count0, '' as name0, null::geometry as geom0,  0 as count1, '' as name1, null as guid1, null::geometry as geom1, 0 as count2, '' as name2, null as guid2, null::geometry as geom2  
---FROM ARC_REGIONS_DISSOLVED a, vw_sf_project
---WHERE a.gid::character varying = vw_sf_project.stack_guid::character varying
---GROUP BY a.gid, a.arcregion2, a.geom);
---End Theoretical section
-
 --5 minutes
 ALTER TABLE sf_gadm_guids ADD COLUMN id SERIAL;
 UPDATE sf_gadm_guids SET id = DEFAULT;

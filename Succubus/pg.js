@@ -146,22 +146,9 @@ var createTableInsertRowsCreateView = flow.define(
 		//Coming back from createTable
 		//Insert Rows
 		_insertRows(this.queryTable, this.rows, this.fields, this);
-	},function () {
-		//After finished inserting rows, (re)build the view
-		isSpatialTable(this.fields, this);
-	},function (spatialCol) {
-		//Coming back from isSpatialTable
-		if (spatialCol) {
-			//Create a view if table is spatial
-			createSpatialView(this.queryTable, this.rows, this.fields, spatialCol, this);
-		}
-		else {
-			//Non spatial
-			this.cb(); //exit to caller
-		}
 	},function (err, res) {
 		if (err) {
-			console.log("Error creating view: " + this.queryTable + ".  Msg: " + err);
+			console.log("Error inserting rows: " + this.queryTable + ".  Msg: " + err);
 			this.cb(err);
 		}
 		this.cb(); //exit to caller
@@ -306,95 +293,6 @@ function createTable(queryTable, rows, fields, cb) {
 	});
 }
 
-/**
- * Creates a spatial view of the incoming data, joining it with the GADM dataset.
- * If a given field for a row is null, we iterate further until we
- * find the type for the given field. If all rows for a given field
- * are null, we just make the type be a String.\
- *
- * @param tableName
- * @param rows
- * @param cb
- */
-function createSpatialView(tableName, rows, fields, spatialCol, cb) {
-    var table = {
-        // fieldName: type
-    };
-
-    var row = rows[0];
-    var len = rows.length;
-    var tableQueryAlias = "a"; //Alias to use in the query to refer to the sf table
-
-	for (var field in row) {
-		var val = row[field];
-
-		// it's a string that may be a stringified object
-		if (typeof val === 'string') {
-			table[field] = 'text';
-		}
-
-		// it's a number
-		if (typeof val === 'number') {
-			if (isInt(val)) {
-				table[field] = 'bigint';
-			} else {
-				table[field] = 'float';
-			}
-		}
-
-		// it's a null value, see if you can find a row that has a field that isn't null...
-		else if (typeof val === 'object' && val === null) {
-			for (var i = 0; i < len; ++i) {
-				row = rows[i];
-				val = row[field];
-				// its a string that may be a stringified object
-				if (typeof val === 'string') {
-					table[field] = 'text';
-					break;
-				}
-				// it's a number
-				if (typeof val === 'number') {
-					if (isInt(val)) {
-						table[field] = 'bigint';
-					} else {
-						table[field] = 'float';
-					}
-					break;
-				}
-			}
-			// OK, well... We haven't found what we're looking for. Let's just call it text
-			// and move on with our lives...
-			if (!table[field]) table[field] = 'text';
-		}
-	}
-
-
-    var sql = "CREATE VIEW vw_" + tableName + " AS SELECT ";
-    var fields = []; //Array of field names;
-    var fieldsString = ""; //Joined string of field names
-
-    for (var field in table) {
-			//Make sure the return field matches one of the whitelisted fields from the original SOQL query, otherwise ignore the property
-			if (isValidColumn(fields, field)) {
-				fields.push(tableQueryAlias + "." + field.toLowerCase());
-			}
-		}
-
-    //Add text_search columns
-    fields.push("text_search.*");
-
-    //Join field names
-    sql += fields.join(",");
-    sql += " FROM " + tableName + " " + tableQueryAlias;
-    sql += " INNER JOIN text_search on text_search.stack_guid::character varying = " + tableQueryAlias + "."+spatialCol+";";
-
-    console.log("Creating view for " + tableName);
-    query(sql, function(err, res) {
-        console.log(tableName + ' successfully created.');
-        cb(err, res);
-    });
-}
-
 
 function insertQuery (sfQueryName, cb) {
 	var queryStr = salesforceQueries[sfQueryName];
@@ -476,36 +374,6 @@ function sanitize(val) {
     }
     return val;
 }
-
-/**
- * Based on field names, find if the salesforce table has the column gis_geo_id__c
- * This is a GUID that also lives in the GeoDB.
- * If found, assume this is a table that can be joined to the spatial tables.
- *
- * @param queryTable
- * @param rows
- * @param cb
- */
-function isSpatialTable(fields, cb) {
-	var foundGeoField = false;
-
-	fields.forEach(function (field) {
-		if (field.toLowerCase().indexOf('gis_geo_id__c') != -1) {
-			//it's showtime
-			foundGeoField = field;
-			return;
-		}
-	});
-
-	if (foundGeoField) {
-		cb(foundGeoField);
-	}
-	else {
-		//Didn't find it
-		cb(false);
-	}
-}
-
 
 /*
  ...Becasuse what you ask for in the SOQL queries is not exactly what you get back from the API.
