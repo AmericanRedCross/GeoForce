@@ -3,19 +3,21 @@
  *       on 4/17/14.
  */
 
-angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $state, $stateParams) {
+angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $state, $stateParams, $upload) {
   console.log('UploadCtrl');
 
   $scope.showAlert = false;
   $scope.showProgress = false;
   $scope.showUploadedUrl = false;
-  $scope.percent = 10;
+  $scope.percent = 3;
   $scope.disabled = false;
+
+  $scope.$upload = $upload;
 
   $scope.upload = function() {
     $("#upload-file-input").click().change(function(evt) {
       $scope.showProgress = true;
-      $scope.percent = 20;
+      $scope.percent = 5;
 
       var fileName = $(this).val().split('\\').pop();
       var file = $('#upload-file-input').get(0).files[0];
@@ -29,13 +31,16 @@ angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $s
           "files": {}
         };
         postObj.files[fileName] = {content: data};
-        $scope.percent = 50;
+        $scope.percent = 7;
 
-        $http({
+        $scope.$upload.http({
           url: 'https://api.github.com/gists',
           method: "POST",
           data: postObj,
           headers: {'Content-Type': 'application/json'}
+        }).progress(function(evt) {
+//          console.log(evt);
+          $scope.percent = parseFloat((evt.loaded / evt.totalSize * 100).toFixed(1));
         }).success(function (data, status, headers, config) {
           $scope.showProgress = false;
           $scope.gistRawUrl = data.files[fileName].raw_url;
