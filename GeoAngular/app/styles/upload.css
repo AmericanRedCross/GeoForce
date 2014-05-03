@@ -10,6 +10,11 @@
     cursor: pointer;
 }
 
+.dnd-box-drag-over {
+    border: 3px dashed #ed1b2e;
+    color: #ed1b2e;
+}
+
 .dnd-box input {
     padding-top: 10px;
 }

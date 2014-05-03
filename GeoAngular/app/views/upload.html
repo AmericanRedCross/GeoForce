@@ -24,7 +24,7 @@
 
                     <h4 class="center">or</h4>
 
-                    <div ng-click="upload()" class="dnd-box">
+                    <div ng-file-drop="fileDropped($files)" ng-click="upload()" class="dnd-box" ng-file-drag-over-class="dnd-box-drag-over">
                         DRAG AND DROP<br/>or<br/>
                         CLICK TO CHOOSE FILE
                     </div>
