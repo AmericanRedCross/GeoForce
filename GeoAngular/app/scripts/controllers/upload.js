@@ -11,6 +11,8 @@ angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $s
   $scope.showUploadedUrl = false;
   $scope.percent = 3;
   $scope.disabled = false;
+  $scope.kbUploaded = 0;
+  $scope.kbTotal = 0;
 
   $scope.$upload = $upload;
 
@@ -41,6 +43,8 @@ angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $s
         }).progress(function(evt) {
 //          console.log(evt);
           $scope.percent = parseFloat((evt.loaded / evt.totalSize * 100).toFixed(1));
+          $scope.kbUploaded = (evt.loaded / 1024).toFixed(2);
+          $scope.kbTotal = (evt.totalSize / 1024).toFixed(2);
         }).success(function (data, status, headers, config) {
           $scope.showProgress = false;
           $scope.gistRawUrl = data.files[fileName].raw_url;
