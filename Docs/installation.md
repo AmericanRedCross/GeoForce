@@ -16,12 +16,33 @@ Make sure you have done `sudo apt-get update` and `sudo apt-get upgrade` on your
 sudo apt-get install git
 ```
 
+
 ### 2. Install NodeJS
+
+#### Ubuntu 14.04 LTS
+
+```
+sudo apt-get install nodejs
+sudo apt-get install npm
+sudo chmod -R a+rwx /usr/local/lib/node_modules/
+sudo chmod -R a+rwx /usr/bin/nodejs
+sudo chmod -R a+rwx /usr/bin/node
+sudo chmod -R a+rwx /usr/bin/npm
+
+```
+
+#### Ubuntu 12.04 LTS
 
 ```
 ﻿sudo add-apt-repository ppa:chris-lea/node.js
 sudo apt-get update
 sudo apt-get install python-software-properties python g++ make nodejs
+```
+
+There is a naming conflict with the node package (Amateur Packet Radio Node Program), and the nodejs binary has been renamed from node to nodejs. You'll need to symlink `/usr/bin/node` to `/usr/bin/nodejs` or you could uninstall the Amateur Packet Radio Node Program to avoid that conflict.
+
+```
+sudo ln -s /usr/bin/nodejs /usr/bin/node
 ```
 
 ## NGINX
@@ -63,6 +84,22 @@ pg_dump redcross-localdev | gzip > 2014-04-21.gz
 
 ### 1. Instructions from ﻿http://trac.osgeo.org/postgis/wiki/UsersWikiPostGIS21UbuntuPGSQL93Apt
 
+#### Ubuntu 14.04
+
+```
+﻿sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list'
+wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get update
+﻿sudo apt-get install postgresql-9.3
+sudo apt-get install postgresql-9.3-postgis-2.1
+sudo apt-get install postgresql-contrib
+﻿sudo -u postgres psql
+CREATE EXTENSION adminpack;
+\q
+```
+
+#### Ubuntu 12.04
+
 ```
 ﻿sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" >> /etc/apt/sources.list'
 wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
@@ -73,10 +110,18 @@ CREATE EXTENSION adminpack;
 \q
 ```
 
-### 2. Create a username. Replace yourUserName with what you want as your user name.
+### 2. Set postgres password. Create a username. Replace yourUserName with what you want as your user name.
 ```
-﻿sudo su - postgres
+sudo -u postgres psql postgres
+\password postgres
+-- enter password twice
+-- exit db
+sudo passwd postgres
+sudo su - postgres
+
+
 createuser -d -E -i -l -P -r -s yourUserName
+-- do this if you want to create another user
 ```
 
 ### 3. Enable PostGIS Extensions
@@ -93,6 +138,15 @@ CREATE EXTENSION fuzzystrmatch;
 -- Enable US Tiger Geocoder
 CREATE EXTENSION postgis_tiger_geocoder;
 ```
+
+Make sure that you have the right version of PostGIS installed.
+
+```
+SELECT PostGIS_full_version();
+```
+
+It needs to be 2.1.1 or 2.1.2
+
 
 ### 4. Load database that was dumped from another machine.
 
@@ -248,4 +302,12 @@ node index.js
 node app.js
 ```
 
+
+## Cheat sheet
+
+### Restart PostgreSQL
+
+```
+sudo /etc/init.d/postgresql restart
+```
 
