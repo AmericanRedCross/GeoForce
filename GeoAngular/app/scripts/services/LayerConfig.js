@@ -94,7 +94,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.allprojects = {
     type: 'BBoxGeoJSON',
     bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids&filters=sector__c='Health'"),
+    url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids"),
     properties: {
       "stroke": 'white',
       "stroke-width": 2,
@@ -106,6 +106,23 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
     }
   };
+
+    this.allprojectsfiltered = {
+        type: 'BBoxGeoJSON',
+        bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
+        url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids&filters=:filters"),
+        properties: {
+            "stroke": 'white',
+            "stroke-width": 2,
+            "stroke-opacity": 1,
+            "fill": "green",
+            "fill-opacity": 0,
+            "labelProperty": "theme_count",
+            "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids'),
+            "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
+        }
+    };
+
 
 	this.alldisasters = {
 		type: 'BBoxGeoJSON',

@@ -296,6 +296,9 @@ module.exports = settings;
 node index.js
 ```
 
+### 6.5 Install npm Forever
+sudo npm install -g forever
+
 ### 6. Run Chubbs (be in Chubbs dir)
 
 ```
