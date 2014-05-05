@@ -177,6 +177,9 @@ tables.findSpatialTables(app, function(error, tables) {
 					//Create output folders for each service in public/cached_nodetiles to hold any cached tiles from dynamic service
 					mapnik.createCachedFolder(item.table);
 				}
+                else{
+                    common.log("Tables read, but no Mapnik.  Server ready.")
+                }
 			});
 		}
 	}

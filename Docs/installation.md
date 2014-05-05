@@ -304,6 +304,45 @@ node app.js
 
 
 ## Cheat sheet
+``` Configure nginx
+from --http://stackoverflow.com/questions/5009324/node-js-nginx-and-now
+
+--create a file in /etc/nginx/sites-available/geoforce
+
+sudo pico /etc/nginx/sites-available/geoforce
+then enter:
+
+# the IP(s) on which your node server is running. I chose port 3000.
+upstream app_geoforce {
+    server 127.0.0.1:3000;
+}
+
+# the nginx server instance
+server {
+    listen 0.0.0.0:80;
+    server_name redcross.org geoforce;
+    access_log /var/log/nginx/geoforce.log;
+
+    # pass the request to the node.js server with the correct headers and much more can be added, see nginx config options
+    location / {
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_set_header X-NginX-Proxy true;
+
+      proxy_pass http://app_geoforce;
+      proxy_redirect off;
+    }
+ }
+
+--Next, enable the site defined above
+cd /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/geoforce geoforce
+
+
+--restart nginx
+sudo /etc/init.d/nginx restart
+```
 
 ### Restart PostgreSQL
 
