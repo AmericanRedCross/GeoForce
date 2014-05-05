@@ -31,6 +31,7 @@ operation.execute = flow.define(
             operation.inputs["ids"] = args.ids;
             operation.inputs["theme"] = args.theme.toLowerCase();
 			operation.inputs["gadm_level"] = args.gadm_level.toLowerCase();
+            operation.inputs["filters"] = args.filters;
 
             //need to wrap ids in single quotes
             //Execute the query

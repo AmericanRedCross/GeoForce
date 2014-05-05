@@ -94,7 +94,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.allprojects = {
     type: 'BBoxGeoJSON',
     bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: config.chubbsPath('services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids'),
+    url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids&filters=sector__c='Health'"),
     properties: {
       "stroke": 'white',
       "stroke-width": 2,
