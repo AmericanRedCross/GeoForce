@@ -24,7 +24,7 @@
 
                     <h4 class="center">or</h4>
 
-                    <div ng-click="upload()" class="dnd-box">
+                    <div ng-file-drop="fileDropped($files)" ng-click="upload()" class="dnd-box" ng-file-drag-over-class="dnd-box-drag-over">
                         DRAG AND DROP<br/>or<br/>
                         CLICK TO CHOOSE FILE
                     </div>
@@ -33,10 +33,13 @@
                     <!--fire a click on it and hide this actual element.-->
                     <input ng-show="false" type="file" id="upload-file-input">
 
-                    <div ng-show="showProgress" class="progress">
-                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percent}}%">
-                            {{percent}}% Complete
+                    <div ng-show="showProgress">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{percent}}%">
+                                {{percent}}%
+                            </div>
                         </div>
+                        {{kbUploaded}} KB / {{kbTotal}} KB Complete...
                     </div>
 
                     <div ng-show="showUploadedUrl" class="form-group has-success has-feedback">

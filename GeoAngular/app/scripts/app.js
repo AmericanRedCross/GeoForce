@@ -2,7 +2,7 @@
  * This is the entry point of the application. We declare the main module here and then configure the main router
  * that creates corresponding views. The array parameter for module declares this module's dependencies.
  */
-var GeoAngular = angular.module('GeoAngular', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute', 'ui.router', 'ngAnimate', 'leaflet-directive']);
+var GeoAngular = angular.module('GeoAngular', ['angularFileUpload', 'ngCookies', 'ngResource', 'ngSanitize', 'ngRoute', 'ui.router', 'ngAnimate', 'leaflet-directive']);
 
 GeoAngular.run(function ($rootScope, $state, $stateParams) {
 
