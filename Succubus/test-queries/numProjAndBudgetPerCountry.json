@@ -27,9 +27,25 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 3,
+    "project_count": 4,
     "total_budget": 506000,
     "Admin_0__c": "India"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 2,
+    "total_budget": 300000,
+    "Admin_0__c": "Indonesia"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 1,
+    "total_budget": 0,
+    "Admin_0__c": "Italy"
   },
   {
     "attributes": {
@@ -61,6 +77,22 @@
     },
     "project_count": 1,
     "total_budget": 0,
+    "Admin_0__c": "Myanmar"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 1,
+    "total_budget": 0,
+    "Admin_0__c": "Nepal"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 1,
+    "total_budget": 0,
     "Admin_0__c": "Russia"
   },
   {
@@ -83,7 +115,7 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 6,
+    "project_count": 5,
     "total_budget": 10350,
     "Admin_0__c": "United States"
   },
@@ -115,8 +147,8 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 254,
-    "total_budget": 3501676,
+    "project_count": 280,
+    "total_budget": 3201676,
     "Admin_0__c": null
   }
 ]

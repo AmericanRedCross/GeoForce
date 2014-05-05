@@ -10830,8 +10830,8 @@
     },
     "Name": "Test Disaster to be deleted-2014",
     "Id": "a0F11000000f8XmEAI",
-    "LastModifiedDate": "2014-04-11T11:42:02.000+0000",
-    "SystemModstamp": "2014-04-11T11:42:02.000+0000",
+    "LastModifiedDate": "2014-05-02T09:02:48.000+0000",
+    "SystemModstamp": "2014-05-02T09:02:48.000+0000",
     "CreatedDate": "2014-04-11T07:15:21.000+0000",
     "Deaths__c": null,
     "People_Affected__c": null,
@@ -10853,7 +10853,7 @@
     "Source_People_Injured__c": null,
     "Source_People_Missing__c": null,
     "Summary__c": "Test Disaster to be deleted",
-    "Total_ARC_Contributions__c": 0,
+    "Total_ARC_Contributions__c": 4000,
     "Unique_Disaster_Id__c": "a0F11000000f8XmEAI"
   }
 ]

@@ -165,6 +165,11 @@ module.exports = {
    * Selects the Request_For_Assistance__c table.
    * A given disaster may have many requests for assistance. You may join by Disaster__r.Id
    */
-  requestForAssistance: "Select " + metaFields + ", Disaster__r.Id, " + requestForAssistanceFields + " From Request_For_Assistance__c"
+  requestForAssistance: "Select " + metaFields + ", Disaster__r.Id, " + requestForAssistanceFields + " From Request_For_Assistance__c",
+
+  /**
+   * Gets just the location table. This is used for migrations to a new GADM dataset.
+   */
+  location: "Select " + metaFields + ", Admin_0__c, Admin_1__c, Admin_2__c, Admin_3__c, Admin_4__c, Admin_5__c, Custom_Name__c, GIS_GEO_ID__c, Internal_Region__c, ISD_Region__c, Latitude__c, Longitude__c, Type__c From Location__c"
 
 };
