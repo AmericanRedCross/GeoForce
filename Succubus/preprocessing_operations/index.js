@@ -16,9 +16,14 @@ function dropThemeView(themeName) {
   return "DROP VIEW IF EXISTS vw_theme_"+themeName+"_gadm;";
 }
 
+function dropView(viewName) {
+    return "DROP VIEW IF EXISTS " + viewName + ";";
+}
+
 //Drop Theme Views used by the client app
 operations.dropProjectThemeView = dropThemeView('project');
 operations.dropDisasterLocationThemeView = dropThemeView('disaster_location');
+operations.dropDisastersView = dropView('vw_sf_disaster');
 
 module.exports.run = flow.define(
 	function(cb) {
