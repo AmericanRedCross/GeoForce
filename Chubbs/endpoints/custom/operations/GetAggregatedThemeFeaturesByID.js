@@ -10,12 +10,12 @@ operation.inputs = {};
 
 operation.outputImage = false;
 
-operation.inputs["ids"] = {}; //comma separated list of ids
-operation.inputs["theme"] = {}; //string - theme name
-operation.inputs["gadm_level"] = {}; //string - gadm_level (0 -5)
-operation.inputs["filters"] = {}; //string - sql WHERE clause, minus the 'WHERE'
+operation.inputs["ids"] = ""; //comma separated list of ids
+operation.inputs["theme"] = ""; //string - theme name
+operation.inputs["gadm_level"] = ""; //string - gadm_level (0 -5)
+operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
-operation.Query = "SELECT sum(count{{gadm_level}}) as project_count, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
+operation.Query = "SELECT sum(count{{gadm_level}}) as theme_count, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
 
 operation.execute = flow.define(
     function (args, callback) {
@@ -30,7 +30,7 @@ operation.execute = flow.define(
         if (operation.isInputValid(args) === true) {
             operation.inputs["ids"] = args.ids;
             operation.inputs["theme"] = args.theme.toLowerCase();
-					  operation.inputs["gadm_level"] = args.gadm_level.toLowerCase();
+			operation.inputs["gadm_level"] = args.gadm_level.toLowerCase();
 
             //need to wrap ids in single quotes
             //Execute the query

@@ -1,4 +1,4 @@
-﻿--5 minutes
+﻿--1.5 mins
 DROP TABLE IF EXISTS gadmrollup;
 SELECT ''::character varying as nameARC, 0 as guidARC, null::geometry as geomarc, gadm0.name_0 as name0, gadm0.guid as guid0, gadm0.geom_simplify_med as geom0, gadm1.name_1 as name1, gadm1.guid as guid1, gadm1.geom_simplify_med as geom1, gadm2.name_2 as name2, gadm2.guid as guid2, gadm2.geom_simplify_med as geom2
 INTO gadmrollup
