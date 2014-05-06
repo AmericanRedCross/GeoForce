@@ -8,16 +8,19 @@ angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScop
   $scope.project = function () {
     $scope.themeName = 'Projects';
     $scope.setThemeQueryParam('project');
+    $scope.$parent.drawOverlays();
   };
 
   $scope.disaster = function () {
     $scope.themeName = 'Disasters';
     $scope.setThemeQueryParam('disaster');
+    $scope.$parent.drawOverlays();
   };
 
   $scope.none = function () {
     $scope.themeName = 'None';
     $scope.setThemeQueryParam();
+    $scope.$parent.drawOverlays();
   };
 
   $scope.setThemeQueryParam = function (theme) {
