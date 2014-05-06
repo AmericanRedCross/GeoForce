@@ -31,7 +31,7 @@ operation.execute = flow.define(
 
             //need to wrap ids in single quotes
             //Execute the query
-						var query = { text: operation.Query.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])) };
+			var query = { text: operation.Query.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])) };
             common.executePgQuery(query, this);//Flow to next function when done.
         }
         else {

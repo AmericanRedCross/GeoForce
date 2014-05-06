@@ -27,7 +27,7 @@ operation.execute = flow.define(
         //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
         if (operation.isInputValid(args) === true) {
             //Execute the query
-            common.executePgQuery(operation.Query, this);//Flow to next function when done.
+            common.executePgQuery({text: operation.Query}, this);//Flow to next function when done.
         }
         else {
             //Invalid arguments
