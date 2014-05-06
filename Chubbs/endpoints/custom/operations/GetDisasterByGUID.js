@@ -28,7 +28,7 @@ var shortid = require('shortid');
 var operation = {};
 
 /* METADATA */
-operation.name = "GetDisastersByGUID";
+operation.name = "GetDisasterByGUID";
 operation.description = "Gets ECOS Disasters for a given GADM boundary based on a GUID.";
 operation.inputs = {};
 

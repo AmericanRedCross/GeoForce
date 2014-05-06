@@ -187,7 +187,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   BBoxGeoJSON.prototype._getFeatures = function (featObj) {
     var self = this;
     var theme = $rootScope.$stateParams.theme || self._defaultTheme;
-    var url = this._url.replace(':theme', theme).replace(':level', featObj.level).replace(':ids', featObj.guid);
+    var filters = 'null';
+    var url = this._url.replace(':theme', theme)
+                        .replace(':level', featObj.level)
+                        .replace(':ids', featObj.guid)
+                        .replace(':filters', filters);
     var proxyPath = config.proxyPath(url);
 
     // a cache makes sense if the bboxgeojson object is reinstantiated
@@ -345,7 +349,8 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       return;
     }
 
-    detailsUrl = detailsUrl.replace(':guids', properties.guid);
+    var theme = $rootScope.$stateParams.theme || properties.defaultTheme || 'project';
+    detailsUrl = detailsUrl.replace(':theme', theme).replace(':guids', properties.guid);
     $http.get(detailsUrl, {cache: true}).success(function (details) {
 
       featureLayer.feature.properties.details = {

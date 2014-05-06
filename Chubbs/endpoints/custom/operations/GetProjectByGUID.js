@@ -5,7 +5,7 @@ var common = require("../../../common"),settings = require('../../../settings'),
 var operation = {};
 
 /* METADATA */
-operation.name = "GetProjectsByGUID";
+operation.name = "GetProjectByGUID";
 operation.description = "Gets ECOS Projects for a given GADM boundary based on a GUID.";
 operation.inputs = {};
 
