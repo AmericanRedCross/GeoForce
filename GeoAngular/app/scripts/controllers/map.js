@@ -216,4 +216,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     });
   }
 
+  // Used by theme to redraw the overlays when the theme is changed.
+  $scope.drawOverlays = drawOverlays;
+
 });

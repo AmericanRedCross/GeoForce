@@ -190,8 +190,8 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     var url = this._url.replace(':theme', theme).replace(':level', featObj.level).replace(':ids', featObj.guid);
     var proxyPath = config.proxyPath(url);
 
-    // not cached because we only fetch when we dont have the feature in the hash
-    $http.get(url).success(function (geojson, status) {
+    // a cache makes sense if the bboxgeojson object is reinstantiated
+    $http.get(url, {cache: true}).success(function (geojson, status) {
       BBoxGeoJSON_processFeatures(self, featObj, geojson);
     }).error(function(err) {
       $http.get(proxyPath).success(function (geojson, status) {
@@ -310,7 +310,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     for (var i=0, len=featItinerary.length; i < len; ++i) {
       var o = featItinerary[i];
       activeLevels[o.level] = true;
-      if(o.iscenter == true){
+      if (o.iscenter == true) {
         $rootScope.$broadcast('center-feature', o);
       }
       var guid = o.guid || o.id;
