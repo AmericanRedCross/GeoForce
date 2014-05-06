@@ -5,6 +5,23 @@
 
 angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $stateParams, VectorProvider) {
 
+  $scope.project = function () {
+    $scope.activeThemeName = 'Projects';
+
+  };
+
+  $scope.disaster = function () {
+    $scope.activeThemeName = 'Disasters';
+
+  };
+
+  $scope.none = function () {
+    $scope.activeThemeName = 'None';
+
+  };
+
+  $scope.project(); // project is the default theme
+
   /*
    Handling Theme Menu Animations
    */
