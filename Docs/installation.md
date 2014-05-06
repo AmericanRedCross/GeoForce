@@ -323,7 +323,7 @@ upstream app_geoforce {
 # the nginx server instance
 server {
     listen 0.0.0.0:80;
-    server_name redcross.org geoforce;
+    server_name 54.201.181.57 geoforce;
     access_log /var/log/nginx/geoforce.log;
 
     # pass the request to the node.js server with the correct headers and much more can be added, see nginx config options
@@ -345,6 +345,9 @@ sudo ln -s /etc/nginx/sites-available/geoforce geoforce
 
 --restart nginx
 sudo /etc/init.d/nginx restart
+
+### Set up simple authentication with nginx (https://www.digitalocean.com/community/articles/how-to-set-up-http-authentication-with-nginx-on-ubuntu-12-10)
+sudo apt-get install apache2-utils
 ```
 
 ### Restart PostgreSQL

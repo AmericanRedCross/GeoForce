@@ -91,6 +91,7 @@ html, body {
     border-left: 1px solid #fff;
     height: 34px;
     line-height: 33px;
+    min-width: 55px;
 }
 
 /* End Map Top Right Toolbar */
