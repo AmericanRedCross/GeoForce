@@ -71,7 +71,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('main', {
-      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories&layers-panel&filters&legend&basemaps&info',
+      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories&layers-panel&filters&legend&basemaps&info&theme',
       views: {
         'details': {
           templateUrl: 'views/details.html',
@@ -80,7 +80,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('landing', {
-      url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories&layers-panel&filters&legend&basemaps&info',
+      url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories&layers-panel&filters&legend&basemaps&info&theme',
       views: {
         'details': {
           templateUrl: 'views/details.html',
@@ -93,7 +93,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('upload', {
-      url: '/map@:lat,:lng,:zoom(*layers)/upload?title&zoom-extent&stories&layers-panel&filters&legend&basemaps&info',
+      url: '/map@:lat,:lng,:zoom(*layers)/upload?title&zoom-extent&stories&layers-panel&filters&legend&basemaps&info&theme',
       views: {
         'details': {
           templateUrl: 'views/details.html',

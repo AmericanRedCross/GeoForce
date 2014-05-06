@@ -3,24 +3,30 @@
  *       on 5/6/14.
  */
 
-angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $stateParams, VectorProvider) {
+angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $state, $stateParams, VectorProvider) {
 
   $scope.project = function () {
-    $scope.activeThemeName = 'Projects';
-
+    $scope.themeName = 'Projects';
+    $scope.setThemeQueryParam('project');
   };
 
   $scope.disaster = function () {
-    $scope.activeThemeName = 'Disasters';
-
+    $scope.themeName = 'Disasters';
+    $scope.setThemeQueryParam('disaster');
   };
 
   $scope.none = function () {
-    $scope.activeThemeName = 'None';
-
+    $scope.themeName = 'None';
+    $scope.setThemeQueryParam();
   };
 
-  $scope.project(); // project is the default theme
+  $scope.setThemeQueryParam = function (theme) {
+    $stateParams.theme = theme;
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+  };
+
+  $scope.themeName = 'Projects';
 
   /*
    Handling Theme Menu Animations
