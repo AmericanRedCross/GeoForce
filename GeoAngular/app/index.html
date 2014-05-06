@@ -65,10 +65,10 @@
                                                                         ng-class="{on: isParam('layers-panel')}">
                             <i data-icon="d"></i>
                         </button>
-                        <button type="button" class="btn btn-default"   ng-mouseenter="isFiltersActive = isNotParam('filters')"
+                        <button type="button" class="btn btn-default"   ng-mouseenter="isFiltersActive = isNotParam('filters-panel')"
                                                                         ng-mouseleave="isFiltersActive=false"
-                                                                        ng-click="toggleParam('filters')"
-                                                                        ng-class="{on: isParam('filters')}">
+                                                                        ng-click="toggleParam('filters-panel')"
+                                                                        ng-class="{on: isParam('filters-panel')}">
                             <i data-icon="e"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isLegendActive = isNotParam('legend')"
@@ -466,18 +466,30 @@
                         <!--End Layers Panel-->
 
                         <!--Filters Panel-->
-                        <div ng-controller="FiltersCtrl" ng-class="{on: isParam('filters')}" class="navpanel container">
-                            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters')">
-                                <span class="glyphicon glyphicon-chevron-left"></span>
-                            </button>
-                            filters.html
+                        <div ng-controller="FiltersCtrl" ng-class="{on: isParam('filters-panel')}" class="navpanel container filters-container">
+                            <div class="row">
+                                <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters-panel')"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <div class="col-md-8 side-view-title-wrapper">
+                                    <div class="title">Project Filters</div> <div class="description"></div>
+                                </div>
+                            </div>
+                            <div class="row scrollable">
+                               FiltersCtrl
+                            </div>
                         </div>
                         <!--End Filters Panel-->
 
                         <!--Legend Panel-->
-                        <div ng-controller="LegendCtrl" ng-class="{on: isParam('legend')}" class="navpanel container">
-                            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('legend')"><span class="glyphicon glyphicon-chevron-left"></span></button>
-                            legend.html
+                        <div ng-controller="LegendCtrl" ng-class="{on: isParam('legend')}" class="navpanel container legend-container">
+                            <div class="row">
+                                <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('legend')"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                <div class="col-md-8 side-view-title-wrapper">
+                                    <div class="title">Legend</div> <div class="description"></div>
+                                </div>
+                            </div>
+                            <div class="row scrollable">
+                                LegendCtrl
+                            </div>
                         </div>
                         <!--End Legend Panel-->
 
