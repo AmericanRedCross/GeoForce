@@ -172,6 +172,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     this._featureLayersByLevel = {};
     this._allFeatureLayers = {};
     this._featureLabels = new L.spatialdev.featurelabel.FeatureSet();
+    this._defaultTheme = config.defaultTheme || 'project';
 
     if (config.detailsUrl) {
       this._detailsUrl = config.detailsUrl;
@@ -184,8 +185,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   BBoxGeoJSON.prototype.constructor = BBoxGeoJSON;
 
   BBoxGeoJSON.prototype._getFeatures = function (featObj) {
-    var url = this._url.replace(':level', featObj.level).replace(':ids', featObj.guid);
     var self = this;
+    var theme = $rootScope.$stateParams.theme || self._defaultTheme;
+    var url = this._url.replace(':theme', theme).replace(':level', featObj.level).replace(':ids', featObj.guid);
     var proxyPath = config.proxyPath(url);
 
     // not cached because we only fetch when we dont have the feature in the hash

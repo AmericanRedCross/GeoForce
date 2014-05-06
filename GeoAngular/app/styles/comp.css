@@ -120,14 +120,14 @@ html, body {
     padding: 0;
 }
 
-#ThemeSelectorMenu .dropdown-menu > li > a, #ThemeSelectorMenu .dropdown-toggle {
+#ThemeSelectorMenu .dropdown-menu > li, #ThemeSelectorMenu .dropdown-toggle {
     text-transform: uppercase;
     padding: 10px 20px;
     font-size: 20px;
     color: #3f3f3f;
 }
 
-#ThemeSelectorMenu .dropdown-menu > li > a:hover, #ThemeSelectorMenu .dropdown-menu > li > a:focus, #ThemeSelectorMenu .dropdown-toggle {
+#ThemeSelectorMenu .dropdown-menu > li:hover, #ThemeSelectorMenu .dropdown-menu > li > a:focus, #ThemeSelectorMenu .dropdown-toggle {
     color: #ed1b2e;
     text-decoration: none;
     background-color: #fff;

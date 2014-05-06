@@ -356,3 +356,15 @@ sudo apt-get install apache2-utils
 sudo /etc/init.d/postgresql restart
 ```
 
+### Config File for Setting Postgres Connection Settings
+
+```
+/usr/local/pgsql/data/data/pg_hba.conf
+```
+
+or
+
+```
+/etc/postgresql/9.3/main/pg_hba.conf
+```
+

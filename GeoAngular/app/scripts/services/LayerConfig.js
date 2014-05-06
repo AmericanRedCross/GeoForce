@@ -91,10 +91,27 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    *
    * @type {{type: string}}
    */
-  this.allprojects = {
+  this.themecount = {
     type: 'BBoxGeoJSON',
     bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids"),
+    url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=:theme&gadm_level=:level&ids=:ids"),
+    properties: {
+      "stroke": 'white',
+      "stroke-width": 2,
+      "stroke-opacity": 1,
+      "fill": "green",
+      "fill-opacity": 0,
+      "labelProperty": "theme_count",
+      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids'),
+      "onClick": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on click.
+      "defaultTheme": 'project' // The default theme the layer uses. This is used if there is no theme query param.
+    }
+  };
+
+  this.themedisaster = {
+    type: 'BBoxGeoJSON',
+    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
+    url: config.chubbsPath('services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=disaster&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
       "stroke-width": 2,
@@ -107,38 +124,21 @@ angular.module('GeoAngular').service('LayerConfig', function () {
     }
   };
 
-    this.allprojectsfiltered = {
-        type: 'BBoxGeoJSON',
-        bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-        url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids&filters=:filters"),
-        properties: {
-            "stroke": 'white',
-            "stroke-width": 2,
-            "stroke-opacity": 1,
-            "fill": "green",
-            "fill-opacity": 0,
-            "labelProperty": "theme_count",
-            "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids'),
-            "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
-        }
-    };
-
-
-	this.alldisasters = {
-		type: 'BBoxGeoJSON',
-		bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-		url: config.chubbsPath('services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=disaster&gadm_level=:level&ids=:ids'),
-		properties: {
-			"stroke": 'white',
-			"stroke-width": 2,
-			"stroke-opacity": 1,
-			"fill": "green",
-			"fill-opacity": 0,
-			"labelProperty": "theme_count",
-			"detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids'),
-			"onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
-		}
-	};
+  this.allprojectsfiltered = {
+      type: 'BBoxGeoJSON',
+      bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
+      url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids&filters=:filters"),
+      properties: {
+          "stroke": 'white',
+          "stroke-width": 2,
+          "stroke-opacity": 1,
+          "fill": "green",
+          "fill-opacity": 0,
+          "labelProperty": "theme_count",
+          "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids'),
+          "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
+      }
+  };
 
   this.smartgadm = {
     type: 'BBoxGeoJSON',
