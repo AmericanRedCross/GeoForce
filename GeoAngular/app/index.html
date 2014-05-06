@@ -899,7 +899,7 @@
 
 
                     <!-- Bottom Right Theme Selector -->
-                    <nav id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+                    <nav ng-controller="ThemeCtrl" id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="javascript: return false;">View By:</a>
                         </div>
@@ -910,11 +910,12 @@
                                         {{activeTheme}}
                                     </span>
                                     <ul id="ThemeMenu" class="dropdown-menu">
-                                        <li ng-click="activeTheme='Project Health'"><a href="javascript: return false;">PROJECT HEALTH</a></li>
-                                        <li ng-click="activeTheme='Disasters'"><a href="javascript: return false;">Disasters</a></li>
-                                        <li ng-click="activeTheme='Risks'"><a href="javascript: return false;">Risks</a></li>
-                                        <li ng-click="activeTheme='Pipeline'"><a href="javascript: return false;">Pipeline</a></li>
                                         <li ng-click="activeTheme='Projects'"><a href="javascript: return false;">Projects</a></li>
+                                        <li ng-click="activeTheme='Disasters'"><a href="javascript: return false;">Disasters</a></li>
+                                        <li ng-click="activeTheme='None'"><a href="javascript: return false;">None</a></li>
+                                        <!--<li ng-click="activeTheme='Risks'"><a href="javascript: return false;">Risks</a></li>-->
+                                        <!--<li ng-click="activeTheme='Pipeline'"><a href="javascript: return false;">Pipeline</a></li>-->
+                                        <!--<li ng-click="activeTheme='Project Health'"><a href="javascript: return false;">PROJECT HEALTH</a></li>-->
                                     </ul>
                                 </li>
                             </ul>
@@ -1044,6 +1045,7 @@
     <script src="scripts/controllers/basemaps.js"></script>
     <script src="scripts/controllers/breadcrumbs.js"></script>
     <script src="scripts/controllers/zoom-extent.js"></script>
+    <script src="scripts/controllers/theme.js"></script>
     <script src="scripts/controllers/upload.js"></script>
     <!-- endbuild -->
 
