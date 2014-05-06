@@ -37,13 +37,13 @@ app.use('/geo-angular/', express.static('../GeoAngular/app/'));
 
 //Mongoose support for storing authentication credentials
 var mongoose, passport;
-try {
-	mongoose = require("mongoose"), passport = require("passport");
-} catch(e) {
-	mongoose = null;
-	passport = null;
-	console.log("Mongoose/MongoDB not properly installed. Skipping. Also not using Passport. Reason: " + e);
-}
+//try {
+//	mongoose = require("mongoose"), passport = require("passport");
+//} catch(e) {
+//	mongoose = null;
+//	passport = null;
+//	console.log("Mongoose/MongoDB not properly installed. Skipping. Also not using Passport. Reason: " + e);
+//}
 
 //express app.get can be passed an array of intermediate functions before rendering.
 //If passport isn't installed or user hasn't enabled security, then leave the following array empty, otherwise load one or more middleware functions in there.
