@@ -91,10 +91,10 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    *
    * @type {{type: string}}
    */
-  this.themeproject = {
+  this.themecount = {
     type: 'BBoxGeoJSON',
     bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
-    url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids"),
+    url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=:theme&gadm_level=:level&ids=:ids"),
     properties: {
       "stroke": 'white',
       "stroke-width": 2,
@@ -103,7 +103,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "fill-opacity": 0,
       "labelProperty": "theme_count",
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids'),
-      "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
+      "onClick": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on click.
+      "defaultTheme": 'project' // The default theme the layer uses. This is used if there is no theme query param.
     }
   };
 
