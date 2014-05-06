@@ -349,7 +349,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       return;
     }
 
-    var theme = $rootScope.$stateParams.theme || this._defaultTheme;
+    var theme = $rootScope.$stateParams.theme || properties.defaultTheme || 'project';
     detailsUrl = detailsUrl.replace(':theme', theme).replace(':guids', properties.guid);
     $http.get(detailsUrl, {cache: true}).success(function (details) {
 
