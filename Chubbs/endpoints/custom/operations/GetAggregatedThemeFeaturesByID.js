@@ -39,10 +39,12 @@ operation.execute = flow.define(
             if(operation.inputs["gadm_level"] == -1) {
                 operation.inputs["gadm_level"] = "arc";
             }
-            if(operation.inputs["filters"]){
+            if(operation.inputs["filters"] && operation.inputs["filters"] !== 'null'){
                 filters = " AND " + operation.inputs["filters"];
             }
-			query = { text: operation.Query.split('{{gadm_level}}').join(operation.inputs["gadm_level"]).replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)).replace("{{filters}}", filters) };
+			      query = {
+              text: operation.Query.split('{{gadm_level}}').join(operation.inputs["gadm_level"]).replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)).replace("{{filters}}", filters)
+            };
             common.executePgQuery(query, this);//Flow to next function when done.
         }
         else {
