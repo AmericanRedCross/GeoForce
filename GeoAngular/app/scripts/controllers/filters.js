@@ -9,7 +9,7 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http) {
 
   $scope.navTab = 'sectors';
 
-  $http.get('services/custom/custom_operation?name=getprojectsectorlist&format=json', {cache: true}).success(function (data, status) {
+  $http.get(config.chubbsPath('services/custom/custom_operation?name=getprojectsectorlist&format=json'), {cache: true}).success(function (data, status) {
     console.log(JSON.stringify(data));
   }).error(function() {
     console.error("Unable to fetch project sector list");
