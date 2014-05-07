@@ -485,9 +485,9 @@
                                 </ul>
 
                                 <!-- Tab panes -->
-                                <div class="tab-content">
+                                <div class="tab-content filters-content">
                                     <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
-                                        Sectors
+                                        Sectors and what not...
                                     </div>
                                     <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
                                         Date
@@ -499,7 +499,16 @@
                                         Budget
                                     </div>
                                     <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
-                                        Custom
+
+                                        <textarea class="form-control" rows="3" placeholder="Create a custom where clause..." ng-model="whereClause"></textarea>
+                                        <button ng-click="customFilter()" type="button" class="btn btn-danger custom-filter-submit">Submit</button>
+                                        <br/><br/>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">Filter Where Clause</div>
+                                            <div class="panel-body">
+                                                {{whereClause}}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
