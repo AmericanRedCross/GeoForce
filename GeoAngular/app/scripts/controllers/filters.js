@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http) {
+angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $state, $stateParams) {
   console.log('FiltersCtrl');
   $scope.params = $stateParams;
 
@@ -33,21 +33,22 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http) {
     // no sectors to filter
     if (!filteredSector) {
       $scope.whereClause = 'null';
-      return;
-    }
-
-    $scope.whereClause = "sector__c LIKE '%" + filteredSector + "%' ";
-
-    filteredSector = sectorFilters.pop();
-    while (filteredSector) {
-      $scope.whereClause += "OR sector__c LIKE '%" + filteredSector + "%' ";
+    } else {
+      $scope.whereClause = "sector__c LIKE '%" + filteredSector + "%' ";
       filteredSector = sectorFilters.pop();
+      while (filteredSector) {
+        $scope.whereClause += "OR sector__c LIKE '%" + filteredSector + "%' ";
+        filteredSector = sectorFilters.pop();
+      }
     }
-
+    $scope.submitFilter();
   };
 
-  $scope.customFilter = function () {
-
+  $scope.submitFilter = function () {
+    $stateParams.filters = $scope.whereClause;
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+    $scope.$parent.$parent.drawOverlays();
   };
 
 });

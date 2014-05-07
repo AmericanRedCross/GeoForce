@@ -503,17 +503,9 @@
                                         Budget
                                     </div>
                                     <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
-
-                                        <textarea class="form-control" rows="5" placeholder="Create a custom where clause..." ng-model="whereClause"></textarea>
-                                        <button ng-click="customFilter()" type="button" class="btn btn-danger custom-filter-submit">Submit</button>
-                                        <br/><br/>
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">Filter Where Clause</div>
-                                            <div class="panel-body">
-                                                {{whereClause}}
-                                            </div>
-                                        </div>
-
+                                        <h4>Filter WHERE Clause</h4>
+                                        <textarea class="form-control" rows="6" placeholder="Create a custom where clause..." ng-model="whereClause"></textarea>
+                                        <button ng-click="submitFilter()" type="button" class="btn btn-danger pull-right custom-filter-submit">Submit</button>
                                     </div>
                                 </div>
 
