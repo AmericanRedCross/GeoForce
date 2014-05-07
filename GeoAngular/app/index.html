@@ -474,7 +474,35 @@
                                 </div>
                             </div>
                             <div class="row scrollable">
-                               FiltersCtrl
+
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a ng-click="navTab='sectors'" data-toggle="tab">Sectors</a></li>
+                                    <li><a ng-click="navTab='date'" data-toggle="tab">Date</a></li>
+                                    <li><a ng-click="navTab='status'" data-toggle="tab">Status</a></li>
+                                    <li><a ng-click="navTab='budget'" data-toggle="tab">Budget</a></li>
+                                    <li><a ng-click="navTab='custom'" data-toggle="tab">Custom</a></li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
+                                        Sectors
+                                    </div>
+                                    <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
+                                        Date
+                                    </div>
+                                    <div ng-class="{active: navTab==='status'}" class="tab-pane" id="status-filter">
+                                        Status
+                                    </div>
+                                    <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
+                                        Budget
+                                    </div>
+                                    <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
+                                        Custom
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <!--End Filters Panel-->
