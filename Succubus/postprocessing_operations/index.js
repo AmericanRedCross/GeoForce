@@ -21,7 +21,7 @@ function createThemeView(themeName, user) {
           text_search.country, \
           text_search.geom, \
           text_search.fullname, \
-          text_search.stack_guid::character varying, \
+          text_search.stack_guid::character varying as guid, \
           count(text_search.id) as theme_count \
   FROM sf_"+themeName+" a \
   JOIN text_search ON text_search.stack_guid::character varying::text = a.location__r_gis_geo_id__c \

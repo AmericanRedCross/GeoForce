@@ -1,41 +1,35 @@
 -- creating indices
 CREATE INDEX ON gadm0_2014 (name_0);
-CREATE INDEX ON gadm0_2014 (id_0);
 CREATE INDEX ON gadm0_2014 USING gist (geom);
 
 CREATE INDEX ON gadm1_2014 (name_1);
-CREATE INDEX ON gadm1_2014 (id_0);
-CREATE INDEX ON gadm1_2014 (id_1);
+CREATE INDEX ON gadm1_2014 (name_0);
 CREATE INDEX ON gadm1_2014 USING gist (geom);
 
 CREATE INDEX ON gadm2_2014 (name_2);
-CREATE INDEX ON gadm2_2014 (id_0);
-CREATE INDEX ON gadm2_2014 (id_1);
-CREATE INDEX ON gadm2_2014 (id_2);
+CREATE INDEX ON gadm2_2014 (name_0);
+CREATE INDEX ON gadm2_2014 (name_1);
 CREATE INDEX ON gadm2_2014 USING gist (geom);
 
 CREATE INDEX ON gadm3_2014 (name_3);
-CREATE INDEX ON gadm3_2014 (id_0);
-CREATE INDEX ON gadm3_2014 (id_1);
-CREATE INDEX ON gadm3_2014 (id_2);
-CREATE INDEX ON gadm3_2014 (id_3);
+CREATE INDEX ON gadm3_2014 (name_0);
+CREATE INDEX ON gadm3_2014 (name_1);
+CREATE INDEX ON gadm3_2014 (name_2);
 CREATE INDEX ON gadm3_2014 USING gist (geom);
 
 CREATE INDEX ON gadm4_2014 (name_4);
-CREATE INDEX ON gadm4_2014 (id_0);
-CREATE INDEX ON gadm4_2014 (id_1);
-CREATE INDEX ON gadm4_2014 (id_2);
-CREATE INDEX ON gadm4_2014 (id_3);
-CREATE INDEX ON gadm4_2014 (id_4);
+CREATE INDEX ON gadm4_2014 (name_0);
+CREATE INDEX ON gadm4_2014 (name_1);
+CREATE INDEX ON gadm4_2014 (name_2);
+CREATE INDEX ON gadm4_2014 (name_3);
 CREATE INDEX ON gadm4_2014 USING gist (geom);
 
 CREATE INDEX ON gadm5_2014 (name_5);
-CREATE INDEX ON gadm5_2014 (id_0);
-CREATE INDEX ON gadm5_2014 (id_1);
-CREATE INDEX ON gadm5_2014 (id_2);
-CREATE INDEX ON gadm5_2014 (id_3);
-CREATE INDEX ON gadm5_2014 (id_4);
-CREATE INDEX ON gadm5_2014 (id_5);
+CREATE INDEX ON gadm5_2014 (name_0);
+CREATE INDEX ON gadm5_2014 (name_1);
+CREATE INDEX ON gadm5_2014 (name_2);
+CREATE INDEX ON gadm5_2014 (name_3);
+CREATE INDEX ON gadm5_2014 (name_4);
 CREATE INDEX ON gadm5_2014 USING gist (geom);
 
 
@@ -48,7 +42,8 @@ ADD COLUMN guid uuid DEFAULT uuid_generate_v4();
 UPDATE gadm0_2014
 SET guid = gadm0.guid
 FROM gadm0
-WHERE gadm0_2014.name_0 = gadm0.name_0;
+WHERE gadm0_2014.name_0 = gadm0.name_0
+AND gadm0.guid::text IN (select guid from vw_theme_project_gadm where level = '0');
 
 CREATE INDEX ON gadm0_2014 (guid);
 
@@ -59,7 +54,9 @@ ADD COLUMN guid uuid DEFAULT uuid_generate_v4();
 UPDATE gadm1_2014
 SET guid = gadm1.guid
 FROM gadm1
-WHERE gadm1_2014.name_1 = gadm1.name_1;
+WHERE gadm1_2014.name_1 = gadm1.name_1
+AND gadm1_2014.name_0 = gadm1.name_0
+AND gadm1.guid::text IN (select guid from vw_theme_project_gadm where level = '1');
 
 CREATE INDEX ON gadm1_2014 (guid);
 
@@ -70,7 +67,10 @@ ADD COLUMN guid uuid DEFAULT uuid_generate_v4();
 UPDATE gadm2_2014
 SET guid = gadm2.guid
 FROM gadm2
-WHERE gadm2_2014.name_2 = gadm2.name_2;
+WHERE gadm2_2014.name_2 = gadm2.name_2
+AND gadm2_2014.name_1 = gadm2.name_1
+AND gadm2_2014.name_0 = gadm2.name_0
+AND gadm2.guid::text IN (select guid from vw_theme_project_gadm where level = '2');
 
 CREATE INDEX ON gadm2_2014 (guid);
 
@@ -81,7 +81,11 @@ ADD COLUMN guid uuid DEFAULT uuid_generate_v4();
 UPDATE gadm3_2014
 SET guid = gadm3.guid
 FROM gadm3
-WHERE gadm3_2014.name_3 = gadm3.name_3;
+WHERE gadm3_2014.name_3 = gadm3.name_3
+AND gadm3_2014.name_2 = gadm3.name_2
+AND gadm3_2014.name_1 = gadm3.name_1
+AND gadm3_2014.name_0 = gadm3.name_0
+AND gadm3.guid::text IN (select guid from vw_theme_project_gadm where level = '3');
 
 CREATE INDEX ON gadm3_2014 (guid);
 
@@ -92,7 +96,12 @@ ADD COLUMN guid uuid DEFAULT uuid_generate_v4();
 UPDATE gadm4_2014
 SET guid = gadm4.guid
 FROM gadm4
-WHERE gadm4_2014.name_4 = gadm4.name_4;
+WHERE gadm4_2014.name_4 = gadm4.name_4
+AND gadm4_2014.name_3 = gadm4.name_3
+AND gadm4_2014.name_2 = gadm4.name_2
+AND gadm4_2014.name_1 = gadm4.name_1
+AND gadm4_2014.name_0 = gadm4.name_0
+AND gadm4.guid::text IN (select guid from vw_theme_project_gadm where level = '4');
 
 CREATE INDEX ON gadm4_2014 (guid);
 
@@ -103,7 +112,13 @@ ADD COLUMN guid uuid DEFAULT uuid_generate_v4();
 UPDATE gadm5_2014
 SET guid = gadm5.guid
 FROM gadm5
-WHERE gadm5_2014.name_5 = gadm5.name_5;
+WHERE gadm5_2014.name_5 = gadm5.name_5
+AND gadm5_2014.name_4 = gadm5.name_4
+AND gadm5_2014.name_3 = gadm5.name_3
+AND gadm5_2014.name_2 = gadm5.name_2
+AND gadm5_2014.name_1 = gadm5.name_1
+AND gadm5_2014.name_0 = gadm5.name_0
+AND gadm5.guid::text IN (select guid from vw_theme_project_gadm where level = '5');
 
 CREATE INDEX ON gadm5_2014 (guid);
 
