@@ -488,7 +488,7 @@
                                 <div class="tab-content filters-content">
                                     <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
                                         <label ng-repeat="sector in sectors" class="checkbox">
-                                            <input type="checkbox" ng-model="sector.checked" ng-click="sectorsFilter()">
+                                            <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
                                             {{sector.name}}
                                         </label>
 
