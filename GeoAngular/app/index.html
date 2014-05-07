@@ -487,7 +487,11 @@
                                 <!-- Tab panes -->
                                 <div class="tab-content filters-content">
                                     <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
-                                        Sectors and what not...
+                                        <label ng-repeat="sector in sectors" class="checkbox">
+                                            <input type="checkbox" ng-model="sector.checked" ng-click="sectorsFilter()">
+                                            {{sector.name}}
+                                        </label>
+
                                     </div>
                                     <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
                                         Date
