@@ -74,7 +74,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme',
       views: {
         'details': {
-          templateUrl: 'views/details.html',
+          template: ' ',
           controller: 'MainCtrl'
         }
       }
