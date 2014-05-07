@@ -188,6 +188,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     var self = this;
     var theme = $rootScope.$stateParams.theme || self._defaultTheme;
     var filters = 'null';
+    if (theme === 'project' && $rootScope.$stateParams.filters) {
+      filters = $rootScope.$stateParams.filters;
+    }
     var url = this._url.replace(':theme', theme)
                         .replace(':level', featObj.level)
                         .replace(':ids', featObj.guid)

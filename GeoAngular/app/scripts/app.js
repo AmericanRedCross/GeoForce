@@ -64,17 +64,17 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
 
 GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider
-    .when('/landing', '/map@35.029996,-89.340820,4(redcross,smartgadm)/landing')
+    .when('/landing', '/map@35.029996,-89.340820,4(redcross,themecount)/landing')
     .when('/main', '/map@35.029996,-89.340820,4(redcross,smartgadm)')
     .when('/phl', '/map@11.759815,121.893311,6(redcross,phl)')
-    .otherwise(localStorage.getItem('defaultRoute') || '/map@0,0,2(pinterest)/landing');
+    .otherwise(localStorage.getItem('defaultRoute') || '/map@0,0,2(pinterest,themecount)/landing');
 
   $stateProvider
     .state('main', {
       url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme',
       views: {
         'details': {
-          templateUrl: 'views/details.html',
+          template: ' ',
           controller: 'MainCtrl'
         }
       }

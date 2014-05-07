@@ -1,7 +1,8 @@
-angular.module('GeoAngular').controller('MainCtrl', function($scope, $rootScope, $state, $stateParams) {
+angular.module('GeoAngular').controller('MainCtrl', function($scope, $rootScope, $state, $stateParams, $location) {
   console.log('MainCtrl');
 
-  localStorage.setItem('defaultRoute', '/map@0,0,2(pinterest)');
+  debug.$location = $location;
+  localStorage.setItem('defaultRoute', $location.path());
 
   // NH TODO: See if this is also the case with ui-router?
   // weird bug where redirect peels out '://{s' when ':' is there

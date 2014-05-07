@@ -40,7 +40,8 @@ operation.execute = flow.define(
                 operation.inputs["gadm_level"] = "arc";
             }
             if(operation.inputs["filters"] && operation.inputs["filters"] !== 'null'){
-                filters = " AND " + operation.inputs["filters"];
+              var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g,'%').replace(/%27/g,"'");
+              filters = " AND (" + inputFilters + ")";
             }
 			      query = {
               text: operation.Query.split('{{gadm_level}}').join(operation.inputs["gadm_level"]).replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)).replace("{{filters}}", filters)
