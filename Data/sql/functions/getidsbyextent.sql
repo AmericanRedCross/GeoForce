@@ -2,9 +2,6 @@
 
 -- DROP FUNCTION udf_getidsbyextent(integer, character varying);
 
--- TEST: select * from udf_getidsbyextent(null, 'POLYGON((-130.660400 40.245992, -130.660400 47.953145, -110.214844 47.953145, -110.214844 40.245992, -130.660400 40.245992))');
-
-
 CREATE OR REPLACE FUNCTION udf_getidsbyextent(IN ingadm_level integer, IN inwkt character varying)
   RETURNS TABLE(level integer, guid character varying, name text, iscenter boolean) AS
 $BODY$

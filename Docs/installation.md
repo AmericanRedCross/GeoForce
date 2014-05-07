@@ -328,6 +328,8 @@ server {
 
     # pass the request to the node.js server with the correct headers and much more can be added, see nginx config options
     location / {
+      auth_basic "Restricted";
+      auth_basic_user_file /home/ubuntu/GeoForce/GeoAngular/app/.htpasswd;
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       proxy_set_header Host $http_host;
@@ -348,6 +350,12 @@ sudo /etc/init.d/nginx restart
 
 ### Set up simple authentication with nginx (https://www.digitalocean.com/community/articles/how-to-set-up-http-authentication-with-nginx-on-ubuntu-12-10)
 sudo apt-get install apache2-utils
+
+cd ~/GeoForce/GeoAngular/app
+sudo htpasswd -c .htpasswd redcross
+(will prompt for password)
+
+
 ```
 
 ### Restart PostgreSQL

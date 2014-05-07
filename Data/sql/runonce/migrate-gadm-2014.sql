@@ -43,7 +43,7 @@ UPDATE gadm0_2014
 SET guid = gadm0.guid
 FROM gadm0
 WHERE gadm0_2014.name_0 = gadm0.name_0
-AND gadm0.guid::text IN (select guid from vw_theme_project_gadm where level = '0');
+AND gadm0.guid::text IN (select gis_geo_id__c from sf_location);
 
 CREATE INDEX ON gadm0_2014 (guid);
 
@@ -56,7 +56,9 @@ SET guid = gadm1.guid
 FROM gadm1
 WHERE gadm1_2014.name_1 = gadm1.name_1
 AND gadm1_2014.name_0 = gadm1.name_0
-AND gadm1.guid::text IN (select guid from vw_theme_project_gadm where level = '1');
+AND gadm1.guid::text IN (select gis_geo_id__c from sf_location);
+--Ryan TODO: Add to subquery OR guid in vw_theme_disaster_gadm where level = '1');
+--OR Just use the Location table.
 
 CREATE INDEX ON gadm1_2014 (guid);
 
@@ -70,7 +72,7 @@ FROM gadm2
 WHERE gadm2_2014.name_2 = gadm2.name_2
 AND gadm2_2014.name_1 = gadm2.name_1
 AND gadm2_2014.name_0 = gadm2.name_0
-AND gadm2.guid::text IN (select guid from vw_theme_project_gadm where level = '2');
+AND gadm2.guid::text IN (select gis_geo_id__c from sf_location);
 
 CREATE INDEX ON gadm2_2014 (guid);
 
@@ -85,7 +87,7 @@ WHERE gadm3_2014.name_3 = gadm3.name_3
 AND gadm3_2014.name_2 = gadm3.name_2
 AND gadm3_2014.name_1 = gadm3.name_1
 AND gadm3_2014.name_0 = gadm3.name_0
-AND gadm3.guid::text IN (select guid from vw_theme_project_gadm where level = '3');
+AND gadm3.guid::text IN (select gis_geo_id__c from sf_location);
 
 CREATE INDEX ON gadm3_2014 (guid);
 
@@ -101,7 +103,7 @@ AND gadm4_2014.name_3 = gadm4.name_3
 AND gadm4_2014.name_2 = gadm4.name_2
 AND gadm4_2014.name_1 = gadm4.name_1
 AND gadm4_2014.name_0 = gadm4.name_0
-AND gadm4.guid::text IN (select guid from vw_theme_project_gadm where level = '4');
+AND gadm4.guid::text IN (select gis_geo_id__c from sf_location);
 
 CREATE INDEX ON gadm4_2014 (guid);
 
@@ -118,7 +120,7 @@ AND gadm5_2014.name_3 = gadm5.name_3
 AND gadm5_2014.name_2 = gadm5.name_2
 AND gadm5_2014.name_1 = gadm5.name_1
 AND gadm5_2014.name_0 = gadm5.name_0
-AND gadm5.guid::text IN (select guid from vw_theme_project_gadm where level = '5');
+AND gadm5.guid::text IN (select gis_geo_id__c from sf_location);
 
 CREATE INDEX ON gadm5_2014 (guid);
 
