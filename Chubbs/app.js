@@ -18,7 +18,7 @@ app.set('port', process.env.PORT || settings.application.port);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.enable("jsonp callback"); //TODO: Remove this if not needed because of CORS
-app.use(express.favicon(path.join(__dirname, 'public/img/favicon.png')));
+app.use(express.favicon(path.join(__dirname, 'public/img/favicon_rc.jpg')));
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());

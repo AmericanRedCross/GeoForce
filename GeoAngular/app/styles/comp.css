@@ -2,6 +2,7 @@
 html, body {
     height: 100%;
     width: 100%;
+    min-width:960px;
 }
 
 #AppContainer {
@@ -56,6 +57,7 @@ html, body {
     top: 0;
     right: 0;
     z-index: 2;
+    min-width: 865px;
 }
 
 #MapUpperRightToolbarWrapper > div {
