@@ -33,18 +33,18 @@ gadm5.name_5 as name5, gadm5.guid as guid5, gadm5.geom_simplify_med as geom5
 
 INTO gadmrollup
 FROM gadm0,gadm1,gadm2, gadm3, gadm4, gadm5
-WHERE   gadm0.id_0 = gadm1.id_0
-AND   gadm2.id_0 = gadm1.id_0
-AND   gadm3.id_0 = gadm1.id_0
-AND   gadm4.id_0 = gadm1.id_0
-AND   gadm5.id_0 = gadm1.id_0
-AND   gadm1.id_1 = gadm2.id_1
-AND   gadm3.id_1 = gadm2.id_1
-AND   gadm4.id_1 = gadm2.id_1
-AND   gadm5.id_1 = gadm2.id_1
-AND   gadm2.id_2 = gadm3.id_2
-AND   gadm4.id_2 = gadm3.id_2
-AND   gadm5.id_2 = gadm3.id_2
-AND   gadm3.id_3 = gadm4.id_3
-AND   gadm5.id_3 = gadm4.id_3
-AND   gadm4.id_4 = gadm5.id_4;
+WHERE   gadm0.id_0 = gadm1.id_0 AND
+        gadm2.id_0 = gadm1.id_0 AND
+        gadm2.id_1 = gadm1.id_1 AND
+        gadm3.id_0 = gadm2.id_0 AND
+        gadm3.id_1 = gadm2.id_1 AND
+        gadm3.id_2 = gadm2.id_2 AND
+        gadm4.id_0 = gadm3.id_0 AND
+        gadm4.id_1 = gadm3.id_1 AND
+        gadm4.id_2 = gadm3.id_2 AND
+        gadm4.id_3 = gadm3.id_3 AND
+        gadm5.id_0 = gadm4.id_0 AND
+        gadm5.id_1 = gadm4.id_1 AND
+        gadm5.id_2 = gadm4.id_2 AND
+        gadm5.id_3 = gadm4.id_3 AND
+        gadm5.id_4 = gadm4.id_4;
