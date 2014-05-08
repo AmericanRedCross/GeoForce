@@ -39,6 +39,9 @@
 
   L.spatialdev.featurelabel.FeatureSet.prototype._pathUpdated = function (leafletId) {
     var featureLayer = this._pathIdHash[leafletId];
+    if (featureLayer.feature.properties.name === 'Tanzania' ) {
+      console.log('break');
+    }
     // the hash doesn't always catch the id if the graphic has not yet been rendered.
     if (!featureLayer) {
       var features = this.features;
@@ -163,10 +166,22 @@
 
 
   function updateLabel(featureLayer) {
-    if ( ! featureLayer.label ) {
+    var center = featureLayer.labelCenterPoint;
+    var label = featureLayer.label;
+
+    if ( center.x < 0 || center.y < 0 ) { // we want the label to go away if it has a coord outside of our view
+      if (label) {
+        var geojsonLayer = featureLayer.geojsonLayer;
+        if (geojsonLayer) {
+          geojsonLayer.removeLayer(label);
+        } else {
+          featureLayer.removeLayer(label);
+        }
+      }
+    } else if ( ! label ) {
       featureLayer.label = createLabel(featureLayer);
     } else {
-      featureLayer.label.update(featureLayer.labelCenterPoint);
+      label.update(center);
     }
   }
 
