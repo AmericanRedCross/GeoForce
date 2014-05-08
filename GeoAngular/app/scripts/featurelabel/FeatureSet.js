@@ -12,12 +12,12 @@
     L.spatialdev.featurelabel.featureSets.push(this);
   };
 
-  L.spatialdev.featurelabel.FeatureSet.prototype.addFeature = function (featureLayer) {
-    this.features.push(featureLayer);
-
+  L.spatialdev.featurelabel.FeatureSet.prototype.addFeature = function (featureLayer, geojsonLayer) {
+    featureLayer.geojsonLayer = geojsonLayer;
     if (!featureLayer._leaflet_id) {
-      console.error(featureLayer.feature.properties.name + ' does not have a _leaflet_id');
+      L.stamp(featureLayer);
     }
+    this.features.push(featureLayer);
 
     // feature consists of one polygon
     if (!featureLayer._layers) {
@@ -153,8 +153,7 @@
 
 
     if (!featureLayer.addLayer) {
-      console.log('NH FIXME: featureLayer does not have addLayer, directly adding label to map.');
-      label.addTo(debug.map);
+      featureLayer.geojsonLayer.addLayer(label);
     } else {
       featureLayer.addLayer(label);
     }
