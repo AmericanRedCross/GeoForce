@@ -111,7 +111,7 @@
       html: text
     });
 
-    var label = L.label([45,-100], {icon:icon}, point);
+    var label = L.label(point, {icon:icon});
 
     label.on('mouseover', function(e) {
       if (!featureLayer.selected) {
