@@ -250,6 +250,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
     var options = self._geojsonLayer.options;
     var featLayer = L.GeoJSON.geometryToLayer(featObj, options.pointToLayer, options.coordsToLatLng, options);
+    L.stamp(featLayer);
     featLayer.feature = L.GeoJSON.asFeature(featObj);
     featLayer.defaultOptions = featLayer.options;
     self._geojsonLayer.resetStyle(featLayer);
@@ -270,9 +271,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    */
   function BBoxGeoJSON_addLayer(self, featLayer) {
 
-    self._featureLabels.addFeature(featLayer);
+    self._featureLabels.addFeature(featLayer, self._geojsonLayer);
     self._geojsonLayer.addLayer(featLayer);
-//    self._featureLabels.addFeature(featLayer);
+//    self._featureLabels.addFeature(featLayer, self._geojsonLayer);
 
     var props = featLayer.feature.properties;
     var level = props.level;
@@ -386,8 +387,10 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
           var layer = layers[i];
           self._geojsonLayer.removeLayer(layer);
 
-          // NH TODO Have the label be in the featureLayer
-          if (layer.label) debug.map.removeLayer(layer.label);
+          if (layer.label){
+            self._geojsonLayer.removeLayer(layer.label);
+            layer.label = null; // fixes bug where label not coming back when old gadm level re-instantiated
+          }
 
           console.log('Removed Layer: ' + layer.feature.properties.name);
         }
