@@ -35,11 +35,16 @@ operation.inputs = {};
 operation.outputImage = false;
 
 operation.inputs["guids"] = {}; //comma separated list of guids
+operation.inputs["gadm_level"] = {}; //gadm_level to search thru
+
+operation.Query = "SELECT sf_disaster_location.* FROM sf_aggregated_gadm_disaster_counts, sf_project WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id AND guid{{gadm_level}} = {{guids}};";
+
 
 operation.DisasterQuery =
 "SELECT * FROM sf_disaster_location AS loc \
 LEFT JOIN sf_disaster as dis ON loc.disaster__r_id = dis.sf_id \
-WHERE location__r_gis_geo_id__c IN ({{guids}});";
+INNER JOIN sf_aggregated_gadm_disaster_counts ON dis.sf_id = sf_aggregated_gadm_disaster_counts.sf_id \
+WHERE guid{{gadm_level}} = ({{guids}});";
 
 operation.RequestForAssistanceQuery =
 "SELECT * FROM sf_request_for_assistance \
@@ -58,10 +63,11 @@ operation.execute = flow.define(
     if (operation.isInputValid(args) === true) {
       //prepare bbox string as WKT
       operation.inputs["guids"] = args.guids;
+      operation.inputs["gadm_level"] = args.gadm_level;
 
       //need to wrap ids in single quotes
       //Execute the query
-      var disasterQuery = { text: operation.DisasterQuery.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])) };
+      var disasterQuery = { text: operation.DisasterQuery.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])).replace("{{gadm_level}}", operation.inputs["gadm_level"]) };
       common.executePgQuery(disasterQuery, this);//Flow to next function when done.
     }
     else {
@@ -118,7 +124,7 @@ operation.isInputValid = function (input) {
 
   if (input) {
     //make sure we have a bbox.  Other args are optional
-    if (input["guids"]) {
+    if (input["guids"] && input["gadm_level"]) {
       //It's got everything we need.
       return true;
     }
