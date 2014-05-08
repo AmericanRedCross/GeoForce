@@ -83,7 +83,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme',
       views: {
         'details': {
-          templateUrl: 'views/details.html',
+          template: ' ',
           controller: 'MainCtrl'
         },
         'landing': {
@@ -96,7 +96,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       url: '/map@:lat,:lng,:zoom(*layers)/upload?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme',
       views: {
         'details': {
-          templateUrl: 'views/details.html',
+          template: ' ',
           controller: 'MainCtrl'
         },
         'upload': {
