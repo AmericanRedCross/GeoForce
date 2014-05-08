@@ -1,9 +1,14 @@
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *     on Tue Mar 11 2014
+ *
+ *     This is the actual interface with Salesforce. All interaction with jsforce
+ *     is done in this module.
+ *
  */
 
-var jsforce = require('jsforce'), flow = require('flow');
+var jsforce = require('jsforce');
+var flow = require('flow');
 var settings = require('./settings').salesforce;
 
 
@@ -170,3 +175,26 @@ module.exports.queryAndFlattenResults = function(queryStr, cb) {
 
 };
 
+/**
+ * This gives all of the meta-data about a Salesforce object ( table ).
+ *
+ * @type {describeObject}
+ */
+module.exports.describeObject = function (tableName, cb) {
+  // Check if we are connected. If so, go for it...
+  if (conn.accessToken) {
+    conn.sobject(tableName).describe(function(err, meta) {
+      if (err) { return console.error(err); }
+      cb(meta);
+    });
+  }
+  // Otherwise, we needa connect before we can query...
+  else {
+    connect(function(){
+      conn.sobject(tableName).describe(function(err, meta) {
+        if (err) { return console.error(err); }
+        cb(meta);
+      });
+    });
+  }
+};
