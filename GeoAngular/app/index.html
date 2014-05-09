@@ -573,6 +573,86 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
+                                        <a ng-click="swapBasemap('osm')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('osm')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Standard OpenStreetMap
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('satellite')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('satellite')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Mapbox Satellite
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('ortho')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('ortho')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Orthographic
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('toner')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('toner')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Stamen Toner
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('dark')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('dark')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Dark Theme
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
                                         <a ng-click="swapBasemap('streets')" class="thumbnail">
                                             <div class="image" ng-class="{active: isActiveBasemap('streets')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
@@ -605,15 +685,15 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a ng-click="swapBasemap('satellite')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('satellite')}">
+                                        <a ng-click="swapBasemap('github')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('pinterest')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            Mapbox Satellite
+                                                            Github
                                                         </div>
                                                     </div>
                                                 </div>
@@ -637,22 +717,6 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a ng-click="swapBasemap('github')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('pinterest')}">
-                                                <img src="images/thumb-tmp.png" alt="...">
-                                            </div>
-                                            <div class="caption">
-                                                <div class="container thumbnail-container">
-                                                    <div class="row">
-                                                        <div class="col-md-11 nopaddingnomargin">
-                                                            Github
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-12">
                                         <a ng-click="swapBasemap('green')" class="thumbnail">
                                             <div class="image" ng-class="{active: isActiveBasemap('green')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
@@ -662,38 +726,6 @@
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
                                                             Green Theme
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <a ng-click="swapBasemap('dark')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('dark')}">
-                                                <img src="images/thumb-tmp.png" alt="...">
-                                            </div>
-                                            <div class="caption">
-                                                <div class="container thumbnail-container">
-                                                    <div class="row">
-                                                        <div class="col-md-11 nopaddingnomargin">
-                                                            Dark Theme
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <a ng-click="swapBasemap('osm')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('osm')}">
-                                                <img src="images/thumb-tmp.png" alt="...">
-                                            </div>
-                                            <div class="caption">
-                                                <div class="container thumbnail-container">
-                                                    <div class="row">
-                                                        <div class="col-md-11 nopaddingnomargin">
-                                                            Standard OpenStreetMap
                                                         </div>
                                                     </div>
                                                 </div>
@@ -781,15 +813,15 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a ng-click="swapBasemap('ortho')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('ortho')}">
+                                        <a ng-click="swapBasemap('esritopo')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('esritopo')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            Orthographic
+                                                            Esri Topographic
                                                         </div>
                                                     </div>
                                                 </div>
@@ -805,7 +837,7 @@
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            Ocean
+                                                            Ocean Bathymetric
                                                         </div>
                                                     </div>
                                                 </div>
@@ -821,7 +853,7 @@
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            Light Gray (No Labels)
+                                                            Light Gray
                                                         </div>
                                                     </div>
                                                 </div>
@@ -829,15 +861,15 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a ng-click="swapBasemap('esritopo')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('esritopo')}">
+                                        <a ng-click="swapBasemap('watercolor')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('watercolor')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            Esri Topographic
+                                                            Stamen Watercolor
                                                         </div>
                                                     </div>
                                                 </div>

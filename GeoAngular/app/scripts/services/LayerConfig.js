@@ -36,6 +36,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.lightgray = 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
   this.esritopo = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}';
 
+  this.toner = 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png';
+  this.watercolor = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png';
 
 
 
