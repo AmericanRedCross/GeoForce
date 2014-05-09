@@ -76,6 +76,10 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
         'details': {
           template: ' ',
           controller: 'MainCtrl'
+        },
+        'theme': {
+          templateUrl: 'views/theme.html',
+          controller: 'ThemeCtrl'
         }
       }
     })

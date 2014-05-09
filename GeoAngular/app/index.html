@@ -945,28 +945,29 @@
 
 
                     <!-- Bottom Right Theme Selector -->
-                    <nav ng-controller="ThemeCtrl" id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="javascript: return false;">View By:</a>
-                        </div>
-                        <div class="menu-selection">
-                            <ul class="nav navbar-nav">
-                                <li class="dropdown">
-                                    <span class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleThemeMenu()">
-                                        {{themeName}}
-                                    </span>
-                                    <ul id="ThemeMenu" class="dropdown-menu">
-                                        <li ng-click="project()">Project</li>
-                                        <li ng-click="disaster()">Disasters</li>
-                                        <li ng-click="none()">None</li>
-                                        <!--<li ng-click="activeTheme='Risks'"><a href="javascript: return false;">Risks</a></li>-->
-                                        <!--<li ng-click="activeTheme='Pipeline'"><a href="javascript: return false;">Pipeline</a></li>-->
-                                        <!--<li ng-click="activeTheme='Project Health'"><a href="javascript: return false;">PROJECT HEALTH</a></li>-->
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
+                    <div ui-view="theme"></div>
+                    <!--<nav ng-controller="ThemeCtrl" id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom" role="navigation">-->
+                        <!--<div class="navbar-header">-->
+                            <!--<a class="navbar-brand" href="javascript: return false;">View By:</a>-->
+                        <!--</div>-->
+                        <!--<div class="menu-selection">-->
+                            <!--<ul class="nav navbar-nav">-->
+                                <!--<li class="dropdown">-->
+                                    <!--<span class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleThemeMenu()">-->
+                                        <!--{{themeName}}-->
+                                    <!--</span>-->
+                                    <!--<ul id="ThemeMenu" class="dropdown-menu">-->
+                                        <!--<li ng-click="project()">Project</li>-->
+                                        <!--<li ng-click="disaster()">Disasters</li>-->
+                                        <!--<li ng-click="none()">None</li>-->
+                                        <!--&lt;!&ndash;<li ng-click="activeTheme='Risks'"><a href="javascript: return false;">Risks</a></li>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<li ng-click="activeTheme='Pipeline'"><a href="javascript: return false;">Pipeline</a></li>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<li ng-click="activeTheme='Project Health'"><a href="javascript: return false;">PROJECT HEALTH</a></li>&ndash;&gt;-->
+                                    <!--</ul>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                    <!--</nav>-->
 
 
 
