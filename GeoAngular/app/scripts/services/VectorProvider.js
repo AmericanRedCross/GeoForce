@@ -108,11 +108,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
           });
         }
         return L.mapbox.marker.style(feature, latlon);
-      },
-      onEachFeature: function(feature, layer) {
-        layer.on('click', function () {
-          $rootScope.$broadcast('details', layer);
-        });
       }
     }).eachLayer(this._eachLayerCallback);
 
@@ -171,6 +166,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     var layer =  Resource.prototype.getLayer.call(this);
     this.fetch(function(geojson){
       layer.addData(geojson);
+      layer.eachLayer(function (l) {
+        l.on('click', function () {
+          $rootScope.$broadcast('details', l);
+        });
+      });
     });
     return layer;
   };
