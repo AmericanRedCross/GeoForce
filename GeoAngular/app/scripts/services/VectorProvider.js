@@ -363,7 +363,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
       };
 
-      $rootScope.$broadcast('feature-details', featureLayer);
+      $rootScope.$broadcast('details', featureLayer);
 
     });
 
