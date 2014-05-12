@@ -3,7 +3,16 @@
  *       on 4/9/14.
  */
 
-angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider) {
+angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http) {
+
+  $http.get('data/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
+    $scope.sfFieldHash = sfFieldHash;
+  });
+
+  $scope.keyLabel = function (key) {
+    console.log('key ' + key);
+    return $scope.sfFieldHash[key].label;
+  };
 
   //Init selectedFeatureTitle property
   $scope.selectedFeatureTitle = "Feature Details";

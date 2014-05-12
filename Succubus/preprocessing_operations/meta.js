@@ -46,20 +46,34 @@ flow.exec(
   }
 );
 
+/**
+ * This gets all of the keys to be in the exact format they will be found
+ * in the details panel in GeoAngular. You can see this being used in:
+ *
+ * GeoAngular/app/scripts/controllers/details.js
+ *
+ * This outputs into the meta-data directory as well as the data directory
+ * in GeoAngular.
+ */
 function createObjectFieldHash() {
+  var hash = {};
   for (var table in tables) {
     var t = tables[table];
-    tables[table] = {};
     var fields = t.fields;
     for (var i in fields) {
       var field = fields[i];
-      tables[table][field.name] = {
+      if (table === 'Location__c') {
+        var key = 'location__r_' + field.name.toLowerCase();
+      } else {
+        var key = field.name.toLowerCase();
+      }
+      hash[key] = {
         label: field.label,
         inlineHelpText: field.inlineHelpText,
         picklistValues: field.picklistValues || null
       }
     }
   }
-  fs.writeFileSync('meta-data/sf-object-field-hash.json', JSON.stringify(tables,null,2));
-  fs.writeFileSync('../GeoAngular/app/data/sf-object-field-hash.json', JSON.stringify(tables));
+  fs.writeFileSync('meta-data/sf-object-field-hash.json', JSON.stringify(hash,null,2));
+  fs.writeFileSync('../GeoAngular/app/data/sf-object-field-hash.json', JSON.stringify(hash));
 }
