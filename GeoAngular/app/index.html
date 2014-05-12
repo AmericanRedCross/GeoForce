@@ -1018,8 +1018,8 @@
                                     <div class="section scrollable" ng-show="details">
                                         <ul>
                                             <li ng-repeat="(key, value) in details">
-                                                <div class="details-key">{{key}}:</div>
-                                                <div class="details-value">{{value}}</div>
+                                                <div class="details-key" ><a tooltip="{{(sfFieldHash[key].inlineHelpText || '') + ' FieldName: ' + key}}">{{sfFieldHash[key].label || key}}</a></div>
+                                                <div class="details-value">{{value || 'Unavailable'}}</div>
                                             </li>
                                         </ul>
                                         <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, selectedFeatureTitle + '.geojson')">Download Feature as GeoJSON</button>
@@ -1086,6 +1086,7 @@
     <script src="scripts/lib/togeojson.js"></script>
     <script src="scripts/lib/mapbox.standalone.uncompressed.js"></script>
     <script src="scripts/lib/jquery.layout-latest.min.js"></script>
+    <script src="scripts/lib/ui-bootstrap-tooltip-tpls-0.10.0.min.js"></script>
     <script src="scripts/featurelabel/leaflet-patch.js"></script>
     <script src="scripts/featurelabel/featurelabel.js"></script>
     <script src="scripts/featurelabel/Label.js"></script>
