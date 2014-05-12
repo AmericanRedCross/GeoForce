@@ -34,6 +34,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
 
   $scope.$on('details', function (event, featureLayer) {
     var properties = featureLayer.feature.properties;
+    $scope.feature = featureLayer.feature;
     $scope.selectedFeatureTitle = properties.name;
     $scope.groupings = properties.details;
     $scope.toggleParam('details-panel')
@@ -56,12 +57,26 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     var themeSelectorTop = 694;
     var height = themeSelectorTop - detailsPanelTop - 135;
     $('#DetailsPanel .InnerContainer ').height(height);
-  }
+  };
 
 	//Connect the layout onresize end event
 	window.layout.panes.center.bind("layoutpaneonresize_end", $scope.resizeDetailsPanel);
 
 	//For Init.
 	$scope.resizeDetailsPanel();
+
+  $scope.save = function (data, name) {
+    if (data.properties.details)  {
+      angular.extend(data.properties,data.properties.details);
+      delete data.properties.details;
+    }
+    var json = JSON.stringify(data, null, 2);
+    var blob = new Blob([json], {type:'text/plain'});
+    var downloadLink = document.createElement("a");
+    var url = (window.webkitURL != null ? window.webkitURL : window.URL);
+    downloadLink.href = url.createObjectURL(blob);
+    downloadLink.download = name || 'feature.geojson';
+    downloadLink.click();
+  };
 
 });
