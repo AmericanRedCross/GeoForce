@@ -982,18 +982,18 @@
 
 
                     <!-- Right Hand Details Panel -->
-                    <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: detailsVisible}">
+                    <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: isParam('details-panel')}">
                         <div id="DetailsButtonWrapper">
-                            <div id="DetailsNub" class="btn btn-lg" data-icon="l" ng-click="detailsVisible = !detailsVisible">
+                            <div id="DetailsNub" class="btn btn-lg" data-icon="l" ng-click="toggleParam('details-panel')">
                             </div>
-                            <div id="PreviousItem" ng-class="{flipOpen: detailsVisible}" data-icon="j" ng-click="">
+                            <div id="PreviousItem" ng-class="{flipOpen: isParam('details-panel')}" data-icon="j" ng-click="">
                             </div>
-                            <div id="NextItem" ng-class="{flipOpen: detailsVisible}" data-icon="k" ng-click="">
+                            <div id="NextItem" ng-class="{flipOpen: isParam('details-panel')}" data-icon="k" ng-click="">
                             </div>
                         </div>
                         <div id="DetailsPanel">
                             <div class="container auto">
-                                <button class="side-view-close btn btn-lg btn-danger" ng-click="detailsVisible=false"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                                <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('details-panel')"><span class="glyphicon glyphicon-chevron-right"></span></button>
 
                                 <a ng-show="details" ng-click="showList()" class="back-link">< Back to List</a>
                                 <div class="title">
