@@ -108,6 +108,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
           });
         }
         return L.mapbox.marker.style(feature, latlon);
+      },
+      onEachFeature: function(feature, layer) {
+        layer.on('click', function () {
+          $rootScope.$broadcast('details', layer);
+        });
       }
     }).eachLayer(this._eachLayerCallback);
 
@@ -364,15 +369,12 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     }
 
     var theme = $rootScope.$stateParams.theme || properties.defaultTheme || 'project';
+    var themeName = $rootScope.themeNameHash[theme];
     detailsUrl = detailsUrl.replace(':theme', theme).replace(':guids', properties.guid).replace(':level', properties.level);
     $http.get(detailsUrl, {cache: true}).success(function (details) {
 
-      featureLayer.feature.properties.details = {
-
-        Projects: details
-
-      };
-
+      featureLayer.feature.properties.details = {};
+      featureLayer.feature.properties.details[themeName] = details;
       $rootScope.$broadcast('details', featureLayer);
 
     });
