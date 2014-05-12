@@ -144,7 +144,17 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     Resource.prototype.fetch.call(this, function(data) {
       self._geojson = data;
       if (typeof self._config.properties === 'object') {
-        angular.extend(self._geojson.properties, self._config.properties);
+        if ( data.type === 'FeatureCollection') {
+          var feats = data.features;
+          for (var i = 0, len = feats.length; i < len; ++i) {
+            var feat = feats[i];
+            if (!feat.properties) feat.properties = {};
+            angular.extend(feat.properties, self._config.properties);
+          }
+        } else { // a feature or a geometry type
+          if (!data.properties) data.properties = {};
+          angular.extend(data.properties, self._config.properties);
+        }
       }
 
       if (typeof cb === 'function') cb(self._geojson);
