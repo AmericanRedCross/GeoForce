@@ -376,6 +376,10 @@ html, body {
     cursor:text;
 }
 
+.unavailable {
+    color: #aaabae;
+}
+
 .MapIt {
     background-color: #6d6e70;
     padding: 2px 4px;
