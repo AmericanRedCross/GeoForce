@@ -53,6 +53,30 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
     $state.go(state, $stateParams);
   };
 
+  $rootScope.openParam = function(paramName) {
+    var bool = $stateParams[paramName];
+    if (!bool) {
+      // mutex logic that makes only 1 panel open at a time
+      for (var param in $stateParams) {
+        if ($stateParams[param] === 'open') {
+          $stateParams[param] = null;
+        }
+      }
+      $stateParams[paramName] = 'open';
+      var state = $state.current.name || 'main';
+      $state.go(state, $stateParams);
+    }
+  };
+
+  $rootScope.closeParam = function(paramName) {
+    var bool = $stateParams[paramName];
+    if (bool) {
+      delete $stateParams[paramName];
+      var state = $state.current.name || 'main';
+      $state.go(state, $stateParams);
+    }
+  };
+
   $rootScope.isNotState = function (stateName) {
     return $state.$current.name !== stateName;
   };
