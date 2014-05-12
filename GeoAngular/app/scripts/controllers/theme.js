@@ -5,7 +5,7 @@
 
 angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $state, $stateParams, VectorProvider) {
 
-  var themeNameHash = $scope.themeNameHash = {
+  var themeNameHash = $rootScope.themeNameHash = {
     project: 'Projects',
     disaster: 'Disasters',
     none: 'None'
