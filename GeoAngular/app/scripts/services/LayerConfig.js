@@ -53,7 +53,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    */
   this.phl = {
     type: 'geojson',
-    url: 'data/test/phl.geo.json',
+    url: 'data/test/phl.geojson',
     properties: {
       "title": 'The Philippines',
       "stroke": 'white',
@@ -62,6 +62,25 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "stroke-opacity": 1,
       "fill": "green",
       "fill-opacity": 0.7
+    }
+  };
+
+  this.wa = {
+    type: 'geojson',
+    url: 'data/test/washington.geojson',
+    properties: {
+      fill: "#FFBE00"
+    }
+  };
+
+  this.wafires = {
+    type: 'geojson',
+    url: 'data/test/state_wa_lrg_fires.geojson',
+    properties: {
+      "stroke": "#FF8800",
+      "stroke-width": 1,
+      "fill": "#FFBE00",
+      "fill-opacity": 0.5
     }
   };
 
