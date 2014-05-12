@@ -27,8 +27,8 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     var properties = featureLayer.feature.properties;
     $scope.feature = featureLayer.feature;
     $scope.selectedFeatureTitle = properties.name || properties.title || 'Selected Feature';
-    if (properties.details) { // theme badge selected
-      $scope.groupings = properties.details;
+    if (properties.salesforce) { // salesforce theme badge selected
+      $scope.groupings = properties.salesforce;
       $scope.showList();
     } else { // standard geojson, show properties as details
       $scope.showDetails(properties);

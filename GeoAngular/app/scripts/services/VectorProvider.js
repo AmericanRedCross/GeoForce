@@ -373,8 +373,8 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     detailsUrl = detailsUrl.replace(':theme', theme).replace(':guids', properties.guid).replace(':level', properties.level);
     $http.get(detailsUrl, {cache: true}).success(function (details) {
 
-      featureLayer.feature.properties.details = {};
-      featureLayer.feature.properties.details[themeName] = details;
+      featureLayer.feature.properties.salesforce = {};
+      featureLayer.feature.properties.salesforce[themeName] = details;
       $rootScope.$broadcast('details', featureLayer);
 
     });
