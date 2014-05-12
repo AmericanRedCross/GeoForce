@@ -6,7 +6,7 @@
 angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider) {
 
   //Init selectedFeatureTitle property
-  $scope.selectedFeatureTitle = "Some Feature (All Categories)";
+  $scope.selectedFeatureTitle = "Feature Details";
 
   $scope.toggleState = function(stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
@@ -19,25 +19,22 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
 
   //Initialize the dummy project/disaster click results
   $scope.groupings = {
-    'Projects': [
-      {name: 'Project 1', id: 1},
-      {name: 'Project 2', id: 2},
-      {name: 'Project 3', id: 3},
-      {name: 'RedCross Project', id: 4}
-    ],
-    'Disasters': [
-      {name: 'Oso Landslide', id: 1},
-      {name: 'Hurricane', id: 2}
-    ]
+    'Please click on a badge or feature to see details...': []
   };
 
 
   $scope.$on('details', function (event, featureLayer) {
     var properties = featureLayer.feature.properties;
     $scope.feature = featureLayer.feature;
-    $scope.selectedFeatureTitle = properties.name;
-    $scope.groupings = properties.details;
-    $scope.toggleParam('details-panel')
+    $scope.selectedFeatureTitle = properties.name || properties.title || 'Selected Feature';
+    if (properties.details) { // theme badge selected
+      $scope.groupings = properties.details;
+      $scope.showList();
+    } else { // standard geojson, show properties as details
+      $scope.showDetails(properties);
+    }
+
+    $scope.toggleParam('details-panel');
   });
 
   $scope.showDetails = function (item) {
@@ -55,7 +52,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     var detailsPanelTop = $('#DetailsPanel').offset().top;
 //    var themeSelectorTop = $('#ThemeSelectorMenu').offset().top;
     var themeSelectorTop = 694;
-    var height = themeSelectorTop - detailsPanelTop - 135;
+    var height = themeSelectorTop - detailsPanelTop - 150;
     $('#DetailsPanel .InnerContainer ').height(height);
   };
 
@@ -66,10 +63,6 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
 	$scope.resizeDetailsPanel();
 
   $scope.save = function (data, name) {
-    if (data.properties.details)  {
-      angular.extend(data.properties,data.properties.details);
-      delete data.properties.details;
-    }
     var json = JSON.stringify(data, null, 2);
     var blob = new Blob([json], {type:'text/plain'});
     var downloadLink = document.createElement("a");

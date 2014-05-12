@@ -995,18 +995,18 @@
                             <div class="container auto">
                                 <button class="side-view-close btn btn-lg btn-danger" ng-click="closeParam('details-panel')"><span class="glyphicon glyphicon-chevron-right"></span></button>
 
-                                <a ng-show="details" ng-click="showList()" class="back-link">< Back to List</a>
+                                <a ng-show="details && feature.properties.details" ng-click="showList()" class="back-link">< Back to List</a>
                                 <div class="title">
                                     {{selectedFeatureTitle}}
                                 </div>
 
                                 <div class="InnerContainer scrollable">
                                     <!-- Repeater Here to List out Headings and List Items -->
-                                    <div class="section scrollable" ng-show="itemsList" ng-repeat="(group, value) in groupings">
-                                        <div class="heading">{{group}}</div>
+                                    <div class="section scrollable" ng-show="itemsList" ng-repeat="(themeName, themeItems) in groupings">
+                                        <div class="heading">{{themeName}}</div>
                                         <div class="list" >
                                             <ul>
-                                                <li ng-repeat="item in value">
+                                                <li ng-repeat="item in themeItems">
                                                     <a class="details-li" ng-click="showDetails(item)">{{item.name}}</a><div class="MapIt" ng-click="">Map It</div>
                                                 </li>
                                             </ul>
