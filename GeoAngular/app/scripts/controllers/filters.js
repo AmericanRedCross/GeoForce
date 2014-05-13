@@ -51,4 +51,20 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
     $scope.$parent.$parent.drawOverlays();
   };
 
+  $scope.startDate = {};
+  $scope.endDate = {};
+  $scope.timelineStatus = {};
+  $scope.createDate = {};
+  $scope.lastModified = {};
+  $scope.startDate.empty      = true;
+  $scope.startDate.open       = true;
+  $scope.endDate.empty        = true;
+  $scope.endDate.open         = false;
+  $scope.timelineStatus.empty = true;
+  $scope.timelineStatus.open  = false;
+  $scope.createDate.open      = false;
+  $scope.lastModified.open    = false;
+
+  debug.startDate = $scope.startDate;
+
 });

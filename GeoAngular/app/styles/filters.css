@@ -1,5 +1,5 @@
 .filters-container {
-    width: 300px;
+    width: 390px;
 }
 
 .filters-content {
@@ -8,4 +8,12 @@
 
 .custom-filter-submit {
     margin: 7px;
+}
+
+.a-nav-tab {
+    cursor: pointer;
+}
+
+.panel-heading {
+    cursor: pointer;
 }
