@@ -246,7 +246,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     for (var key in self._config.properties) {
       feat.properties[key] = self._config.properties[key];
       // LayerConfig will state the name of the BBoxGeoJSON method to be called on click.
-      if (key === 'onSelect') {
+      if (key === 'onSelect' || key === 'onDeselect') {
         var fnName = self._config.properties[key];
         feat.properties[key] = self[fnName];
       }
@@ -379,6 +379,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
     });
 
+  };
+
+  // TODO: I don't like this way of doing things... (works though)
+  BBoxGeoJSON.prototype.closeDetails = function () {
+    $rootScope.closeParam('details-panel');
   };
 
 
