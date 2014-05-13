@@ -86,17 +86,17 @@ function createProjectFilterCheckboxes() {
   };
 
   var fields = tables.Project__c.fields;
-  for (var i = 0, len = fields.length; i < len; ++i) {
-    var field = fields[i];
-    console.log(field.name);
+  for (var key in fields) {
+    var field = fields[key];
     if (field.name === "Status__c") {
-      for (var j = 0, len = field.picklistValues.length; j < len; ++j) {
-        checkboxes.status.push({name: field.picklistValues[j].value, checked: false});
+      for (var key2 in field.picklistValues) {
+        checkboxes.status.push({name: field.picklistValues[key2].value, checked: false});
       }
+      continue;
     }
     if (field.name === "Sector__c") {
-      for (var k = 0, len = field.picklistValues.length; k < len; ++k) {
-        checkboxes.sectors.push({name: field.picklistValues[k].value, checked: false});
+      for (var key3 in field.picklistValues) {
+        checkboxes.sectors.push({name: field.picklistValues[key3].value, checked: false});
       }
     }
   }

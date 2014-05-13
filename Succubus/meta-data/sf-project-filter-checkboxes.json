@@ -73,5 +73,26 @@
       "checked": false
     }
   ],
-  "status": []
+  "status": [
+    {
+      "name": "Proposed",
+      "checked": false
+    },
+    {
+      "name": "Active",
+      "checked": false
+    },
+    {
+      "name": "Closed",
+      "checked": false
+    },
+    {
+      "name": "Concept Declined",
+      "checked": false
+    },
+    {
+      "name": "Proposal Declined",
+      "checked": false
+    }
+  ]
 }
