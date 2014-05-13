@@ -15,7 +15,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
   };
 
   //Init selectedFeatureTitle property
-  $scope.selectedFeatureTitle = "Feature Details";
+  $scope.title= "Feature Details";
 
   $scope.toggleState = function(stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
@@ -35,7 +35,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
   $scope.$on('details', function (event, featureLayer) {
     var properties = featureLayer.feature.properties;
     $scope.feature = featureLayer.feature;
-    $scope.selectedFeatureTitle = properties.name || properties.title || 'Selected Feature';
+    $scope.title = properties.name || properties.title || 'Selected Feature';
     if (properties.salesforce) { // salesforce theme badge selected
       $scope.groupings = properties.salesforce;
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
@@ -47,10 +47,32 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     $scope.toggleParam('details-panel');
   });
 
-  $scope.showDetails = function (item) {
+  $scope.showDetails = function (item, themeItems, idx) {
+    if (!item) {
+      console.log('huh');
+    }
+    if (item.name || item.title) {
+      $scope.title = item.name || item.title;
+    }
+    if (idx) $scope.activeThemeItemIdx = idx;
+    if (themeItems) $scope.activeThemeItemsList = themeItems;
     $scope.itemsList = false;
     $scope.details = item;
     $scope.resizeDetailsPanel();
+  };
+
+  $scope.nextThemeItem = function() {
+    var len = $scope.activeThemeItemsList.length;
+    if (++$scope.activeThemeItemIdx >= len) $scope.activeThemeItemIdx = 0;
+    var item = $scope.activeThemeItemsList[$scope.activeThemeItemIdx];
+    $scope.showDetails(item);
+  };
+
+  $scope.prevThemeItem = function() {
+    var len = $scope.activeThemeItemsList.length;
+    if (--$scope.activeThemeItemIdx < 0) $scope.activeThemeItemIdx = len - 1;
+    var item = $scope.activeThemeItemsList[$scope.activeThemeItemIdx];
+    $scope.showDetails(item);
   };
 
   $scope.showList = function () {
