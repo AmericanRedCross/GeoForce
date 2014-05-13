@@ -35,7 +35,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
   $scope.$on('details', function (event, featureLayer) {
     var properties = featureLayer.feature.properties;
     $scope.feature = featureLayer.feature;
-    $scope.title = properties.name || properties.title || 'Selected Feature';
+    $scope.title = $scope.featureTitle = properties.name || properties.title || 'Selected Feature';
     if (properties.salesforce) { // salesforce theme badge selected
       $scope.groupings = properties.salesforce;
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
@@ -73,6 +73,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
   };
 
   $scope.showList = function () {
+    $scope.title = $scope.featureTitle;
     $scope.itemsList = true;
     $scope.details = false;
   };
