@@ -487,11 +487,14 @@
                                 <!-- Tab panes -->
                                 <div class="tab-content filters-content">
                                     <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
-                                        <label ng-repeat="sector in sectors" class="checkbox">
-                                            <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
-                                            {{sector.name}}
-                                        </label>
-
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <label ng-repeat="sector in sectors" class="checkbox">
+                                                    <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
+                                                    {{sector.name}}
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
 
@@ -562,7 +565,14 @@
 
                                     </div>
                                     <div ng-class="{active: navTab==='status'}" class="tab-pane" id="status-filter">
-                                        Status
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <label ng-repeat="stat in status" class="checkbox">
+                                                    <input type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
+                                                    {{stat.name}}
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
                                         Budget

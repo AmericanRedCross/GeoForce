@@ -42,6 +42,10 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
     $scope.submitFilter();
   };
 
+  $scope.statusFilter = function () {
+
+  };
+
   $scope.submitFilter = function () {
     $stateParams.filters = $scope.whereClause;
     var state = $state.current.name || 'main';
