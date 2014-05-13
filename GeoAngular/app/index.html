@@ -986,9 +986,9 @@
                         <div id="DetailsButtonWrapper">
                             <div id="DetailsNub" class="btn btn-lg" data-icon="l" ng-click="toggleParam('details-panel')">
                             </div>
-                            <div id="PreviousItem" ng-class="{flipOpen: (details && numThemeItems > 1)}" data-icon="j" ng-click="prevThemeItem()">
+                            <div id="PreviousItem" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" data-icon="j" ng-click="prevThemeItem()">
                             </div>
-                            <div id="NextItem" ng-class="{flipOpen: (details && numThemeItems > 1)}" data-icon="k" ng-click="nextThemeItem()">
+                            <div id="NextItem" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" data-icon="k" ng-click="nextThemeItem()">
                             </div>
                         </div>
                         <div id="DetailsPanel">
