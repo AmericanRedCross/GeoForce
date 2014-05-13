@@ -48,9 +48,6 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
   });
 
   $scope.showDetails = function (item, themeItems, idx) {
-    if (!item) {
-      console.log('huh');
-    }
     if (item.name || item.title) {
       $scope.title = item.name || item.title;
     }
