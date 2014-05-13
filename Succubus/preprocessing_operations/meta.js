@@ -43,6 +43,7 @@ flow.exec(
     fs.writeFileSync('meta-data/sf-objects.json', JSON.stringify(tables,null,2));
 
     createObjectFieldHash();
+    createProjectFilterCheckboxes();
   }
 );
 
@@ -76,4 +77,29 @@ function createObjectFieldHash() {
   }
   fs.writeFileSync('meta-data/sf-object-field-hash.json', JSON.stringify(hash,null,2));
   fs.writeFileSync('../GeoAngular/app/data/sf-object-field-hash.json', JSON.stringify(hash));
+}
+
+function createProjectFilterCheckboxes() {
+  var checkboxes = {
+    sectors: [],
+    status: []
+  };
+
+  var fields = tables.Project__c.fields;
+  for (var i = 0, len = fields.length; i < len; ++i) {
+    var field = fields[i];
+    console.log(field.name);
+    if (field.name === "Status__c") {
+      for (var j = 0, len = field.picklistValues.length; j < len; ++j) {
+        checkboxes.status.push({name: field.picklistValues[j].value, checked: false});
+      }
+    }
+    if (field.name === "Sector__c") {
+      for (var k = 0, len = field.picklistValues.length; k < len; ++k) {
+        checkboxes.sectors.push({name: field.picklistValues[k].value, checked: false});
+      }
+    }
+  }
+  fs.writeFileSync('meta-data/sf-project-filter-checkboxes.json', JSON.stringify(checkboxes,null,2));
+  fs.writeFileSync('../GeoAngular/app/data/sf-project-filter-checkboxes.json', JSON.stringify(checkboxes));
 }
