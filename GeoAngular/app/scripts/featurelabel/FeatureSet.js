@@ -155,9 +155,9 @@
         });
         featureLayer.bringToFront();
         selectedFeatureLayer = null;
-//        if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
-//          properties.onDeselect(self.featureLayer);
-//        }
+        if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
+          properties.onDeselect(self.featureLayer);
+        }
       }
 
       // TURN ON

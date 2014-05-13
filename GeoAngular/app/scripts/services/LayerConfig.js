@@ -125,6 +125,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "labelProperty": "theme_count",
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
+      "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
       "defaultTheme": 'project' // The default theme the layer uses. This is used if there is no theme query param.
     }
   };
