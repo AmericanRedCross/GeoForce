@@ -44,7 +44,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
       $scope.showDetails(properties);
     }
 
-    $scope.toggleParam('details-panel');
+    $scope.openParam('details-panel');
   });
 
   $scope.showDetails = function (item, themeItems, idx) {

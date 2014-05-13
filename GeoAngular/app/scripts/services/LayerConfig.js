@@ -124,7 +124,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "fill-opacity": 0,
       "labelProperty": "theme_count",
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
-      "onClick": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on click.
+      "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
       "defaultTheme": 'project' // The default theme the layer uses. This is used if there is no theme query param.
     }
   };
@@ -141,7 +141,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "fill-opacity": 0,
       "labelProperty": "theme_count",
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids&gadm_level=:level'),
-      "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
+      "onSelect": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
     }
   };
 
@@ -157,7 +157,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
           "fill-opacity": 0,
           "labelProperty": "theme_count",
           "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids&gadm_level=:level'),
-          "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
+          "onSelect": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
       }
   };
 
