@@ -246,7 +246,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     for (var key in self._config.properties) {
       feat.properties[key] = self._config.properties[key];
       // LayerConfig will state the name of the BBoxGeoJSON method to be called on click.
-      if (key === 'onClick') {
+      if (key === 'onSelect') {
         var fnName = self._config.properties[key];
         feat.properties[key] = self[fnName];
       }
@@ -357,7 +357,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   }
 
   /**
-   * This is called by the onClick event for the featurelabels.
+   * This is called by the onSelect event for the featurelabels.
    * @param featureLayer
    */
   BBoxGeoJSON.prototype.fetchFeatureDetails = function(featureLayer) {

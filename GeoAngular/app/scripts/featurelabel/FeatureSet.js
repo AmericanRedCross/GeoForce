@@ -9,6 +9,7 @@
   L.spatialdev.featurelabel.FeatureSet = function () {
     this.features = [];
     this._pathIdHash = {};
+    this.selectedFeature = null;
     L.spatialdev.featurelabel.featureSets.push(this);
   };
 
@@ -89,6 +90,8 @@
   }
 
 
+  var selectedFeatureLayer = null;
+
   function createLabel(featureLayer) {
     var point = featureLayer.labelCenterPoint;
 
@@ -112,41 +115,69 @@
     });
 
     var label = L.label(point, {icon:icon});
+    label.featureLayer = featureLayer;
 
     label.on('mouseover', function(e) {
-      if (!featureLayer.selected) {
+      // self is the label
+      var self = this;
+      if (self.featureLayer !== selectedFeatureLayer) {
         // yellow EAED6B
-        featureLayer.setStyle({
+        self.featureLayer.setStyle({
           color: '#EAED6B'
         });
-        featureLayer.bringToFront();
+        self.featureLayer.bringToFront();
       }
     });
 
     label.on('mouseout', function(e) {
-      if (!featureLayer.selected) {
-        featureLayer.setStyle({
+      // self is the label
+      var self = this;
+      if (self.featureLayer !== selectedFeatureLayer) {
+        self.featureLayer.setStyle({
           color: properties.color || 'white'
         });
-        featureLayer.bringToFront();
+        if (selectedFeatureLayer) {
+          selectedFeatureLayer.bringToFront();
+        } else {
+          self.featureLayer.bringToFront();
+        }
       }
     });
 
     label.on('click', function (e) {
-      // red cross red #ed1b2e
-      featureLayer.setStyle({
-        color: '#d9534f'
-      });
-      featureLayer.bringToFront();
-      featureLayer.selected = ! featureLayer.selected;
-      if (!featureLayer.selected) {
-        featureLayer.setStyle({
+      // self is the label
+      var self = this;
+
+      // TURN OFF
+      if (self.featureLayer === selectedFeatureLayer) {
+        self.featureLayer.setStyle({
           color: properties.color || 'white'
         });
         featureLayer.bringToFront();
+        selectedFeatureLayer = null;
+//        if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
+//          properties.onDeselect(self.featureLayer);
+//        }
       }
-      if (properties && properties.onClick && typeof properties.onClick === 'function') {
-        properties.onClick(featureLayer);
+
+      // TURN ON
+      else {
+        if (selectedFeatureLayer) {
+          selectedFeatureLayer.setStyle({
+            color: properties.color || 'white'
+          });
+          selectedFeatureLayer.bringToFront();
+          selectedFeatureLayer = null;
+        }
+        // red cross red #ed1b2e
+        self.featureLayer.setStyle({
+          color: '#d9534f' // red
+        });
+        self.featureLayer.bringToFront();
+        selectedFeatureLayer = self.featureLayer;
+        if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
+          properties.onSelect(self.featureLayer);
+        }
       }
 
     });
