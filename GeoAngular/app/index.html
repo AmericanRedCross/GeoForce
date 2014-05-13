@@ -986,9 +986,9 @@
                         <div id="DetailsButtonWrapper">
                             <div id="DetailsNub" class="btn btn-lg" data-icon="l" ng-click="toggleParam('details-panel')">
                             </div>
-                            <div id="PreviousItem" ng-class="{flipOpen: (details && numThemeItems > 1)}" data-icon="j" ng-click="">
+                            <div id="PreviousItem" ng-class="{flipOpen: (details && numThemeItems > 1)}" data-icon="j" ng-click="prevThemeItem()">
                             </div>
-                            <div id="NextItem" ng-class="{flipOpen: (details && numThemeItems > 1)}" data-icon="k" ng-click="">
+                            <div id="NextItem" ng-class="{flipOpen: (details && numThemeItems > 1)}" data-icon="k" ng-click="nextThemeItem()">
                             </div>
                         </div>
                         <div id="DetailsPanel">
@@ -997,7 +997,7 @@
 
                                 <a ng-show="details && feature.properties.salesforce" ng-click="showList()" class="back-link">< Back to List</a>
                                 <div class="title">
-                                    {{selectedFeatureTitle}}
+                                    {{title}}
                                 </div>
 
                                 <div class="InnerContainer scrollable">
@@ -1007,12 +1007,12 @@
                                         <div class="list" >
                                             <ul>
                                                 <li ng-repeat="item in themeItems">
-                                                    <a class="details-li" ng-click="showDetails(item)">{{item.name}}</a>
+                                                    <a class="details-li" ng-click="showDetails(item, themeItems, $index)">{{item.name}}</a>
                                                     <!--<div class="MapIt" ng-click="">Map It</div>-->
                                                 </li>
                                             </ul>
                                         </div>
-                                        <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, selectedFeatureTitle + '.geojson')">Download Feature as GeoJSON</button>
+                                        <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
                                     </div>
 
                                     <div class="section scrollable" ng-show="details">
@@ -1022,7 +1022,7 @@
                                                 <div class="details-value">{{value}}</div><i class="unavailable" ng-show="!value">Unavailable</i>
                                             </li>
                                         </ul>
-                                        <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, selectedFeatureTitle + '.geojson')">Download Feature as GeoJSON</button>
+                                        <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
                                     </div>
 
                                 </div>
