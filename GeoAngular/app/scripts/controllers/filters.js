@@ -11,13 +11,11 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
 
   $scope.sectors = [];
 
-  $http.get(config.chubbsPath('services/custom/custom_operation?name=getprojectsectorlist&format=json'), {cache: true}).success(function (data, status) {
-    for (var i = 0, len = data.length; i < len; ++i) {
-      $scope.sectors.push({name: data[i], checked: false});
-    }
+  $http.get('data/sf-project-filter-checkboxes.json', {cache: true}).success(function (data, status) {
+    angular.extend($scope, data);
     debug.filtersScope = $scope;
   }).error(function() {
-    console.error("Unable to fetch project sector list");
+    console.error("Unable to fetch project filter meta data");
   });
 
   $scope.sectorsFilter = function () {
@@ -44,11 +42,35 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
     $scope.submitFilter();
   };
 
+  $scope.statusFilter = function () {
+
+  };
+
   $scope.submitFilter = function () {
     $stateParams.filters = $scope.whereClause;
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
     $scope.$parent.$parent.drawOverlays();
+  };
+
+  $scope.startDate = {};
+  $scope.endDate = {};
+  $scope.timelineStatus = {};
+  $scope.createDate = {};
+  $scope.lastModified = {};
+  $scope.startDate.empty      = true;
+  $scope.startDate.open       = true;
+  $scope.endDate.empty        = true;
+  $scope.endDate.open         = false;
+  $scope.timelineStatus.empty = true;
+  $scope.timelineStatus.open  = false;
+  $scope.createDate.open      = false;
+  $scope.lastModified.open    = false;
+
+  debug.startDate = $scope.startDate;
+
+  $scope.budget = {
+    slider: {}
   };
 
 });

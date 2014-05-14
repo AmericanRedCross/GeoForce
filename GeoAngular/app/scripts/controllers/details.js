@@ -3,10 +3,19 @@
  *       on 4/9/14.
  */
 
-angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider) {
+angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http) {
+
+  $http.get('data/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
+    $scope.sfFieldHash = sfFieldHash;
+  });
+
+  $scope.keyLabel = function (key) {
+    console.log('key ' + key);
+    return $scope.sfFieldHash[key].label;
+  };
 
   //Init selectedFeatureTitle property
-  $scope.selectedFeatureTitle = "Some Feature (All Categories)";
+  $scope.title= "Feature Details";
 
   $scope.toggleState = function(stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
@@ -19,48 +28,78 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
 
   //Initialize the dummy project/disaster click results
   $scope.groupings = {
-    'Projects': [
-      {name: 'Project 1', id: 1},
-      {name: 'Project 2', id: 2},
-      {name: 'Project 3', id: 3},
-      {name: 'RedCross Project', id: 4}
-    ],
-    'Disasters': [
-      {name: 'Oso Landslide', id: 1},
-      {name: 'Hurricane', id: 2}
-    ]
+    'Please click on a badge or feature to see details...': []
   };
 
 
-  $scope.$on('feature-details', function (event, featureLayer) {
+  $scope.$on('details', function (event, featureLayer) {
     var properties = featureLayer.feature.properties;
-    $scope.selectedFeatureTitle = properties.name;
-    $scope.groupings = properties.details;
-    $scope.detailsVisible = true;
+    $scope.feature = featureLayer.feature;
+    $scope.title = $scope.featureTitle = properties.name || properties.title || 'Selected Feature';
+    if (properties.salesforce) { // salesforce theme badge selected
+      $scope.groupings = properties.salesforce;
+      $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
+      $scope.showList();
+    } else { // standard geojson, show properties as details
+      $scope.showDetails(properties);
+    }
+
+    $scope.openParam('details-panel');
   });
 
-  $scope.showDetails = function (item) {
+  $scope.showDetails = function (item, themeItems, idx) {
+    if (item.name || item.title) {
+      $scope.title = item.name || item.title;
+    }
+    if (idx) $scope.activeThemeItemIdx = idx;
+    if (themeItems) $scope.activeThemeItemsList = themeItems;
     $scope.itemsList = false;
     $scope.details = item;
     $scope.resizeDetailsPanel();
   };
 
+  $scope.nextThemeItem = function() {
+    var len = $scope.activeThemeItemsList.length;
+    if (++$scope.activeThemeItemIdx >= len) $scope.activeThemeItemIdx = 0;
+    var item = $scope.activeThemeItemsList[$scope.activeThemeItemIdx];
+    $scope.showDetails(item);
+  };
+
+  $scope.prevThemeItem = function() {
+    var len = $scope.activeThemeItemsList.length;
+    if (--$scope.activeThemeItemIdx < 0) $scope.activeThemeItemIdx = len - 1;
+    var item = $scope.activeThemeItemsList[$scope.activeThemeItemIdx];
+    $scope.showDetails(item);
+  };
+
   $scope.showList = function () {
+    $scope.title = $scope.featureTitle;
     $scope.itemsList = true;
     $scope.details = false;
   };
 
   $scope.resizeDetailsPanel = function() {
     var detailsPanelTop = $('#DetailsPanel').offset().top;
-    var themeSelectorTop = $('#ThemeSelectorMenu').offset().top;
-    var height = themeSelectorTop - detailsPanelTop - 10 - 200;
+//    var themeSelectorTop = $('#ThemeSelectorMenu').offset().top;
+    var themeSelectorTop = 694;
+    var height = themeSelectorTop - detailsPanelTop - 150;
     $('#DetailsPanel .InnerContainer ').height(height);
-  }
+  };
 
 	//Connect the layout onresize end event
 	window.layout.panes.center.bind("layoutpaneonresize_end", $scope.resizeDetailsPanel);
 
 	//For Init.
 	$scope.resizeDetailsPanel();
+
+  $scope.save = function (data, name) {
+    var json = JSON.stringify(data, null, 2);
+    var blob = new Blob([json], {type:'text/plain'});
+    var downloadLink = document.createElement("a");
+    var url = (window.webkitURL != null ? window.webkitURL : window.URL);
+    downloadLink.href = url.createObjectURL(blob);
+    downloadLink.download = name || 'feature.geojson';
+    downloadLink.click();
+  };
 
 });

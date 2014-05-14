@@ -144,7 +144,17 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     Resource.prototype.fetch.call(this, function(data) {
       self._geojson = data;
       if (typeof self._config.properties === 'object') {
-        angular.extend(self._geojson.properties, self._config.properties);
+        if ( data.type === 'FeatureCollection') {
+          var feats = data.features;
+          for (var i = 0, len = feats.length; i < len; ++i) {
+            var feat = feats[i];
+            if (!feat.properties) feat.properties = {};
+            angular.extend(feat.properties, self._config.properties);
+          }
+        } else { // a feature or a geometry type
+          if (!data.properties) data.properties = {};
+          angular.extend(data.properties, self._config.properties);
+        }
       }
 
       if (typeof cb === 'function') cb(self._geojson);
@@ -156,6 +166,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     var layer =  Resource.prototype.getLayer.call(this);
     this.fetch(function(geojson){
       layer.addData(geojson);
+      layer.eachLayer(function (l) {
+        l.on('click', function () {
+          $rootScope.$broadcast('details', l);
+        });
+      });
     });
     return layer;
   };
@@ -231,7 +246,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     for (var key in self._config.properties) {
       feat.properties[key] = self._config.properties[key];
       // LayerConfig will state the name of the BBoxGeoJSON method to be called on click.
-      if (key === 'onClick') {
+      if (key === 'onSelect' || key === 'onDeselect') {
         var fnName = self._config.properties[key];
         feat.properties[key] = self[fnName];
       }
@@ -342,7 +357,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   }
 
   /**
-   * This is called by the onClick event for the featurelabels.
+   * This is called by the onSelect event for the featurelabels.
    * @param featureLayer
    */
   BBoxGeoJSON.prototype.fetchFeatureDetails = function(featureLayer) {
@@ -354,19 +369,21 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     }
 
     var theme = $rootScope.$stateParams.theme || properties.defaultTheme || 'project';
+    var themeName = $rootScope.themeNameHash[theme];
     detailsUrl = detailsUrl.replace(':theme', theme).replace(':guids', properties.guid).replace(':level', properties.level);
     $http.get(detailsUrl, {cache: true}).success(function (details) {
 
-      featureLayer.feature.properties.details = {
-
-        Projects: details
-
-      };
-
-      $rootScope.$broadcast('feature-details', featureLayer);
+      featureLayer.feature.properties.salesforce = {};
+      featureLayer.feature.properties.salesforce[themeName] = details;
+      $rootScope.$broadcast('details', featureLayer);
 
     });
 
+  };
+
+  // TODO: I don't like this way of doing things... (works though)
+  BBoxGeoJSON.prototype.closeDetails = function () {
+    $rootScope.closeParam('details-panel');
   };
 
 
