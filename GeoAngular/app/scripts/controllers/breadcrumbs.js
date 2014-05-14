@@ -51,10 +51,6 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 
 			});
 		}
-
-
-
-
 	});
 
 	function updateBreadCrumbs(featObj, level) {

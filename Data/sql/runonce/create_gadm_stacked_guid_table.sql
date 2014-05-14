@@ -27,13 +27,12 @@ WHERE   gadm0.id_0 = gadm1.id_0 AND
         gadm5.id_4 = gadm4.id_4;
 
 CREATE INDEX ON gadmrollup (nameARC);
-CREATE INDEX ON gadmrollup (name_0);
-CREATE INDEX ON gadmrollup (name_1);
-CREATE INDEX ON gadmrollup (name_2);
-CREATE INDEX ON gadmrollup (name_3);
-CREATE INDEX ON gadmrollup (name_4);
-CREATE INDEX ON gadmrollup (name_3);
-CREATE INDEX ON gadmrollup (name_5);
+CREATE INDEX ON gadmrollup (name0);
+CREATE INDEX ON gadmrollup (name1);
+CREATE INDEX ON gadmrollup (name2);
+CREATE INDEX ON gadmrollup (name3);
+CREATE INDEX ON gadmrollup (name4);
+CREATE INDEX ON gadmrollup (name5);
 CREATE INDEX ON gadmrollup USING gist (geomARC);
 CREATE INDEX ON gadmrollup USING gist (geom0);
 CREATE INDEX ON gadmrollup USING gist (geom1);
@@ -57,5 +56,12 @@ WHERE ST_INTERSECTS(a.geom, geom0);
 
 select * from gadmrollup
 LIMIT 100
+
+
+DROP TABLE IF EXISTS gadmrollup;
+SELECT ''::character varying as nameARC, 0 as guidARC, null::geometry as geomarc, gadm0.name_0 as name0, gadm0.guid as guid0, gadm0.geom_simplify_med as geom0, gadm1.name_1 as name1, gadm1.guid as guid1, gadm1.geom_simplify_med as geom1, gadm2.name_2 as name2, gadm2.guid as guid2, gadm2.geom_simplify_med as geom2
+INTO gadmrollup
+FROM gadm0,gadm1,gadm2
+WHERE   gadm0.id_0 = gadm1.id_0 AND gadm1.id_1 = gadm2.id_1 AND gadm2.id_0 = gadm1.id_0;
 
 

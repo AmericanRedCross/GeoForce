@@ -5,13 +5,17 @@ var express = require('express'), common = require("../../common"), settings = r
 
 //Module-specific requires:
 var mapnik = require('mapnik'),
-mercator = require('./utils/sphericalmercator.js'), // 3857
-geographic = require('./utils/geographic.js'), //4326
-parseXYZ = require('./utils/tile.js').parseXYZ,
+mercator = require('../../utils/sphericalmercator.js'), // 3857
+geographic = require('../../utils/geographic.js'), //4326
+parseXYZ = require('../../utils/tile.js').parseXYZ,
 path = require('path'),
 fs = require("fs"),
 flow = require('flow'),
 carto = require('carto');
+
+//Caching
+var CCacher = require("../../lib/ChubbsCache");
+var cacher = new CCacher();
 
 var TMS_SCHEME = false;
 var styleExtension = '.xml';
