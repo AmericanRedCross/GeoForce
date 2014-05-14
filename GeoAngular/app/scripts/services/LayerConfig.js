@@ -341,10 +341,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    */
   this.find = function(name) {
     var val = this[name] || this[name.toLowerCase()];
-    if (typeof val === 'object' && val.url) {
-      return val.url;
-    }
-    if (typeof val === 'string') {
+    if (typeof val !== 'undefined' && val !== null) {
       return val;
     }
     if (name.slice(0, 4).toLowerCase() === 'http') {
