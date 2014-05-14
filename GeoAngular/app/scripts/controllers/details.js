@@ -51,7 +51,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     if (item.name || item.title) {
       $scope.title = item.name || item.title;
     }
-    if (idx) $scope.activeThemeItemIdx = idx;
+    if (typeof idx === 'number') $scope.activeThemeItemIdx = idx;
     if (themeItems) $scope.activeThemeItemsList = themeItems;
     $scope.itemsList = false;
     $scope.details = item;
