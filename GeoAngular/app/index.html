@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -575,7 +576,27 @@
                                         </div>
                                     </div>
                                     <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
-                                        Budget
+
+                                        <div style="padding: 3em;">
+                                            {{teste}}
+                                            <br/>
+                                            <b>Value 1 : {{teste[0]}}</b>
+                                            <br/>
+                                            <b>Value 2: {{teste[1]}}</b>
+                                            <br/><br/>
+                                            <slider model="teste" type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,60]" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show"></slider>
+
+                                            <br/><br/>
+
+                                            {{teste2}}
+                                            <br/>
+                                            <b>Value 1 : {{teste2[0]}}</b>
+                                            <br/>
+                                            <b>Value 2: {{teste2[1]}}</b>
+                                            <br/><br/>
+                                            <slider model="teste2" type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,60]" data-slider-orientation="vertical" data-slider-selection="after" data-slider-tooltip="show"></slider>
+                                        </div>
+
                                     </div>
                                     <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
                                         <h4>Filter WHERE Clause</h4>
@@ -1155,6 +1176,7 @@
     <script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+    <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -1172,6 +1194,7 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/services/LayerConfig.js"></script>
     <script src="scripts/services/VectorProvider.js"></script>
+    <script src="scripts/directives/angular-bootstrap-slider.js"></script>
     <script src="scripts/controllers/landing.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/map.js"></script>
