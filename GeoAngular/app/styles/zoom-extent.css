@@ -20,7 +20,7 @@
 
 #CountrySelectorPanelWrapper.on{
     display:block;
-    top: 58px;
+    top: 34px;
     -moz-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
     -webkit-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
     -ms-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
@@ -32,6 +32,11 @@
     font-size: 16px;
     color: #3f3f3f;
     margin-bottom: 15px;
+}
+
+#CountrySelectorPanelWrapper #CountryArea div.title{
+    float:left;
+    margin-right: 25px;
 }
 
 #CountrySelectorPanelWrapper .countryListItem {

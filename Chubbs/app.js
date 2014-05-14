@@ -9,7 +9,6 @@ var express = require('express'),
     settings = require('./settings'),
     common = require("./common"),
     cors = require('cors'),
-    nodecache = require( "node-cache"),
     passport = require("passport");
 
 
