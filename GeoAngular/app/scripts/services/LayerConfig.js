@@ -132,8 +132,14 @@ angular.module('GeoAngular').service('LayerConfig', function () {
     name: 'Esri Topographic'
   };
 
-  this.toner = 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png';
-  this.watercolor = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png';
+  this.toner = {
+    url: 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png',
+    name: 'Stamen Toner'
+  };
+  this.watercolor = {
+    url: 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png',
+    name: 'Stamen Watercolor'
+  };
 
 
   /**
