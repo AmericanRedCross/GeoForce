@@ -3,7 +3,15 @@
  */
 var pg = require('pg');
 
-var express = require('express'), http = require('http'), path = require('path'), settings = require('./settings'), common = require("./common"), cors = require('cors');
+var express = require('express'),
+    http = require('http'),
+    path = require('path'),
+    settings = require('./settings'),
+    common = require("./common"),
+    cors = require('cors'),
+    nodecache = require( "node-cache"),
+    passport = require("passport");
+
 
 var app = express();
 
@@ -35,33 +43,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
 app.use('/geo-angular/', express.static('../GeoAngular/app/'));
 
-//Mongoose support for storing authentication credentials
-var mongoose, passport;
-//try {
-//	mongoose = require("mongoose"), passport = require("passport");
-//} catch(e) {
-//	mongoose = null;
-//	passport = null;
-//	console.log("Mongoose/MongoDB not properly installed. Skipping. Also not using Passport. Reason: " + e);
-//}
+
+
 
 //express app.get can be passed an array of intermediate functions before rendering.
 //If passport isn't installed or user hasn't enabled security, then leave the following array empty, otherwise load one or more middleware functions in there.
 var authenticationFunctions = []; 
 
 //Load up passport for security, if it's around, and if the settings ask for it
-if (mongoose && passport && settings.enableSecurity && settings.enableSecurity === true) {
+if (passport && settings.enableSecurity && settings.enableSecurity === true) {
 	
 	require('./endpoints/authentication/app/models/user.js');
-
-	var env = process.env.NODE_ENV || 'development', mongo_config = require('./endpoints/authentication/config/config')[env];
-
-	mongoose.connect(settings.mongodb.db);
-
+	var env = process.env.NODE_ENV || 'development';
 	require('./endpoints/authentication/config/passport')(passport, mongo_config);
 
 	app.use(express.session({
-		secret : mongo_config.epxressSessionSecret
+		//secret : epxressSessionSecret
 	}));
 	
 	app.use(passport.initialize());
@@ -84,6 +81,8 @@ else{
 //This must be after app.use(passport.initialize())
 app.use(cors());
 app.use(app.router);
+
+
 
 //Load in all endpoint routes
 //TODO - Loop thru endpoints folder and require everything in there

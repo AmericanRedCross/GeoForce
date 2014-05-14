@@ -1,21 +1,26 @@
 -- creating indices
 CREATE INDEX ON gadm0_2014 (name_0);
 CREATE INDEX ON gadm0_2014 USING gist (geom);
+CREATE INDEX gadm0_2014_geom_med_idx ON gadm0 USING gist (geom_simplify_med);
 
 CREATE INDEX ON gadm1_2014 (name_1);
 CREATE INDEX ON gadm1_2014 (name_0);
 CREATE INDEX ON gadm1_2014 USING gist (geom);
+CREATE INDEX gadm1_2014_geom_med_idx ON gadm1 USING gist (geom_simplify_med);
 
 CREATE INDEX ON gadm2_2014 (name_2);
 CREATE INDEX ON gadm2_2014 (name_0);
 CREATE INDEX ON gadm2_2014 (name_1);
 CREATE INDEX ON gadm2_2014 USING gist (geom);
+CREATE INDEX gadm2_2014_geom_med_idx ON gadm2 USING gist (geom_simplify_med);
 
 CREATE INDEX ON gadm3_2014 (name_3);
 CREATE INDEX ON gadm3_2014 (name_0);
 CREATE INDEX ON gadm3_2014 (name_1);
 CREATE INDEX ON gadm3_2014 (name_2);
 CREATE INDEX ON gadm3_2014 USING gist (geom);
+CREATE INDEX gadm3_2014_geom_med_idx ON gadm3 USING gist (geom_simplify_med);
+
 
 CREATE INDEX ON gadm4_2014 (name_4);
 CREATE INDEX ON gadm4_2014 (name_0);
@@ -23,6 +28,8 @@ CREATE INDEX ON gadm4_2014 (name_1);
 CREATE INDEX ON gadm4_2014 (name_2);
 CREATE INDEX ON gadm4_2014 (name_3);
 CREATE INDEX ON gadm4_2014 USING gist (geom);
+CREATE INDEX gadm4_2014_geom_med_idx ON gadm4 USING gist (geom_simplify_med);
+
 
 CREATE INDEX ON gadm5_2014 (name_5);
 CREATE INDEX ON gadm5_2014 (name_0);
@@ -31,6 +38,7 @@ CREATE INDEX ON gadm5_2014 (name_2);
 CREATE INDEX ON gadm5_2014 (name_3);
 CREATE INDEX ON gadm5_2014 (name_4);
 CREATE INDEX ON gadm5_2014 USING gist (geom);
+CREATE INDEX gadm5_2014_geom_med_idx ON gadm5 USING gist (geom_simplify_med);
 
 
 -- Migrate create guids for all of the columns.

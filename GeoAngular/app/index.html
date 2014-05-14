@@ -658,9 +658,9 @@
 
                     <!-- Upper Right Toolbar in Map -->
                     <div id="MapUpperRightToolbarWrapper">
-                        <button class="side-view-close btn btn-lg btn-danger" ng-click=""><span class="glyphicon glyphicon-chevron-down"></span></button>
+                        <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('zoom-extent')"><span class="glyphicon glyphicon-chevron-down"></span></button>
                         <div ng-controller="BreadcrumbsCtrl" class="breadcrumbs-container">
-                            <div class="world" ng-click="toggleParam('zoom-extent')">
+                            <div class="world">
                                 {{title}}
                             </div>
                             <div class="stack">

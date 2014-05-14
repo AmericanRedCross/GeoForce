@@ -113,29 +113,81 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
       wait = true;
       setTimeout(function(){
         leafletData.getMap().then(function (map) {
-          var bounds = map.getBounds();
-          var west = bounds.getWest();
-          var south = bounds.getSouth();
-          var east = bounds.getEast();
-          var north = bounds.getNorth();
+          //Get the MIN/MAX Tile ZYX extents.
+          //If they haven't chagned, then don't proceed.
+          var tileBounds = getCurrentTileBounds(map);
+          var zoom = map.getZoom();
+          if($scope.tileBounds ){
+              if(!areBoundsEqual($scope.tileBounds, tileBounds, $scope.zoom, zoom)){
+                  $scope.tileBounds = tileBounds;
+                  $scope.zoom = zoom;
+                  var minx = tileBounds.min.x;
+                  var maxx = tileBounds.max.x;
+                  var miny = tileBounds.min.y;
+                  var maxy = tileBounds.max.y;
 
-          if (west < -180) west = -180;
-          if (south < -90) south = -90;
-          if (east > 180) east = 180;
-          if (north > 90) north = 90;
+                  var str = zoom + "," + minx + ',' +
+                      maxx + ',' +
+                      miny + ',' +
+                      maxy;
 
-          var str = west.toFixed(6) + ',' +
-            south.toFixed(6) + ',' +
-            east.toFixed(6) + ',' +
-            north.toFixed(6);
+                  VectorProvider.updateBBox(str);
+              }
+          }
+            else{
+              //1st time thru
+              $scope.tileBounds = tileBounds;
+              $scope.zoom = zoom;
+          }
 
-          VectorProvider.updateBBox(str);
+
+
+
+
+//          var bounds = map.getBounds();
+//          var west = bounds.getWest();
+//          var south = bounds.getSouth();
+//          var east = bounds.getEast();
+//          var north = bounds.getNorth();
+//
+//          if (west < -180) west = -180;
+//          if (south < -90) south = -90;
+//          if (east > 180) east = 180;
+//          if (north > 90) north = 90;
+
         });
         wait = false;
       }, 150);
     }
 
   }
+
+    /**
+     * Ripped From Leaflet TileLayer
+     * Calculate the Max/Min ZYX Tile bounds.
+     * Use those to snap BBox requests so we can cache.
+     */
+
+    function getCurrentTileBounds(map){
+        var bounds = map.getPixelBounds(),
+            tileSize = 256; //TODO
+
+        // tile coordinates range for the current view
+        var tileBounds = L.bounds(
+            bounds.min.divideBy(tileSize).floor(),
+            bounds.max.divideBy(tileSize).floor());
+
+        return tileBounds;
+    }
+
+    function areBoundsEqual(a,b, za, zb){
+        if(a.min.x != b.min.x) { return false; }
+        if(a.min.y != b.min.y) { return false; }
+        if(a.max.x != b.max.x) { return false; }
+        if(a.max.y != b.max.y) { return false; }
+        if(za != zb) { return false; }
+        return true;
+    }
 
 
   /**

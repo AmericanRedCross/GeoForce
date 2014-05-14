@@ -11,34 +11,21 @@ var path = require('path'),
     fs = require("fs"),
     flow = require('flow'),
     passport = require("passport"),
-	LocalStrategy = require('passport-local').Strategy,
-	FacebookStrategy = require('passport-facebook').Strategy,
 	BearerStrategy = require('passport-http-bearer').Strategy,
-	mongoose = require('mongoose');
+    ForceDotComStrategy = require('passport-forcedotcom').Strategy;
     
-var app = exports.app = express();
 
-//Start mongoose
-mongoose.connect('mongodb://localhost/test');
+exports.passport = function () {
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback () {
-  
-	var LocalUserSchema = new mongoose.Schema({
-		username: String,
-		salt: String,
-		hash: String,
-		accessToken: String
-	});	
-	var Users = mongoose.model('userauths', localUserSchema);
-	
-	var FacebookUserSchema = new mongoose.Schema({
-	    fbId: String,
-	    email: { type : String , lowercase : true},
-	    name : String,
-	    accessToken: String
-	});
-	var FbUsers = mongoose.model('fbs',FacebookUserSchema);
+    passport.use(new ForceDotComStrategy({
+        clientID: settings.salesforce.ConsumerKey,
+        clientSecret: settings.salesforce.ClientSecret,
+        scope: settings.salesforce.Scope,
+        callbackURL: settings.salesforce.CallbackURL
+    }, function verify(token, refreshToken, profile, done) {
+        console.log(profile);
+        return done(null, profile);
+    }));
 
-});
+    return passport;
+}
