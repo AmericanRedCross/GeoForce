@@ -548,15 +548,30 @@
                                                 <h3 class="panel-title">Total Budget</h3>
                                             </div>
                                             <div class="panel-body">
-                                                {{budget.slider}}
-                                                <br/>
                                                 <b>Min: {{budget.slider[0]}}</b>
-                                                <br/>
                                                 <b>Max: {{budget.slider[1]}}</b>
                                                 <br/><br/>
                                                 <slider model="budget.slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,60]" data-slider-selection="after" data-slider-tooltip="show"></slider>
                                             </div>
                                         </div>
+                                        <h4>Total Budget Stats</h4>
+                                        <table class="table panel panel-default">
+                                            <thead class="panel-heading">
+                                            <tr>
+                                                <th>Min</th>
+                                                <th>Mean</th>
+                                                <th>Max</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>{{budget.min | currency:"$"}}</td>
+                                                <td>{{budget.mean | currency:"$"}}</td>
+                                                <td>{{budget.max | currency:"$"}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
                                     </div>
                                     <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
                                         <h4>Filter WHERE Clause</h4>
