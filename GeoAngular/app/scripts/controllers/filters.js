@@ -69,4 +69,8 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
 
   debug.startDate = $scope.startDate;
 
+  $scope.budget = {
+    slider: {}
+  };
+
 });
