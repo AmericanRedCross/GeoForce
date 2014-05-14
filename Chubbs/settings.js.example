@@ -76,5 +76,11 @@ settings.dsColumns["gadm3"] = { geometry: "ST_AsGeoJSON(geom_simplify_high) as g
 settings.dsColumns["gadm4"] = { geometry: "ST_AsGeoJSON(geom_simplify_high) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, id_4 as adm4_code, name_4 as adm4_name, ST_AsText(ST_Centroid(geom)) as centroid, 4 as level" };
 settings.dsColumns["gadm5"] = { geometry: "ST_AsGeoJSON(geom_simplify_high) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, id_4 as adm4_code, name_4 as adm4_name, id_5 as adm5_code, name_5 as adm5_name, ST_AsText(ST_Centroid(geom)) as centroid, 5 as level" };
 
+//SalesForce OAUTH settings
+settings.salesforce = {};
+settings.salesforce.ConsumerKey = ""; //clientID
+settings.salesforce.ClientSecret = "";
+settings.salesforce.Scope = ["Access your basic information (id, profile, email, address, phone)"];
+settings.salesforce.CallbackURL = ""; //https://domain.com/oauth2/callback
 
 module.exports = settings;
