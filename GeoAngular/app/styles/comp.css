@@ -203,6 +203,10 @@ html, body {
     cursor:pointer;
 }
 
+#NextItem:hover, #PreviousItem:hover {
+    color: #ed1b2e;
+}
+
 #PreviousItem {
     border-top: none;
     transform: translateY(-50%) rotateX(90deg); /* Start rotated 90 degrees (edge on) and slid up  */
@@ -365,11 +369,19 @@ html, body {
 }
 
 #DetailsPanel .details-key{
-     color: #161616;
+    cursor:pointer;
 }
 
 #DetailsPanel .details-value{
-    color: #3f3f3f;
+    cursor:pointer;
+}
+
+.tooltip-inner {
+    cursor:text;
+}
+
+.unavailable {
+    color: #aaabae;
 }
 
 .MapIt {

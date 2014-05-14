@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -477,30 +478,120 @@
 
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a ng-click="navTab='sectors'" data-toggle="tab">Sectors</a></li>
-                                    <li><a ng-click="navTab='date'" data-toggle="tab">Date</a></li>
-                                    <li><a ng-click="navTab='status'" data-toggle="tab">Status</a></li>
-                                    <li><a ng-click="navTab='budget'" data-toggle="tab">Budget</a></li>
-                                    <li><a ng-click="navTab='custom'" data-toggle="tab">Custom</a></li>
+                                    <li class="active"><a class="a-nav-tab" ng-click="navTab='sectors'" data-toggle="tab">Sectors</a></li>
+                                    <li><a class="a-nav-tab" ng-click="navTab='date'" data-toggle="tab">Date</a></li>
+                                    <li><a class="a-nav-tab" ng-click="navTab='status'" data-toggle="tab">Status</a></li>
+                                    <li><a class="a-nav-tab" ng-click="navTab='budget'" data-toggle="tab">Budget</a></li>
+                                    <li><a class="a-nav-tab" ng-click="navTab='custom'" data-toggle="tab">Custom</a></li>
                                 </ul>
 
                                 <!-- Tab panes -->
                                 <div class="tab-content filters-content">
                                     <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
-                                        <label ng-repeat="sector in sectors" class="checkbox">
-                                            <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
-                                            {{sector.name}}
-                                        </label>
-
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <label ng-repeat="sector in sectors" class="checkbox">
+                                                    <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
+                                                    {{sector.name}}
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
-                                        Date
+
+                                        <accordion close-others="true">
+                                            <accordion-group is-open="startDate.open">
+                                                <accordion-heading>
+                                                    Start Date <small>{{startDate.radio}}</small> <small>{{startDate.date | date: 'MMM d, y'}}</small><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': startDate.open, 'glyphicon-chevron-right': !startDate.open}"></i>
+                                                </accordion-heading>
+                                                <datepicker ng-model="startDate.date" show-weeks="true" ></datepicker>
+                                                <br/>
+                                                <div class="btn-group">
+                                                    <label class="btn btn-default" ng-model="startDate.radio" btn-radio="'before'">Before</label>
+                                                    <label class="btn btn-default" ng-model="startDate.radio" btn-radio="'on'">On</label>
+                                                    <label class="btn btn-default" ng-model="startDate.radio" btn-radio="'after'">After</label>
+                                                </div>
+                                                <label class="checkbox">
+                                                    <input type="checkbox" ng-model="startDate.empty">
+                                                    Include Empty Start Dates
+                                                </label>
+                                            </accordion-group>
+                                            <accordion-group is-open="endDate.open">
+                                                <accordion-heading>
+                                                    End Date <small>{{endDate.radio}}</small> <small>{{endDate.date | date: 'MMM d, y'}}</small><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': endDate.open, 'glyphicon-chevron-right': !endDate.open}"></i>
+                                                </accordion-heading>
+                                                <datepicker ng-model="endDate.date" show-weeks="true" ></datepicker>
+                                                <br/>
+                                                <div class="btn-group">
+                                                    <label class="btn btn-default" ng-model="endDate.radio" btn-radio="'before'">Before</label>
+                                                    <label class="btn btn-default" ng-model="endDate.radio" btn-radio="'on'">On</label>
+                                                    <label class="btn btn-default" ng-model="endDate.radio" btn-radio="'after'">After</label>
+                                                </div>
+                                                <label class="checkbox">
+                                                    <input type="checkbox" ng-model="endDate.empty">
+                                                    Include Empty End Dates
+                                                </label>
+                                            </accordion-group>
+                                            <accordion-group is-open="timelineStatus.open">
+                                                <accordion-heading>
+                                                    Timeline Status <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': timelineStatus.open, 'glyphicon-chevron-right': !timelineStatus.open}"></i>
+                                                </accordion-heading>
+                                                I don't have any examples in the database where this field is filled. What should this UI look like? Do we want this to be a control?
+                                            </accordion-group>
+                                            <accordion-group is-open="createDate.open">
+                                                <accordion-heading>
+                                                    Create Date <small>{{createDate.radio}}</small> <small>{{createDate.date | date: 'MMM d, y'}}</small><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': createDate.open, 'glyphicon-chevron-right': !createDate.open}"></i>
+                                                </accordion-heading>
+                                                <datepicker ng-model="createDate.date" show-weeks="true" ></datepicker>
+                                                <br/>
+                                                <div class="btn-group">
+                                                    <label class="btn btn-default" ng-model="createDate.radio" btn-radio="'before'">Before</label>
+                                                    <label class="btn btn-default" ng-model="createDate.radio" btn-radio="'on'">On</label>
+                                                    <label class="btn btn-default" ng-model="createDate.radio" btn-radio="'after'">After</label>
+                                                </div>
+                                            </accordion-group>
+                                            <accordion-group is-open="lastModified.open">
+                                                <accordion-heading>
+                                                    Last Modified <small>{{lastModified.radio}}</small> <small>{{lastModified.date | date: 'MMM d, y'}}</small><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': lastModified.open, 'glyphicon-chevron-right': !lastModified.open}"></i>
+                                                </accordion-heading>
+                                                <datepicker ng-model="lastModified.date" show-weeks="true" ></datepicker>
+                                                <br/>
+                                                <div class="btn-group">
+                                                    <label class="btn btn-default" ng-model="lastModified.radio" btn-radio="'before'">Before</label>
+                                                    <label class="btn btn-default" ng-model="lastModified.radio" btn-radio="'on'">On</label>
+                                                    <label class="btn btn-default" ng-model="lastModified.radio" btn-radio="'after'">After</label>
+                                                </div>
+                                            </accordion-group>
+                                        </accordion>
+
                                     </div>
                                     <div ng-class="{active: navTab==='status'}" class="tab-pane" id="status-filter">
-                                        Status
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <label ng-repeat="stat in status" class="checkbox">
+                                                    <input type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
+                                                    {{stat.name}}
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
-                                        Budget
+                                        <div class="col-md-4">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Total Budget</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    {{budget.slider}}
+                                                    <br/>
+                                                    <b>Min: {{budget.slider[0]}}</b>
+                                                    <br/>
+                                                    <b>Max: {{budget.slider[1]}}</b>
+                                                    <br/><br/>
+                                                    <slider model="budget.slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,60]" data-slider-orientation="vertical" data-slider-selection="after" data-slider-tooltip="show"></slider>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
                                         <h4>Filter WHERE Clause</h4>
@@ -573,6 +664,86 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
+                                        <a ng-click="swapBasemap('osm')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('osm')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Standard OpenStreetMap
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('satellite')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('satellite')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Mapbox Satellite
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('ortho')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('ortho')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Orthographic
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('toner')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('toner')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Stamen Toner
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a ng-click="swapBasemap('dark')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('dark')}">
+                                                <img src="images/thumb-tmp.png" alt="...">
+                                            </div>
+                                            <div class="caption">
+                                                <div class="container thumbnail-container">
+                                                    <div class="row">
+                                                        <div class="col-md-11 nopaddingnomargin">
+                                                            Dark Theme
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-12">
                                         <a ng-click="swapBasemap('streets')" class="thumbnail">
                                             <div class="image" ng-class="{active: isActiveBasemap('streets')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
@@ -605,15 +776,15 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a ng-click="swapBasemap('satellite')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('satellite')}">
+                                        <a ng-click="swapBasemap('github')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('pinterest')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            Mapbox Satellite
+                                                            Github
                                                         </div>
                                                     </div>
                                                 </div>
@@ -637,22 +808,6 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a ng-click="swapBasemap('github')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('pinterest')}">
-                                                <img src="images/thumb-tmp.png" alt="...">
-                                            </div>
-                                            <div class="caption">
-                                                <div class="container thumbnail-container">
-                                                    <div class="row">
-                                                        <div class="col-md-11 nopaddingnomargin">
-                                                            Github
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-12">
                                         <a ng-click="swapBasemap('green')" class="thumbnail">
                                             <div class="image" ng-class="{active: isActiveBasemap('green')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
@@ -662,38 +817,6 @@
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
                                                             Green Theme
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <a ng-click="swapBasemap('dark')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('dark')}">
-                                                <img src="images/thumb-tmp.png" alt="...">
-                                            </div>
-                                            <div class="caption">
-                                                <div class="container thumbnail-container">
-                                                    <div class="row">
-                                                        <div class="col-md-11 nopaddingnomargin">
-                                                            Dark Theme
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <a ng-click="swapBasemap('osm')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('osm')}">
-                                                <img src="images/thumb-tmp.png" alt="...">
-                                            </div>
-                                            <div class="caption">
-                                                <div class="container thumbnail-container">
-                                                    <div class="row">
-                                                        <div class="col-md-11 nopaddingnomargin">
-                                                            Standard OpenStreetMap
                                                         </div>
                                                     </div>
                                                 </div>
@@ -781,15 +904,15 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a ng-click="swapBasemap('ortho')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('ortho')}">
+                                        <a ng-click="swapBasemap('esritopo')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('esritopo')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            Orthographic
+                                                            Esri Topographic
                                                         </div>
                                                     </div>
                                                 </div>
@@ -805,7 +928,7 @@
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            Ocean
+                                                            Ocean Bathymetric
                                                         </div>
                                                     </div>
                                                 </div>
@@ -821,7 +944,7 @@
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            Light Gray (No Labels)
+                                                            Light Gray
                                                         </div>
                                                     </div>
                                                 </div>
@@ -829,15 +952,15 @@
                                         </a>
                                     </div>
                                     <div class="col-md-12">
-                                        <a ng-click="swapBasemap('esritopo')" class="thumbnail">
-                                            <div class="image" ng-class="{active: isActiveBasemap('esritopo')}">
+                                        <a ng-click="swapBasemap('watercolor')" class="thumbnail">
+                                            <div class="image" ng-class="{active: isActiveBasemap('watercolor')}">
                                                 <img src="images/thumb-tmp.png" alt="...">
                                             </div>
                                             <div class="caption">
                                                 <div class="container thumbnail-container">
                                                     <div class="row">
                                                         <div class="col-md-11 nopaddingnomargin">
-                                                            Esri Topographic
+                                                            Stamen Watercolor
                                                         </div>
                                                     </div>
                                                 </div>
@@ -945,71 +1068,53 @@
 
 
                     <!-- Bottom Right Theme Selector -->
-                    <nav ng-controller="ThemeCtrl" id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="javascript: return false;">View By:</a>
-                        </div>
-                        <div class="menu-selection">
-                            <ul class="nav navbar-nav">
-                                <li class="dropdown">
-                                    <span class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleThemeMenu()">
-                                        {{themeName}}
-                                    </span>
-                                    <ul id="ThemeMenu" class="dropdown-menu">
-                                        <li ng-click="project()">Project</li>
-                                        <li ng-click="disaster()">Disasters</li>
-                                        <li ng-click="none()">None</li>
-                                        <!--<li ng-click="activeTheme='Risks'"><a href="javascript: return false;">Risks</a></li>-->
-                                        <!--<li ng-click="activeTheme='Pipeline'"><a href="javascript: return false;">Pipeline</a></li>-->
-                                        <!--<li ng-click="activeTheme='Project Health'"><a href="javascript: return false;">PROJECT HEALTH</a></li>-->
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-
+                    <div ui-view="theme"></div>
 
 
 
                     <!-- Right Hand Details Panel -->
-                    <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: detailsVisible}">
+                    <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: isParam('details-panel')}">
                         <div id="DetailsButtonWrapper">
-                            <div id="DetailsNub" class="btn btn-lg" data-icon="l" ng-click="detailsVisible = !detailsVisible">
+                            <div id="DetailsNub" class="btn btn-lg" data-icon="l" ng-click="toggleParam('details-panel')">
                             </div>
-                            <div id="PreviousItem" ng-class="{flipOpen: detailsVisible}" data-icon="j" ng-click="">
+                            <div id="PreviousItem" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" data-icon="j" ng-click="prevThemeItem()">
                             </div>
-                            <div id="NextItem" ng-class="{flipOpen: detailsVisible}" data-icon="k" ng-click="">
+                            <div id="NextItem" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" data-icon="k" ng-click="nextThemeItem()">
                             </div>
                         </div>
                         <div id="DetailsPanel">
                             <div class="container auto">
-                                <button class="side-view-close btn btn-lg btn-danger" ng-click="detailsVisible=false"><span class="glyphicon glyphicon-chevron-right"></span></button>
-
-                                <a ng-show="details" ng-click="showList()" class="back-link">< Back to List</a>
+                                <button class="side-view-close btn btn-lg btn-danger" ng-click="closeParam('details-panel')"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                                <span ng-show="details && feature.properties.salesforce">
+                                    <a ng-click="showList()" class="back-link">< Back to List</a> ({{activeThemeItemIdx+1}} of {{activeThemeItemsList.length}})
+                                </span>
                                 <div class="title">
-                                    {{selectedFeatureTitle}}
+                                    {{title}}
                                 </div>
 
                                 <div class="InnerContainer scrollable">
                                     <!-- Repeater Here to List out Headings and List Items -->
-                                    <div class="section scrollable" ng-show="itemsList" ng-repeat="(group, value) in groupings">
-                                        <div class="heading">{{group}}</div>
+                                    <div class="section scrollable" ng-show="itemsList" ng-repeat="(themeName, themeItems) in groupings">
+                                        <div class="heading">{{themeName}}</div>
                                         <div class="list" >
                                             <ul>
-                                                <li ng-repeat="item in value">
-                                                    <a class="details-li" ng-click="showDetails(item)">{{item.name}}</a><div class="MapIt" ng-click="">Map It</div>
+                                                <li ng-repeat="item in themeItems">
+                                                    <a class="details-li" ng-click="showDetails(item, themeItems, $index)">{{item.name}}</a>
+                                                    <!--<div class="MapIt" ng-click="">Map It</div>-->
                                                 </li>
                                             </ul>
                                         </div>
+                                        <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
                                     </div>
 
                                     <div class="section scrollable" ng-show="details">
                                         <ul>
                                             <li ng-repeat="(key, value) in details">
-                                                <div class="details-key">{{key}}:</div>
-                                                <div class="details-value">{{value}}</div>
+                                                <div class="details-key" ><a tooltip="{{(sfFieldHash[key].inlineHelpText || '') + ' FieldName: ' + key}}" tooltip-trigger="click">{{sfFieldHash[key].label || key}}</a></div>
+                                                <div class="details-value">{{value}}</div><i class="unavailable" ng-show="!value">Unavailable</i>
                                             </li>
                                         </ul>
+                                        <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
                                     </div>
 
                                 </div>
@@ -1019,6 +1124,10 @@
                             </div>
                         </div>
                     </div>
+
+
+
+
                 </div>
 
             <div ui-view="upload"></div>
@@ -1062,6 +1171,7 @@
     <script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+    <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -1069,6 +1179,7 @@
     <script src="scripts/lib/togeojson.js"></script>
     <script src="scripts/lib/mapbox.standalone.uncompressed.js"></script>
     <script src="scripts/lib/jquery.layout-latest.min.js"></script>
+    <script src="scripts/lib/ui-bootstrap-tpls-0.11.0.min.js"></script>
     <script src="scripts/featurelabel/leaflet-patch.js"></script>
     <script src="scripts/featurelabel/featurelabel.js"></script>
     <script src="scripts/featurelabel/Label.js"></script>
@@ -1078,6 +1189,7 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/services/LayerConfig.js"></script>
     <script src="scripts/services/VectorProvider.js"></script>
+    <script src="scripts/directives/angular-bootstrap-slider.js"></script>
     <script src="scripts/controllers/landing.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/map.js"></script>

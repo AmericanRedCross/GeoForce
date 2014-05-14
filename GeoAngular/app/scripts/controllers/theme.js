@@ -5,20 +5,26 @@
 
 angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $state, $stateParams, VectorProvider) {
 
+  var themeNameHash = $rootScope.themeNameHash = {
+    project: 'Projects',
+    disaster: 'Disasters',
+    none: 'None'
+  };
+
   $scope.project = function () {
-    $scope.themeName = 'Projects';
+    $scope.themeName = themeNameHash.project;
     $scope.setThemeQueryParam('project');
     $scope.$parent.drawOverlays();
   };
 
   $scope.disaster = function () {
-    $scope.themeName = 'Disasters';
+    $scope.themeName = themeNameHash.disaster;
     $scope.setThemeQueryParam('disaster');
     $scope.$parent.drawOverlays();
   };
 
   $scope.none = function () {
-    $scope.themeName = 'None';
+    $scope.themeName = themeNameHash.none;
     $scope.setThemeQueryParam();
     $scope.$parent.drawOverlays();
   };
@@ -29,7 +35,7 @@ angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScop
     $state.go(state, $stateParams);
   };
 
-  $scope.themeName = 'Projects';
+  $scope.themeName = themeNameHash[$stateParams.theme] || 'Projects';
 
   /*
    Handling Theme Menu Animations

@@ -5,8 +5,14 @@
  *     Runs pre ETL operations, such as view and static table dropping for preprocessing data.
  */
 
-var ecosetl = require('../pg'), flow = require('flow');
 
+var ecosetl = require('../pg');
+var flow = require('flow');
+
+/**
+ * Execute the meta-data gathering module...
+ */
+require('./meta');
 
 module.exports = {};
 

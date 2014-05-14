@@ -327,14 +327,14 @@ function dropView(sfViewName, cb) {
     })
 }
 
-var prepQueryTables = function (){
+var prepQueryTables = function () {
     //Take in the object and return an array
     var queryArr = [];
     for (var sfQueryName in salesforceQueries) {
         queryArr.push(sfQueryName);
     }
     return queryArr;
-}
+};
 
 function insertAllQueryTables (cb){
 
@@ -432,5 +432,5 @@ module.exports.run = function(cb){
 		//TODO:  Be smarter about what to do when we encounter an error. Don't need to run all postprocessing if some of the etl bombed.
 		cb(err);
 	});
-}
+};
 

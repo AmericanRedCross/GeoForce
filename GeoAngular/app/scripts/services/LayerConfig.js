@@ -36,6 +36,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   this.lightgray = 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
   this.esritopo = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}';
 
+  this.toner = 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png';
+  this.watercolor = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png';
 
 
 
@@ -51,7 +53,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    */
   this.phl = {
     type: 'geojson',
-    url: 'data/test/phl.geo.json',
+    url: 'data/test/phl.geojson',
     properties: {
       "title": 'The Philippines',
       "stroke": 'white',
@@ -60,6 +62,25 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "stroke-opacity": 1,
       "fill": "green",
       "fill-opacity": 0.7
+    }
+  };
+
+  this.wa = {
+    type: 'geojson',
+    url: 'data/test/washington.geojson',
+    properties: {
+      fill: "#FFBE00"
+    }
+  };
+
+  this.wafires = {
+    type: 'geojson',
+    url: 'data/test/state_wa_lrg_fires.geojson',
+    properties: {
+      "stroke": "#FF8800",
+      "stroke-width": 1,
+      "fill": "#FFBE00",
+      "fill-opacity": 0.5
     }
   };
 
@@ -103,7 +124,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "fill-opacity": 0,
       "labelProperty": "theme_count",
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
-      "onClick": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on click.
+      "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
+      "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
       "defaultTheme": 'project' // The default theme the layer uses. This is used if there is no theme query param.
     }
   };
@@ -120,7 +142,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "fill-opacity": 0,
       "labelProperty": "theme_count",
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids&gadm_level=:level'),
-      "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
+      "onSelect": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
     }
   };
 
@@ -136,7 +158,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
           "fill-opacity": 0,
           "labelProperty": "theme_count",
           "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids&gadm_level=:level'),
-          "onClick": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
+          "onSelect": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
       }
   };
 
