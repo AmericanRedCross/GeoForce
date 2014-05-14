@@ -1,5 +1,7 @@
 /**
  *  NH Found this little directive at: http://jsfiddle.net/BRLpQ/1/
+ *
+ *  This should be refined into a fully functional, refined directive.
  */
 
 angular.module('GeoAngular').directive('slider', function ($parse) {
