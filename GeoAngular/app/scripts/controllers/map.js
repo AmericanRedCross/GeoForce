@@ -30,11 +30,11 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     var lat = parseFloat($stateParams.lat)   || 0;
     var lng = parseFloat($stateParams.lng)   || 0;
     var zoom = parseFloat($stateParams.zoom) || 2;
-    layersStr = $stateParams.layers || LayerConfig.redcross;
+    layersStr = $stateParams.layers || LayerConfig.redcross.url;
     var layers = layersStr.split(',');
 
     // first layer should always be treated as the basemap
-    var basemap = LayerConfig.find(layers[0]) || LayerConfig.redcross;
+    var basemap = LayerConfig.find(layers[0]) || LayerConfig.redcross.url;
     overlayNames = layers.slice(1);
 
     if (lastLayersStr !== layersStr) {

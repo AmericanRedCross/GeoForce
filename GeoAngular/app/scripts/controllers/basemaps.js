@@ -8,7 +8,7 @@ angular.module('GeoAngular').controller('BasemapsCtrl', function($scope, $state,
 
   $scope.getLayers = function() {
     if (! $stateParams || !$stateParams.layers) {
-      return null;
+      return [];
     }
     var layers = $stateParams.layers.split(',');
     return layers;
