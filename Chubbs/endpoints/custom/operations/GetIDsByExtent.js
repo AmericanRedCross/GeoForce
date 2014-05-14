@@ -9,11 +9,11 @@ operation.name = "GetIdsByExtent";
 operation.description = "Smartly gets GADM IDs associated with Red Cross disasters or projects based on a map viewport (extent).";
 operation.inputs = {};
 
-operation.inputs["bbox"] = {}; //SW coordiantes, NE coordinates, in lat/lng (4326).  minx, miny, maxx, maxy - example: -127.76000976562501,43.476840397778915,-113.060302734375,49.30363576187125
+//operation.inputs["bbox"] = {}; //SW coordiantes, NE coordinates, in lat/lng (4326).  minx, miny, maxx, maxy - example: -127.76000976562501,43.476840397778915,-113.060302734375,49.30363576187125
+operation.inputs["bbox"] = {}; //Tile BBox coordinates, zlevel, xmin, xmax, ymin, ymax example: 8, 44, 48, 28, 30
 operation.inputs["gadm_level"] = []; //Optional GADM level to start searching thru (default is level 0)
 
 operation.outputImage = false;
-
 
 operation.execute = flow.define(
     function (args, callback) {
@@ -31,11 +31,12 @@ operation.execute = flow.define(
             operation.inputs["bbox"] = args.bbox;
             operation.inputs["gadm_level"] = args.gadm_level;
 
+            //No cached
             //Convert bbox to WKT
-            args.wkt = operation.convertBBoxToWKT(args.bbox);
+            args.wkt = common.convertTileBoundsToBBoxWKT(args.bbox);
 
             //Execute the query
-            var query = { text : "select * from udf_getidsbyextent(" + (args.gadm_level || "null") + ", '" + args.wkt + "');", values: []};
+            var query = { text: "select * from udf_getidsbyextent(" + (args.gadm_level || "null") + ", '" + args.wkt + "');", values: []};
             common.executePgQuery(query, this);//Flow to next function when done.
         }
         else {
@@ -57,7 +58,7 @@ operation.isInputValid = function (input) {
 
     if (input) {
         //make sure we have a bbox.  Other args are optional
-        if (input["bbox"] && input["bbox"].split(",").length == 4) {
+        if (input["bbox"] && input["bbox"].split(",").length == 5) {
             //It's got everything we need.
             return true;
         }
@@ -70,10 +71,5 @@ operation.isInputValid = function (input) {
 }
 
 
-operation.convertBBoxToWKT = function(bbox){
-   var bboxcoords = bbox.split(',');
-   var corners = { minx: bboxcoords[0], miny: bboxcoords[1], maxx: bboxcoords[2], maxy: bboxcoords[3]};
-   return "POLYGON((minx miny, minx maxy, maxx maxy, maxx miny, minx miny))".split('minx').join(corners.minx).split('miny').join(corners.miny).split('maxx').join(corners.maxx).split('maxy').join(corners.maxy);
-}
 
 module.exports = operation;
