@@ -499,70 +499,37 @@
                                     </div>
                                     <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
 
-                                        <accordion close-others="true">
-                                            <accordion-group is-open="startDate.open">
-                                                <accordion-heading>
-                                                    Start Date <small>{{startDate.radio}}</small> <small>{{startDate.date | date: 'MMM d, y'}}</small><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': startDate.open, 'glyphicon-chevron-right': !startDate.open}"></i>
-                                                </accordion-heading>
-                                                <datepicker ng-model="startDate.date" show-weeks="true" ></datepicker>
-                                                <br/>
-                                                <div class="btn-group">
-                                                    <label class="btn btn-default" ng-model="startDate.radio" btn-radio="'before'">Before</label>
-                                                    <label class="btn btn-default" ng-model="startDate.radio" btn-radio="'on'">On</label>
-                                                    <label class="btn btn-default" ng-model="startDate.radio" btn-radio="'after'">After</label>
-                                                </div>
-                                                <label class="checkbox">
-                                                    <input type="checkbox" ng-model="startDate.empty">
-                                                    Include Empty Start Dates
-                                                </label>
-                                            </accordion-group>
-                                            <accordion-group is-open="endDate.open">
-                                                <accordion-heading>
-                                                    End Date <small>{{endDate.radio}}</small> <small>{{endDate.date | date: 'MMM d, y'}}</small><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': endDate.open, 'glyphicon-chevron-right': !endDate.open}"></i>
-                                                </accordion-heading>
-                                                <datepicker ng-model="endDate.date" show-weeks="true" ></datepicker>
-                                                <br/>
-                                                <div class="btn-group">
-                                                    <label class="btn btn-default" ng-model="endDate.radio" btn-radio="'before'">Before</label>
-                                                    <label class="btn btn-default" ng-model="endDate.radio" btn-radio="'on'">On</label>
-                                                    <label class="btn btn-default" ng-model="endDate.radio" btn-radio="'after'">After</label>
-                                                </div>
-                                                <label class="checkbox">
-                                                    <input type="checkbox" ng-model="endDate.empty">
-                                                    Include Empty End Dates
-                                                </label>
-                                            </accordion-group>
-                                            <accordion-group is-open="timelineStatus.open">
-                                                <accordion-heading>
-                                                    Timeline Status <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': timelineStatus.open, 'glyphicon-chevron-right': !timelineStatus.open}"></i>
-                                                </accordion-heading>
-                                                I don't have any examples in the database where this field is filled. What should this UI look like? Do we want this to be a control?
-                                            </accordion-group>
-                                            <accordion-group is-open="createDate.open">
-                                                <accordion-heading>
-                                                    Create Date <small>{{createDate.radio}}</small> <small>{{createDate.date | date: 'MMM d, y'}}</small><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': createDate.open, 'glyphicon-chevron-right': !createDate.open}"></i>
-                                                </accordion-heading>
-                                                <datepicker ng-model="createDate.date" show-weeks="true" ></datepicker>
-                                                <br/>
-                                                <div class="btn-group">
-                                                    <label class="btn btn-default" ng-model="createDate.radio" btn-radio="'before'">Before</label>
-                                                    <label class="btn btn-default" ng-model="createDate.radio" btn-radio="'on'">On</label>
-                                                    <label class="btn btn-default" ng-model="createDate.radio" btn-radio="'after'">After</label>
-                                                </div>
-                                            </accordion-group>
-                                            <accordion-group is-open="lastModified.open">
-                                                <accordion-heading>
-                                                    Last Modified <small>{{lastModified.radio}}</small> <small>{{lastModified.date | date: 'MMM d, y'}}</small><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': lastModified.open, 'glyphicon-chevron-right': !lastModified.open}"></i>
-                                                </accordion-heading>
-                                                <datepicker ng-model="lastModified.date" show-weeks="true" ></datepicker>
-                                                <br/>
-                                                <div class="btn-group">
-                                                    <label class="btn btn-default" ng-model="lastModified.radio" btn-radio="'before'">Before</label>
-                                                    <label class="btn btn-default" ng-model="lastModified.radio" btn-radio="'on'">On</label>
-                                                    <label class="btn btn-default" ng-model="lastModified.radio" btn-radio="'after'">After</label>
-                                                </div>
-                                            </accordion-group>
-                                        </accordion>
+                                        <div class="panel panel-default" ng-repeat="dateFilter in dateFilters">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">{{dateFilter.name}}</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control" datepicker-popup="EEE MMM d, y" ng-model="dateFilter.date" is-open="dateFilter.opened" ng-required="true" close-text="Close" />
+                                                    <span class="input-group-btn">
+                                                      <button type="button" class="btn btn-default" ng-click="toggleDate($event, dateFilter)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                    <div class="btn-group">
+                                                        <label class="btn btn-default" ng-model="dateFilter.radio" btn-radio="'before'">Before</label>
+                                                        <label class="btn btn-default" ng-model="dateFilter.radio" btn-radio="'on'">On</label>
+                                                        <label class="btn btn-default" ng-model="dateFilter.radio" btn-radio="'after'">After</label>
+                                                    </div>
+                                                    <label class="checkbox">
+                                                        <input type="checkbox" ng-model="dateFilter.empty">
+                                                        Include Records with an Empty {{dateFilter.name}}.
+                                                    </label>
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!--<div class="panel panel-default">-->
+                                            <!--<div class="panel-heading">-->
+                                                <!--<h3 class="panel-title">Timeline Status</h3>-->
+                                            <!--</div>-->
+                                            <!--<div class="panel-body">-->
+                                                <!--asdf-->
+                                            <!--</div>-->
+                                        <!--</div>-->
 
                                     </div>
                                     <div ng-class="{active: navTab==='status'}" class="tab-pane" id="status-filter">
@@ -576,20 +543,18 @@
                                         </div>
                                     </div>
                                     <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
-                                        <div class="col-md-4">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <h3 class="panel-title">Total Budget</h3>
-                                                </div>
-                                                <div class="panel-body">
-                                                    {{budget.slider}}
-                                                    <br/>
-                                                    <b>Min: {{budget.slider[0]}}</b>
-                                                    <br/>
-                                                    <b>Max: {{budget.slider[1]}}</b>
-                                                    <br/><br/>
-                                                    <slider model="budget.slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,60]" data-slider-orientation="vertical" data-slider-selection="after" data-slider-tooltip="show"></slider>
-                                                </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Total Budget</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                {{budget.slider}}
+                                                <br/>
+                                                <b>Min: {{budget.slider[0]}}</b>
+                                                <br/>
+                                                <b>Max: {{budget.slider[1]}}</b>
+                                                <br/><br/>
+                                                <slider model="budget.slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,60]" data-slider-selection="after" data-slider-tooltip="show"></slider>
                                             </div>
                                         </div>
                                     </div>
