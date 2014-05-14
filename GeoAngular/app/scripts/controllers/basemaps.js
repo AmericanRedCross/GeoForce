@@ -3,12 +3,18 @@
  *       on 3/28/14.
  */
 
-angular.module('GeoAngular').controller('BasemapsCtrl', function($scope, $state, $stateParams) {
+angular.module('GeoAngular').controller('BasemapsCtrl', function($scope, $state, $stateParams, LayerConfig) {
   console.log('BasemapsCtrl');
+
+  $scope.basemaps = LayerConfig.basemaps;
+
+  $scope.name = function (alias) {
+    return LayerConfig[alias].name || alias;
+  };
 
   $scope.getLayers = function() {
     if (! $stateParams || !$stateParams.layers) {
-      return null;
+      return [];
     }
     var layers = $stateParams.layers.split(',');
     return layers;

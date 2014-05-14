@@ -9,36 +9,137 @@
 angular.module('GeoAngular').service('LayerConfig', function () {
 
   /**
-   * Basemaps
-   * @type {string}
+   * Basemaps Panel List
+   *
+   * List of basemaps that get shown in the Basemaps Panel. Edit this to add or remove
+   * basemaps that the user will see as choices. All basemaps, including ones not in this
+   * list, can still be manually referenced in the url. This is just for the User Interface.
    */
-  this.pinterest = 'http://{s}.tiles.mapbox.com/v3/pinterest.map-ho21rkos/{z}/{x}/{y}.png';
-  this.osmhot = 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
-  this.redcross = 'https://{s}.tiles.mapbox.com/v3/americanredcross.hcji22de/{z}/{x}/{y}.png';
-  this.streets = 'https://{s}.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png';
-  this.terrain = 'https://{s}.tiles.mapbox.com/v3/examples.map-9ijuk24y/{z}/{x}/{y}.png';
-  this.satellite = 'https://{s}.tiles.mapbox.com/v3/examples.map-qfyrx5r8/{z}/{x}/{y}.png';
+  this.basemaps = [
+    'pinterest',
+    'osmhot',
+    'osm',
+    'satellite',
+    'ortho',
+    'toner',
+    'dark',
+    'streets',
+    'terrain',
+    'github',
+    'mozilla',
+    'green',
+    'osmcycle',
+    'osmtransport',
+    'osmmapquest',
+    'natgeo',
+    'usgstopo',
+    'esritopo',
+    'ocean',
+    'lightgray',
+    'watercolor'
+  ];
 
-  this.mozilla = 'http://{s}.tiles.mapbox.com/v3/mozilla-webprod.e91ef8b3/{z}/{x}/{y}.png';
-  this.github = 'http://{s}.tiles.mapbox.com/v3/github.map-xgq2svrz/{z}/{x}/{y}.png';
-  this.green = 'http://{s}.tiles.mapbox.com/v3/examples.map-3gisupiu/{z}/{x}/{y}.png';
-  this.dark = 'http://{s}.tiles.mapbox.com/v3/spatialdev.map-c9z2cyef/{z}/{x}/{y}.png';
 
-  this.osm = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
-  this.osmcycle = 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png';
-  this.osmtransport = 'http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png';
-  this.osmmapquest = 'http://otile3.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png';
+  /**
+   * Basemaps
+   *
+   * All basemap aliases that can be referred to in the url. The corresponding
+   * path to the thumbnail in the Basemaps Panel should be:
+   *    images/{aliasName}.jpg
+   *
+   */
+  this.pinterest = {
+    url: 'http://{s}.tiles.mapbox.com/v3/pinterest.map-ho21rkos/{z}/{x}/{y}.png',
+    name: 'Pinterest'
+  };
+  this.osmhot = {
+    url: 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+    name: 'Humanitarian OpenStreetMap'
+  };
+  this.redcross = {
+    url: 'https://{s}.tiles.mapbox.com/v3/americanredcross.hcji22de/{z}/{x}/{y}.png',
+    name: 'Red Cross'
+  };
+  this.streets = {
+    url: 'https://{s}.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png',
+    name: 'Mapbox Streets'
+  };
+  this.terrain = {
+    url: 'https://{s}.tiles.mapbox.com/v3/examples.map-9ijuk24y/{z}/{x}/{y}.png',
+    name: 'Mapbox Terrain'
+  };
+  this.satellite = {
+    url: 'https://{s}.tiles.mapbox.com/v3/examples.map-qfyrx5r8/{z}/{x}/{y}.png',
+    name: 'Mapbox Satellite'
+  };
 
-  this.natgeo = 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}';
-  this.usgstopo = 'http://services.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}';
-  this.ortho = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-  this.ocean = 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}';
-  this.lightgray = 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
-  this.esritopo = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}';
+  this.mozilla = {
+    url: 'http://{s}.tiles.mapbox.com/v3/mozilla-webprod.e91ef8b3/{z}/{x}/{y}.png',
+    name: 'Mozilla'
+  };
+  this.github = {
+    url: 'http://{s}.tiles.mapbox.com/v3/github.map-xgq2svrz/{z}/{x}/{y}.png',
+    name: 'Github'
+  };
+  this.green = {
+    url: 'http://{s}.tiles.mapbox.com/v3/examples.map-3gisupiu/{z}/{x}/{y}.png',
+    name: 'Green Theme'
+  };
+  this.dark = {
+    url: 'http://{s}.tiles.mapbox.com/v3/spatialdev.map-c9z2cyef/{z}/{x}/{y}.png',
+    name: 'Dark Theme'
+  };
 
-  this.toner = 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png';
-  this.watercolor = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png';
+  this.osm = {
+    url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+    name: 'Standard OpenStreetMap'
+  };
+  this.osmcycle = {
+    url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+    name: 'Cycle OpenStreetMap'
+  };
+  this.osmtransport = {
+    url: 'http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png',
+    name: 'Transport OpenStreetMap'
+  };
+  this.osmmapquest = {
+    url: 'http://otile3.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
+    name: 'MapQuest OpenStreetMap'
+  };
 
+  this.natgeo = {
+    url: 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
+    name: 'National Geographic'
+  };
+  this.usgstopo = {
+    url: 'http://services.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}',
+    name: 'USGS Topographic'
+  };
+  this.ortho = {
+    url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    name: 'Orthographic'
+  };
+  this.ocean = {
+    url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}',
+    name: 'Ocean Bathymetric'
+  };
+  this.lightgray = {
+    url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+    name: 'Light Gray'
+  };
+  this.esritopo = {
+    url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    name: 'Esri Topographic'
+  };
+
+  this.toner = {
+    url: 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png',
+    name: 'Stamen Toner'
+  };
+  this.watercolor = {
+    url: 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png',
+    name: 'Stamen Watercolor'
+  };
 
 
   /**
@@ -240,16 +341,17 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    */
   this.find = function(name) {
     var val = this[name] || this[name.toLowerCase()];
-    if (typeof val !== 'undefined' && val !== null) {
-      return val;
-    } else {
-      if (name.slice(0, 4).toLowerCase() === 'http') {
-        return name;
-      } else {
-        console.error('COULD NOT FIND ALIAS: ' + name);
-        return null;
-      }
+    if (typeof val === 'object' && val.url) {
+      return val.url;
     }
+    if (typeof val === 'string') {
+      return val;
+    }
+    if (name.slice(0, 4).toLowerCase() === 'http') {
+      return name;
+    }
+    console.error('COULD NOT FIND ALIAS: ' + name);
+    return null;
   };
 
 });

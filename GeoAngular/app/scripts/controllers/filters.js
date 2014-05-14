@@ -18,6 +18,13 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
     console.error("Unable to fetch project filter meta data");
   });
 
+  $scope.toggleDate = function($event, dateFilter) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    dateFilter.opened = !dateFilter.opened;
+  };
+
   $scope.sectorsFilter = function () {
     var sectorFilters = [];
     for (var i = 0, len = $scope.sectors.length; i < len; ++i) {
@@ -53,21 +60,31 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
     $scope.$parent.$parent.drawOverlays();
   };
 
-  $scope.startDate = {};
-  $scope.endDate = {};
-  $scope.timelineStatus = {};
-  $scope.createDate = {};
-  $scope.lastModified = {};
-  $scope.startDate.empty      = true;
-  $scope.startDate.open       = true;
-  $scope.endDate.empty        = true;
-  $scope.endDate.open         = false;
-  $scope.timelineStatus.empty = true;
-  $scope.timelineStatus.open  = false;
-  $scope.createDate.open      = false;
-  $scope.lastModified.open    = false;
+  $scope.dateFilters = [
+    {
+      name: 'Start Date',
+      radio: 'on',
+      empty: true,
+      opened: false
+    },{
+      name: 'End Date',
+      radio: 'on',
+      empty: true,
+      opened: false
+    },{
+      name: 'Create Date',
+      radio: 'on',
+      empty: true,
+      opened: false
+    },{
+      name: 'Last Modified',
+      radio: 'on',
+      empty: true,
+      opened: false
+    }
+  ];
 
-  debug.startDate = $scope.startDate;
+  debug.dateFilters = $scope.dateFilters;
 
   $scope.budget = {
     slider: {}
