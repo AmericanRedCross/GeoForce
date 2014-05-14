@@ -18,6 +18,24 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
     console.error("Unable to fetch project filter meta data");
   });
 
+
+  debug.budget = $scope.budget = {
+    slider: {},
+    min: 0,
+    mean: 50,
+    max: 100
+  };
+
+  $http.get(config.chubbsPath('services/custom/custom_operation?name=projecttotalbudget&format=json'), {cache: true}).success(function (data, status) {
+    if (data.length > 0) {
+      $scope.budget.min = data[0].min;
+      $scope.budget.mean = data[0].avg;
+      $scope.budget.max = data[0].max;
+    }
+  }).error(function() {
+    console.error("Unable to fetch Total Budget Min, Mean, Max");
+  });
+
   $scope.toggleDate = function($event, dateFilter) {
     $event.preventDefault();
     $event.stopPropagation();
@@ -85,9 +103,5 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
   ];
 
   debug.dateFilters = $scope.dateFilters;
-
-  $scope.budget = {
-    slider: {}
-  };
 
 });
