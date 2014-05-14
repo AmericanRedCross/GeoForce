@@ -35,6 +35,11 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 
     // first layer should always be treated as the basemap
     var basemap = LayerConfig.find(layers[0]) || LayerConfig.redcross.url;
+    if (typeof basemap === 'string') {
+      var basemapUrl = basemap;
+    } else {
+      var basemapUrl = basemap.url;
+    }
     overlayNames = layers.slice(1);
 
     if (lastLayersStr !== layersStr) {
@@ -46,7 +51,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
       };
 
       $scope.tiles = {
-        url: basemap
+        url: basemapUrl
       };
     }
 
