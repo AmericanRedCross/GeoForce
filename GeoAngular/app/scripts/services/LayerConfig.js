@@ -208,10 +208,26 @@ angular.module('GeoAngular').service('LayerConfig', function () {
 
 
   /**
+   * bbox
+   *
+   * This is universal to all layers, and bboxurl fetches the feature itinerary. This is in turn used to find the center
+   * feature for the breadcrumbs as well as fetch the features that apply to a BBoxGeoJSON object.
+   *
+   * @type {{bboxurl: *, centerurl: *}}
+   */
+  this.bbox = {
+    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox'),
+    // used to get the center feature. can get any feature you want by id
+    featurl: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids')
+  };
+
+  /**
    * BBoxGeoJSON
    *
    * This layer type retrieved features that intersect with the map's bounding box.
-   * There must be a backend API that understands this.
+   * There must be a backend API that understands this. The features that apply
+   * to the bounding box are fetched universally to all layers. These endpoints
+   * are specified in this.bbox.
    *
    * The Chubbs Spatial Server fully comprehends this, others do not.
    *

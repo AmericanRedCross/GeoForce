@@ -307,35 +307,55 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    * such as guid and name. The geometry for each of these features
    * has not yet been requested. This is done by _getFeatures.
    */
-  BBoxGeoJSON.prototype.fetchFeatureItinerary = function() {
-    var url = this._bboxurl.replace(':bbox', bbox);
-    var self = this;
+  function fetchFeatureItinerary() {
+    var url = LayerConfig.bbox.bboxurl.replace(':bbox', bbox);
     var proxyPath = config.proxyPath(url);
     $http.get(url, {cache: true}).success(function (featItinerary, status) {
-      BBoxGeoJSON_processFeatureItinerary(self, featItinerary);
+      processFeatureItinerary(featItinerary);
     }).error(function() {
       $http.get(proxyPath, {cache: true}).success(function (featItinerary, status) {
-        BBoxGeoJSON_processFeatureItinerary(self, featItinerary);
+        processFeatureItinerary(featItinerary);
       }).error(function() {
         console.error("Unable to fetchFeatureItinerary: " + url);
       });
     });
-  };
+  }
 
-  function BBoxGeoJSON_processFeatureItinerary(self, featItinerary) {
+  function processFeatureItinerary(featItinerary) {
     console.log('featItinerary: ' + JSON.stringify(featItinerary));
     // if there are no features for the current bounding box
     if (!featItinerary || featItinerary.length === 0) {
       return;
     }
+
+    /**
+     * Center feature logic for breadcrumbs.
+     */
+    for (var i=0, len=featItinerary.length; i < len; ++i) {
+      var f = featItinerary[i];
+      if (f.iscenter == true) {
+        $rootScope.$broadcast('center-feature', f);
+      }
+    }
+
+    /**
+     * BBoxGeoJSON logic
+     */
+    for(var r = 0, len = bboxResources.length; r < len; ++r) {
+      bboxResources[r].processFeatureItinerary(featItinerary);
+    }
+
+  }
+
+
+  BBoxGeoJSON.prototype.processFeatureItinerary = function (featItinerary) {
+    var self = this;
     var activeLevels = {};
     self._activeLevels = activeLevels;
-    for (var i=0, len=featItinerary.length; i < len; ++i) {
+    for (var i=0, len = featItinerary.length; i < len; ++i) {
       var o = featItinerary[i];
       activeLevels[o.level] = true;
-      if (o.iscenter == true) {
-        $rootScope.$broadcast('center-feature', o);
-      }
+
       var guid = o.guid || o.id;
       if (!self._features[guid]) {
         // adding feature to features hash (all features ever)
@@ -343,8 +363,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
         // getting the features (including basic, simplified geometry)
         self._getFeatures(o);
       } else {
-        // NH TODO: Test to see what happens when layers get re-added but the geometry still hasn't gotten here.
-
         // if we already have a layer and it is not on the map but should be there, add it to the geojson layer
         var l = self._allFeatureLayers[guid];
         if (l) {
@@ -354,7 +372,48 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       }
     }
     self._removeInactiveLayers(self);
-  }
+  };
+
+
+//  function fetchCenterFeature(featObj) {
+//
+//    var url = LayerConfig.bbox.featurl.replace(':level', featObj.level).replace(':ids', featObj.guid);
+//    var proxyPath = config.proxyPath(url);
+//
+//    $http.get(url, {cache: true}).success(function (geojson, status) {
+//      broadcastCenterFeature(featObj, geojson);
+//    }).error(function(err) {
+//      $http.get(proxyPath).success(function (geojson, status) {
+//        broadcastCenterFeature(featObj, geojson);
+//      }).error(function (err) {
+//        console.error('Unable to fetchCenterFeature');
+//      });
+//    });
+//  }
+//
+//  function broadcastCenterFeature(featObj, geojson) {
+//    /**
+//     * Deal with bad stuff.
+//     */
+//    if (geojson.error) {
+//      console.error('Unable to fetch feature: ' + geojson.error);
+//      return;
+//    }
+//
+//    if (!geojson.features || geojson.features.length < 1) {
+//      return;
+//    }
+//
+//    // we only are actually asking for 1 feature
+//    var feat = geojson.features[0];
+//
+//    // putting existing properties into geojson feature
+//    for (var key in featObj) {
+//      feat.properties[key] = featObj[key];
+//    }
+//
+//    $rootScope.$broadcast('center-feature', feat);
+//  }
 
   /**
    * This is called by the onSelect event for the featurelabels.
@@ -510,8 +569,57 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       bbox = bboxStr;
 
       console.log('VectorProvider bbox: ' + bbox);
-      for(var i = 0, len = bboxResources.length; i < len; ++i) {
-        bboxResources[i].fetchFeatureItinerary();
+      fetchFeatureItinerary();
+//      for(var i = 0, len = bboxResources.length; i < len; ++i) {
+//        bboxResources[i].fetchFeatureItinerary();
+//      }
+
+    },
+
+    /**
+     * Returns a feature based on guid and level. You may merge in a set of properties into the
+     * called back object if desired (optional).
+     *
+     * @param guid
+     */
+    fetchFeature: function(guid, level, propsToMerge, cb) {
+      var url = LayerConfig.bbox.featurl.replace(':level', level).replace(':ids', guid);
+      var proxyPath = config.proxyPath(url);
+
+      $http.get(url, {cache: true}).success(function (geojson, status) {
+        merge(geojson);
+      }).error(function(err) {
+        $http.get(proxyPath).success(function (geojson, status) {
+          merge(geojson);
+        }).error(function (err) {
+          console.error('Unable to fetchFeature: ' + guid);
+        });
+      });
+
+      function merge(geojson) {
+        /**
+         * Deal with bad stuff.
+         */
+        if (geojson.error) {
+          console.error('Unable to fetch feature: ' + geojson.error);
+          return;
+        }
+
+        if (!geojson.features || geojson.features.length < 1) {
+          return;
+        }
+
+        // we only are actually asking for 1 feature
+        var feat = geojson.features[0];
+
+        // putting existing properties into geojson feature
+        if (propsToMerge) {
+          for (var key in propsToMerge) {
+            feat.properties[key] = propsToMerge[key];
+          }
+        }
+
+        cb(feat);
       }
 
     }
