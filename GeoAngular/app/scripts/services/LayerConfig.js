@@ -23,8 +23,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
     'ortho',
     'toner',
     'dark',
-    'streets',
-    'terrain',
+//    'streets',
+//    'terrain',
     'github',
     'mozilla',
     'green',
@@ -60,19 +60,23 @@ angular.module('GeoAngular').service('LayerConfig', function () {
     url: 'https://{s}.tiles.mapbox.com/v3/americanredcross.hcji22de/{z}/{x}/{y}.png',
     name: 'Red Cross'
   };
-  this.streets = {
-    url: 'https://{s}.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png',
-    name: 'Mapbox Streets'
-  };
-  this.terrain = {
-    url: 'https://{s}.tiles.mapbox.com/v3/examples.map-9ijuk24y/{z}/{x}/{y}.png',
-    name: 'Mapbox Terrain'
-  };
+
+  /**
+   * Not working, need the special auth token for redcross for these guys.
+   */
+//  this.streets = {
+//    url: 'https://{s}.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png',
+//    name: 'Mapbox Streets'
+//  };
+//  this.terrain = {
+//    url: 'https://{s}.tiles.mapbox.com/v3/examples.map-9ijuk24y/{z}/{x}/{y}.png',
+//    name: 'Mapbox Terrain'
+//  };
+
   this.satellite = {
     url: 'https://{s}.tiles.mapbox.com/v3/examples.map-qfyrx5r8/{z}/{x}/{y}.png',
     name: 'Mapbox Satellite'
   };
-
   this.mozilla = {
     url: 'http://{s}.tiles.mapbox.com/v3/mozilla-webprod.e91ef8b3/{z}/{x}/{y}.png',
     name: 'Mozilla'
