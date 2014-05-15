@@ -44,8 +44,8 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
   };
 
   $scope.sectorsFilter = function () {
-    $scope.sectorClause = '';
     var sectors = $scope.sectors;
+    $scope.sectorClause = null;
     var first = true;
     for (var i = 0, len = sectors.length; i < len; ++i) {
       var sector = sectors[i];
@@ -62,12 +62,39 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
   };
 
   $scope.statusFilter = function () {
-
+    var status = $scope.status;
+    $scope.statusClause = null;
+    var first = true;
+    for (var i = 0, len = status.length; i < len; ++i) {
+      var stat = status[i];
+      if (stat.checked) {
+        if (first) {
+          $scope.statusClause = "status__c LIKE '%" + stat.name + "%' ";
+          first = false;
+        } else {
+          $scope.statusClause += "OR status__c LIKE '%" + stat.name + "%' ";
+        }
+      }
+    }
+    $scope.composeWhereClause();
   };
 
   $scope.composeWhereClause = function () {
-    $scope.whereClause = $scope.sectorClause;
-    if ($scope.whereClause === '') $scope.whereClause = 'null';
+    $scope.whereClause = null;
+    var parts = [$scope.sectorClause, $scope.statusClause];
+    var first = true;
+    for (var i = 0, len = parts.length; i < len; ++i) {
+      var part = parts[i];
+      if (part) {
+        if (first) {
+          $scope.whereClause = part;
+          first = false;
+        } else {
+          $scope.whereClause += 'AND ' + part;
+        }
+      }
+    }
+    if (!$scope.whereClause) $scope.whereClause = 'null';
     $scope.submitFilter();
   };
 
