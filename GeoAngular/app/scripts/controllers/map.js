@@ -97,8 +97,8 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     $scope.blur = 'blur';
   });
 
-  $scope.zoomToExtent = function(extent, title){
-    $stateParams.title = title;
+  //this takes in a WKT GeoJSON Extent geometry
+  $scope.zoomToExtent = function(extent){
     delete $stateParams['zoom-extent'];
     $scope.bounds = {
       northEast: { lat: extent[2][1], lng: extent[2][0] },
@@ -106,8 +106,15 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     };
   };
 
+  //This take a leaflet bounds object and handles it.
+  delete $stateParams['zoom-extent'];
+  $scope.zoomToBounds = function(bounds){
+    $scope.bounds = bounds;
+  };
 
-  function broadcastBBox() {
+
+
+    function broadcastBBox() {
     //NH TODO Fixme. Find a better solution than a spin lock.
     if (!wait) {
       wait = true;
