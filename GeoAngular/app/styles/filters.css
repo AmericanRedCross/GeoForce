@@ -17,16 +17,3 @@
 .panel-heading {
     cursor: pointer;
 }
-
-
-
-#budget-filter .slider.slider-horizontal {
-    width: 100%;
-}
-
-#budget-filter .slider-handle {
-    background-color: #EA2035;
-    background-image: -webkit-linear-gradient(top, #d9534f 0%, #d43f3a 100%);
-    background-image: linear-gradient(to bottom, #d9534f 0%, #d43f3a 100%);
-    opacity: 1;
-}
