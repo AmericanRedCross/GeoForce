@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
-    <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -551,7 +550,6 @@
                                                 <b>Min: {{budget.slider[0] | currency:"$"}}</b>
                                                 <b>Max: {{budget.slider[1] | currency:"$"}}</b>
                                                 <br/><br/>
-                                                <slider model="budget.slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,60]" data-slider-selection="after" data-slider-tooltip="show"></slider>
                                             </div>
                                         </div>
                                         <h4>Total Budget Stats</h4>
@@ -827,7 +825,6 @@
     <script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
-    <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -845,7 +842,6 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/services/LayerConfig.js"></script>
     <script src="scripts/services/VectorProvider.js"></script>
-    <script src="scripts/directives/angular-bootstrap-slider.js"></script>
     <script src="scripts/controllers/landing.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/map.js"></script>
