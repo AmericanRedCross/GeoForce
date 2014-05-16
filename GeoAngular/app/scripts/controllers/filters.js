@@ -172,9 +172,21 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
     return date.toISOString().slice(0,10);
   }
 
+  $scope.budgetFilter = function () {
+    $scope.budgetClause = null;
+    var min = $scope.budget.slider[0];
+    var max = $scope.budget.slider[1];
+    if (min !== 0) {
+      $scope.budgetClause = 'total_budget__c>=' + min + ' AND total_budget__c<=' + max;
+    } else {
+      $scope.budgetClause = 'total_budget__c<=' + max;
+    }
+    $scope.composeWhereClause()
+  };
+
   $scope.composeWhereClause = function () {
     $scope.whereClause = null;
-    var parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause];
+    var parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause];
     var first = true;
     for (var i = 0, len = parts.length; i < len; ++i) {
       var part = parts[i];

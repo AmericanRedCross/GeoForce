@@ -551,7 +551,7 @@
                                                 <b>Min: {{budget.slider[0] | currency:"$"}}</b>
                                                 <b>Max: {{budget.slider[1] | currency:"$"}}</b>
                                                 <br/><br/>
-                                                <div ui-slider="{range: true}" ui-slider min="{{budget.min}}" max="{{budget.max}}" ng-model="budget.slider"></div>
+                                                <div ui-slider="{range: true}" ui-slider min="{{budget.min}}" max="{{budget.max}}" ng-model="budget.slider" ng-keyup="budgetFilter()" ng-mouseup="budgetFilter()"></div>
                                             </div>
                                         </div>
                                         <h4>Total Budget Stats</h4>
