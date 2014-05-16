@@ -548,8 +548,8 @@
                                                 <h3 class="panel-title">Total Budget</h3>
                                             </div>
                                             <div class="panel-body">
-                                                <b>Min: {{budget.slider[0]}}</b>
-                                                <b>Max: {{budget.slider[1]}}</b>
+                                                <b>Min: {{budget.slider[0] | currency:"$"}}</b>
+                                                <b>Max: {{budget.slider[1] | currency:"$"}}</b>
                                                 <br/><br/>
                                                 <slider model="budget.slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,60]" data-slider-selection="after" data-slider-tooltip="show"></slider>
                                             </div>
