@@ -176,9 +176,11 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
     $scope.budgetClause = null;
     var min = $scope.budget.slider[0];
     var max = $scope.budget.slider[1];
-    if (min !== 0) {
+    if (min !== 0 && max !== $scope.budget.max) { //both min and max changed
       $scope.budgetClause = 'total_budget__c>=' + min + ' AND total_budget__c<=' + max;
-    } else {
+    } else if (min !== 0) { // only min changed
+      $scope.budgetClause = 'total_budget__c>=' + min
+    } else if (max !== $scope.budget.max) { // only max changed
       $scope.budgetClause = 'total_budget__c<=' + max;
     }
     $scope.composeWhereClause()
