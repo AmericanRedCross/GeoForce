@@ -9,10 +9,10 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
   $scope.sectors = [];
   $scope.status = [];
   debug.budget = $scope.budget = {
-    slider: {},
+    slider: [2000, 8000],
     min: 0,
-    mean: 50,
-    max: 100
+    mean: 5000,
+    max: 100000
   };
 
   /**
@@ -33,6 +33,7 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
       $scope.budget.min = data[0].min;
       $scope.budget.mean = data[0].avg;
       $scope.budget.max = data[0].max;
+      $scope.budget.slider = [data[0].min, data[0].max];
     }
   }).error(function() {
     console.error("Unable to fetch Total Budget Min, Mean, Max");
