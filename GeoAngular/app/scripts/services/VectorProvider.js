@@ -375,46 +375,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   };
 
 
-//  function fetchCenterFeature(featObj) {
-//
-//    var url = LayerConfig.bbox.featurl.replace(':level', featObj.level).replace(':ids', featObj.guid);
-//    var proxyPath = config.proxyPath(url);
-//
-//    $http.get(url, {cache: true}).success(function (geojson, status) {
-//      broadcastCenterFeature(featObj, geojson);
-//    }).error(function(err) {
-//      $http.get(proxyPath).success(function (geojson, status) {
-//        broadcastCenterFeature(featObj, geojson);
-//      }).error(function (err) {
-//        console.error('Unable to fetchCenterFeature');
-//      });
-//    });
-//  }
-//
-//  function broadcastCenterFeature(featObj, geojson) {
-//    /**
-//     * Deal with bad stuff.
-//     */
-//    if (geojson.error) {
-//      console.error('Unable to fetch feature: ' + geojson.error);
-//      return;
-//    }
-//
-//    if (!geojson.features || geojson.features.length < 1) {
-//      return;
-//    }
-//
-//    // we only are actually asking for 1 feature
-//    var feat = geojson.features[0];
-//
-//    // putting existing properties into geojson feature
-//    for (var key in featObj) {
-//      feat.properties[key] = featObj[key];
-//    }
-//
-//    $rootScope.$broadcast('center-feature', feat);
-//  }
-
   /**
    * This is called by the onSelect event for the featurelabels.
    * @param featureLayer
@@ -570,9 +530,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
       console.log('VectorProvider bbox: ' + bbox);
       fetchFeatureItinerary();
-//      for(var i = 0, len = bboxResources.length; i < len; ++i) {
-//        bboxResources[i].fetchFeatureItinerary();
-//      }
 
     },
 

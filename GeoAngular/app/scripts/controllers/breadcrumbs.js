@@ -3,7 +3,7 @@
  *       on 4/17/14.
  */
 
-angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $rootScope, $state, $stateParams, $http) {
+angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $rootScope, $state, $stateParams, $http, VectorProvider) {
 	console.log('BreadcrumbsCtrl');
 
 	var title = $scope.title = $stateParams.title || 'World';
@@ -37,18 +37,20 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 				var properties = result[0];
 
 				//Update
-				updateBreadCrumbs(properties, featObj.level);
+                if(properties){
+                    updateBreadCrumbs(properties, featObj.level);
 
-				//Store in the hash.
-				if(breadCrumbFeatures[featObj.level]){
-					breadCrumbFeatures[featObj.level][properties["guid" + featObj.level]] = properties;
-				}
-				else{
-					breadCrumbFeatures[featObj.level] = {};
-					breadCrumbFeatures[featObj.level][properties["guid" + featObj.level]] = properties;
-				}
-
-
+                    //Store in the hash.
+                    if(breadCrumbFeatures[featObj.level]){
+                        breadCrumbFeatures[featObj.level][properties["guid" + featObj.level]] = properties;
+                    }
+                    else{
+                        breadCrumbFeatures[featObj.level] = {};
+                        breadCrumbFeatures[featObj.level][properties["guid" + featObj.level]] = properties;
+                    }
+                }else{
+                    console.log("");
+                }
 			});
 		}
 	});
@@ -63,7 +65,7 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 
 			if(x == -1){
 				$scope["levelarc"] = featObj["namearc"];
-				$scope["guidarc"] = featObj["guidarc"];
+				$scope["guidarc"] = featObj;
 			}
 		}
 
@@ -71,11 +73,25 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 		for (var i = level; i >= 0; i--) {
 			if(i == -1){
 				$scope["levelarc"] = featObj["namearc"];
-				$scope["guidarc"] = featObj["guidarc"];
+				$scope["guidarc"] = featObj;
 			}
 			$scope["level" + i] = featObj["name" + i];
-			$scope["guid" + i] = featObj["guid" + i];
+			$scope["feat" + i] = featObj;
 		}
 	}
+
+    $scope.zoomToGUID = function(featObj, level){
+        //Given a GUID, zoom to the feature.
+
+        //Grab the feature from the VectorProvider.
+        VectorProvider.fetchFeature(featObj["guid" + level], level, null, function(feat){
+            //Make a temp geojson layer and add the geojson.
+            //Then grab the bounds from it and zoom to it.
+
+            var gjl = L.geoJson(feat.geometry);
+            $scope.$parent.zoomToBounds(gjl.getBounds());
+        });
+
+    }
 
 });

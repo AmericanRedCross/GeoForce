@@ -69,7 +69,7 @@
                         <button type="button" class="btn btn-default"   ng-mouseenter="isFiltersActive = isNotParam('filters-panel')"
                                                                         ng-mouseleave="isFiltersActive=false"
                                                                         ng-click="toggleParam('filters-panel')"
-                                                                        ng-class="{on: isParam('filters-panel')}">
+                                                                        ng-class="{on: isParam('filters-panel'), disabled: themeName != 'Project'}">
                             <i data-icon="e"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isLegendActive = isNotParam('legend')"
@@ -668,22 +668,22 @@
                                 <div class="bc arcregion" ng-click="zoomToGUID(guidarc)">{{arcregion}}</div>
 
                                 <div class="bc-arrow" ng-show="level0" data-icon="k"></div>
-                                <div class="bc level0" ng-click="zoomToGUID('{{guid0}}')">{{level0}}</div>
+                                <div class="bc level0" ng-click="zoomToGUID(feat0, 0)">{{level0}}</div>
 
                                 <div class="bc-arrow" ng-show="level1" data-icon="k"></div>
-                                <div class="bc level1" ng-click="zoomToGUID('{{guid1}}')">{{level1}}</div>
+                                <div class="bc level1" ng-click="zoomToGUID(feat1, 1)">{{level1}}</div>
 
                                 <div class="bc-arrow" ng-show="level2" data-icon="k"></div>
-                                <div class="bc level2" ng-click="zoomToGUID('{{guid2}}')">{{level2}}</div>
+                                <div class="bc level2" ng-click="zoomToGUID(guid2, 2)">{{level2}}</div>
 
                                 <div class="bc-arrow" ng-show="level3" data-icon="k"></div>
-                                <div class="bc level3" ng-click="zoomToGUID('{{guid3}}')">{{level3}}</div>
+                                <div class="bc level3" ng-click="zoomToGUID(guid3, 3)">{{level3}}</div>
 
                                 <div class="bc-arrow" ng-show="level4" data-icon="k"></div>
-                                <div class="bc level4" ng-click="zoomToGUID('{{guid4}}')">{{level4}}</div>
+                                <div class="bc level4" ng-click="zoomToGUID(guid4, 4)">{{level4}}</div>
 
                                 <div class="bc-arrow" ng-show="level5" data-icon="k"></div>
-                                <div class="bc level5" ng-click="zoomToGUID('{{guid5}}')">{{level5}}</div>
+                                <div class="bc level5" ng-click="zoomToGUID(guid5, 5)">{{level5}}</div>
                             </div>
                         </div>
 
@@ -700,7 +700,7 @@
                             <div class="title">Regions:</div>
                             <div class="row content">
                                 <div class="col-md-12" id="RegionContainer1">
-                                    <div ng-repeat="region in regionList1" ng-click="zoomToExtent(region.geometry.coordinates[0], region.properties.arcregion2)" class="countryListItem">{{region.properties.arcregion2}}</div>
+                                    <div ng-repeat="region in regionList1" ng-click="zoomToExtent(region.geometry.coordinates[0], region.properties.arcregion2)" class="col-md-4 countryListItem">{{region.properties.arcregion2}}</div>
                                 </div>
                             </div>
                         </div>
@@ -715,7 +715,7 @@
 
                             <div class="row content">
                                 <div class="col-md-12" id="CountryContainer1">
-                                    <div ng-repeat="country in countryList1 | filter:countrySearchText" ng-click="zoomToExtent(country.geometry.coordinates[0], country.properties.name_0)" class="col-md-4 countryListItem">{{country.properties.name_0}}</div>
+                                    <div ng-repeat="country in countryList1 | filter:countrySearchText" ng-click="zoomToExtent(country.geometry.coordinates[0])" class="col-md-4 countryListItem">{{country.properties.name_0}}</div>
                                 </div>
                             </div>
                         </div>

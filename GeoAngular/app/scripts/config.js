@@ -6,7 +6,8 @@
 var config = {};
 
 config.chubbsPath = function(relPath) {
-  return 'http://localhost:3000/' + relPath;
+  //return 'http://localhost:3000/' + relPath;
+    return window.location.protocol + "//"  + window.location.host + "/" + relPath;
 };
 
 config.proxyPath = function(path) {

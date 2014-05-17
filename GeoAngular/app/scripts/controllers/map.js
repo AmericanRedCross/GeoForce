@@ -124,43 +124,19 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
           //If they haven't chagned, then don't proceed.
           var tileBounds = getCurrentTileBounds(map);
           var zoom = map.getZoom();
-          if($scope.tileBounds ){
-              if(!areBoundsEqual($scope.tileBounds, tileBounds, $scope.zoom, zoom)){
-                  $scope.tileBounds = tileBounds;
-                  $scope.zoom = zoom;
-                  var minx = tileBounds.min.x;
-                  var maxx = tileBounds.max.x;
-                  var miny = tileBounds.min.y;
-                  var maxy = tileBounds.max.y;
 
-                  var str = zoom + "," + minx + ',' +
-                      maxx + ',' +
-                      miny + ',' +
-                      maxy;
+          $scope.zoom = zoom;
+          var minx = tileBounds.min.x;
+          var maxx = tileBounds.max.x;
+          var miny = tileBounds.min.y;
+          var maxy = tileBounds.max.y;
 
-                  VectorProvider.updateBBox(str);
-              }
-          }
-            else{
-              //1st time thru
-              $scope.tileBounds = tileBounds;
-              $scope.zoom = zoom;
-          }
+          var str = zoom + "," +  minx + ',' +
+                                  maxx + ',' +
+                                  miny + ',' +
+                                  maxy;
 
-
-
-
-
-//          var bounds = map.getBounds();
-//          var west = bounds.getWest();
-//          var south = bounds.getSouth();
-//          var east = bounds.getEast();
-//          var north = bounds.getNorth();
-//
-//          if (west < -180) west = -180;
-//          if (south < -90) south = -90;
-//          if (east > 180) east = 180;
-//          if (north > 90) north = 90;
+          VectorProvider.updateBBox(str);
 
         });
         wait = false;
