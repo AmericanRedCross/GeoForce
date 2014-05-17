@@ -44,31 +44,31 @@ angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $
   };
 
   $scope.sectorsFilter = function () {
-    var sectorFilters = [];
-    for (var i = 0, len = $scope.sectors.length; i < len; ++i) {
-      var sector = $scope.sectors[i];
+    $scope.sectorClause = '';
+    var sectors = $scope.sectors;
+    var first = true;
+    for (var i = 0, len = sectors.length; i < len; ++i) {
+      var sector = sectors[i];
       if (sector.checked) {
-        sectorFilters.push(sector.name);
+        if (first) {
+          $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
+          first = false;
+        } else {
+          $scope.sectorClause += "OR sector__c LIKE '%" + sector.name + "%' ";
+        }
       }
     }
-    var filteredSector = sectorFilters.pop();
-
-    // no sectors to filter
-    if (!filteredSector) {
-      $scope.whereClause = 'null';
-    } else {
-      $scope.whereClause = "sector__c LIKE '%" + filteredSector + "%' ";
-      filteredSector = sectorFilters.pop();
-      while (filteredSector) {
-        $scope.whereClause += "OR sector__c LIKE '%" + filteredSector + "%' ";
-        filteredSector = sectorFilters.pop();
-      }
-    }
-    $scope.submitFilter();
+    $scope.composeWhereClause();
   };
 
   $scope.statusFilter = function () {
 
+  };
+
+  $scope.composeWhereClause = function () {
+    $scope.whereClause = $scope.sectorClause;
+    if ($scope.whereClause === '') $scope.whereClause = 'null';
+    $scope.submitFilter();
   };
 
   $scope.submitFilter = function () {
