@@ -40,9 +40,12 @@
     color: #ed1b2e!important;
 }
 
+
+
 .NavButtonGroup button.on {
     background-color: #fff;
 }
+
 
 .NavButtonGroup button {
     padding: 13px 16px 10px 16px;
@@ -56,6 +59,12 @@
     border-left: 0px;
     border-right: 0px;
 }
+
+.NavButtonGroup button.disabled{
+    color: gray;
+    cursor: default;
+}
+
 
 .NavButtonGroup button i{
     font-family: 'geoforce';
