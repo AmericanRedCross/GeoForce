@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
-    <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -499,24 +499,24 @@
                                     </div>
                                     <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
 
-                                        <div class="panel panel-default" ng-repeat="dateFilter in dateFilters">
+                                        <div class="panel panel-default" ng-repeat="filter in dateFilters">
                                             <div class="panel-heading">
-                                                <h3 class="panel-title">{{dateFilter.name}}</h3>
+                                                <h3 class="panel-title">{{filter.name}}</h3>
                                             </div>
                                             <div class="panel-body">
                                                 <p class="input-group">
-                                                    <input type="text" class="form-control" datepicker-popup="EEE MMM d, y" ng-model="dateFilter.date" is-open="dateFilter.opened" ng-required="true" close-text="Close" />
+                                                    <input type="text" class="form-control" ng-change="dateFilter()" datepicker-popup="EEE MMM d, y" ng-model="filter.date" is-open="filter.opened" ng-required="true" close-text="Close" />
                                                     <span class="input-group-btn">
-                                                      <button type="button" class="btn btn-default" ng-click="toggleDate($event, dateFilter)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                      <button type="button" class="btn btn-default" ng-click="toggleDate($event, filter)"><i class="glyphicon glyphicon-calendar"></i></button>
                                                     </span>
                                                     <div class="btn-group">
-                                                        <label class="btn btn-default" ng-model="dateFilter.radio" btn-radio="'before'">Before</label>
-                                                        <label class="btn btn-default" ng-model="dateFilter.radio" btn-radio="'on'">On</label>
-                                                        <label class="btn btn-default" ng-model="dateFilter.radio" btn-radio="'after'">After</label>
+                                                        <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'before'">Before</label>
+                                                        <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'on'">On</label>
+                                                        <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'after'">After</label>
                                                     </div>
                                                     <label class="checkbox">
-                                                        <input type="checkbox" ng-model="dateFilter.empty">
-                                                        Include Records with an Empty {{dateFilter.name}}.
+                                                        <input type="checkbox" ng-model="filter.empty" ng-change="dateFilter()">
+                                                        Include Records with an Empty {{filter.name}}.
                                                     </label>
                                                 </p>
                                             </div>
@@ -548,10 +548,10 @@
                                                 <h3 class="panel-title">Total Budget</h3>
                                             </div>
                                             <div class="panel-body">
-                                                <b>Min: {{budget.slider[0]}}</b>
-                                                <b>Max: {{budget.slider[1]}}</b>
+                                                <b>Min: {{budget.slider[0] | currency:"$"}}</b>
+                                                <b>Max: {{budget.slider[1] | currency:"$"}}</b>
                                                 <br/><br/>
-                                                <slider model="budget.slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,60]" data-slider-selection="after" data-slider-tooltip="show"></slider>
+                                                <div ui-slider="{range: true}" ui-slider min="{{budget.min}}" max="{{budget.max}}" ng-model="budget.slider" ng-keyup="budgetFilter()" ng-mouseup="budgetFilter()"></div>
                                             </div>
                                         </div>
                                         <h4>Total Budget Stats</h4>
@@ -811,6 +811,7 @@
     <!-- build:js scripts/lib.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
     <script src="bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
     <script src="bower_components/ng-file-upload/angular-file-upload-html5-shim.js"></script>
     <script src="bower_components/angular/angular.js"></script>
@@ -827,7 +828,7 @@
     <script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
-    <script src="bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+    <script src="bower_components/angular-ui-slider/src/slider.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -845,7 +846,6 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/services/LayerConfig.js"></script>
     <script src="scripts/services/VectorProvider.js"></script>
-    <script src="scripts/directives/angular-bootstrap-slider.js"></script>
     <script src="scripts/controllers/landing.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/map.js"></script>
