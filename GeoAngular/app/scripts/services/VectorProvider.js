@@ -322,7 +322,16 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   }
 
   function processFeatureItinerary(featItinerary) {
-    console.log('featItinerary: ' + JSON.stringify(featItinerary));
+    console.log("FEATURE ITINERARY:");
+    for (var j = 0, len = featItinerary.length; j < len; j++) {
+      var feat = featItinerary[j];
+      if ( feat.iscenter ) {
+        console.log('CENTER ' + feat.name + ' ' + feat.guid + ' ' + feat.level);
+      } else {
+        console.log(feat.name + ' ' + feat.guid + ' ' + feat.level);
+      }
+    }
+
     // if there are no features for the current bounding box
     if (!featItinerary || featItinerary.length === 0) {
       return;
@@ -352,10 +361,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     var self = this;
     var activeLevels = {};
     self._activeLevels = activeLevels;
+    self._featItineraryHash = {};
     for (var i=0, len = featItinerary.length; i < len; ++i) {
       var o = featItinerary[i];
       activeLevels[o.level] = true;
-
+      self._featItineraryHash[o.guid] = o;
       var guid = o.guid || o.id;
       if (!self._features[guid]) {
         // adding feature to features hash (all features ever)
@@ -372,6 +382,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       }
     }
     self._removeInactiveLayers(self);
+    BBoxGeoJSON_removeInactiveLabels(self);
   };
 
 
@@ -405,6 +416,30 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     $rootScope.closeParam('details-panel');
   };
 
+
+  function BBoxGeoJSON_removeInactiveLabels(self) {
+    var allFeatureLayers = self._allFeatureLayers;
+    var featureItinerary = self._featItineraryHash;
+    for (var key in allFeatureLayers) {
+      if (key == '5ba17a19-4a92-40bd-9dfe-46aa0ecdec7b') {
+        console.log('kenya');
+      }
+      if (!featureItinerary[key]) {
+        var featureLayer = allFeatureLayers[key];
+        if ( featureLayer.geojsonLayer && featureLayer.label) {
+          console.log("REMOVING: " + featureLayer.feature.properties.name);
+          debug.map.removeLayer(featureLayer.label); // NH FIXME
+          featureLayer.label = null;
+        }
+
+        if ( featureLayer.geojsonLayer && featureLayer.geojsonLayer.label) {
+          console.log("REMOVING: " + featureLayer.feature.properties.name);
+          debug.map.removeLayer(featureLayer.geojsonLayer.label); // NH FIXME
+          featureLayer.geojsonLayer.label = null;
+        }
+      }
+    }
+  }
 
   /**
    * For all of the active layers that we have, remove layers that are
