@@ -79,7 +79,6 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
     var lng = c.lng.toFixed(6);
     var zoom = c.zoom.toString();
     if (mapMoveEnd) {
-      console.log('moveend true');
       mapMoveEnd = false;
     } else if (   $stateParams.lat    !== lat
         || $stateParams.lng    !== lng
