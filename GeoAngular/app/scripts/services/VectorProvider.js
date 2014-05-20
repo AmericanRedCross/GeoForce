@@ -458,11 +458,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
           var layer = layers[i];
           self._geojsonLayer.removeLayer(layer);
 
-          if (layer.label){
-            self._geojsonLayer.removeLayer(layer.label);
-            layer.label = null; // fixes bug where label not coming back when old gadm level re-instantiated
-          }
-
           console.log('Removed Layer: ' + layer.feature.properties.name);
         }
         delete featureLayersByLevel[level];
