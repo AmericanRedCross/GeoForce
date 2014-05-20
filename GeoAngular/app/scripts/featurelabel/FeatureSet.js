@@ -259,6 +259,11 @@
 
   }
 
+  /**
+   * NH TODO: Calculate the layer with the most area rather than the most paths.
+   * @param layers
+   * @returns {*}
+   */
   function findMostComplexLayer(layers) {
     var complexLayer = null;
     var numPoints = 0;
