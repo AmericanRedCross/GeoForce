@@ -37,8 +37,6 @@ operation.outputImage = false;
 operation.inputs["guids"] = {}; //comma separated list of guids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 
-operation.Query = "SELECT sf_disaster_location.* FROM sf_aggregated_gadm_disaster_counts, sf_project WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id AND guid{{gadm_level}} = {{guids}};";
-
 
 operation.DisasterQuery =
 "SELECT * FROM sf_disaster_location AS loc \
