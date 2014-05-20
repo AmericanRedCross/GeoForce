@@ -198,12 +198,20 @@
 
     });
 
+    /**
+     * Fixes the double label bug.
+     */
+    featureLayer.geojsonLayer.addLayer(label);
 
-    if (!featureLayer.addLayer) {
-      featureLayer.geojsonLayer.addLayer(label);
-    } else {
-      featureLayer.addLayer(label);
-    }
+    /**
+     * Ideally we want to be adding labels to the actual layer they are on
+     * rather than the parent GeoJSON layer.
+     */
+//    if (!featureLayer.addLayer) {
+//      featureLayer.geojsonLayer.addLayer(label);
+//    } else {
+//      featureLayer.addLayer(label);
+//    }
 
     L.spatialdev.featurelabel.labels[featureLayer.feature.properties.guid] = label;
     return label;

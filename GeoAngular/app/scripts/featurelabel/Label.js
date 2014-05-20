@@ -27,6 +27,7 @@ L.Label = L.Class.extend({
     L.setOptions(this, options);
 //    this._latlng = L.latLng(latlng);
     this._point = point;
+    this.isLabel = true;
   },
 
   onAdd: function (map) {
