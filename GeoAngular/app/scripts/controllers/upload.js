@@ -86,6 +86,15 @@ angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $s
 
   };
 
+  /**
+   * If UploadCtrl gets called twice for some reason, we might
+   * have this class hanging around blocking the app. UploadCtrl
+   * does get called twice sometimes, because the modal sometimes
+   * nudges the map and reinstantiates the modal again via a new
+   * route.
+   */
+  $('.modal-backdrop').remove();
+
   $('#uploadModal').modal('show');
 
   $('#uploadModal').on('hidden.bs.modal', function(e) {
