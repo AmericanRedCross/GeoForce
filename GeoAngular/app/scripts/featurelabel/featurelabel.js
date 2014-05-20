@@ -14,7 +14,8 @@ L.spatialdev.featurelabel = {
     for(var i= 0, len=featureSets.length; i<len; ++i) {
       featureSets[i]._pathUpdated(leafletId);
     }
-  }
+  },
+  labels: {}
 };
 
 }());

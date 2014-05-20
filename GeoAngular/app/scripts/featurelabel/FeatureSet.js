@@ -9,7 +9,6 @@
   L.spatialdev.featurelabel.FeatureSet = function () {
     this.features = [];
     this._pathIdHash = {};
-    this.selectedFeature = null;
     L.spatialdev.featurelabel.featureSets.push(this);
   };
 
@@ -78,15 +77,32 @@
         featureLayer.pathsUpdated = 0;
       }
 
-    } else {
-
-      // there is only one polygon, so calculate center. also check to see if there are parts
-      if ( featureLayer._parts && featureLayer._parts.length ) {
-        featureLayer.labelCenterPoint = calculateCenter(featureLayer._parts);
-        updateLabel(featureLayer);
-      }
-
+      return;
     }
+
+    // there is only one polygon, so calculate center. also check to see if there are parts
+    if ( featureLayer._parts && featureLayer._parts.length ) {
+      featureLayer.labelCenterPoint = calculateCenter(featureLayer._parts);
+      updateLabel(featureLayer);
+
+      return;
+    }
+
+//    // no paths for the feature are on the screen anymore
+//    if ( featureLayer.geojsonLayer && featureLayer.label) {
+//      console.log("REMOVING: " + featureLayer.feature.properties.name);
+//      featureLayer.geojsonLayer.removeLayer(featureLayer.label);
+//      featureLayer.label = null;
+//      return;
+//    }
+//
+//    if ( featureLayer.geojsonLayer && featureLayer.geojsonLayer.label) {
+//      console.log("REMOVING: " + featureLayer.feature.properties.name);
+//      featureLayer.geojsonLayer.removeLayer(featureLayer.geojsonLayer.label);
+//      featureLayer.geojsonLayer.label = null;
+//    }
+
+
   }
 
 
@@ -106,7 +122,7 @@
 
     }
 
-    console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ')');
+    console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
 
     var icon = L.divIcon({
       className: $.isNumeric(text) ? 'btn btn-danger featurelabel-icon-number' : 'featurelabel-icon',
@@ -189,6 +205,7 @@
       featureLayer.addLayer(label);
     }
 
+    L.spatialdev.featurelabel.labels[featureLayer.feature.properties.guid] = label;
     return label;
   }
 
