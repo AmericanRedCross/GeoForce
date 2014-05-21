@@ -61,19 +61,19 @@ angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $roo
 		for (var x = level; x <= 5; x++) {
 			//null out any level values that are LOWER than what we're currently looking at
 			$scope["level" + x] = "";
-			$scope["guid" + x] = "";
+			$scope["feat" + x] = null;
 
 			if(x == -1){
 				$scope["levelarc"] = featObj["namearc"];
-				$scope["guidarc"] = featObj;
+				$scope["featarc"] = featObj;
 			}
 		}
 
 		//using the requested level, dig out the properties for that level and ones above it
-		for (var i = level; i >= 0; i--) {
+		for (var i = level; i >= -1; i--) {
 			if(i == -1){
 				$scope["levelarc"] = featObj["namearc"];
-				$scope["guidarc"] = featObj;
+				$scope["featarc"] = featObj;
 			}
 			$scope["level" + i] = featObj["name" + i];
 			$scope["feat" + i] = featObj;

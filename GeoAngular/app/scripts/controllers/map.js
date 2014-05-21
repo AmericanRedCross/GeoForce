@@ -108,7 +108,7 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
   //This take a leaflet bounds object and handles it.
   delete $stateParams['zoom-extent'];
   $scope.zoomToBounds = function(bounds){
-    $scope.bounds = bounds;
+    $scope.bounds = { northEast: bounds.getNorthEast(), southWest: bounds.getSouthWest()};
   };
 
 

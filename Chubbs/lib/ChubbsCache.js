@@ -206,17 +206,21 @@ Cacher.prototype.buildEnd = function(res, key, staleKey, realTtl, ttl) {
     res.end = function (data) {
         res._responseBody += data
         var cacheObject = {statusCode: res.statusCode, content: res._responseBody, headers: res._headers}
-        self.client.set(key, cacheObject, realTtl, function(err) {
-            if (err) {
-                self.emit("error", err)
-            }
-            self.client.set(staleKey, STALE_CREATED, ttl, function(err) {
+        //RW
+        //Don't cache anything except 200 results
+        if(res.statusCode == 200) {
+            self.client.set(key, cacheObject, realTtl, function (err) {
                 if (err) {
                     self.emit("error", err)
                 }
-                self.emit("cache", cacheObject)
+                self.client.set(staleKey, STALE_CREATED, ttl, function (err) {
+                    if (err) {
+                        self.emit("error", err)
+                    }
+                    self.emit("cache", cacheObject)
+                })
             })
-        })
+        }
         return origEnd.apply(res, arguments)
     }
 }
