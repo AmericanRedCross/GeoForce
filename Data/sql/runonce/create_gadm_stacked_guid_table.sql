@@ -31,6 +31,16 @@ CREATE INDEX ON gadmrollup (name2);
 CREATE INDEX ON gadmrollup (name3);
 CREATE INDEX ON gadmrollup (name4);
 CREATE INDEX ON gadmrollup (name5);
+
+CREATE INDEX ON gadmrollup (guidARC);
+CREATE INDEX ON gadmrollup (guid0);
+CREATE INDEX ON gadmrollup (guid1);
+CREATE INDEX ON gadmrollup (guid2);
+CREATE INDEX ON gadmrollup (guid3);
+CREATE INDEX ON gadmrollup (guid4);
+CREATE INDEX ON gadmrollup (guid5);
+
+
 CREATE INDEX ON gadmrollup USING gist (geomARC);
 CREATE INDEX ON gadmrollup USING gist (geom0);
 CREATE INDEX ON gadmrollup USING gist (geom1);
@@ -46,11 +56,23 @@ ALTER TABLE gadmrollup ADD PRIMARY KEY (id);
 CREATE INDEX idx_sf_gadmguids_id ON gadmrollup USING btree (id);
 UPDATE gadmrollup SET geom0 = ST_BUFFER(geom0, 0);
 
---36 minutes
+--Manually do some of the big ones.
+update gadmrollup
+set nameARC = 'Americas'
+where name0 IN ('United States', 'Canada');
+
+update gadmrollup
+set nameARC = 'AMEE'
+where name0 IN ('Russia', 'Indonesia', 'Vietnam');
+
+--Then update the rest spatially.  This take a long time.
 update gadmrollup
 set nameARC = a.arcregion2, guidarc = a.gid, geomarc = a.geom
 FROM ARC_REGIONS_DISSOLVED a
-WHERE ST_INTERSECTS(a.geom, geom0);
+WHERE ST_INTERSECTS(a.geom, geom0)
+AND name0 NOT IN ('United States', 'Canada', 'Russia', 'Indonesia', 'Vietnam')
+and nameARC is NOT NULL
+
 
 select * from gadmrollup
 LIMIT 100

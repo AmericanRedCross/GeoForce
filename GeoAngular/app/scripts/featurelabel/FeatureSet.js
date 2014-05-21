@@ -54,9 +54,9 @@
   };
 
   function pathUpdated(featureLayer) {
-    // If the id doesnt hash, no path for the features in are feature set apply.
+    // If the id doesnt hash, no path for the features in our feature set apply.
     if (!featureLayer) {
-      console.error('pathUpdated featureLayer empty');
+      //console.error('pathUpdated featureLayer empty');
       return;
     }
 

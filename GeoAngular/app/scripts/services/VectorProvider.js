@@ -40,6 +40,13 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   var bboxResources = [];
   debug.bboxResources = bboxResources;
 
+    /**
+     * make the default BBoxURL able to be overridden if specified by the LayerConfig Object.
+     * @param config
+     * @constructor
+     */
+  var bboxUrl = LayerConfig.bbox.bboxurl;
+
 
   /**
    * All VectorProvider resources are children of this class.
@@ -182,7 +189,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
   function BBoxGeoJSON(config) {
     Resource.call(this, config);
-    this._bboxurl = config.bboxurl;
+    if(config.bboxurl) {
+        this._bboxurl = bboxUrl = config.bboxurl;
+    }
     this._features = {};
     this._featureLayersByLevel = {};
     this._allFeatureLayers = {};
@@ -308,9 +317,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    * has not yet been requested. This is done by _getFeatures.
    */
   function fetchFeatureItinerary() {
-    var url = LayerConfig.bbox.bboxurl.replace(':bbox', bbox);
-    var proxyPath = config.proxyPath(url);
-    $http.get(url, {cache: true}).success(function (featItinerary, status) {
+    var thisUrl = bboxUrl.replace(':bbox', bbox);
+    var proxyPath = config.proxyPath(thisUrl);
+    $http.get(thisUrl, {cache: true}).success(function (featItinerary, status) {
       processFeatureItinerary(featItinerary);
     }).error(function() {
       $http.get(proxyPath, {cache: true}).success(function (featItinerary, status) {
