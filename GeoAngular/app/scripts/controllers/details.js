@@ -3,7 +3,7 @@
  *       on 4/9/14.
  */
 
-angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http) {
+angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http, Donuts) {
 
   $http.get('data/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
     $scope.sfFieldHash = sfFieldHash;
@@ -27,12 +27,12 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
 
 
   //Initialize the dummy project/disaster click results
-  $scope.groupings = {
-    'Please click on a badge or feature to see details...': []
-  };
+  $scope.groupings = {};
 
+  $scope.alertUserToClick = true;
 
   $scope.$on('details', function (event, featureLayer) {
+    $scope.alertUserToClick = false;
     var properties = featureLayer.feature.properties;
     $scope.feature = featureLayer.feature;
     $scope.title = $scope.featureTitle = properties.name || properties.title || 'Selected Feature';

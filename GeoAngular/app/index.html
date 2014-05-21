@@ -749,8 +749,17 @@
                                 </div>
 
                                 <div class="InnerContainer scrollable">
+                                    <div class="heading" ng-show="alertUserToClick">
+                                        Please click on a badge or feature to see details...
+                                    </div>
                                     <!-- Repeater Here to List out Headings and List Items -->
                                     <div class="section scrollable" ng-show="itemsList" ng-repeat="(themeName, themeItems) in groupings">
+
+                                        <div class="heading">Sectors</div>
+                                        <div id="details-donut">
+                                            Put donut and other things here.
+                                        </div>
+
                                         <div class="heading">{{themeName}}</div>
                                         <div class="list" >
                                             <ul>
@@ -833,6 +842,7 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/lib/d3.min.js"></script>
     <script src="scripts/lib/togeojson.js"></script>
     <script src="scripts/lib/mapbox.standalone.uncompressed.js"></script>
     <script src="scripts/lib/jquery.layout-latest.min.js"></script>
@@ -846,6 +856,7 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/services/LayerConfig.js"></script>
     <script src="scripts/services/VectorProvider.js"></script>
+    <script src="scripts/services/Donuts.js"></script>
     <script src="scripts/controllers/landing.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/map.js"></script>
