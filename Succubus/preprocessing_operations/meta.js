@@ -24,7 +24,10 @@ var tables = {
   Disaster_Location__c: null,
   Project_Location__c: null,
   Request_For_Assistance__c: null,
-  Location__c: null
+  Location__c: null,
+  Indicator__c: null,
+  Indicator_Value__c: null,
+  Logframe_Element__c: null
 };
 
 

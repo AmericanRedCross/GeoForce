@@ -20,7 +20,7 @@
       "type": "AggregateResult"
     },
     "project_count": 2,
-    "total_budget": 0,
+    "total_budget": 50000,
     "Admin_0__c": "Belize"
   },
   {
@@ -45,31 +45,7 @@
     },
     "project_count": 2,
     "total_budget": 0,
-    "Admin_0__c": "Guyana"
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "project_count": 3,
-    "total_budget": 5000,
-    "Admin_0__c": "Haiti"
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "project_count": 4,
-    "total_budget": 506000,
-    "Admin_0__c": "India"
-  },
-  {
-    "attributes": {
-      "type": "AggregateResult"
-    },
-    "project_count": 5,
-    "total_budget": 1950000,
-    "Admin_0__c": "Indonesia"
+    "Admin_0__c": "El Salvador"
   },
   {
     "attributes": {
@@ -77,7 +53,47 @@
     },
     "project_count": 1,
     "total_budget": 0,
-    "Admin_0__c": "Italy"
+    "Admin_0__c": "Guatemala"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 2,
+    "total_budget": 0,
+    "Admin_0__c": "Guyana"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 12,
+    "total_budget": 30000,
+    "Admin_0__c": "Haiti"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 1,
+    "total_budget": 0,
+    "Admin_0__c": "Honduras"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 4,
+    "total_budget": 507000,
+    "Admin_0__c": "India"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 7,
+    "total_budget": 1950000,
+    "Admin_0__c": "Indonesia"
   },
   {
     "attributes": {
@@ -147,7 +163,7 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 12,
+    "project_count": 15,
     "total_budget": 0,
     "Admin_0__c": "Panama"
   },
@@ -155,7 +171,7 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 4,
+    "project_count": 5,
     "total_budget": 0,
     "Admin_0__c": "Peru"
   },
@@ -165,7 +181,23 @@
     },
     "project_count": 1,
     "total_budget": 0,
+    "Admin_0__c": "Philippines"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 1,
+    "total_budget": 0,
     "Admin_0__c": "Russia"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "project_count": 1,
+    "total_budget": 0,
+    "Admin_0__c": "Somalia"
   },
   {
     "attributes": {
@@ -219,6 +251,14 @@
     "attributes": {
       "type": "AggregateResult"
     },
+    "project_count": 1,
+    "total_budget": 0,
+    "Admin_0__c": "Zambia"
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
     "project_count": 3,
     "total_budget": 168027,
     "Admin_0__c": "Zimbabwe"
@@ -227,8 +267,8 @@
     "attributes": {
       "type": "AggregateResult"
     },
-    "project_count": 391,
-    "total_budget": 4009638146,
+    "project_count": 437,
+    "total_budget": 4009729146,
     "Admin_0__c": null
   }
 ]

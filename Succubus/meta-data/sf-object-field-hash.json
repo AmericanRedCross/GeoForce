@@ -15,7 +15,7 @@
     "picklistValues": []
   },
   "name": {
-    "label": "Title of Request for Assistance",
+    "label": "Name",
     "inlineHelpText": null,
     "picklistValues": []
   },
@@ -371,63 +371,14 @@
   },
   "sector__c": {
     "label": "Sector",
-    "inlineHelpText": "It contains Sectors rolled up from all related Projects for a Program.",
+    "inlineHelpText": null,
     "picklistValues": [
       {
         "active": true,
         "defaultValue": false,
-        "label": "Health",
+        "label": "ARC Capacity",
         "validFor": null,
-        "value": "Health"
-      },
-      {
-        "active": true,
-        "defaultValue": false,
-        "label": "WatSan",
-        "validFor": null,
-        "value": "WatSan"
-      },
-      {
-        "active": true,
-        "defaultValue": false,
-        "label": "Shelter",
-        "validFor": null,
-        "value": "Shelter"
-      },
-      {
-        "active": true,
-        "defaultValue": false,
-        "label": "Livelihoods",
-        "validFor": null,
-        "value": "Livelihoods"
-      },
-      {
-        "active": true,
-        "defaultValue": false,
-        "label": "Organizational Development",
-        "validFor": null,
-        "value": "Organizational Development"
-      },
-      {
-        "active": true,
-        "defaultValue": false,
-        "label": "Measles",
-        "validFor": null,
-        "value": "Measles"
-      },
-      {
-        "active": true,
-        "defaultValue": false,
-        "label": "IHL",
-        "validFor": null,
-        "value": "IHL"
-      },
-      {
-        "active": true,
-        "defaultValue": false,
-        "label": "GDPC",
-        "validFor": null,
-        "value": "GDPC"
+        "value": "ARC Capacity"
       },
       {
         "active": true,
@@ -439,30 +390,9 @@
       {
         "active": true,
         "defaultValue": false,
-        "label": "RFL",
+        "label": "Earthquake",
         "validFor": null,
-        "value": "RFL"
-      },
-      {
-        "active": true,
-        "defaultValue": false,
-        "label": "People",
-        "validFor": null,
-        "value": "People"
-      },
-      {
-        "active": true,
-        "defaultValue": false,
-        "label": "NFI",
-        "validFor": null,
-        "value": "NFI"
-      },
-      {
-        "active": true,
-        "defaultValue": false,
-        "label": "Relief",
-        "validFor": null,
-        "value": "Relief"
+        "value": "Earthquake"
       },
       {
         "active": true,
@@ -474,9 +404,65 @@
       {
         "active": true,
         "defaultValue": false,
-        "label": "Underfunded Disasters",
+        "label": "GDPC",
         "validFor": null,
-        "value": "Underfunded Disasters"
+        "value": "GDPC"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Health",
+        "validFor": null,
+        "value": "Health"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "HIV",
+        "validFor": null,
+        "value": "HIV"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "IHL",
+        "validFor": null,
+        "value": "IHL"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Livelihoods",
+        "validFor": null,
+        "value": "Livelihoods"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Measles",
+        "validFor": null,
+        "value": "Measles"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "NFI",
+        "validFor": null,
+        "value": "NFI"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Organizational Development",
+        "validFor": null,
+        "value": "Organizational Development"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "People",
+        "validFor": null,
+        "value": "People"
       },
       {
         "active": true,
@@ -495,9 +481,44 @@
       {
         "active": true,
         "defaultValue": false,
-        "label": "ARC Capacity",
+        "label": "Relief",
         "validFor": null,
-        "value": "ARC Capacity"
+        "value": "Relief"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "RFL",
+        "validFor": null,
+        "value": "RFL"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Shelter",
+        "validFor": null,
+        "value": "Shelter"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Underfunded Disasters",
+        "validFor": null,
+        "value": "Underfunded Disasters"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Water",
+        "validFor": null,
+        "value": "Water"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "WatSan",
+        "validFor": null,
+        "value": "WatSan"
       }
     ]
   },
@@ -1215,16 +1236,37 @@
       {
         "active": true,
         "defaultValue": false,
-        "label": "Long Term",
+        "label": "Goal",
         "validFor": null,
-        "value": "Long Term"
+        "value": "Goal"
       },
       {
         "active": true,
         "defaultValue": false,
-        "label": "Disaster Response",
+        "label": "Objective",
         "validFor": null,
-        "value": "Disaster Response"
+        "value": "Objective"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Outcome",
+        "validFor": null,
+        "value": "Outcome"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Output",
+        "validFor": null,
+        "value": "Output"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Activity",
+        "validFor": null,
+        "value": "Activity"
       }
     ]
   },
@@ -2625,6 +2667,397 @@
   },
   "location__r_admin_9__c": {
     "label": "Admin 9",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "collection_frequency__c": {
+    "label": "Collection Frequency",
+    "inlineHelpText": null,
+    "picklistValues": [
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Annually",
+        "validFor": null,
+        "value": "Annually"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Quarterly",
+        "validFor": null,
+        "value": "Quarterly"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Monthly",
+        "validFor": null,
+        "value": "Monthly"
+      }
+    ]
+  },
+  "custom_summary__c": {
+    "label": "Custom Summary",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "data_collected_by__c": {
+    "label": "Data Collected By",
+    "inlineHelpText": null,
+    "picklistValues": [
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "National Society Staff",
+        "validFor": null,
+        "value": "National Society Staff"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Community Member",
+        "validFor": null,
+        "value": "Community Member"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Consultant",
+        "validFor": null,
+        "value": "Consultant"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "ARC Staff",
+        "validFor": null,
+        "value": "ARC Staff"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "National Society Volunteer",
+        "validFor": null,
+        "value": "National Society Volunteer"
+      }
+    ]
+  },
+  "data_collection_method__c": {
+    "label": "Data Collection Method",
+    "inlineHelpText": null,
+    "picklistValues": [
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Document Review",
+        "validFor": null,
+        "value": "Document Review"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Focus Group Discussion",
+        "validFor": null,
+        "value": "Focus Group Discussion"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Interview (One on One)",
+        "validFor": null,
+        "value": "Interview (One on One)"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Observation",
+        "validFor": null,
+        "value": "Observation"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Other",
+        "validFor": null,
+        "value": "Other"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Participatory Methods",
+        "validFor": null,
+        "value": "Participatory Methods"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Questionnaire",
+        "validFor": null,
+        "value": "Questionnaire"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Survey",
+        "validFor": null,
+        "value": "Survey"
+      }
+    ]
+  },
+  "description__c": {
+    "label": "Description",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "framework_indicator__c": {
+    "label": "Framework Indicator",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "framework__c": {
+    "label": "Framework",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "hidden__c": {
+    "label": "Hidden?",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "is_framework_indicator__c": {
+    "label": "Is Framework Indicator",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "is_standard__c": {
+    "label": "Is Standard",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "known_data_limitations_significance__c": {
+    "label": "Known Data Limitations & Significance",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "logframe_element__c": {
+    "label": "Logframe Element",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "period_aggregate__c": {
+    "label": "Period Aggregate",
+    "inlineHelpText": null,
+    "picklistValues": [
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Sum",
+        "validFor": null,
+        "value": "Sum"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Max",
+        "validFor": null,
+        "value": "Max"
+      }
+    ]
+  },
+  "related_to__c": {
+    "label": "Related To",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "standard__c": {
+    "label": "Standard",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "wbs__c": {
+    "label": "WBS",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "supervisor__c": {
+    "label": "Supervisor",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "who_is_responsible__c": {
+    "label": "Who Is Responsible",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "framework_type__c": {
+    "label": "Framework_Type",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "denominator__c": {
+    "label": "Denominator",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "indicator_definition__c": {
+    "label": "Indicator Definition",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "numerator__c": {
+    "label": "Numerator",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "reference_number__c": {
+    "label": "Reference Number",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "other_data_collection__c": {
+    "label": "Other Data Collection",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "indicator__c": {
+    "label": "Indicator",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "actual__c": {
+    "label": "Actual",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "collection_period__c": {
+    "label": "Collection Period",
+    "inlineHelpText": null,
+    "picklistValues": [
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Regular",
+        "validFor": null,
+        "value": "Regular"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Baseline",
+        "validFor": null,
+        "value": "Baseline"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Midterm",
+        "validFor": null,
+        "value": "Midterm"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "Endline",
+        "validFor": null,
+        "value": "Endline"
+      },
+      {
+        "active": true,
+        "defaultValue": false,
+        "label": "As Of Date",
+        "validFor": null,
+        "value": "As Of Date"
+      }
+    ]
+  },
+  "effective_date__c": {
+    "label": "Effective Date",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "overlap__c": {
+    "label": "Overlap",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "period__c": {
+    "label": "Period",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "subjective__c": {
+    "label": "Qualitative",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "target_percent__c": {
+    "label": "Target %",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "target__c": {
+    "label": "Target",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "variance__c": {
+    "label": "Variance",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "period_actual_sum__c": {
+    "label": "Period Acutal Sum",
+    "inlineHelpText": "This will store the Actual Sum Value of Aggregate",
+    "picklistValues": []
+  },
+  "period_actuals_max__c": {
+    "label": "Period Acutal Max",
+    "inlineHelpText": "This will store the Actual Max Value of Aggregate",
+    "picklistValues": []
+  },
+  "period_target_max__c": {
+    "label": "Period Target Max",
+    "inlineHelpText": "This will store the Target Max Value of Aggregate",
+    "picklistValues": []
+  },
+  "period_target_sum__c": {
+    "label": "Period Target Sum",
+    "inlineHelpText": "This will store the Target Sum Value of Aggregate",
+    "picklistValues": []
+  },
+  "unique_indicator_value__c": {
+    "label": "Unique Indicator Value",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "framework_element__c": {
+    "label": "Framework Element",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "is_framework_element__c": {
+    "label": "Is Framework Element",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "item_number__c": {
+    "label": "Item Number",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "plugin_id__c": {
+    "label": "Plugin Id",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "sort_order__c": {
+    "label": "Sort Order",
+    "inlineHelpText": null,
+    "picklistValues": []
+  },
+  "required_for_donor_external_audience__c": {
+    "label": "Required for Donor/External audience",
     "inlineHelpText": null,
     "picklistValues": []
   }

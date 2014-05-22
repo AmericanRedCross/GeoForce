@@ -6,6 +6,9 @@
  *     description is not accurate, I would appreciate improvement.
  */
 
+var fs = require('fs');
+var metaData = JSON.parse(fs.readFileSync('meta-data/sf-objects.json'));
+
 var metaFields =
 "Name, " +
 "Id, " +
@@ -120,6 +123,33 @@ var requestForAssistanceFields =
 "Target_Population__c, " +
 "Total_ARC_Contributions__c";
 
+var indicatorFieldsObj = metaData.Indicator__c.fields;
+var indicatorFields = '';
+for (var i = 0, len = indicatorFieldsObj.length; i < len - 1; i++) {
+  var obj = indicatorFieldsObj[i];
+  var fieldName = obj.name;
+  indicatorFields += fieldName + ', ';
+}
+indicatorFields += indicatorFieldsObj[i].name;
+
+var indicatorValueFieldsObj = metaData.Indicator_Value__c.fields;
+var indicatorValueFields = '';
+for (var j = 0, len = indicatorValueFieldsObj.length; j < len - 1; j++) {
+  var obj = indicatorValueFieldsObj[j];
+  var fieldName = obj.name;
+  indicatorValueFields += fieldName + ', ';
+}
+indicatorValueFields += indicatorValueFieldsObj[i].name;
+
+var logframeElementFieldsObj = metaData.Logframe_Element__c.fields;
+var logframeElementFields = '';
+for (var j = 0, len = logframeElementFieldsObj.length; j < len - 1; j++) {
+  var obj = logframeElementFieldsObj[j];
+  var fieldName = obj.name;
+  logframeElementFields += fieldName + ', ';
+}
+logframeElementFields += logframeElementFieldsObj[i].name;
+
 
 module.exports = {
 
@@ -170,6 +200,8 @@ module.exports = {
   /**
    * Gets just the location table. This is used for migrations to a new GADM dataset.
    */
-  location: "Select " + metaFields + ", Admin_0__c, Admin_1__c, Admin_2__c, Admin_3__c, Admin_4__c, Admin_5__c, Custom_Name__c, GIS_GEO_ID__c, Internal_Region__c, ISD_Region__c, Latitude__c, Longitude__c, Type__c From Location__c"
+  location: "Select " + metaFields + ", Admin_0__c, Admin_1__c, Admin_2__c, Admin_3__c, Admin_4__c, Admin_5__c, Custom_Name__c, GIS_GEO_ID__c, Internal_Region__c, ISD_Region__c, Latitude__c, Longitude__c, Type__c From Location__c",
+
+  indicator: "Select " + indicatorFields + " From Indicator__c"
 
 };
