@@ -37,6 +37,9 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     $scope.feature = featureLayer.feature;
     $scope.title = $scope.featureTitle = properties.name || properties.title || 'Selected Feature';
     if (properties.salesforce) { // salesforce theme badge selected
+
+      var vizDictionary = Donuts.makeVisualizationDictionary($scope.sfFieldHash.sector__c.picklistValues);
+      var donut = new Donuts.ExpandoDonut(properties.salesforce.Projects, vizDictionary, '#details-donut', 'bottom');
       $scope.groupings = properties.salesforce;
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
       $scope.showList();
@@ -45,6 +48,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     }
 
     $scope.openParam('details-panel');
+      
   });
 
   $scope.showDetails = function (item, themeItems, idx) {
