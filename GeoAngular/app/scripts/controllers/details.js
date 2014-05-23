@@ -41,7 +41,7 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
       $scope.showList();
       $scope.openParam('details-panel');
-
+      Donuts.createLabelDonut($scope.sfFieldHash.sector__c.picklistValues, $scope.groupings.Projects, '#details-donut');
     } else { // standard geojson, show properties as details
       $scope.showDetails(properties);
       $scope.openParam('details-panel');
