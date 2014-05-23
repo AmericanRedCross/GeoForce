@@ -748,6 +748,12 @@
                                     {{title}}
                                 </div>
 
+                                <ul ng-show="details.requestsForAssistance" class="nav nav-tabs">
+                                    <li class="active"><a class="a-nav-tab" ng-click="navTab='details'" data-toggle="tab">Details</a></li>
+                                    <li><a class="a-nav-tab" ng-click="navTab='request'" data-toggle="tab">Requests For Assistance</a></li>
+                                    <li><a class="a-nav-tab" ng-show="false" ng-click="navTab='indicators'" data-toggle="tab">Indicators</a></li>
+                                </ul>
+
                                 <div class="InnerContainer scrollable">
                                     <div class="heading" ng-show="alertUserToClick">
                                         Please click on a badge or feature to see details...
@@ -772,7 +778,7 @@
                                         <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
                                     </div>
 
-                                    <div class="section scrollable" ng-show="details">
+                                    <div class="section scrollable" ng-show="details && !(navTab && (navTab==='request' || navTab==='indicator'))">
                                         <ul>
                                             <li ng-repeat="(key, value) in details">
                                                 <div class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
@@ -780,6 +786,10 @@
                                             </li>
                                         </ul>
                                         <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
+                                    </div>
+
+                                    <div class="section scrollable" ng-show="details && (navTab && navTab==='request')">
+                                        request
                                     </div>
 
                                 </div>

@@ -5,6 +5,8 @@
 
 angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http, Donuts) {
 
+  $scope.details = {};
+
   $http.get('data/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
     $scope.sfFieldHash = sfFieldHash;
   });
