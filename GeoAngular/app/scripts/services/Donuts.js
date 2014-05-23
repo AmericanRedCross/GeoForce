@@ -4,6 +4,27 @@
  *       on 5/21/14.
  */
 
+angular.module('GeoAngular').directive('myShow', function($animate) {
+  return {
+    scope: {
+      'myShow': '=',
+      'afterShow': '&',
+      'afterHide': '&'
+    },
+    link: function(scope, element) {
+      scope.$watch('myShow', function(show, oldShow) {
+        if (show) {
+          $animate.removeClass(element, 'ng-hide', scope.afterShow);
+        }
+        if (!show) {
+          $animate.addClass(element, 'ng-hide', scope.afterHide);
+        }
+      });
+    }
+  }
+});
+
+
 angular.module('GeoAngular').factory('Donuts', function () {
 
   /**
@@ -292,9 +313,9 @@ angular.module('GeoAngular').factory('Donuts', function () {
     /**
      * Creates a D3 donut that goes around a label on the map.
      */
-    createLabelDonut: function(sectors, projects) {
+    createLabelDonut: function(sectors, projects, divId) {
       var vizDictionary = makeVisualizationDictionary(sectors);
-      var donut = new ExpandoDonut(projects, vizDictionary, '#details-donut', 'bottom');
+      var donut = new ExpandoDonut(projects, vizDictionary, divId , 'bottom');
       return donut;
     }
 
