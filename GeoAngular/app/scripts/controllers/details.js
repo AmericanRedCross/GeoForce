@@ -37,12 +37,12 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     $scope.feature = featureLayer.feature;
     $scope.title = $scope.featureTitle = properties.name || properties.title || 'Selected Feature';
     if (properties.salesforce) { // salesforce theme badge selected
-
-      var vizDictionary = Donuts.makeVisualizationDictionary($scope.sfFieldHash.sector__c.picklistValues);
-      var donut = new Donuts.ExpandoDonut(properties.salesforce.Projects, vizDictionary, '#details-donut', 'bottom');
       $scope.groupings = properties.salesforce;
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
       $scope.showList();
+
+      Donuts.createLabelDonut($scope.sfFieldHash.sector__c.picklistValues, properties.salesforce.Projects);
+
     } else { // standard geojson, show properties as details
       $scope.showDetails(properties);
     }
