@@ -316,6 +316,7 @@ angular.module('GeoAngular').factory('Donuts', function () {
     createLabelDonut: function(sectors, projects, divId) {
       var vizDictionary = makeVisualizationDictionary(sectors);
       var donut = new ExpandoDonut(projects, vizDictionary, divId , 'bottom');
+      $(divId).prepend('<div id="sectors-heading" class="heading">Sectors</div>');
       return donut;
     }
 
