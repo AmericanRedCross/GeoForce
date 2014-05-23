@@ -47,6 +47,8 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
      */
   var bboxUrl = LayerConfig.bbox.bboxurl;
 
+  var centerLevel = 0;
+
 
   /**
    * All VectorProvider resources are children of this class.
@@ -335,6 +337,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     for (var j = 0, len = featItinerary.length; j < len; j++) {
       var feat = featItinerary[j];
       if ( feat.iscenter ) {
+        centerLevel = feat.level || 0;
         console.log('CENTER ' + feat.name + ' ' + feat.guid + ' ' + feat.level);
       } else {
         console.log(feat.name + ' ' + feat.guid + ' ' + feat.level);
@@ -409,6 +412,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
     var theme = $rootScope.$stateParams.theme || properties.defaultTheme || 'project';
     var themeName = $rootScope.themeNameHash[theme];
+    if (typeof properties.level === 'undefined' || properties.level === null) {
+      console.error('we need a level.');
+    }
     detailsUrl = detailsUrl.replace(':theme', theme).replace(':guids', properties.guid).replace(':level', properties.level);
     $http.get(detailsUrl, {cache: true}).success(function (details) {
 
@@ -416,6 +422,8 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       featureLayer.feature.properties.salesforce[themeName] = details;
       $rootScope.$broadcast('details', featureLayer);
 
+    }).error(function(err){
+      console.error(JSON.stringify(err));
     });
 
   };

@@ -22,4 +22,5 @@
 #SearchPanelWrapper #searchResults{
     max-height:150px;
     overflow-y: auto;
+    margin-top:15px;
 }
