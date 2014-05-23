@@ -662,6 +662,18 @@ operations.createAggregateDisasterCountsForGADM =
     FROM ARC_REGIONS_DISSOLVED a \
     WHERE ST_INTERSECTS(a.geom, geom0);";
 
+operations.AddIndicesForSFTables =
+    "DROP INDEX IF EXISTS idx_sf_project_sector__c; CREATE INDEX idx_sf_project_sector__c ON sf_project USING btree (sector__c); \
+    DROP INDEX IF EXISTS idx_sf_project_status__c; CREATE INDEX idx_sf_project_status__c ON sf_project USING btree (status__c); \
+    DROP INDEX IF EXISTS idx_sf_project_stage_name__c; CREATE INDEX idx_sf_project_stage_name__c ON sf_project USING btree (stage_name__c); \
+    DROP INDEX IF EXISTS idx_sf_project_start_date__c; CREATE INDEX idx_sf_project_start_date__c ON sf_project USING btree (start_date__c); \
+    DROP INDEX IF EXISTS idx_sf_project_end_date__c; CREATE INDEX idx_sf_project_end_date__c ON sf_project USING btree (end_date__c); \
+    DROP INDEX IF EXISTS idx_sf_project_sub_sector__c; CREATE INDEX idx_sf_project_sub_sector__c ON sf_project USING btree (sub_sector__c); \
+    DROP INDEX IF EXISTS idx_sf_project_name; CREATE INDEX idx_sf_project_name ON sf_project USING btree (name); \
+    DROP INDEX IF EXISTS idx_sf_project_summary__c; CREATE INDEX idx_sf_project_summary__c ON sf_project USING btree (summary__c); \
+    DROP INDEX IF EXISTS idx_sf_project_total_budget__c; CREATE INDEX idx_sf_project_total_budget__c ON sf_project USING btree (total_budget__c); \
+    DROP INDEX IF EXISTS idx_sf_project_sf_id; CREATE INDEX idx_sf_project_sf_id ON sf_project USING btree (sf_id);"
+
 //operations.vacuum = "VACUUM ANALYZE;";
 
 module.exports.run = flow.define(

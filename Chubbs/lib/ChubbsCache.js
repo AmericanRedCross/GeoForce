@@ -204,7 +204,12 @@ Cacher.prototype.buildEnd = function(res, key, staleKey, realTtl, ttl) {
     var self = this
 
     res.end = function (data) {
-        res._responseBody += data
+        if(Buffer.isBuffer(data)){
+            res._responseBody = data; //RW - this works for pngs.
+        }
+        else{
+            res._responseBody += data;
+        }
         var cacheObject = {statusCode: res.statusCode, content: res._responseBody, headers: res._headers}
         //RW
         //Don't cache anything except 200 results

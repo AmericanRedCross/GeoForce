@@ -244,16 +244,16 @@ common.convertTileBoundsToBBoxWKT = function(bbox){
 ////Take in results object, return GeoJSON (if there is geometry)
 common.formatters.geoJSONFormatter = function (rows, geom_fields_array, geom_extent_array) {
     //Take in results object, return GeoJSON
-    if (!geom_fields_array || geom_fields_array.length == 0) {
-        //See if the extent array is populated
-        if (geom_extent_array && geom_extent_array.length > 0) {
-            //If no geometry, but extent is defined, just swap out the geom field name for the extent field name
-            geom_fields_array = geom_extent_array;
-        } else {
-            //Use a default if none else are present
-            geom_fields_array = ["geom"];
-        }
-    }
+//    if (!geom_fields_array || geom_fields_array.length == 0) {
+//        //See if the extent array is populated
+//        if (geom_extent_array && geom_extent_array.length > 0) {
+//            //If no geometry, but extent is defined, just swap out the geom field name for the extent field name
+//            geom_fields_array = geom_extent_array;
+//        } else {
+//            //Use a default if none else are present
+//            geom_fields_array = ["geom"];
+//        }
+//    }
 
     //Loop thru results
     var featureCollection = { "type": "FeatureCollection", "features": [] };
