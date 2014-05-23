@@ -40,16 +40,19 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
       $scope.groupings = properties.salesforce;
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
       $scope.showList();
-
-      Donuts.createLabelDonut($scope.sfFieldHash.sector__c.picklistValues, properties.salesforce.Projects);
+      $scope.openParam('details-panel');
 
     } else { // standard geojson, show properties as details
       $scope.showDetails(properties);
+      $scope.openParam('details-panel');
     }
 
-    $scope.openParam('details-panel');
-      
   });
+
+  $scope.createDonuts = function() {
+    // uses jquery to put donut in a div.
+    Donuts.createLabelDonut($scope.sfFieldHash.sector__c.picklistValues, $scope.groupings.Projects, '#details-donut');
+  };
 
   $scope.showDetails = function (item, themeItems, idx) {
     if (item.name || item.title) {
