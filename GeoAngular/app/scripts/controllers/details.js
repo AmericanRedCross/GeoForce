@@ -9,9 +9,117 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     $scope.sfFieldHash = sfFieldHash;
   });
 
-  $scope.keyLabel = function (key) {
-    console.log('key ' + key);
-    return $scope.sfFieldHash[key].label;
+  $scope.label = function (key) {
+
+    var desc = key;
+
+    // disaster
+    if ($stateParams.theme === 'disaster') {
+
+      if ($scope.sfFieldHash.Disaster__c[key]) {
+        desc = $scope.sfFieldHash.Disaster__c[key].label || key;
+      }
+
+      if ($scope.sfFieldHash.Location__c[key]) {
+        desc = $scope.sfFieldHash.Location__c[key].label || key;
+      }
+
+      if ($scope.sfFieldHash.Disaster_Location__c[key]) {
+        desc = $scope.sfFieldHash.Disaster_Location__c[key].label || key;
+      }
+
+      if ($scope.sfFieldHash.Request_For_Assistance__c[key]) {
+        desc = $scope.sfFieldHash.Request_For_Assistance__c[key].label || key;
+      }
+
+      return desc;
+    }
+
+    // contextual layer
+    if ($scope.contextualLayer) {
+      return key;
+    }
+
+    // project
+    if ($scope.sfFieldHash.Project__c[key]) {
+      desc = $scope.sfFieldHash.Project__c[key].label || key;
+    }
+
+    if ($scope.sfFieldHash.Location__c[key]) {
+      desc = $scope.sfFieldHash.Location__c[key].label || key;
+    }
+
+    if ($scope.sfFieldHash.Indicator__c[key]) {
+      desc = $scope.sfFieldHash.Indicator__c[key].label || key;
+    }
+
+    if ($scope.sfFieldHash.Indicator_Value__c[key]) {
+      desc = $scope.sfFieldHash.Indicator_Value__c[key].label || key;
+    }
+
+    if ($scope.sfFieldHash.Logframe_Element__c[key]) {
+      desc = $scope.sfFieldHash.Logframe_Element__c[key].label || key;
+    }
+
+    return desc;
+
+  };
+
+  $scope.tooltip = function (key) {
+//    (sfFieldHash[key].inlineHelpText || '') + ' FieldName: ' + key
+
+    var desc = '';
+
+    // disaster
+    if ($stateParams.theme === 'disaster') {
+
+      if ($scope.sfFieldHash.Disaster__c[key]) {
+        desc = $scope.sfFieldHash.Disaster__c[key].inlineHelpText || '';
+      }
+
+      if ($scope.sfFieldHash.Location__c[key]) {
+        desc = $scope.sfFieldHash.Location__c[key].inlineHelpText || '';
+      }
+
+      if ($scope.sfFieldHash.Disaster_Location__c[key]) {
+        desc = $scope.sfFieldHash.Disaster_Location__c[key].inlineHelpText || '';
+      }
+
+      if ($scope.sfFieldHash.Request_For_Assistance__c[key]) {
+        desc = $scope.sfFieldHash.Request_For_Assistance__c[key].inlineHelpText || '';
+      }
+
+      return desc + ' FieldName: ' + key;
+    }
+
+    // contextual layer
+    if ($scope.contextualLayer) {
+      return 'FieldName: ' + key;
+    }
+
+    // project
+    if ($scope.sfFieldHash.Project__c[key]) {
+      desc = $scope.sfFieldHash.Project__c[key].inlineHelpText || '';
+    }
+
+    if ($scope.sfFieldHash.Location__c[key]) {
+      desc = $scope.sfFieldHash.Location__c[key].inlineHelpText || '';
+    }
+
+    if ($scope.sfFieldHash.Indicator__c[key]) {
+      desc = $scope.sfFieldHash.Indicator__c[key].inlineHelpText || '';
+    }
+
+    if ($scope.sfFieldHash.Indicator_Value__c[key]) {
+      desc = $scope.sfFieldHash.Indicator_Value__c[key].inlineHelpText || '';
+    }
+
+    if ($scope.sfFieldHash.Logframe_Element__c[key]) {
+      desc = $scope.sfFieldHash.Logframe_Element__c[key].inlineHelpText || '';
+    }
+
+    return desc + ' FieldName: ' + key;
+
   };
 
   //Init selectedFeatureTitle property
@@ -37,12 +145,14 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
     $scope.feature = featureLayer.feature;
     $scope.title = $scope.featureTitle = properties.name || properties.title || 'Selected Feature';
     if (properties.salesforce) { // salesforce theme badge selected
+      $scope.contextualLayer = false;
       $scope.groupings = properties.salesforce;
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
       $scope.showList();
       $scope.openParam('details-panel');
-      Donuts.createLabelDonut($scope.sfFieldHash.sector__c.picklistValues, $scope.groupings.Projects, '#details-donut');
+      $scope.createDonuts();
     } else { // standard geojson, show properties as details
+      $scope.contextualLayer = true;
       $scope.showDetails(properties);
       $scope.openParam('details-panel');
     }
@@ -51,7 +161,9 @@ angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootSc
 
   $scope.createDonuts = function() {
     // uses jquery to put donut in a div.
-    Donuts.createLabelDonut($scope.sfFieldHash.sector__c.picklistValues, $scope.groupings.Projects, '#details-donut');
+    if ($scope.groupings && $scope.groupings.Projects) {
+      Donuts.createLabelDonut($scope.sfFieldHash.Project__c.sector__c.picklistValues, $scope.groupings.Projects, '#details-donut');
+    }
   };
 
   $scope.showDetails = function (item, themeItems, idx) {

@@ -24,7 +24,10 @@ var tables = {
   Disaster_Location__c: null,
   Project_Location__c: null,
   Request_For_Assistance__c: null,
-  Location__c: null
+  Location__c: null,
+  Indicator__c: null,
+  Indicator_Value__c: null,
+  Logframe_Element__c: null
 };
 
 
@@ -59,6 +62,7 @@ flow.exec(
 function createObjectFieldHash() {
   var hash = {};
   for (var table in tables) {
+    hash[table] = {};
     var t = tables[table];
     var fields = t.fields;
     for (var i in fields) {
@@ -68,7 +72,7 @@ function createObjectFieldHash() {
       } else {
         var key = field.name.toLowerCase();
       }
-      hash[key] = {
+      hash[table][key] = {
         label: field.label,
         inlineHelpText: field.inlineHelpText,
         picklistValues: field.picklistValues || null
