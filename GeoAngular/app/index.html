@@ -776,7 +776,7 @@
                                         <ul>
                                             <li ng-repeat="(key, value) in details">
                                                 <div class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
-                                                <div class="details-value">{{value}}</div><i class="unavailable" ng-show="!value">Unavailable</i>
+                                                <div ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-show="!value">Unavailable</i>
                                             </li>
                                         </ul>
                                         <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
