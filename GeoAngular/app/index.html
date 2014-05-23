@@ -789,7 +789,20 @@
                                     </div>
 
                                     <div class="section scrollable" ng-show="details && (navTab && navTab==='request')">
-                                        request
+                                        <ul>
+                                            <li ng-repeat="(key, value) in details.requestsForAssistance">
+                                                <h4>{{value.name}}</h4>
+
+                                                <ul>
+                                                    <li ng-repeat="(key2, value2) in value">
+                                                        <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
+                                                        <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                    </li>
+                                                </ul>
+
+                                                <hr/>
+                                            </li>
+                                        </ul>
                                     </div>
 
                                 </div>
