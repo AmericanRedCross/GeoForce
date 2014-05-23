@@ -182,7 +182,7 @@ angular.module('GeoAngular').factory('Donuts', function () {
       .on("mouseover", function(d, i) {
 
         // clear previously active chart wedge
-        d3.select(wrapper[0]).selectAll('path').transition()
+        d3.select(wrapper).selectAll('path').transition()
           .duration(100)
           .attr("d", arc)
           .attr('opacity',1)
