@@ -204,6 +204,7 @@ exports.app = function(passport) {
 			//Check which format was specified
 			if (!this.args.format || this.args.format.toLowerCase() == "html") {
 				//Render HTML page with results at bottom
+                //TODO:  Handle cases where there is no geo, but we want HTML response.
 				features = common.formatters.geoJSONFormatter(result.rows, this.args.geom_fields_array);
 				//The page will parse the geoJson to make the HTMl
 			} else if (this.args.format && this.args.format.toLowerCase() == "geojson") {

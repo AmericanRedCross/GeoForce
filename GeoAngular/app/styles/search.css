@@ -1,0 +1,25 @@
+#SearchPanelWrapper{
+    position:absolute;
+    right: 0px;
+    background-color: #fff;
+    -moz-transition: all .5s ease; /* This is the animation UP for the country selector wrapper */
+    -webkit-transition: all .5s ease; /* This is the animation UP for the country selector wrapper */
+    -ms-transition: all .5s ease; /* This is the animation UP for the country selector wrapper */
+    top: -250px;
+    padding: 20px 25px;
+    z-index: 1;
+    width: 500px;
+}
+
+#SearchPanelWrapper.on{
+    display:block;
+    top: 34px;
+    -moz-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
+    -webkit-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
+    -ms-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
+}
+
+#SearchPanelWrapper #searchResults{
+    max-height:150px;
+    overflow-y: auto;
+}

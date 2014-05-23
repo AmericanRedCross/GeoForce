@@ -39,7 +39,7 @@ operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 
 
 operation.DisasterQuery =
-"SELECT * FROM sf_disaster_location AS loc \
+"SELECT dis.* FROM sf_disaster_location AS loc \
 LEFT JOIN sf_disaster as dis ON loc.disaster__r_id = dis.sf_id \
 INNER JOIN sf_aggregated_gadm_disaster_counts ON dis.sf_id = sf_aggregated_gadm_disaster_counts.sf_id \
 WHERE guid{{gadm_level}} = ({{guids}});";

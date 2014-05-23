@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="styles/info.css">
     <link rel="stylesheet" href="styles/zoom-extent.css">
     <link rel="stylesheet" href="styles/upload.css">
+    <link rel="stylesheet" href="styles/search.css">
       <!-- endbuild -->
 
     <link rel="stylesheet" href="scripts/featurelabel/featurelabel.css">
@@ -56,6 +57,7 @@
                     <div class="NavButtonGroup btn-group">
                         <button type="button" class="btn btn-default"   ng-mouseenter="isStoriesActive = isNotParam('stories')"
                                                                         ng-mouseleave="isStoriesActive = false"
+                                                                        ng-click="toggleParam('stories')"
                                                                         ng-click="toggleParam('stories')"
                                                                         ng-class="{on: isParam('stories')}">
                             <i data-icon="b"></i>
@@ -691,7 +693,7 @@
                             Upload Data
                         </div>
                         <div class="light">Export</div>
-                        <div class="search" data-icon="m"></div>
+                        <div class="search" data-icon="m" ng-click="toggleParam('search-panel')"></div>
                     </div>
 
                     <!-- Region / Country Selector Panel -->
@@ -721,6 +723,16 @@
                         </div>
                     </div>
 
+                    <!-- Search Panel -->
+                    <div ng-controller="SearchECOSCtrl" id="SearchPanelWrapper" ng-class="{on: isParam('search-panel')}">
+                        <div class="input-group">
+                            <span class="input-group-addon">ECOS Search</span>
+                            <input type="text" class="form-control" placeholder="Enter search term" ng-model="SearchInput">
+                        </div>
+                        <div id="searchResults">
+
+                        </div>
+                    </div>
 
 
                     <!-- Bottom Right Theme Selector -->
@@ -861,7 +873,7 @@
     <script src="scripts/controllers/breadcrumbs.js"></script>
     <script src="scripts/controllers/zoom-extent.js"></script>
     <script src="scripts/controllers/theme.js"></script>
-    <script src="scripts/controllers/upload.js"></script>
+    <script src="scripts/controllers/search.js"></script>
     <!-- endbuild -->
 
     <!--<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>-->
