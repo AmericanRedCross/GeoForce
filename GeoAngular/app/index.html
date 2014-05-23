@@ -775,7 +775,7 @@
                                     <div class="section scrollable" ng-show="details">
                                         <ul>
                                             <li ng-repeat="(key, value) in details">
-                                                <div class="details-key" ><a tooltip="{{(sfFieldHash[key].inlineHelpText || '') + ' FieldName: ' + key}}" tooltip-trigger="click">{{sfFieldHash[key].label || key}}</a></div>
+                                                <div class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
                                                 <div class="details-value">{{value}}</div><i class="unavailable" ng-show="!value">Unavailable</i>
                                             </li>
                                         </ul>
