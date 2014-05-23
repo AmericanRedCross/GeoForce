@@ -14,7 +14,7 @@ operation.outputImage = false;
 operation.inputs["guids"] = {}; //comma separated list of guids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 
-operation.Query = "SELECT sf_project.* FROM sf_aggregated_gadm_project_counts, sf_project WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id AND guid{{gadm_level}} = {{guids}};";
+operation.Query = "SELECT " + settings.projectDetails.join(" ,") + " FROM sf_aggregated_gadm_project_counts, sf_project WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id AND guid{{gadm_level}} = {{guids}};";
 
 operation.execute = flow.define(
     function (args, callback) {
