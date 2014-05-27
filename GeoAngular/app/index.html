@@ -71,7 +71,7 @@
                         <button type="button" class="btn btn-default"   ng-mouseenter="isFiltersActive = isNotParam('filters-panel')"
                                                                         ng-mouseleave="isFiltersActive=false"
                                                                         ng-click="toggleParam('filters-panel')"
-                                                                        ng-class="{on: isParam('filters-panel'), disabled: themeName != 'Projects'}">
+                                                                        ng-class="{on: isParam('filters-panel'), disabled: (params.theme !== 'project' && params.theme !== null) }">
                             <i data-icon="e"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isLegendActive = isNotParam('legend')"
