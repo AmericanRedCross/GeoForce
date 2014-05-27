@@ -24,7 +24,7 @@ BEGIN
 	if(ingadm_level IS NOT NULL) THEN
 		--Just get the requested level
 		IF (ingadm_level = -1) THEN
-			RETURN QUERY SELECT -1, g.gid::character varying, arcregion2::text, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom) THEN true ELSE false END as iscenter from arc_regions_dissolved g where ST_Intersects(wkt, geom);
+			RETURN QUERY SELECT -1, g.gid::character varying, region::text, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom) THEN true ELSE false END as iscenter from arc_regions_dissolved g where ST_Intersects(wkt, geom);
 		ELSIF(ingadm_level = 0) THEN
 			RETURN QUERY SELECT 0, g.guid::character varying, name_0, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom_simplify_med) THEN true ELSE false END as iscenter from gadm0 g where ST_Intersects(wkt, geom_simplify_med);
 		ELSIF(ingadm_level = 1) THEN
@@ -102,7 +102,7 @@ BEGIN
 
 		ELSE
 		--Show ARC Regions (-1 corresponds to ARC Regions)
-			RETURN QUERY SELECT -1, g.gid::character varying, arcregion2::text, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom) THEN true ELSE false END as iscenter from arc_regions_dissolved g where ST_Intersects(wkt, geom);
+			RETURN QUERY SELECT -1, g.gid::character varying, region::text, CASE WHEN ST_Intersects(ST_CENTROID(wkt), geom) THEN true ELSE false END as iscenter from arc_regions_dissolved g where ST_Intersects(wkt, geom);
 		END IF;
 	END IF;
 END;

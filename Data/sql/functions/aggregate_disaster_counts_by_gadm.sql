@@ -339,7 +339,7 @@ UPDATE sf_aggregated_gadm_disaster_counts SET geom0 = ST_BUFFER(geom0, 0);
 
 
 UPDATE sf_aggregated_gadm_disaster_counts
-SET nameARC = a.arcregion2, countarc = count0, guidarc = a.gid, geomarc = a.geom
+SET nameARC = a.region, countarc = count0, guidarc = a.gid, geomarc = a.geom
 FROM ARC_REGIONS_DISSOLVED a
 WHERE ST_INTERSECTS(a.geom, geom0);
 
@@ -351,7 +351,7 @@ CREATE INDEX idx_sf_disastercounts_id ON sf_aggregated_gadm_projects_counts USIN
 UPDATE sf_aggregated_gadm_projects_counts SET geom0 = ST_BUFFER(geom0, 0);
 
 update sf_aggregated_gadm_projects_counts
-set nameARC = a.arcregion2, countarc = count0, guidarc = a.gid, geomarc = a.geom
+set nameARC = a.region, countarc = count0, guidarc = a.gid, geomarc = a.geom
 FROM ARC_REGIONS_DISSOLVED a
 WHERE ST_INTERSECTS(a.geom, geom0);
 

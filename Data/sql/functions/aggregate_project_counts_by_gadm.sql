@@ -339,16 +339,16 @@ UPDATE sf_aggregated_gadm_project_counts SET geom0 = ST_BUFFER(geom0, 0);
 
 
 UPDATE sf_aggregated_gadm_project_counts
-SET nameARC = a.arcregion2, countarc = count0, guidarc = a.gid, geomarc = a.geom
+SET nameARC = a.region, countarc = count0, guidarc = a.gid, geomarc = a.geom
 FROM ARC_REGIONS_DISSOLVED a
 WHERE ST_INTERSECTS(a.geom, geom0);
 
 --There are no ARCRegions tied to projects in ECOS.  This is just theoretical
 --INSERT INTO sf_aggregated_gadm_projects_counts(
---SELECT  a.arcregion2 as nameARC, a.gid as guidARC, a.geom as geomARC, 0 as count0, '' as name0, null::geometry as geom0,  0 as count1, '' as name1, null as guid1, null::geometry as geom1, 0 as count2, '' as name2, null as guid2, null::geometry as geom2  
+--SELECT  a.region as nameARC, a.gid as guidARC, a.geom as geomARC, 0 as count0, '' as name0, null::geometry as geom0,  0 as count1, '' as name1, null as guid1, null::geometry as geom1, 0 as count2, '' as name2, null as guid2, null::geometry as geom2
 --FROM ARC_REGIONS_DISSOLVED a, vw_sf_project
 --WHERE a.gid::character varying = vw_sf_project.stack_guid::character varying
---GROUP BY a.gid, a.arcregion2, a.geom);
+--GROUP BY a.gid, a.region, a.geom);
 --End Theoretical section
 
 ALTER TABLE sf_aggregated_gadm_projects_counts ADD COLUMN id SERIAL;
@@ -358,7 +358,7 @@ CREATE INDEX idx_sf_projectcounts_id ON sf_aggregated_gadm_projects_counts USING
 UPDATE sf_aggregated_gadm_projects_counts SET geom0 = ST_BUFFER(geom0, 0);
 
 update sf_aggregated_gadm_projects_counts
-set nameARC = a.arcregion2, countarc = count0, guidarc = a.gid, geomarc = a.geom
+set nameARC = a.region, countarc = count0, guidarc = a.gid, geomarc = a.geom
 FROM ARC_REGIONS_DISSOLVED a
 WHERE ST_INTERSECTS(a.geom, geom0);
 
