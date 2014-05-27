@@ -375,14 +375,14 @@
                             <div class="row scrollable">
                                 <div class="leftButtonColumn col-md-4">
                                     <div class="layerGroupButtonWrapper">
-                                        <div class="layerGroupButton" ng-click="isECOSLayersActive = true;isContextLayersActive = false;" ng-class="{active : isECOSLayersActive }"><div class="icon" data-icon="p"></div>ECOS Data Layers</div>
-                                        <div class="layerGroupButton" ng-click="isECOSLayersActive = false;isContextLayersActive =true;" ng-class="{active : isContextLayersActive }"><div class="icon" data-icon="q"></div>Contextual Layers</div>
+                                        <div class="layerGroupButton" ng-click="layerGroup='ecos'" ng-class="{active : layerGroup==='ecos' }"><div class="icon" data-icon="p"></div>ECOS Data Layers</div>
+                                        <div class="layerGroupButton" ng-click="layerGroup='contextual'" ng-class="{active : layerGroup==='contextual' }"><div class="icon" data-icon="q"></div>Contextual Layers</div>
                                     </div>
 
                                 </div>
                                 <div class="col-md-8">
                                     <div class="layerGroupPanelWrapper">
-                                        <div class="layerGroupPanel" ng-show="isECOSLayersActive">
+                                        <div class="layerGroupPanel" ng-show="layerGroup==='ecos'">
                                             <form>
                                                         <fieldset>
                                                             <h4>ECOS Layers:</h4>
@@ -414,7 +414,7 @@
                                                         </fieldset>
                                                     </form>
                                         </div>
-                                        <div class="layerGroupPanel" ng-show="isContextLayersActive">
+                                        <div class="layerGroupPanel" ng-show="layerGroup==='contextual'">
                                             <form>
                                                 <fieldset>
                                                     <h4>Contextual Layers:</h4>
