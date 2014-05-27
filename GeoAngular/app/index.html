@@ -20,6 +20,7 @@
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/fonts.css">
+    <link rel="stylesheet" href="styles/fontcustom/fontcustom.css">
     <link rel="stylesheet" href="styles/comp.css">
     <link rel="stylesheet" href="styles/landing.css">
     <link rel="stylesheet" href="styles/navbar.css">
@@ -60,31 +61,31 @@
                                                                         ng-click="toggleParam('stories')"
                                                                         ng-click="toggleParam('stories')"
                                                                         ng-class="{on: isParam('stories')}">
-                            <i data-icon="b"></i>
+                            <i class="icon-2_stories"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isLayersActive = isNotParam('layers-panel')"
                                                                         ng-mouseleave="isLayersActive=false"
                                                                         ng-click="toggleParam('layers-panel')"
                                                                         ng-class="{on: isParam('layers-panel')}">
-                            <i data-icon="d"></i>
+                            <i class="icon-3_map_layers"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isFiltersActive = isNotParam('filters-panel')"
                                                                         ng-mouseleave="isFiltersActive=false"
                                                                         ng-click="toggleParam('filters-panel')"
                                                                         ng-class="{on: isParam('filters-panel'), disabled: (params.theme !== 'project' && params.theme !== null) }">
-                            <i data-icon="e"></i>
+                            <i class="icon-4_filters"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isLegendActive = isNotParam('legend')"
                                                                         ng-mouseleave="isLegendActive=false"
                                                                         ng-click="toggleParam('legend')"
                                                                         ng-class="{on: isParam('legend')}">
-                            <i data-icon="f"></i>
+                            <i class="icon-5_legend"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isBasemapsActive = isNotParam('basemaps')"
                                                                         ng-mouseleave="isBasemapsActive=false"
                                                                         ng-click="toggleParam('basemaps')"
                                                                         ng-class="{on: isParam('basemaps')}">
-                            <i data-icon="g"></i>
+                            <i class="icon-6_basemaps"></i>
                         </button>
                     </div>
                     <div class="NavigationTooltipContainer main">
@@ -114,7 +115,7 @@
                                                                         ng-mouseleave="isInfoActive=false"
                                                                         ng-click="toggleParam('info')"
                                                                         ng-class="{on: isParam('info')}">
-                            <i data-icon="o"></i>
+                            <i class="icon-1_info"></i>
                         </button>
                     </div>
                     <div class="NavigationTooltipContainer bottom">
@@ -245,7 +246,7 @@
                                             <div class="container thumbnail-container">
                                                 <div class="row">
                                                     <div class="col-md-1 nopaddingnomargin">
-                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                        <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                     </div>
                                                     <div class="col-md-11 nopaddingnomargin">
                                                         Haiyan Affected Areas Traced by Digital Volunteers
@@ -269,7 +270,7 @@
                                             <div class="container thumbnail-container">
                                                 <div class="row">
                                                     <div class="col-md-1 nopaddingnomargin">
-                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                        <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                     </div>
                                                     <div class="col-md-11 nopaddingnomargin">
                                                         Haiyan Affected Areas Traced by Digital Volunteers
@@ -293,7 +294,7 @@
                                             <div class="container thumbnail-container">
                                                 <div class="row">
                                                     <div class="col-md-1 nopaddingnomargin">
-                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                        <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                     </div>
                                                     <div class="col-md-11 nopaddingnomargin">
                                                         Haiyan Affected Areas Traced by Digital Volunteers
@@ -317,7 +318,7 @@
                                             <div class="container thumbnail-container">
                                                 <div class="row">
                                                     <div class="col-md-1 nopaddingnomargin">
-                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                        <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                     </div>
                                                     <div class="col-md-11 nopaddingnomargin">
                                                         Haiyan Affected Areas Traced by Digital Volunteers
@@ -341,7 +342,7 @@
                                             <div class="container thumbnail-container">
                                                 <div class="row">
                                                     <div class="col-md-1 nopaddingnomargin">
-                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                        <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                     </div>
                                                     <div class="col-md-11 nopaddingnomargin">
                                                         Haiyan Affected Areas Traced by Digital Volunteers
@@ -375,8 +376,8 @@
                             <div class="row scrollable">
                                 <div class="leftButtonColumn col-md-4">
                                     <div class="layerGroupButtonWrapper">
-                                        <div class="layerGroupButton" ng-click="layerGroup='ecos'" ng-class="{active : layerGroup==='ecos' }"><div class="icon" data-icon="p"></div>ECOS Data Layers</div>
-                                        <div class="layerGroupButton" ng-click="layerGroup='contextual'" ng-class="{active : layerGroup==='contextual' }"><div class="icon" data-icon="q"></div>Contextual Layers</div>
+                                        <div class="layerGroupButton" ng-click="layerGroup='ecos'" ng-class="{active : layerGroup==='ecos' }"><div></div>ECOS Data Layers</div>
+                                        <div class="layerGroupButton" ng-click="layerGroup='contextual'" ng-class="{active : layerGroup==='contextual' }">Contextual Layers</div>
                                     </div>
 
                                 </div>
@@ -666,25 +667,25 @@
                                 {{title}}
                             </div>
                             <div class="stack">
-                                <div class="bc-arrow" ng-show="levelarc" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="levelarc"></div>
                                 <div class="bc arcregion" ng-click="zoomToGUID(featarc, -1)">{{levelarc}}</div>
 
-                                <div class="bc-arrow" ng-show="level0" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level0"></div>
                                 <div class="bc level0" ng-click="zoomToGUID(feat0, 0)">{{level0}}</div>
 
-                                <div class="bc-arrow" ng-show="level1" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level1"></div>
                                 <div class="bc level1" ng-click="zoomToGUID(feat1, 1)">{{level1}}</div>
 
-                                <div class="bc-arrow" ng-show="level2" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level2"></div>
                                 <div class="bc level2" ng-click="zoomToGUID(feat2, 2)">{{level2}}</div>
 
-                                <div class="bc-arrow" ng-show="level3" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level3"></div>
                                 <div class="bc level3" ng-click="zoomToGUID(feat3, 3)">{{level3}}</div>
 
-                                <div class="bc-arrow" ng-show="level4" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level4"></div>
                                 <div class="bc level4" ng-click="zoomToGUID(feat4, 4)">{{level4}}</div>
 
-                                <div class="bc-arrow" ng-show="level5" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level5"></div>
                                 <div class="bc level5" ng-click="zoomToGUID(feat5, 5)">{{level5}}</div>
                             </div>
                         </div>
@@ -693,7 +694,7 @@
                             Upload Data
                         </div>
                         <div class="light">Export</div>
-                        <div class="search" data-icon="m" ng-click="toggleParam('search-panel')"></div>
+                        <div class="search icon-12_search" ng-click="toggleParam('search-panel')"></div>
                     </div>
 
                     <!-- Region / Country Selector Panel -->
@@ -743,11 +744,11 @@
                     <!-- Right Hand Details Panel -->
                     <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: isParam('details-panel')}">
                         <div id="DetailsButtonWrapper">
-                            <div id="DetailsNub" class="btn btn-lg" data-icon="l" ng-click="toggleParam('details-panel')">
+                            <div id="DetailsNub" class="btn btn-lg icon-11_infobox" ng-click="toggleParam('details-panel')">
                             </div>
-                            <div id="PreviousItem" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" data-icon="j" ng-click="prevThemeItem()">
+                            <div id="PreviousItem" class="icon-9_arrow_left" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" ng-click="prevThemeItem()">
                             </div>
-                            <div id="NextItem" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" data-icon="k" ng-click="nextThemeItem()">
+                            <div id="NextItem" class="icon-10_arrow_right" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" ng-click="nextThemeItem()">
                             </div>
                         </div>
                         <div id="DetailsPanel">
