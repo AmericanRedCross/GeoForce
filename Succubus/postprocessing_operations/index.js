@@ -371,7 +371,7 @@ UPDATE sf_aggregated_gadm_project_counts SET geom0 = ST_BUFFER(geom0, 0); \
 \
 \
 UPDATE sf_aggregated_gadm_project_counts \
-SET nameARC = a.arcregion2, countarc = count0, guidarc = a.gid, geomarc = a.geom \
+SET nameARC = a.region, countarc = count0, guidarc = a.gid, geomarc = a.geom \
 FROM ARC_REGIONS_DISSOLVED a \
 WHERE ST_INTERSECTS(a.geom, geom0);";
 

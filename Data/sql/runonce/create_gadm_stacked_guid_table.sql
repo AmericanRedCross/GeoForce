@@ -10,9 +10,9 @@ gadm5.name_5 as name5, gadm5.guid as guid5, gadm5.geom_simplify_med as geom5
 
 INTO gadmrollup
 FROM gadm0
-INNER JOIN gadm1
+LEFT OUTER JOIN gadm1
 ON gadm0.id_0 = gadm1.id_0
-INNER JOIN gadm2
+LEFT OUTER JOIN gadm2
 ON gadm2.id_0 = gadm1.id_0 AND gadm2.id_1 = gadm1.id_1
 LEFT OUTER JOIN gadm3
 ON gadm3.id_0 = gadm2.id_0 AND gadm3.id_1 = gadm2.id_1 AND gadm3.id_2 = gadm2.id_2
@@ -67,7 +67,7 @@ where name0 IN ('Russia', 'Indonesia', 'Vietnam');
 
 --Then update the rest spatially.  This take a long time.
 update gadmrollup
-set nameARC = a.arcregion2, guidarc = a.gid, geomarc = a.geom
+set nameARC = a.region, guidarc = a.gid, geomarc = a.geom
 FROM ARC_REGIONS_DISSOLVED a
 WHERE ST_INTERSECTS(a.geom, geom0)
 AND name0 NOT IN ('United States', 'Canada', 'Russia', 'Indonesia', 'Vietnam')

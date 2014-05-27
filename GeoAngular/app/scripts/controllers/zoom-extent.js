@@ -30,8 +30,8 @@ angular.module('GeoAngular').controller('ZoomExtentCtrl', function($scope, $root
   vecResRegion.fetch(function(geojson){
     //Sort alphabetically
     geojson.features = geojson.features.sort(function(a,b){
-      var textA = a.properties.arcregion2;
-      var textB = b.properties.arcregion2;
+      var textA = a.properties.region;
+      var textB = b.properties.region;
       return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     });
 

@@ -130,7 +130,18 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
           var miny = tileBounds.min.y;
           var maxy = tileBounds.max.y;
 
-          var str = zoom + "," +  minx + ',' +
+          //Detect negative mins and set to 0
+          if(minx < 0) minx = 0;
+          if(miny < 0) miny = 0;
+
+          //Check for extreme values greater than the tile bounds
+          var extremeValue = Math.pow(2, zoom) - 1;
+
+          if(maxx > extremeValue) maxx = extremeValue;
+          if(maxy > extremeValue) maxy = extremeValue;
+
+
+            var str = zoom + "," +  minx + ',' +
                                   maxx + ',' +
                                   miny + ',' +
                                   maxy;

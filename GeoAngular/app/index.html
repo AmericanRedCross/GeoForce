@@ -71,7 +71,7 @@
                         <button type="button" class="btn btn-default"   ng-mouseenter="isFiltersActive = isNotParam('filters-panel')"
                                                                         ng-mouseleave="isFiltersActive=false"
                                                                         ng-click="toggleParam('filters-panel')"
-                                                                        ng-class="{on: isParam('filters-panel')}"> <!-- , disabled: themeName != 'Project' -->
+                                                                        ng-class="{on: isParam('filters-panel'), disabled: themeName != 'Projects'}">
                             <i data-icon="e"></i>
                         </button>
                         <button type="button" class="btn btn-default"   ng-mouseenter="isLegendActive = isNotParam('legend')"
@@ -702,7 +702,7 @@
                             <div class="title">Regions:</div>
                             <div class="row content">
                                 <div class="col-md-12" id="RegionContainer1">
-                                    <div ng-repeat="region in regionList1" ng-click="zoomToExtent(region.geometry.coordinates[0], region.properties.arcregion2)" class="col-md-4 countryListItem">{{region.properties.arcregion2}}</div>
+                                    <div ng-repeat="region in regionList1" ng-click="zoomToExtent(region.geometry.coordinates[0], region.properties.region)" class="col-md-4 countryListItem">{{region.properties.region}}</div>
                                 </div>
                             </div>
                         </div>
@@ -760,6 +760,12 @@
                                     {{title}}
                                 </div>
 
+                                <ul ng-show="details.requestsForAssistance" class="nav nav-tabs">
+                                    <li class="active"><a class="a-nav-tab" ng-click="navTab='details'" data-toggle="tab">Details</a></li>
+                                    <li><a class="a-nav-tab" ng-click="navTab='request'" data-toggle="tab">Requests For Assistance</a></li>
+                                    <li><a class="a-nav-tab" ng-show="false" ng-click="navTab='indicators'" data-toggle="tab">Indicators</a></li>
+                                </ul>
+
                                 <div class="InnerContainer scrollable">
                                     <div class="heading" ng-show="alertUserToClick">
                                         Please click on a badge or feature to see details...
@@ -784,14 +790,31 @@
                                         <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
                                     </div>
 
-                                    <div class="section scrollable" ng-show="details">
+                                    <div class="section scrollable" ng-show="details && !(navTab && (navTab==='request' || navTab==='indicator'))">
                                         <ul>
                                             <li ng-repeat="(key, value) in details">
                                                 <div class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
-                                                <div class="details-value">{{value}}</div><i class="unavailable" ng-show="!value">Unavailable</i>
+                                                <div ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-show="!value">Unavailable</i>
                                             </li>
                                         </ul>
                                         <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
+                                    </div>
+
+                                    <div class="section scrollable" ng-show="details && (navTab && navTab==='request')">
+                                        <ul>
+                                            <li ng-repeat="(key, value) in details.requestsForAssistance">
+                                                <h4>{{value.name}}</h4>
+
+                                                <ul>
+                                                    <li ng-repeat="(key2, value2) in value">
+                                                        <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
+                                                        <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                    </li>
+                                                </ul>
+
+                                                <hr/>
+                                            </li>
+                                        </ul>
                                     </div>
 
                                 </div>
