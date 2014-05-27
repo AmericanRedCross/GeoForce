@@ -246,7 +246,7 @@
                                             <div class="container thumbnail-container">
                                                 <div class="row">
                                                     <div class="col-md-1 nopaddingnomargin">
-                                                        <span class="item-arrow RCRed 14_arrow_stories" data-icon="a"></span>
+                                                        <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                     </div>
                                                     <div class="col-md-11 nopaddingnomargin">
                                                         Haiyan Affected Areas Traced by Digital Volunteers
@@ -270,7 +270,7 @@
                                             <div class="container thumbnail-container">
                                                 <div class="row">
                                                     <div class="col-md-1 nopaddingnomargin">
-                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                        <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                     </div>
                                                     <div class="col-md-11 nopaddingnomargin">
                                                         Haiyan Affected Areas Traced by Digital Volunteers
@@ -294,7 +294,7 @@
                                             <div class="container thumbnail-container">
                                                 <div class="row">
                                                     <div class="col-md-1 nopaddingnomargin">
-                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                        <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                     </div>
                                                     <div class="col-md-11 nopaddingnomargin">
                                                         Haiyan Affected Areas Traced by Digital Volunteers
@@ -318,7 +318,7 @@
                                             <div class="container thumbnail-container">
                                                 <div class="row">
                                                     <div class="col-md-1 nopaddingnomargin">
-                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                        <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                     </div>
                                                     <div class="col-md-11 nopaddingnomargin">
                                                         Haiyan Affected Areas Traced by Digital Volunteers
@@ -342,7 +342,7 @@
                                             <div class="container thumbnail-container">
                                                 <div class="row">
                                                     <div class="col-md-1 nopaddingnomargin">
-                                                        <span class="item-arrow RCRed" data-icon="a"></span>
+                                                        <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                     </div>
                                                     <div class="col-md-11 nopaddingnomargin">
                                                         Haiyan Affected Areas Traced by Digital Volunteers
@@ -376,8 +376,8 @@
                             <div class="row scrollable">
                                 <div class="leftButtonColumn col-md-4">
                                     <div class="layerGroupButtonWrapper">
-                                        <div class="layerGroupButton" ng-click="layerGroup='ecos'" ng-class="{active : layerGroup==='ecos' }"><div class="icon" data-icon="p"></div>ECOS Data Layers</div>
-                                        <div class="layerGroupButton" ng-click="layerGroup='contextual'" ng-class="{active : layerGroup==='contextual' }"><div class="icon" data-icon="q"></div>Contextual Layers</div>
+                                        <div class="layerGroupButton" ng-click="layerGroup='ecos'" ng-class="{active : layerGroup==='ecos' }"><div></div>ECOS Data Layers</div>
+                                        <div class="layerGroupButton" ng-click="layerGroup='contextual'" ng-class="{active : layerGroup==='contextual' }">Contextual Layers</div>
                                     </div>
 
                                 </div>
@@ -667,25 +667,25 @@
                                 {{title}}
                             </div>
                             <div class="stack">
-                                <div class="bc-arrow" ng-show="levelarc" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="levelarc"></div>
                                 <div class="bc arcregion" ng-click="zoomToGUID(featarc, -1)">{{levelarc}}</div>
 
-                                <div class="bc-arrow" ng-show="level0" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level0"></div>
                                 <div class="bc level0" ng-click="zoomToGUID(feat0, 0)">{{level0}}</div>
 
-                                <div class="bc-arrow" ng-show="level1" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level1"></div>
                                 <div class="bc level1" ng-click="zoomToGUID(feat1, 1)">{{level1}}</div>
 
-                                <div class="bc-arrow" ng-show="level2" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level2"></div>
                                 <div class="bc level2" ng-click="zoomToGUID(feat2, 2)">{{level2}}</div>
 
-                                <div class="bc-arrow" ng-show="level3" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level3"></div>
                                 <div class="bc level3" ng-click="zoomToGUID(feat3, 3)">{{level3}}</div>
 
-                                <div class="bc-arrow" ng-show="level4" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level4"></div>
                                 <div class="bc level4" ng-click="zoomToGUID(feat4, 4)">{{level4}}</div>
 
-                                <div class="bc-arrow" ng-show="level5" data-icon="k"></div>
+                                <div class="icon-10_arrow_right" ng-show="level5"></div>
                                 <div class="bc level5" ng-click="zoomToGUID(feat5, 5)">{{level5}}</div>
                             </div>
                         </div>
@@ -694,7 +694,7 @@
                             Upload Data
                         </div>
                         <div class="light">Export</div>
-                        <div class="search" data-icon="m" ng-click="toggleParam('search-panel')"></div>
+                        <div class="search icon-12_search" ng-click="toggleParam('search-panel')"></div>
                     </div>
 
                     <!-- Region / Country Selector Panel -->
@@ -744,11 +744,11 @@
                     <!-- Right Hand Details Panel -->
                     <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: isParam('details-panel')}">
                         <div id="DetailsButtonWrapper">
-                            <div id="DetailsNub" class="btn btn-lg" data-icon="l" ng-click="toggleParam('details-panel')">
+                            <div id="DetailsNub" class="btn btn-lg icon-11_infobox" ng-click="toggleParam('details-panel')">
                             </div>
-                            <div id="PreviousItem" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" data-icon="j" ng-click="prevThemeItem()">
+                            <div id="PreviousItem" class="icon-9_arrow_left" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" ng-click="prevThemeItem()">
                             </div>
-                            <div id="NextItem" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" data-icon="k" ng-click="nextThemeItem()">
+                            <div id="NextItem" class="icon-10_arrow_right" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" ng-click="nextThemeItem()">
                             </div>
                         </div>
                         <div id="DetailsPanel">
