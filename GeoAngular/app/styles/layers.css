@@ -23,14 +23,6 @@
     color: #333;
 }
 
-.layers-container div.layerGroupPanel{
-    display:none;
-}
-
-.layers-container div.layerGroupPanel.active{
-    display:block;
-}
-
 .layers-container .leftButtonColumn, .layerGroupButtonWrapper{
     height: 100%;
 }

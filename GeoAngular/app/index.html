@@ -382,7 +382,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="layerGroupPanelWrapper">
-                                        <div class="layerGroupPanel" ng-class="{active : isECOSLayersActive }">
+                                        <div class="layerGroupPanel" ng-show="isECOSLayersActive">
                                             <form>
                                                         <fieldset>
                                                             <h4>ECOS Layers:</h4>
@@ -414,7 +414,7 @@
                                                         </fieldset>
                                                     </form>
                                         </div>
-                                        <div class="layerGroupPanel" ng-class="{active : isContextLayersActive }">
+                                        <div class="layerGroupPanel" ng-show="isContextLayersActive">
                                             <form>
                                                 <fieldset>
                                                     <h4>Contextual Layers:</h4>
