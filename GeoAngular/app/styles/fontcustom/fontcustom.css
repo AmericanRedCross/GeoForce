@@ -1,0 +1,99 @@
+/*
+  Icon Font: fontcustom
+*/
+
+@font-face {
+  font-family: "fontcustom";
+  src: url("./fontcustom_7db0738c13ed4aa47933e2e4d2fc2b54.eot");
+  src: url("./fontcustom_7db0738c13ed4aa47933e2e4d2fc2b54.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_7db0738c13ed4aa47933e2e4d2fc2b54.woff") format("woff"),
+       url("./fontcustom_7db0738c13ed4aa47933e2e4d2fc2b54.ttf") format("truetype"),
+       url("./fontcustom_7db0738c13ed4aa47933e2e4d2fc2b54.svg#fontcustom") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "fontcustom";
+    src: url("./fontcustom_7db0738c13ed4aa47933e2e4d2fc2b54.svg#fontcustom") format("svg");
+  }
+}
+
+[data-icon]:before { content: attr(data-icon); }
+
+[data-icon]:before,
+.icon-10_arrow_right:before,
+.icon-11_infobox:before,
+.icon-12_search:before,
+.icon-13_check:before,
+.icon-14_arrow_stories:before,
+.icon-15_ecos:before,
+.icon-16_contextual_layers:before,
+.icon-17_ARCCapacity:before,
+.icon-18_DisasterRiskReduc:before,
+.icon-19_relief:before,
+.icon-1_info:before,
+.icon-20_GDHP:before,
+.icon-21_Health:before,
+.icon-22_Shelter:before,
+.icon-23_waterSan:before,
+.icon-24_measles:before,
+.icon-25_livelihood:before,
+.icon-26_HIVAides:before,
+.icon-27_OrgDev:before,
+.icon-28_RestoreFam:before,
+.icon-29_export:before,
+.icon-2_stories:before,
+.icon-30_download:before,
+.icon-3_map_layers:before,
+.icon-4_filters:before,
+.icon-5_legend:before,
+.icon-6_basemaps:before,
+.icon-7_zoom_plus:before,
+.icon-8_zoom_minus:before,
+.icon-9_arrow_left:before {
+  display: inline-block;
+  font-family: "fontcustom";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+.icon-10_arrow_right:before { content: "\f100"; }
+.icon-11_infobox:before { content: "\f101"; }
+.icon-12_search:before { content: "\f102"; }
+.icon-13_check:before { content: "\f103"; }
+.icon-14_arrow_stories:before { content: "\f104"; }
+.icon-15_ecos:before { content: "\f105"; }
+.icon-16_contextual_layers:before { content: "\f120"; }
+.icon-17_ARCCapacity:before { content: "\f107"; }
+.icon-18_DisasterRiskReduc:before { content: "\f108"; }
+.icon-19_relief:before { content: "\f109"; }
+.icon-1_info:before { content: "\f10a"; }
+.icon-20_GDHP:before { content: "\f10b"; }
+.icon-21_Health:before { content: "\f10c"; }
+.icon-22_Shelter:before { content: "\f10d"; }
+.icon-23_waterSan:before { content: "\f122"; }
+.icon-24_measles:before { content: "\f10f"; }
+.icon-25_livelihood:before { content: "\f110"; }
+.icon-26_HIVAides:before { content: "\f111"; }
+.icon-27_OrgDev:before { content: "\f112"; }
+.icon-28_RestoreFam:before { content: "\f113"; }
+.icon-29_export:before { content: "\f114"; }
+.icon-2_stories:before { content: "\f115"; }
+.icon-30_download:before { content: "\f11f"; }
+.icon-3_map_layers:before { content: "\f123"; }
+.icon-4_filters:before { content: "\f118"; }
+.icon-5_legend:before { content: "\f119"; }
+.icon-6_basemaps:before { content: "\f11a"; }
+.icon-7_zoom_plus:before { content: "\f11b"; }
+.icon-8_zoom_minus:before { content: "\f11c"; }
+.icon-9_arrow_left:before { content: "\f11d"; }
