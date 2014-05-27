@@ -56,14 +56,9 @@ ALTER TABLE gadmrollup ADD PRIMARY KEY (id);
 CREATE INDEX idx_sf_gadmguids_id ON gadmrollup USING btree (id);
 UPDATE gadmrollup SET geom0 = ST_BUFFER(geom0, 0);
 
---Manually do some of the big ones.
-update gadmrollup
-set nameARC = 'Americas'
-where name0 IN ('United States', 'Canada');
-
-update gadmrollup
-set nameARC = 'AMEE'
-where name0 IN ('Russia', 'Indonesia', 'Vietnam');
+--Join on name for most of the countries.
+UPDATE gadmrollup
+set namearc = (select name from arc_regions a where a.name = gadmrollup.name0)
 
 --Then update the rest spatially.  This take a long time.
 update gadmrollup
