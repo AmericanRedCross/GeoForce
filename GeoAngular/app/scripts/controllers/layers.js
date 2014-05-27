@@ -7,9 +7,7 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope, $statePar
   console.log('LayersCtrl');
   $scope.params = $stateParams;
 
-	//initialize the state of whether ECOS layers or contextual layers are visible in the layers panel.
-	$scope.isECOSLayersActive = true;
-	$scope.isContextLayersActive = false;
+	$scope.layerGroup = 'contextual';
 
   $scope.allProjects = {
     lat: -19.808054,
