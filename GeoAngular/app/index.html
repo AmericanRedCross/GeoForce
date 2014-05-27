@@ -373,96 +373,36 @@
                                     <div class="title">Map Layers</div> <div class="description"></div>
                                 </div>
                             </div>
-                            <div class="row scrollable">
-                                <div class="leftButtonColumn col-md-4">
-                                    <div class="layerGroupButtonWrapper">
-                                        <div class="layerGroupButton" ng-click="layerGroup='ecos'" ng-class="{active : layerGroup==='ecos' }"><div></div>ECOS Data Layers</div>
-                                        <div class="layerGroupButton" ng-click="layerGroup='contextual'" ng-class="{active : layerGroup==='contextual' }">Contextual Layers</div>
-                                    </div>
+                            <div class="row">
 
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="layerGroupPanelWrapper">
-                                        <div class="layerGroupPanel" ng-show="layerGroup==='ecos'">
-                                            <form>
-                                                        <fieldset>
-                                                            <h4>ECOS Layers:</h4>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a class="a-nav-tab" ng-click="navTab='contextual'" data-toggle="tab">Contextual Layers</a></li>
+                                    <li><a class="a-nav-tab" ng-click="navTab='uploaded'" data-toggle="tab">Uploaded Data</a></li>
+                                </ul>
 
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" value="all">
-                                                                Projects
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" value="africa">
-                                                                Disasters
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" value="amee">
-                                                                Placeholder
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" value="global">
-                                                                Placeholder
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" value="lac">
-                                                                Placeholder
-                                                            </label>
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" value="usa">
-                                                                Placeholder
-                                                            </label>
-                                                        </fieldset>
-                                                    </form>
-                                        </div>
-                                        <div class="layerGroupPanel" ng-show="layerGroup==='contextual'">
-                                            <form>
-                                                <fieldset>
-                                                    <h4>Contextual Layers:</h4>
-
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" value="all">
-                                                        USGS Earthquakes
-                                                    </label>
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" value="africa">
-                                                        24 Hour Rainfall
-                                                    </label>
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" value="amee">
-                                                        BMGF Projects
-                                                    </label>
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" value="global">
-                                                        GDACS KML
-                                                    </label>
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" value="lac">
-                                                        Placeholder
-                                                    </label>
-                                                    <label class="checkbox">
-                                                        <input type="checkbox" value="usa">
-                                                        Placeholder
-                                                    </label>
-                                                </fieldset>
-                                            </form>
-                                            <div class="col-md-10 titleWrapper">
-                                                <div class="btn-group-vertical">
-                                                    <button type="button" class="btn btn-default" ui-sref="main(allProjects)">All Projects</button>
-                                                    <button type="button" class="btn btn-default" ui-sref="main(smartGadm)">Smart GADM</button>
-                                                    <button type="button" class="btn btn-default" ui-sref="main(gdacsKml)">GDACS KML</button>
-                                                    <button type="button" class="btn btn-default" ui-sref="main(gadm0)">GADM 0</button>
-                                                    <button type="button" class="btn btn-default" ui-sref="main(gadm1)">GADM 1</button>
-                                                    <button type="button" class="btn btn-default" ui-sref="main(gadm2)">GADM 2</button>
-                                                    <button type="button" class="btn btn-default" ui-sref="main(gadm3)">GADM 3</button>
-                                                    <button type="button" class="btn btn-default" ui-sref="main(earthquakesKml)">Earthquakes KML</button>
-                                                    <button type="button" class="btn btn-default" ui-sref="main(standardGeoJson)">Standard GeoJSON</button>
-                                                </div>
+                                <!-- Tab panes -->
+                                <div class="tab-content filters-content scrollable">
+                                    <div ng-class="{active: navTab==='contextual'}" class="tab-pane">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                test
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div ng-class="{active: navTab==='uploaded'}" class="tab-pane">
 
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">test2</h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                test2
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
 
                             </div>
 
