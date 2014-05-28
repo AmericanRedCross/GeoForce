@@ -2,6 +2,8 @@
 //there is a settings.js.example file that should match the structure and properties of this file that IS checked in to the repo.
 var settings = {}
 
+process.env.NODE_ENV = 'development'; //Change to 'production' or 'test' depending on deployment.
+
 settings.pg = {};
 settings.application = {};
 settings.tilestream = {};
@@ -9,6 +11,11 @@ settings.tilestream = {};
 //application port settings
 settings.application.port = 3000;
 settings.application.ip = "localhost";
+
+//SSL Settings
+settings.ssl = {};
+settings.ssl.pfx = '<filename>.pfx';
+settings.ssl.password = '<password>';
 
 //Settings for postgres DB
 settings.pg.username = 'username';
