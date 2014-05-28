@@ -11,7 +11,7 @@ var path = require('path'),
     fs = require("fs"),
     flow = require('flow'),
     passport = require("passport"),
-	BearerStrategy = require('passport-http-bearer').Strategy,
+	//BearerStrategy = require('passport-http-bearer').Strategy,
     ForceDotComStrategy = require('passport-forcedotcom').Strategy;
     
 

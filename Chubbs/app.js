@@ -8,8 +8,7 @@ var express = require('express'),
     path = require('path'),
     settings = require('./settings'),
     common = require("./common"),
-    cors = require('cors'),
-    passport = require("passport");
+    cors = require('cors');
 
 
 var app = express();
@@ -43,7 +42,7 @@ app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson
 app.use('/mapfolio/', express.static('../GeoAngular/app/'));
 
 
-
+var passport = require('./endpoints/authentication').passport();
 
 //express app.get can be passed an array of intermediate functions before rendering.
 //If passport isn't installed or user hasn't enabled security, then leave the following array empty, otherwise load one or more middleware functions in there.
@@ -52,12 +51,12 @@ var authenticationFunctions = [];
 //Load up passport for security, if it's around, and if the settings ask for it
 if (passport && settings.enableSecurity && settings.enableSecurity === true) {
 	
-	require('./endpoints/authentication/app/models/user.js');
-	var env = process.env.NODE_ENV || 'development';
-	require('./endpoints/authentication/config/passport')(passport, mongo_config);
+	//require('./endpoints/authentication/app/models/user.js');
+	//var env = process.env.NODE_ENV || 'development';
+	//require('./endpoints/authentication/config/passport')(passport, mongo_config);
 
 	app.use(express.session({
-		//secret : epxressSessionSecret
+	    secret : settings.expressSessionSecret
 	}));
 	
 	app.use(passport.initialize());
@@ -65,12 +64,26 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
 	
 	//add the bearer authentication method into an object holding various types of authenticaion methods
 	//use this in a route as middleware when a token is the preferred method of authorization
-	authenticationFunctions.push(passport.authenticate('bearer', { session: false, failureRedirect: '/login'}));
+	//authenticationFunctions.push(passport.authenticate('bearer', { session: false, failureRedirect: '/login'}));
+    authenticationFunctions.push(passport.authenticate('forcedotcom'));
 	
 	//For now, just cram this object into the passport object as a stowaway so it can be passed into all of the external route definitions
-	passport.authenticationFunctions = authenticationFunctions;
+	//passport.authenticationFunctions = authenticationFunctions;
+
+    passport = { authenticationFunctions: []};
+
+    //Add a route to test OAUTH2
+    app.get('/mapfolio/login', passport.authenticate('forcedotcom'));
+
+    // this should match the callbackURL parameter above:
+    app.get('/oauth2/callback',
+        passport.authenticate('forcedotcom', { failureRedirect: '/error' }),
+        function(req, res){
+            res.redirect('/mapfolio/')
+        }
+    );
 	
-	require('./endpoints/authentication/config/routes')(app, passport); //Adding the login routes
+	//require('./endpoints/authentication/config/routes')(app, passport); //Adding the login routes
 }
 else{
 	//keep an empty authentication functions property here
