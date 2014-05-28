@@ -94,6 +94,7 @@ settings.salesforce.ClientSecret = "";
 settings.salesforce.Scope = ["Access your basic information (id, profile, email, address, phone)"];
 settings.salesforce.CallbackURL = ""; //https://domain.com/oauth2/callback
 settings.salesforce.authorizationURL = 'https://cs19.salesforce.com/services/oauth2/authorize';
+settings.salesforce.tokenURL = 'https://cs19.salesforce.com/services/oauth2/token';
 
 //ECOS Query Whitelist.  The fields to be shown in details panel.
 settings.projectDetails = ["sf_project.name, sf_project.External_Title__c", "sf_project.Sector__c", "sf_project.Status__c", "sf_project.Sub_Sector__c", "sf_project.Summary__c", "sf_project.Total_Budget__c", "sf_project.Start_Date__c", "sf_project.End_Date__c"];
