@@ -58,19 +58,33 @@ UPDATE gadmrollup SET geom0 = ST_BUFFER(geom0, 0);
 
 --Join on name for most of the countries.
 UPDATE gadmrollup
-set namearc = (select name from arc_regions a where a.name = gadmrollup.name0)
+set namearc = (select region from arc_regions a where a.name = gadmrollup.name0)
 
---Then update the rest spatially.  This take a long time.
-update gadmrollup
-set nameARC = a.region, guidarc = a.gid, geomarc = a.geom
-FROM ARC_REGIONS_DISSOLVED a
-WHERE ST_INTERSECTS(a.geom, geom0)
-AND name0 NOT IN ('United States', 'Canada', 'Russia', 'Indonesia', 'Vietnam')
-and nameARC is NOT NULL
+--Fill in a few that slipped thru the cracks
+UPDATE gadmrollup
+set namearc = 'USA'
+where name0 = 'United States'
 
+UPDATE gadmrollup
+set namearc = 'LAC'
+where name0 = 'Bahamas'
 
-select * from gadmrollup
-LIMIT 100
+UPDATE gadmrollup
+set namearc = 'AFRICA'
+where name0 = 'Guinea-Bissau'
+
+UPDATE gadmrollup
+set namearc = 'AFRICA'
+where name0 = 'Tanzania'
+
+UPDATE gadmrollup
+set namearc = 'AFRICA'
+where name0 = 'Republic of Congo'
+
+UPDATE gadmrollup
+set namearc = 'AFRICA'
+where name0 = 'Côte d''Ivoire'
+
 
 
 
