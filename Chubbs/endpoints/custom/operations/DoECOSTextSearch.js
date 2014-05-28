@@ -31,6 +31,11 @@ function buildQueryClause(searchFields, tableName){
         sql += searchFields.join(" ILIKE '%{{text}}%' OR ");
         sql += "= '{{text}}';";
     }
+    if(tableName == 'sf_project'){
+       sql = sql.replace(" * ", " " + settings.projectDetails.join(" ,") + " "); //Replace * with whitelist
+    }else if(tableName == 'sf_disaster'){
+        sql = sql.replace(" * ", " " + settings.disasterDetails.join(" ,") + " "); //Replace * with whitelist
+    }
     return sql;
 }
 

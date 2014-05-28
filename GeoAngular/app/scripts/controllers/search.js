@@ -21,18 +21,23 @@ angular.module('GeoAngular').controller('SearchECOSCtrl', function($scope, $root
       // Fetch from the server only if we don't have it in the hash
       $http.get(thisURL).success(function (result, status) {
 
-          if (!result || result.error) {
-              console.error('Unable to fetch feature: ' + result.error);
+          if (!result){
+              $scope.results = [{name: "No results found."}];
               return;
           }
-          $("#searchResults").empty();
 
-          $.each(result, function(idx,row){
+          if(result.error) {
+              $scope.results = [{name: "Error searching ECOS."}];
+              return;
+          }
 
-              $("#searchResults").append("<div>" + row.name + "</div>");
-
-          });
+          $scope.results = result;
 
       });
   }
+
+    $scope.sendProjectToDetailsPanel = function(properties){
+        $rootScope.$broadcast('details', { feature: { properties: properties } });
+    }
+
 });

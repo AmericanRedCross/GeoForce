@@ -24,3 +24,8 @@
     overflow-y: auto;
     margin-top:15px;
 }
+
+#searchResults .resultItem{
+    padding: 5px;
+    cursor:pointer;
+}
