@@ -7,7 +7,7 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope, $statePar
   console.log('LayersCtrl');
   $scope.params = $stateParams;
 
-	$scope.layerGroup = 'contextual';
+  $scope.navTab = 'contextual';
 
   $scope.allProjects = {
     lat: -19.808054,
