@@ -17,6 +17,13 @@ settings.ssl = {};
 settings.ssl.pfx = '<filename>.pfx';
 settings.ssl.password = '<password>';
 
+//Express Session Secret
+settings.expressSessionSecret = "secret";
+
+//Enable Security?
+settings.enableSecurity = true;
+
+
 //Settings for postgres DB
 settings.pg.username = 'username';
 settings.pg.password = 'password';
@@ -50,12 +57,6 @@ settings.application.geoJsonOutputFolder = "/public/geojson/output/";
 //Optional.  If you're using port forwarding or URL rewriting, but need to display full URLs to your assets, this will stand in for the host.
 settings.application.publichost = ""; //myhost.com //Keep this empty if you want to use the default host
 settings.application.publicport = "80";
-
-//Express Session Secret
-settings.expressSessionSecret = "secret";
-
-//Enable Security?
-settings.enableSecurity = true;
 
 //MongoDB Authentication
 settings.mongodb = {};
@@ -92,6 +93,7 @@ settings.salesforce.ConsumerKey = ""; //clientID
 settings.salesforce.ClientSecret = "";
 settings.salesforce.Scope = ["Access your basic information (id, profile, email, address, phone)"];
 settings.salesforce.CallbackURL = ""; //https://domain.com/oauth2/callback
+settings.salesforce.authorizationURL = 'https://cs19.salesforce.com/services/oauth2/authorize';
 
 //ECOS Query Whitelist.  The fields to be shown in details panel.
 settings.projectDetails = ["sf_project.name, sf_project.External_Title__c", "sf_project.Sector__c", "sf_project.Status__c", "sf_project.Sub_Sector__c", "sf_project.Summary__c", "sf_project.Total_Budget__c", "sf_project.Start_Date__c", "sf_project.End_Date__c"];

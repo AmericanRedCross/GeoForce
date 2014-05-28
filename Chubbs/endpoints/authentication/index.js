@@ -21,7 +21,8 @@ exports.passport = function () {
         clientID: settings.salesforce.ConsumerKey,
         clientSecret: settings.salesforce.ClientSecret,
         scope: settings.salesforce.Scope,
-        callbackURL: settings.salesforce.CallbackURL
+        callbackURL: settings.salesforce.CallbackURL,
+        authorizationURL: settings.salesforce.authorizationURL
     }, function verify(token, refreshToken, profile, done) {
         console.log(profile);
         return done(null, profile);
