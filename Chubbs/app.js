@@ -81,7 +81,7 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
     passport.authenticationFunctions = [];
 
     //Add a route to test OAUTH2
-    app.get('/mapfolio/login', passport.authenticate('forcedotcom'));
+    app.get('/login', passport.authenticate('forcedotcom'));
 
     // this should match the callbackURL parameter above:
     app.get('/oauth2/callback',
