@@ -40,7 +40,7 @@ app.use(require('less-middleware')({
 //Items in these folder will be served statically.
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
-app.use('/geo-angular/', express.static('../GeoAngular/app/'));
+app.use('/mapfolio/', express.static('../GeoAngular/app/'));
 
 
 
@@ -141,7 +141,7 @@ http.createServer(app).listen(app.get('port'), app.get('ipaddr'), function() {
 
 //Root Request - show table list
 app.get('/', passport.authenticationFunctions, function(req, res) {
-	res.redirect('/geo-angular/')
+	res.redirect('/mapfolio/')
 });
 
 //Redirect /services to table list
