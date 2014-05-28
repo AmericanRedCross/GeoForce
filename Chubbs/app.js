@@ -178,7 +178,7 @@ else{
 }
 
 
-//Root Request - show table list
+//Root Request - show application
 app.get('/', passport.authenticationFunctions, function(req, res) {
 	res.redirect('/mapfolio/')
 });
@@ -195,6 +195,19 @@ app.use(function(err, req, res, next) {
 	res.send(500, 'There was an error with the web service. Please try your operation again.');
 	common.log('There was an error with the web service. Please try your operation again.');
 });
+
+// Simple route middleware to ensure user is authenticated.
+//   Use this route middleware on any resource that needs to be protected.  If
+//   the request is authenticated (typically via a persistent login session),
+//   the request will proceed.  Otherwise, the user will be redirected to the
+//   login page.
+
+function ensureAuthenticated(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/login');
+}
 
 //look thru all tables in PostGres with a geometry column, spin up dynamic map tile services for each one
 //on startup.  Probably move this to a 'startup' module
