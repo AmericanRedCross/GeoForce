@@ -8,7 +8,9 @@ var express = require('express'),
     path = require('path'),
     settings = require('./settings'),
     common = require("./common"),
-    cors = require('cors');
+    cors = require('cors'),
+    fs = require("fs"),
+    https = require('https');
 
 
 var app = express();
@@ -30,6 +32,12 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
+
+//Configure HTTPS
+var SSLoptions = {
+    pfx: fs.readFileSync(settings.ssl.pfx),
+    passphrase: settings.ssl.password
+};
 
 //Set up a public folder.  
 app.use(require('less-middleware')({
@@ -70,7 +78,7 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
 	//For now, just cram this object into the passport object as a stowaway so it can be passed into all of the external route definitions
 	//passport.authenticationFunctions = authenticationFunctions;
 
-    passport = { authenticationFunctions: []};
+    passport.authenticationFunctions = [];
 
     //Add a route to test OAUTH2
     app.get('/mapfolio/login', passport.authenticate('forcedotcom'));
@@ -139,18 +147,36 @@ try {
 if (datablaster)
 	app.use(datablaster.app(passport));
 
-//Create web server
-http.createServer(app).listen(app.get('port'), app.get('ipaddr'), function() {
-	var startMessage = "Express server listening";
 
-	if (app.get('ipaddr')) {
-		startMessage += ' on IP:' + app.get('ipaddr') + ', ';
-	}
+if(process.env.NODE_ENV.toLowerCase() == "production"){
+    //Create web server (https)
+    https.createServer(SSLoptions, app).listen(app.get('port'), app.get('ipaddr'), function() {
+        var startMessage = "Express server listening";
 
-	startMessage += ' on port ' + app.get('port');
+        if (app.get('ipaddr')) {
+            startMessage += ' on IP:' + app.get('ipaddr') + ', ';
+        }
 
-	console.log(startMessage);
-});
+        startMessage += ' on port ' + app.get('port');
+
+        console.log(startMessage);
+    });
+}
+else{
+    //Create web server (http)
+    http.createServer(app).listen(app.get('port'), app.get('ipaddr'), function() {
+        var startMessage = "Express server listening";
+
+        if (app.get('ipaddr')) {
+            startMessage += ' on IP:' + app.get('ipaddr') + ', ';
+        }
+
+        startMessage += ' on port ' + app.get('port');
+
+        console.log(startMessage);
+    });
+}
+
 
 //Root Request - show table list
 app.get('/', passport.authenticationFunctions, function(req, res) {
