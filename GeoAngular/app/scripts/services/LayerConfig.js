@@ -23,8 +23,6 @@ angular.module('GeoAngular').service('LayerConfig', function () {
     'ortho',
     'toner',
     'dark',
-//    'streets',
-//    'terrain',
     'github',
     'mozilla',
     'green',
@@ -50,82 +48,86 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    */
   this.pinterest = {
     url: 'http://{s}.tiles.mapbox.com/v3/pinterest.map-ho21rkos/{z}/{x}/{y}.png',
-    name: 'Pinterest'
+    name: 'Pinterest',
+    type: 'basemap'
   };
   this.osmhot = {
     url: 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
-    name: 'Humanitarian OpenStreetMap'
+    name: 'Humanitarian OpenStreetMap',
+    type: 'basemap'
   };
   this.redcross = {
     url: 'https://{s}.tiles.mapbox.com/v3/americanredcross.hcji22de/{z}/{x}/{y}.png',
-    name: 'Red Cross'
+    name: 'Red Cross',
+    type: 'basemap'
   };
-
-  /**
-   * Not working, need the special auth token for redcross for these guys.
-   */
-//  this.streets = {
-//    url: 'https://{s}.tiles.mapbox.com/v3/examples.map-vyofok3q/{z}/{x}/{y}.png',
-//    name: 'Mapbox Streets'
-//  };
-//  this.terrain = {
-//    url: 'https://{s}.tiles.mapbox.com/v3/examples.map-9ijuk24y/{z}/{x}/{y}.png',
-//    name: 'Mapbox Terrain'
-//  };
 
   this.satellite = {
     url: 'https://{s}.tiles.mapbox.com/v3/examples.map-qfyrx5r8/{z}/{x}/{y}.png',
-    name: 'Mapbox Satellite'
+    name: 'Mapbox Satellite',
+    type: 'basemap'
   };
   this.mozilla = {
     url: 'http://{s}.tiles.mapbox.com/v3/mozilla-webprod.e91ef8b3/{z}/{x}/{y}.png',
-    name: 'Mozilla'
+    name: 'Mozilla',
+    type: 'basemap'
   };
   this.github = {
     url: 'http://{s}.tiles.mapbox.com/v3/github.map-xgq2svrz/{z}/{x}/{y}.png',
-    name: 'Github'
+    name: 'Github',
+    type: 'basemap'
   };
   this.green = {
     url: 'http://{s}.tiles.mapbox.com/v3/examples.map-3gisupiu/{z}/{x}/{y}.png',
-    name: 'Green Theme'
+    name: 'Green Theme',
+    type: 'basemap'
   };
   this.dark = {
     url: 'http://{s}.tiles.mapbox.com/v3/spatialdev.map-c9z2cyef/{z}/{x}/{y}.png',
-    name: 'Dark Theme'
+    name: 'Dark Theme',
+    type: 'basemap'
   };
 
   this.osm = {
     url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-    name: 'Standard OpenStreetMap'
+    name: 'Standard OpenStreetMap',
+    type: 'basemap'
   };
   this.osmcycle = {
     url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-    name: 'Cycle OpenStreetMap'
+    name: 'Cycle OpenStreetMap',
+    type: 'basemap'
   };
   this.osmtransport = {
     url: 'http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png',
-    name: 'Transport OpenStreetMap'
+    name: 'Transport OpenStreetMap',
+    type: 'basemap'
   };
   this.osmmapquest = {
     url: 'http://otile3.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
-    name: 'MapQuest OpenStreetMap'
+    name: 'MapQuest OpenStreetMap',
+    type: 'basemap'
   };
 
   this.natgeo = {
     url: 'http://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',
-    name: 'National Geographic'
+    name: 'National Geographic',
+    type: 'basemap'
   };
   this.usgstopo = {
     url: 'http://services.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}',
-    name: 'USGS Topographic'
+    name: 'USGS Topographic',
+    type: 'basemap'
   };
   this.ortho = {
     url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    name: 'Orthographic'
+    name: 'Orthographic',
+    type: 'basemap'
   };
   this.ocean = {
     url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}',
-    name: 'Ocean Bathymetric'
+    name: 'Ocean Bathymetric',
+    type: 'basemap'
   };
   this.lightgray = {
     url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
@@ -133,16 +135,19 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   };
   this.esritopo = {
     url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
-    name: 'Esri Topographic'
+    name: 'Esri Topographic',
+    type: 'basemap'
   };
 
   this.toner = {
     url: 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png',
-    name: 'Stamen Toner'
+    name: 'Stamen Toner',
+    type: 'basemap'
   };
   this.watercolor = {
     url: 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png',
-    name: 'Stamen Watercolor'
+    name: 'Stamen Watercolor',
+    type: 'basemap'
   };
 
 
@@ -250,37 +255,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
     }
   };
 
-  this.themedisaster = {
-    type: 'BBoxGeoJSON',
-    url: config.chubbsPath('services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=disaster&gadm_level=:level&ids=:ids'),
-    properties: {
-      "stroke": 'white',
-      "stroke-width": 2,
-      "stroke-opacity": 1,
-      "fill": "green",
-      "fill-opacity": 0,
-      "labelProperty": "theme_count",
-      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids&gadm_level=:level'),
-      "onSelect": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
-    }
-  };
-
-  this.allprojectsfiltered = {
-      type: 'BBoxGeoJSON',
-      url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=project&gadm_level=:level&ids=:ids&filters=:filters"),
-      properties: {
-          "stroke": 'white',
-          "stroke-width": 2,
-          "stroke-opacity": 1,
-          "fill": "green",
-          "fill-opacity": 0,
-          "labelProperty": "theme_count",
-          "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=getprojectbyguid&format=json&guids=:guids&gadm_level=:level'),
-          "onSelect": 'fetchFeatureDetails' // the BBoxGeoJSON method to call on click.
-      }
-  };
-
-  this.smartgadm = {
+  this.boundaries = {
     type: 'BBoxGeoJSON',
     url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
     properties: {
@@ -294,7 +269,11 @@ angular.module('GeoAngular').service('LayerConfig', function () {
 
   };
 
-  this.smartgadmfakecount = {
+  /**
+   * Shows badges with numbers on them. This is for testing and demo purposes.
+   * Demonstrates the label w/ badge feature.
+   */
+  this.fakecount = {
     type: 'BBoxGeoJSON',
     url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
     properties: {
@@ -304,45 +283,35 @@ angular.module('GeoAngular').service('LayerConfig', function () {
       "fill": "green",
       "fill-opacity": 0,
       "labelProperty": function() {
-//        Math.floor(Math.random() * (max - min + 1)) + min
         return Math.floor(Math.random() * (50 - 1 + 1)) + 1;
       }
     }
 
   };
 
-
-  this.gadm0 ={
-    type: 'BBoxGeoJSON',
-    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=0'),
-    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=0&ids=:ids')
-  };
-
-  this.gadm1 = {
-    type: 'BBoxGeoJSON',
-    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=1'),
-    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=1&ids=:ids')
-  };
-
-  this.gadm2 = {
-    type: 'BBoxGeoJSON',
-    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=2'),
-    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=2&ids=:ids')
-  };
-
-  this.gadm3 = {
-    type: 'BBoxGeoJSON',
-    bboxurl: config.chubbsPath('services/custom/custom_operation?name=getidsbyextent&format=json&bbox=:bbox&gadm_level=3'),
-    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=3&ids=:ids')
-  };
-
   /**
    * KML
    */
-  this.gdacs = 'http://www.gdacs.org/xml/gdacs.kml';
-  this.gdacstest = 'data/test/gdacs.kml';
-  this.earthquakes = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml';
-  this.earthquakestest = 'data/test/usgs-earthquakes.kml';
+  this.gdacs = {
+    name: '',
+    type: 'kml',
+    url: 'http://www.gdacs.org/xml/gdacs.kml'
+  };
+  this.gdacstest = {
+    name: 'GDACS Test',
+    type: 'kml',
+    url: 'data/test/gdacs.kml'
+  };
+  this.earthquakes = {
+    name: '',
+    type: 'kml',
+    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml'
+  };
+  this.earthquakestest = {
+    name: '',
+    type: 'kml',
+    url: 'data/test/usgs-earthquakes.kml'
+  };
 
 
 
