@@ -3,11 +3,13 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('LayersCtrl', function($scope, $stateParams) {
+angular.module('GeoAngular').controller('LayersCtrl', function($scope, $stateParams, LayerConfig) {
   console.log('LayersCtrl');
   $scope.params = $stateParams;
 
   $scope.navTab = 'contextual';
+
+  debug.LayerConfig = LayerConfig;
 
   $scope.allProjects = {
     lat: -19.808054,
