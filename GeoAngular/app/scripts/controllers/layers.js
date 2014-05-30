@@ -3,34 +3,13 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('LayersCtrl', function($scope, $stateParams, LayerConfig) {
+angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig) {
   console.log('LayersCtrl');
   $scope.params = $stateParams;
 
   $scope.navTab = 'contextual';
 
   debug.LayerConfig = LayerConfig;
-
-//  function mapLayers() {
-//    if (!$stateParams.layers) {
-//      return {};
-//    }
-//    var list = $stateParams.layers.split(',').slice(1);
-//    var layers = {};
-//    for (var i = 0, len = list.length; i < len; i++) {
-//      var l = list[i];
-//      l.active = true;
-//      layers[l] = l;
-//      // layer is not in layer config, but we need to know about it
-//      if (!LayerConfig[l]){
-//        $scope.cowboyLayers[l] = {
-//          name: l,
-//          active: true
-//        };
-//      }
-//    }
-//    return layers;
-//  }
 
   $scope.layersPanels = {
     'Boundaries': {},
@@ -111,8 +90,9 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope, $statePar
     /**
      * Check if the layer is active in map layers from stateParams
      */
-    var mapLayers = $stateParams.layers.split(',').slice(1);
-    for (var i = 0, len = mapLayers.length; i < len; i++) {
+    var mapLayers = $scope.mapLayers = $stateParams.layers.split(',');
+    // skip the first layer, the basemap
+    for (var i = 1, len = mapLayers.length; i < len; i++) {
       var l = mapLayers[i];
       // layer is in the layer config
       if (typeof LayerConfig[l] === 'object' && LayerConfig[l] !== null) {
@@ -127,4 +107,26 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope, $statePar
       }
     }
   });
+
+
+  $scope.toggleMapLayer = function (layerKey, layer) {
+
+    // add layer
+    if (layer.active === true) {
+      $scope.mapLayers.push(layerKey);
+
+    // remove layer
+    } else {
+      $scope.mapLayers = $.grep($scope.mapLayers, function(routeLayer){
+        return routeLayer !== layerKey;
+      });
+    }
+
+    $stateParams.layers = $scope.mapLayers.join(',');
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+    $scope.$parent.$parent.drawOverlays();
+
+  };
+
 });
