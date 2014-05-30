@@ -384,9 +384,17 @@
                                 <!-- Tab panes -->
                                 <div class="tab-content filters-content scrollable">
                                     <div ng-class="{active: navTab==='contextual'}" class="tab-pane">
-                                        <div class="panel panel-default">
+                                        <div class="panel panel-default" ng-repeat="(panelName, panel) in layersPanels">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">{{panelName}}</h3>
+                                            </div>
                                             <div class="panel-body">
-                                                test
+
+                                                <label class="checkbox" ng-repeat="(layerKey, layer) in panel">
+                                                    <input type="checkbox" ng-model="layer.active" ng-change="">
+                                                    {{layer.name || layer.properties.title || layerKey}}
+                                                </label>
+
                                             </div>
                                         </div>
                                     </div>
