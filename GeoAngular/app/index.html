@@ -391,7 +391,7 @@
                                             <div class="panel-body">
 
                                                 <label class="checkbox" ng-repeat="(layerKey, layer) in panel">
-                                                    <input type="checkbox" ng-model="layer.active" ng-change="">
+                                                    <input type="checkbox" ng-model="layer.active" ng-change="toggleMapLayer(layerKey, layer)">
                                                     {{layer.name || layer.properties.title || layerKey}}
                                                 </label>
 
