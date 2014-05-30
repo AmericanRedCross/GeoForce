@@ -11,67 +11,93 @@ angular.module('GeoAngular').controller('LayersCtrl', function($scope, $statePar
 
   debug.LayerConfig = LayerConfig;
 
-  $scope.allProjects = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
+  /**
+   * Layers that are active on the map but are not mentioned in LayerConfig
+   * @type {{}}
+   */
+  $scope.cowboyLayers = {};
+
+  function mapLayers() {
+    if (!$stateParams.layers) {
+      return {};
+    }
+    var list = $stateParams.layers.split(',').slice(1);
+    var layers = {};
+    for (var i = 0, len = list.length; i < len; i++) {
+      var l = list[i];
+      layers[l] = true;
+      // layer is not in layer config, but we need to know about it
+      if (!LayerConfig[l]){
+        $scope.cowboyLayers[l] = {
+          name: l,
+          active: true
+        };
+      }
+    }
+    return layers;
   };
 
-  $scope.smartGadm = {
-    lat: 43.468868,
-    lng: -106.638794,
-    zoom: 9,
-    layers: 'ortho,smartgadm'
+  $scope.layersPanel = {
+    'Boundaries': {},
+    'GeoJSON': {},
+    'KML': {},
+    'CSV': {},
+    'WMS': {},
+    'Other': {}
   };
 
-  $scope.gdacsKml = {
-    lat: 0,
-    lng: 0,
-    zoom: 2,
-    layers: 'osmhot,http://www.gdacs.org/xml/gdacs.kml'
+
+  $scope.showLayers = function () {
+
+    for (var layerKey in LayerConfig) {
+
+      // We don't want to show layers that are basemaps, and we dont want to show the find func.
+      if (  typeof LayerConfig[layerKey] === 'function'
+         || LayerConfig[layerKey] === 'basemaps'
+         || LayerConfig[layerKey].type === 'basemap') {
+
+        continue;
+      }
+
+      /**
+       * Put layers in their respective categories.
+       */
+      if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'bboxgeojson') {
+        var layer = $scope.layersPanel.Boundaries[layerKey] = LayerConfig[layerKey];
+      }
+
+      else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'geojson') {
+        var layer = $scope.layersPanel.GeoJSON[layerKey] = LayerConfig[layerKey];
+      }
+
+      else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'kml') {
+        var layer = $scope.layersPanel.KML[layerKey] = LayerConfig[layerKey];
+      }
+
+      else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'csv') {
+        var layer = $scope.layersPanel.CSV[layerKey] = LayerConfig[layerKey];
+      }
+
+      else {
+        var layer = $scope.layersPanel.Other[layerKey] = LayerConfig[layerKey];
+      }
+
+      /**
+       * Check if the layer is active in map layers from stateParams
+       */
+      var activeLayers = mapLayers();
+      if (layer && activeLayers[layerKey] && activeLayers[layerKey] === true) {
+        layer.active = true;
+      } else {
+        layer.active = false;
+      }
+
+    }
   };
 
-  $scope.gadm0 = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
+  $scope.showLayers();
 
-  $scope.gadm1 = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
-
-  $scope.gadm2 = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
-
-  $scope.gadm3 = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
-
-  $scope.earthquakesKml = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
-
-  $scope.standardGeoJson = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
+  debug.showLayers = debug.showLayers;
+  debug.layersPanel = $scope.layersPanel;
 
 });
