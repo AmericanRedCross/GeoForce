@@ -131,7 +131,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   };
   this.lightgray = {
     url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-    name: 'Light Gray'
+    name: 'Light Gray',
+    type: 'basemap'
   };
   this.esritopo = {
     url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
@@ -239,7 +240,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    * @type {{type: string}}
    */
   this.themecount = {
-    type: 'BBoxGeoJSON',
+    name: 'Theme Count',
+    type: 'bboxgeojson',
     url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=:theme&gadm_level=:level&ids=:ids&filters=:filters"),
     properties: {
       "stroke": 'white',
@@ -256,7 +258,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
   };
 
   this.boundaries = {
-    type: 'BBoxGeoJSON',
+    name: 'Boundaries',
+    type: 'bboxgeojson',
     url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
@@ -274,7 +277,8 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    * Demonstrates the label w/ badge feature.
    */
   this.fakecount = {
-    type: 'BBoxGeoJSON',
+    name: 'Fake Count',
+    type: 'bboxgeojson',
     url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
@@ -293,7 +297,7 @@ angular.module('GeoAngular').service('LayerConfig', function () {
    * KML
    */
   this.gdacs = {
-    name: '',
+    name: 'GDACS: Global Disaster Alert and Coordination System',
     type: 'kml',
     url: 'http://www.gdacs.org/xml/gdacs.kml'
   };
@@ -303,17 +307,30 @@ angular.module('GeoAngular').service('LayerConfig', function () {
     url: 'data/test/gdacs.kml'
   };
   this.earthquakes = {
-    name: '',
+    name: 'USGS Earthquakes',
     type: 'kml',
     url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml'
   };
   this.earthquakestest = {
-    name: '',
+    name: 'USGS Earthquakes Test',
     type: 'kml',
     url: 'data/test/usgs-earthquakes.kml'
   };
 
 
+  /**
+   * CSV
+   */
+  this.ugandafsp = {
+    name: 'Uganda Financial Service Providers',
+    type: 'csv',
+    url: 'data/test/uganda.csv'
+  };
+  this.nhtracks = {
+    name: 'NH GPS Tracks',
+    type: 'csv',
+    url: 'data/test/nh-tracks.csv'
+  };
 
 
   /**
