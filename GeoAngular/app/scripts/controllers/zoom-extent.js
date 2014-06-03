@@ -4,7 +4,7 @@
  *       on 4/2/14.
  */
 
-angular.module('GeoAngular').controller('ZoomExtentCtrl', function($scope, $rootScope, $stateParams, VectorProvider) {
+module.exports = angular.module('GeoAngular').controller('ZoomExtentCtrl', function($scope, $rootScope, $stateParams, VectorProvider) {
   console.log('ZoomExtentCtrl');
   $scope.params = $stateParams;
 

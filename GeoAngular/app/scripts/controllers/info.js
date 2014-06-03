@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('InfoCtrl', function($scope) {
+module.exports = angular.module('GeoAngular').controller('InfoCtrl', function($scope) {
   console.log('InfoCtrl');
   $scope.params = $stateParams;
 

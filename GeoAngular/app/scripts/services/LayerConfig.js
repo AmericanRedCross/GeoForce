@@ -6,7 +6,7 @@
 /**
  * All of the layer names need to be lowercase.
  */
-angular.module('GeoAngular').service('LayerConfig', function () {
+module.exports = angular.module('GeoAngular').service('LayerConfig', function () {
 
   /**
    * Basemaps Panel List

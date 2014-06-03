@@ -3,7 +3,7 @@
  *       on 5/6/14.
  */
 
-angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $state, $stateParams, VectorProvider) {
+module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $state, $stateParams, VectorProvider) {
 
   var themeNameHash = $rootScope.themeNameHash = {
     project: 'Projects',

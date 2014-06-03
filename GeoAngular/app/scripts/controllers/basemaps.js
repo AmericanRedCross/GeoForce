@@ -3,7 +3,7 @@
  *       on 3/28/14.
  */
 
-angular.module('GeoAngular').controller('BasemapsCtrl', function($scope, $state, $stateParams, LayerConfig) {
+module.exports = angular.module('GeoAngular').controller('BasemapsCtrl', function($scope, $state, $stateParams, LayerConfig) {
   console.log('BasemapsCtrl');
 
   $scope.basemaps = LayerConfig.basemaps;
