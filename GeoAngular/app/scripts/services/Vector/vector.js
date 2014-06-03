@@ -35,3 +35,10 @@ debug.bboxResources = vector.bboxResources;
 vector.bboxUrl = '';
 
 vector.centerLevel = 0;
+
+vector.setInjectors = function ($rootScope, $location, $http, LayerConfig) {
+  vector.$rootScope = $rootScope;
+  vector.$location = $location;
+  vector.$http = $http;
+  vector.LayerConfig = LayerConfig;
+};

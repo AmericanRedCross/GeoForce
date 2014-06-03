@@ -3,6 +3,9 @@
  *       on 6/3/14.
  */
 
+var resources = require('./vector').resources;
+var $http = require('./vector').$http;
+
 module.exports = Resource;
 
 /**
@@ -83,4 +86,3 @@ Resource.prototype.eachLayer = function (cb) {
   this._eachLayerCallback = cb;
   this._geojsonLayer.eachLayer(cb);
 };
-
