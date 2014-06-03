@@ -19,6 +19,8 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   var Resource = require('./resource');
   var GeoJSON = require('./geojson');
   var BBoxGeoJSON = require('./bboxgeojson');
+  var KML = require('./kml');
+
 
   /**
    * This is used by the factory to dynamically state the type (class)
@@ -92,56 +94,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
   }
 
-
-  /**
-   * A KML Resource fetches KML and parses it with togeojson.js
-   * Note that togeojson.js has bugs and does not accurately parse
-   * some of the KML sources we have tested with. This library has
-   * been modified with my hotfixes.
-   *
-   * @param config
-   * @constructor
-   */
-  function KML(config) {
-    Resource.call(this, config);
-    this._geojson = null;
-  }
-
-  KML.prototype = Object.create(Resource.prototype);
-  KML.prototype.constructor = KML;
-
-  KML.prototype.fetch = function (cb) {
-    var self = this;
-    Resource.prototype.fetch.call(this, function(data) {
-      var xml = $.parseXML(data);
-      self._geojson = toGeoJSON.kml(xml);
-      if (typeof self._config.properties === 'object') {
-        angular.extend(self._geojson.properties, self._config.properties);
-        self._geojson.properties.srcType = 'kml';
-      }
-      if (typeof cb === 'function') cb(self._geojson, self);
-    });
-  };
-
-  KML.prototype.getLayer = function () {
-    if (this._geojsonLayer) return this._geojsonLayer;
-    var layer =  Resource.prototype.getLayer.call(this);
-    this.fetch(function(geojson){
-      layer.addData(geojson);
-    });
-    return layer;
-  };
-
-  KML.prototype.eachLayer = function (cb) {
-    this._eachLayerCallback = cb;
-    this.fetch(function(geojson, self){
-      var layers = self._geojsonLayer._layers;
-      for (var key in layers) {
-        var layer = layers[key];
-        cb(layer);
-      }
-    });
-  };
 
   /**
    * A CSV Resource fetches CSV and parses it

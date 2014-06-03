@@ -45,5 +45,6 @@ vector.setInjectors = function ($rootScope, $location, $http, LayerConfig) {
 
 vector.angular = angular;
 vector.L = L;
+vector.$ = $;
+vector.toGeoJSON = toGeoJSON;
 
-vector.map = debug.map; //NH fixme!!!
