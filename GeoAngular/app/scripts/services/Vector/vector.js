@@ -42,3 +42,8 @@ vector.setInjectors = function ($rootScope, $location, $http, LayerConfig) {
   vector.$http = $http;
   vector.LayerConfig = LayerConfig;
 };
+
+vector.angular = angular;
+vector.L = L;
+
+vector.map = debug.map; //NH fixme!!!
