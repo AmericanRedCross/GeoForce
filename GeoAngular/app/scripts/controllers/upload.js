@@ -3,7 +3,7 @@
  *       on 4/17/14.
  */
 
-angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $state, $stateParams, $upload) {
+module.exports = angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $state, $stateParams, $upload) {
   console.log('UploadCtrl');
 
   $scope.showAlert = false;

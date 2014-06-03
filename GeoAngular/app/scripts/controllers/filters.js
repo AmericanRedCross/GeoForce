@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $state, $stateParams) {
+module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $state, $stateParams) {
   $scope.params = $stateParams;
   $scope.navTab = 'sectors';
   $scope.sectors = [];

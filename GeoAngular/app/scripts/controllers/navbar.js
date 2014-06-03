@@ -1,4 +1,4 @@
-angular.module('GeoAngular').controller('NavBarCtrl', function($scope, $state, $stateParams) {
+module.exports = angular.module('GeoAngular').controller('NavBarCtrl', function($scope, $state, $stateParams) {
   console.log('NavBarCtrl');
   $scope.params = $stateParams;
 

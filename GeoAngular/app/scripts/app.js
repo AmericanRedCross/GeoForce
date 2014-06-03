@@ -136,6 +136,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
 
 });
 
+
 GeoAngular.directive('selectOnClick', function () {
   return {
     restrict: 'A',
@@ -146,3 +147,47 @@ GeoAngular.directive('selectOnClick', function () {
     }
   };
 });
+
+
+angular.module('GeoAngular').directive('myShow', function($animate) {
+  return {
+    scope: {
+      'myShow': '=',
+      'afterShow': '&',
+      'afterHide': '&'
+    },
+    link: function(scope, element) {
+      scope.$watch('myShow', function(show, oldShow) {
+        if (show) {
+          $animate.removeClass(element, 'ng-hide', scope.afterShow);
+        }
+        if (!show) {
+          $animate.addClass(element, 'ng-hide', scope.afterHide);
+        }
+      });
+    }
+  }
+});
+
+
+require('./services/LayerConfig');
+require('./services/Vector/VectorProvider');
+require('./services/Donuts');
+require('./controllers/landing');
+require('./controllers/main');
+require('./controllers/map');
+require('./controllers/details');
+require('./controllers/navbar');
+require('./controllers/side-view');
+require('./controllers/stories');
+require('./controllers/layers');
+require('./controllers/filters');
+require('./controllers/legend');
+require('./controllers/info');
+require('./controllers/basemaps');
+require('./controllers/breadcrumbs');
+require('./controllers/zoom-extent');
+require('./controllers/theme');
+require('./controllers/upload');
+require('./controllers/search');
+
