@@ -159,7 +159,8 @@ toGeoJSON = (function() {
 
                 // NH jQuery Override.
                 var $node = $(xml).find('#'+root.id);
-                var description = $node.find('description').html();
+                // gets rid of cdata stuff that might prevent the string from showing up.
+                var description = $node.find('description').html().replace("<![CDATA[", "").replace("]]>", "");
                 var color = $node.find('color').html();
                 var scale = $node.find('scale').html();
 

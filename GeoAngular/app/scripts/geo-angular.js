@@ -3035,6 +3035,7 @@ GeoJSON.prototype.getLayer = function() {
  */
 
 var Resource = require('./resource');
+var $rootScope = require('./vector').$rootScope;
 var toGeoJSON = require('./vector').toGeoJSON;
 var $ = require('./vector').$;
 
@@ -3075,6 +3076,11 @@ KML.prototype.getLayer = function () {
   var layer =  Resource.prototype.getLayer.call(this);
   this.fetch(function(geojson){
     layer.addData(geojson);
+    layer.eachLayer(function (l) {
+      l.on('click', function () {
+        $rootScope.$broadcast('details', l);
+      });
+    });
   });
   return layer;
 };
