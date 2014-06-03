@@ -1,3 +1,4 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/19/14.
@@ -5,13 +6,15 @@
 
 angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $location, $http, LayerConfig) {
 
+  var vector = require('./vector');
+
   /**
    * This is used by the factory to dynamically state the type (class)
    * that it wants to instantiate.
    *
    * @type {{geojson: GeoJSON, bboxgeojson: BBoxGeoJSON, kml: KML}}
    */
-  var types = {
+  types = {
     geojson: GeoJSON,
     bboxgeojson: BBoxGeoJSON,
     kml: KML,
@@ -19,36 +22,11 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   };
 
   /**
-   * This is updated by updateBBox. It is then used to query all
-   * VectorProviders that use a bounding box to get additional
-   * features.
-   *
-   * @type {string}
+   * make the default BBoxURL able to be overridden if specified by the LayerConfig Object.
+   * @param config
+   * @constructor
    */
-  var bbox = null;
-
-  /**
-   * Every resource that has been instantiated.
-   * @type {Array}
-   */
-  var resources = [];
-  debug.resources = resources;
-
-  /**
-   * Every resource with a bounding box fetching mechanism.
-   * @type {Array}
-   */
-  var bboxResources = [];
-  debug.bboxResources = bboxResources;
-
-    /**
-     * make the default BBoxURL able to be overridden if specified by the LayerConfig Object.
-     * @param config
-     * @constructor
-     */
-  var bboxUrl = LayerConfig.bbox.bboxurl;
-
-  var centerLevel = 0;
+  vector.bboxUrl = LayerConfig.bbox.bboxurl;
 
 
   /**
@@ -57,7 +35,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    * @constructor
    */
   function Resource(config) {
-    resources.push(this);
+    vector.resources.push(this);
     this._config = config;
     this._url = null;
     if (typeof config === 'object') {
@@ -193,7 +171,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   function BBoxGeoJSON(config) {
     Resource.call(this, config);
     if(config.bboxurl) {
-        this._bboxurl = bboxUrl = config.bboxurl;
+        this._bboxurl = vector.bboxUrl = config.bboxurl;
     }
     this._features = {};
     this._featureLayersByLevel = {};
@@ -205,7 +183,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
       this._detailsUrl = config.detailsUrl;
     }
 
-    bboxResources.push(this);
+    vector.bboxResources.push(this);
   }
 
   BBoxGeoJSON.prototype = Object.create(Resource.prototype);
@@ -320,7 +298,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    * has not yet been requested. This is done by _getFeatures.
    */
   function fetchFeatureItinerary() {
-    var thisUrl = bboxUrl.replace(':bbox', bbox);
+    var thisUrl = vector.bboxUrl.replace(':bbox', vector.bbox);
     var proxyPath = config.proxyPath(thisUrl);
     $http.get(thisUrl, {cache: true}).success(function (featItinerary, status) {
       processFeatureItinerary(featItinerary);
@@ -338,7 +316,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     for (var j = 0, len = featItinerary.length; j < len; j++) {
       var feat = featItinerary[j];
       if ( feat.iscenter ) {
-        centerLevel = feat.level || 0;
+        vector.centerLevel = feat.level || 0;
         console.log('CENTER ' + feat.name + ' ' + feat.guid + ' ' + feat.level);
       } else {
         console.log(feat.name + ' ' + feat.guid + ' ' + feat.level);
@@ -363,8 +341,8 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
     /**
      * BBoxGeoJSON logic
      */
-    for(var r = 0, len = bboxResources.length; r < len; ++r) {
-      bboxResources[r].processFeatureItinerary(featItinerary);
+    for(var r = 0, len = vector.bboxResources.length; r < len; ++r) {
+      vector.bboxResources[r].processFeatureItinerary(featItinerary);
     }
 
   }
@@ -871,9 +849,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
      * @param bboxStr "south,west,north,east" === "minX,minY,maxX,maxY"
      */
     updateBBox: function(bboxStr) {
-      bbox = bboxStr;
+      vector.bbox = bboxStr;
 
-      console.log('VectorProvider bbox: ' + bbox);
+      console.log('VectorProvider bbox: ' + vector.bbox);
       fetchFeatureItinerary();
 
     },
@@ -936,3 +914,44 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
 });
 
+
+},{"./vector":2}],2:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 6/3/14.
+ */
+
+var vector = {};
+module.exports = vector;
+
+
+
+
+/**
+ * This is updated by updateBBox. It is then used to query all
+ * VectorProviders that use a bounding box to get additional
+ * features.
+ *
+ * @type {string}
+ */
+vector.bbox = null;
+
+/**
+ * Every resource that has been instantiated.
+ * @type {Array}
+ */
+vector.resources = [];
+debug.resources = vector.resources;
+
+/**
+ * Every resource with a bounding box fetching mechanism.
+ * @type {Array}
+ */
+vector.bboxResources = [];
+debug.bboxResources = vector.bboxResources;
+
+vector.bboxUrl = '';
+
+vector.centerLevel = 0;
+
+},{}]},{},[1])
