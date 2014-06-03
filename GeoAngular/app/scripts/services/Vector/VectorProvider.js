@@ -6,6 +6,7 @@
 angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $location, $http, LayerConfig) {
 
   var vector = require('./vector');
+  vector.setInjectors($rootScope, $location, $http, LayerConfig);
 
   /**
    * This is used by the factory to dynamically state the type (class)
@@ -13,12 +14,13 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    *
    * @type {{geojson: GeoJSON, bboxgeojson: BBoxGeoJSON, kml: KML}}
    */
-  types = {
+  var types = {
     geojson: GeoJSON,
     bboxgeojson: BBoxGeoJSON,
     kml: KML,
     csv: CSV
   };
+
 
   /**
    * make the default BBoxURL able to be overridden if specified by the LayerConfig Object.
@@ -27,140 +29,9 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
    */
   vector.bboxUrl = LayerConfig.bbox.bboxurl;
 
+  var Resource = require('./resource');
+  var GeoJSON = require('./geojson');
 
-  /**
-   * All VectorProvider resources are children of this class.
-   * @param config
-   * @constructor
-   */
-  function Resource(config) {
-    vector.resources.push(this);
-    this._config = config;
-    this._url = null;
-    if (typeof config === 'object') {
-      this._url = config.url;
-    } else {
-      this._url = config;
-    }
-
-    this._eachLayerCallback = null;
-    this._geojsonLayer = null;
-  }
-
-
-  /**
-   * Fetches data from the given url of a resource.
-   * Subclasses then handle the callback accordingly.
-   *
-   * Needs to also try to get a resource via the Chubbs
-   * proxy.
-   *
-   * @param cb
-   */
-  Resource.prototype.fetch = function(cb) {
-    var proxyPath = config.proxyPath(this._url);
-    $http.get(this._url, {cache: true}).success(function (data, status) {
-      cb(data);
-    }).error(function() {
-      // trying proxy
-      $http.get(proxyPath, {cache: true}).success(function (data, status) {
-        cb(data);
-      }).error(function() {
-        console.error("Unable to fetch from: " + proxyPath);
-      });
-    });
-
-  };
-
-
-  /**
-   * Returns the Leaflet GeoJSON Layer associated with the
-   * Resource or creates a new one.
-   *
-   * @returns {null|*}
-   */
-  Resource.prototype.getLayer = function () {
-    if (typeof this._geojsonLayer !== 'undefined' && this._geojsonLayer !== null) {
-      return this._geojsonLayer;
-    }
-
-    this._geojsonLayer = L.geoJson(this._geojson || null, {
-      style: L.mapbox.simplestyle.style,
-      pointToLayer: function(feature, latlon) {
-        if (!feature.properties) feature.properties = {};
-        if (feature.properties.scale) {
-          return L.circleMarker(latlon, {
-            fillColor: feature.properties.color || '#FF0000',
-            radius: 20 * feature.properties.scale
-          });
-        }
-        return L.mapbox.marker.style(feature, latlon);
-      }
-    }).eachLayer(this._eachLayerCallback);
-
-
-    return this._geojsonLayer;
-  };
-
-  Resource.prototype.eachLayer = function (cb) {
-    this._eachLayerCallback = cb;
-    this._geojsonLayer.eachLayer(cb);
-  };
-
-
-
-  /**
-   * This is a basic GeoJSON VectorProvider.
-   * @param config
-   * @constructor
-   */
-  function GeoJSON(config) {
-    Resource.call(this, config);
-    this._geojson = null;
-  }
-
-  GeoJSON.prototype = Object.create(Resource.prototype);
-  GeoJSON.prototype.constructor = GeoJSON;
-
-  GeoJSON.prototype.fetch = function (cb) {
-    if (this._geojson && typeof cb === 'function') {
-      cb(this._geojson);
-      return;
-    }
-    var self = this;
-    Resource.prototype.fetch.call(this, function(data) {
-      self._geojson = data;
-      if (typeof self._config.properties === 'object') {
-        if ( data.type === 'FeatureCollection') {
-          var feats = data.features;
-          for (var i = 0, len = feats.length; i < len; ++i) {
-            var feat = feats[i];
-            if (!feat.properties) feat.properties = {};
-            angular.extend(feat.properties, self._config.properties);
-          }
-        } else { // a feature or a geometry type
-          if (!data.properties) data.properties = {};
-          angular.extend(data.properties, self._config.properties);
-        }
-      }
-
-      if (typeof cb === 'function') cb(self._geojson);
-    });
-  };
-
-  GeoJSON.prototype.getLayer = function() {
-    if (this._geojsonLayer) return this._geojsonLayer;
-    var layer =  Resource.prototype.getLayer.call(this);
-    this.fetch(function(geojson){
-      layer.addData(geojson);
-      layer.eachLayer(function (l) {
-        l.on('click', function () {
-          $rootScope.$broadcast('details', l);
-        });
-      });
-    });
-    return layer;
-  };
 
 
 
