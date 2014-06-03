@@ -20,6 +20,8 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
   var Resource = require('./resource');
   var GeoJSON = require('./geojson');
   var BBoxGeoJSON = require('./bboxgeojson');
+  var KML = require('./kml');
+
 
   /**
    * This is used by the factory to dynamically state the type (class)
@@ -93,56 +95,6 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 
   }
 
-
-  /**
-   * A KML Resource fetches KML and parses it with togeojson.js
-   * Note that togeojson.js has bugs and does not accurately parse
-   * some of the KML sources we have tested with. This library has
-   * been modified with my hotfixes.
-   *
-   * @param config
-   * @constructor
-   */
-  function KML(config) {
-    Resource.call(this, config);
-    this._geojson = null;
-  }
-
-  KML.prototype = Object.create(Resource.prototype);
-  KML.prototype.constructor = KML;
-
-  KML.prototype.fetch = function (cb) {
-    var self = this;
-    Resource.prototype.fetch.call(this, function(data) {
-      var xml = $.parseXML(data);
-      self._geojson = toGeoJSON.kml(xml);
-      if (typeof self._config.properties === 'object') {
-        angular.extend(self._geojson.properties, self._config.properties);
-        self._geojson.properties.srcType = 'kml';
-      }
-      if (typeof cb === 'function') cb(self._geojson, self);
-    });
-  };
-
-  KML.prototype.getLayer = function () {
-    if (this._geojsonLayer) return this._geojsonLayer;
-    var layer =  Resource.prototype.getLayer.call(this);
-    this.fetch(function(geojson){
-      layer.addData(geojson);
-    });
-    return layer;
-  };
-
-  KML.prototype.eachLayer = function (cb) {
-    this._eachLayerCallback = cb;
-    this.fetch(function(geojson, self){
-      var layers = self._geojsonLayer._layers;
-      for (var key in layers) {
-        var layer = layers[key];
-        cb(layer);
-      }
-    });
-  };
 
   /**
    * A CSV Resource fetches CSV and parses it
@@ -537,7 +489,7 @@ angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $lo
 });
 
 
-},{"./bboxgeojson":2,"./geojson":3,"./resource":4,"./vector":5}],2:[function(require,module,exports){
+},{"./bboxgeojson":2,"./geojson":3,"./kml":4,"./resource":5,"./vector":6}],2:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -548,7 +500,6 @@ var bboxUrl = require('./vector').bboxUrl;
 var bboxResources = require('./vector').bboxResources;
 
 var L = require('./vector').L;
-var map = require('./vector').map;
 var angular = require('./vector').angular;
 var $rootScope = require('./vector').$rootScope;
 var $http = require('./vector').$http;
@@ -754,13 +705,13 @@ function BBoxGeoJSON_removeInactiveLabels(self) {
       var featureLayer = allFeatureLayers[key];
       if ( featureLayer.geojsonLayer && featureLayer.label) {
         console.log("REMOVING: " + featureLayer.feature.properties.name);
-        map.removeLayer(featureLayer.label); // NH FIXME
+        debug.map.removeLayer(featureLayer.label); // NH FIXME
         featureLayer.label = null;
       }
 
       if ( featureLayer.geojsonLayer && featureLayer.geojsonLayer.label) {
         console.log("REMOVING: " + featureLayer.feature.properties.name);
-        map.removeLayer(featureLayer.geojsonLayer.label); // NH FIXME
+        debug.map.removeLayer(featureLayer.geojsonLayer.label); // NH FIXME
         featureLayer.geojsonLayer.label = null;
       }
     }
@@ -791,7 +742,7 @@ BBoxGeoJSON.prototype._removeInactiveLayers = function(self) {
   }
 };
 
-},{"./resource":4,"./vector":5}],3:[function(require,module,exports){
+},{"./resource":5,"./vector":6}],3:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -855,7 +806,67 @@ GeoJSON.prototype.getLayer = function() {
   return layer;
 };
 
-},{"./resource":4,"./vector":5}],4:[function(require,module,exports){
+},{"./resource":5,"./vector":6}],4:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 6/3/14.
+ */
+
+var Resource = require('./resource');
+var toGeoJSON = require('./vector').toGeoJSON;
+var $ = require('./vector').$;
+
+/**
+ * A KML Resource fetches KML and parses it with togeojson.js
+ * Note that togeojson.js has bugs and does not accurately parse
+ * some of the KML sources we have tested with. This library has
+ * been modified with my hotfixes.
+ *
+ * @param config
+ * @constructor
+ */
+function KML(config) {
+  Resource.call(this, config);
+  this._geojson = null;
+}
+
+KML.prototype = Object.create(Resource.prototype);
+KML.prototype.constructor = KML;
+
+KML.prototype.fetch = function (cb) {
+  var self = this;
+  Resource.prototype.fetch.call(this, function(data) {
+    var xml = $.parseXML(data);
+    self._geojson = toGeoJSON.kml(xml);
+    if (typeof self._config.properties === 'object') {
+      angular.extend(self._geojson.properties, self._config.properties);
+      self._geojson.properties.srcType = 'kml';
+    }
+    if (typeof cb === 'function') cb(self._geojson, self);
+  });
+};
+
+KML.prototype.getLayer = function () {
+  if (this._geojsonLayer) return this._geojsonLayer;
+  var layer =  Resource.prototype.getLayer.call(this);
+  this.fetch(function(geojson){
+    layer.addData(geojson);
+  });
+  return layer;
+};
+
+KML.prototype.eachLayer = function (cb) {
+  this._eachLayerCallback = cb;
+  this.fetch(function(geojson, self){
+    var layers = self._geojsonLayer._layers;
+    for (var key in layers) {
+      var layer = layers[key];
+      cb(layer);
+    }
+  });
+};
+
+},{"./resource":5,"./vector":6}],5:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -945,7 +956,7 @@ Resource.prototype.eachLayer = function (cb) {
   this._geojsonLayer.eachLayer(cb);
 };
 
-},{"./vector":5}],5:[function(require,module,exports){
+},{"./vector":6}],6:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -993,7 +1004,8 @@ vector.setInjectors = function ($rootScope, $location, $http, LayerConfig) {
 
 vector.angular = angular;
 vector.L = L;
+vector.$ = $;
+vector.toGeoJSON = toGeoJSON;
 
-vector.map = debug.map; //NH fixme!!!
 
 },{}]},{},[1])
