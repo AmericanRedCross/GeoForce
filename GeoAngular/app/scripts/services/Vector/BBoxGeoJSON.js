@@ -8,7 +8,6 @@ var bboxUrl = require('./vector').bboxUrl;
 var bboxResources = require('./vector').bboxResources;
 
 var L = require('./vector').L;
-var map = require('./vector').map;
 var angular = require('./vector').angular;
 var $rootScope = require('./vector').$rootScope;
 var $http = require('./vector').$http;
@@ -214,13 +213,13 @@ function BBoxGeoJSON_removeInactiveLabels(self) {
       var featureLayer = allFeatureLayers[key];
       if ( featureLayer.geojsonLayer && featureLayer.label) {
         console.log("REMOVING: " + featureLayer.feature.properties.name);
-        map.removeLayer(featureLayer.label); // NH FIXME
+        debug.map.removeLayer(featureLayer.label); // NH FIXME
         featureLayer.label = null;
       }
 
       if ( featureLayer.geojsonLayer && featureLayer.geojsonLayer.label) {
         console.log("REMOVING: " + featureLayer.feature.properties.name);
-        map.removeLayer(featureLayer.geojsonLayer.label); // NH FIXME
+        debug.map.removeLayer(featureLayer.geojsonLayer.label); // NH FIXME
         featureLayer.geojsonLayer.label = null;
       }
     }

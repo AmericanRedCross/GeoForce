@@ -816,6 +816,8 @@ var Resource = require('./resource');
 var toGeoJSON = require('./vector').toGeoJSON;
 var $ = require('./vector').$;
 
+module.exports = KML;
+
 /**
  * A KML Resource fetches KML and parses it with togeojson.js
  * Note that togeojson.js has bugs and does not accurately parse
