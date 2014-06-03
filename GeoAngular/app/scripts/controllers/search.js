@@ -3,7 +3,7 @@
  *       on 5/21/14.
  */
 
-angular.module('GeoAngular').controller('SearchECOSCtrl', function($scope, $rootScope, $stateParams, $http) {
+module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', function($scope, $rootScope, $stateParams, $http) {
   console.log('SearchECOSCtrl');
   $scope.params = $stateParams;
 

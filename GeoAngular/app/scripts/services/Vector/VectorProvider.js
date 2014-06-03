@@ -3,7 +3,7 @@
  *       on 3/19/14.
  */
 
-angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $location, $http, LayerConfig) {
+module.exports = angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $location, $http, LayerConfig) {
 
   var vector = require('./vector');
   vector.setInjectors($rootScope, $location, $http, LayerConfig);

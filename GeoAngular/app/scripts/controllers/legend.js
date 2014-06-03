@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('LegendCtrl', function($scope) {
+module.exports = angular.module('GeoAngular').controller('LegendCtrl', function($scope) {
   console.log('LegendCtrl');
   $scope.params = $stateParams;
 

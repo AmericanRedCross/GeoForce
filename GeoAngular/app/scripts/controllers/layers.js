@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig) {
+module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig) {
   console.log('LayersCtrl');
   $scope.params = $stateParams;
 
