@@ -121,8 +121,8 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
 
 
     // Use jQuery to get this cluster markers height and width (set in the CSS)
-    width = $(wrapper).width();
-    height = $(wrapper).height();
+    width = $(wrapper).width() * 0.65;
+    height = $(wrapper).height() * 0.65;
 
     if(height === 0) {
       height = width;

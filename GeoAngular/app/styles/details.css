@@ -219,7 +219,9 @@
     cursor:pointer;
 }
 
-#details-donut {
-
+#details-donut svg {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
 }
 
