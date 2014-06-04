@@ -2216,10 +2216,10 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     type: 'csv',
     url: 'data/test/uganda.csv'
   };
-  this.nhtracks = {
-    name: 'NH GPS Tracks',
+  this.sampletracks = {
+    name: 'Sample GPS Tracks',
     type: 'csv',
-    url: 'data/test/nh-tracks.csv'
+    url: 'data/test/sample-tracks.csv'
   };
 
 
