@@ -4,28 +4,8 @@
  *       on 5/21/14.
  */
 
-angular.module('GeoAngular').directive('myShow', function($animate) {
-  return {
-    scope: {
-      'myShow': '=',
-      'afterShow': '&',
-      'afterHide': '&'
-    },
-    link: function(scope, element) {
-      scope.$watch('myShow', function(show, oldShow) {
-        if (show) {
-          $animate.removeClass(element, 'ng-hide', scope.afterShow);
-        }
-        if (!show) {
-          $animate.addClass(element, 'ng-hide', scope.afterHide);
-        }
-      });
-    }
-  }
-});
 
-
-angular.module('GeoAngular').factory('Donuts', function () {
+module.exports = angular.module('GeoAngular').factory('Donuts', function () {
 
   /**
    * Creates a D3 Donut that is located in the details panel.

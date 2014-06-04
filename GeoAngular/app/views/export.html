@@ -1,0 +1,112 @@
+<div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form role="form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="exportModalLabel">EXPORT</h4>
+                    <span>Choose from the following 2 options:</span>
+                </div>
+                <div class="modal-body">
+
+                    <div ng-show="showAlert" class="alert alert-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <strong>Export Failed!</strong> There was an error exporting the map.<br/>
+                        <strong ng-show="errorMessage">Error Message:</strong>
+                        <pre ng-show="errorMessage">{{errorMessage}}</pre>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="redbox">1</span>
+                        <label for="routeUrl">PERMALINK</label>
+                        <div>Please copy the link below.</div>
+                        <input type="remoteUrl" class="form-control" id="routeUrl" ng-model="routeUrl" />
+                    </div>
+
+                    <div class="form-group">
+                        <span class="redbox">2</span>
+                        <label for="routeUrl">EXPORT AN IMAGE</label>
+                        <div>What element(s) would you like to include in the exported image?</div>
+
+
+                        <div id="exportOptionsPanel">
+                            <div id="exportLayoutContainer" class="exportOptionsContainer clearfix">
+                                <div class="exportGroupTitle"></div>
+                                <div class="exportOptionsGroup">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <div id="optionalOutputMap" class="checkbox checked"></div>
+                                            </td>
+                                            <td>Map</td>
+                                            <td>
+                                                <div id="optionalOutputToolOutput" class="checkbox"></div>
+                                            </td>
+                                            <td>Tool Output</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div id="optionalOutputLegend" class="checkbox checked"></div>
+                                            </td>
+                                            <td>Legend</td>
+                                            <td>
+                                                <div id="optionalOutputAccessPointsPanel" class="checkbox"></div>
+                                            </td>
+                                            <td>
+                                                <div>Access Points Overview</div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div id="optionalOutputCountryOverview" class="checkbox"></div>
+                                            </td>
+                                            <td>Country Overview</td>
+                                            <td>
+                                                <div id="optionalOutputBankingOverview" class="checkbox bankingOverview"></div>
+                                            </td>
+                                            <td>
+                                                <div class="bankingOverview">Banking Overview</div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div id="exportOptionsContainer" class="exportOptionsContainer clearfix" style="display:none;">
+                                    <div class="exportOptionsGroup">
+                                        <div class="exportGroupTitle">Image format:</div>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <div id="pngImageFormat" class="exportRadioButtonUnselected exportRadioButtonSelected"></div>
+                                                </td>
+                                                <td>png</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+
+                        <div id="exportWaitingPanel" style="display: none;">
+                            <div class="knightRiderLoader" style="display: none;"></div>
+                            <div class="imageOpenButton" style="display: none;">
+                                <div style="text-align: left;">Image rendering complete. Click 'Open Image' to view the image in a new tab, or click 'Reset' to return to the export window.</div>
+                                <div style="margin-top: 30px;">
+                                    <a href="" target="_blank">Open Image</a>
+                                    <span class="killOpenButton">Reset</span>
+                                </div>
+                            </div>
+                            <div id="exportMessage" style="font-size: 11px; float: left; margin-top: 16px;"></div>
+                        </div>
+                   </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div id="executeExportButton" class="redbtn">CREATE IMAGE NOW<div class="arrow"></div></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

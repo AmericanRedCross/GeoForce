@@ -3,7 +3,7 @@
  *       on 4/17/14.
  */
 
-angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $rootScope, $state, $stateParams, $http, VectorProvider) {
+module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $rootScope, $state, $stateParams, $http, VectorProvider) {
 	console.log('BreadcrumbsCtrl');
 
 	var title = $scope.title = $stateParams.title || 'World';

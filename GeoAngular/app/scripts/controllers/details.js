@@ -3,7 +3,7 @@
  *       on 4/9/14.
  */
 
-angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http, Donuts) {
+module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http, Donuts) {
 
   $scope.details = {};
 

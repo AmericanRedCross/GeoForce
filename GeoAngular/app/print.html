@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Red Cross Mapfolio Print</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
+
+    <!--BEG CSS MIN-->
+    <link href="styles/print.css" rel="stylesheet" />
+    <link rel="icon"
+          type="image/ico"
+          href="favicon.ico">
+
+    <!--END CSS MIN-->
+    <!--[if gte IE 9]>
+
+    <![endif]-->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/leaflet-dist/leaflet-src.js"></script>
+</head>
+<body>
+<div id="main">
+    <div class="clearfix">
+        <div id="printHeader"><span>Red Cross Mapfolio</span><span id="activeCountry" class="right">Breadcrumbs here?</span></div>
+    </div>
+    <div id="upperMapWrapper" class="clearfix" style="border: 1px solid #b0b0b0;">
+        <div id="MapCtrl"></div>
+        <div class="horizontalLine"></div>
+        <div id="legendFilters"></div>
+
+    </div>
+    <div id="legends"></div>
+
+    <div class="clearfix">
+        <div id="countryOverview"></div>
+    </div>
+    <div class="clearfix">
+        <div id="uxAccessPointSummary"></div>
+    </div>
+    <div class="clearfix">
+        <div id="uxAccessVsUsageWrapper"></div>
+    </div>
+    <div class="clearfix">
+        <div id="resultStackPlaceholder"></div>
+    </div>
+    <div class="clearfix">
+        <div id="SiteFooter" style="height: 45px; padding: 0px;" widgetid="SiteFooter">
+            <div class="copyright left">
+                ©2014 Red Cross. All rights reserved.
+            </div>
+            <div id="RCLogoWrapper" class="right">
+                <img id="GatesLogo" class="right" src="images/arc_logo.png" alt="logo">
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+
+<script type="text/javascript">
+    //for print, we need to instantiate a map.
+    var map;
+    $(document).ready(function () {
+        map = L.map('MapCtrl');
+    });
+</script>
+
+</html>

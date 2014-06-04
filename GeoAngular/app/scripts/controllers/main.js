@@ -1,4 +1,4 @@
-angular.module('GeoAngular').controller('MainCtrl', function($scope, $rootScope, $state, $stateParams, $location) {
+module.exports = angular.module('GeoAngular').controller('MainCtrl', function($scope, $rootScope, $state, $stateParams, $location) {
   console.log('MainCtrl');
 
   debug.$location = $location;

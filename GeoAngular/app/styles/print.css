@@ -1,0 +1,50 @@
+#main {
+    padding:10px;
+}
+
+body {
+    background-color: #fff;
+}
+
+.checkbox {
+    background-image: none !important;
+}
+
+#legends header {
+    font-size: 18px;
+    padding: 15px 0 1px 8px !important;
+}
+
+#LayerListWrapper .child.checkbox {
+    padding: 0 !important;
+    width: 0 !important;
+}
+
+#LayerListWrapper .parent {
+    padding: 0 !important;
+}
+
+#SiteFooter {
+    background-color: inherit !important;
+}
+
+#SiteFooter .copyright {
+    margin: 20px 0 0 1px !important;
+    font-weight: bold !important;
+    color: #383838 !important;
+}
+
+#printHeader {
+    font-size: 20px;
+    font-weight: 600;
+    margin:0 auto;
+    padding: 8px;
+}
+
+body {
+    min-width: 0px !important;
+}
+
+.checkbox {
+    visibility: hidden;
+}

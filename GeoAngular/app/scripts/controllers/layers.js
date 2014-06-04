@@ -3,73 +3,143 @@
  *       on 3/27/14.
  */
 
-angular.module('GeoAngular').controller('LayersCtrl', function($scope, $stateParams) {
+module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig) {
   console.log('LayersCtrl');
   $scope.params = $stateParams;
 
   $scope.navTab = 'contextual';
 
-  $scope.allProjects = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
+  debug.LayerConfig = LayerConfig;
+
+  $scope.layersPanels = {
+    'Boundaries': {},
+    'GeoJSON': {},
+    'KML': {},
+    'CSV': {},
+    'WMS': {},
+    'Other': {}
   };
 
-  $scope.smartGadm = {
-    lat: 43.468868,
-    lng: -106.638794,
-    zoom: 9,
-    layers: 'ortho,smartgadm'
-  };
 
-  $scope.gdacsKml = {
-    lat: 0,
-    lng: 0,
-    zoom: 2,
-    layers: 'osmhot,http://www.gdacs.org/xml/gdacs.kml'
-  };
+  for (var layerKey in LayerConfig) {
 
-  $scope.gadm0 = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
+    // We don't want to show layers that are basemaps, and we don't want to show the find func.
+    if (  typeof LayerConfig[layerKey] === 'function'
+       || layerKey === 'basemaps'
+       || layerKey === 'bbox'
+       || LayerConfig[layerKey].type === 'basemap') {
 
-  $scope.gadm1 = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
+      continue;
+    }
 
-  $scope.gadm2 = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
+    /**
+     * Put layers in their respective categories.
+     */
+    if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'bboxgeojson') {
+      $scope.layersPanels.Boundaries[layerKey] = LayerConfig[layerKey];
+    }
 
-  $scope.gadm3 = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
+    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'geojson') {
+      $scope.layersPanels.GeoJSON[layerKey] = LayerConfig[layerKey];
+    }
 
-  $scope.earthquakesKml = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
-  };
+    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'kml') {
+      $scope.layersPanels.KML[layerKey] = LayerConfig[layerKey];
+    }
 
-  $scope.standardGeoJson = {
-    lat: -19.808054,
-    lng: 31.508789,
-    zoom: 6,
-    layers: 'pinterest,allprojects'
+    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'csv') {
+      $scope.layersPanels.CSV[layerKey] = LayerConfig[layerKey];
+    }
+
+    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'wms') {
+      $scope.layersPanels.WMS[layerKey] = LayerConfig[layerKey];
+    }
+
+    else {
+      $scope.layersPanels.Other[layerKey] = keyToObj(layerKey);
+    }
+
+  }
+
+  debug.layersPanels = $scope.layersPanels;
+
+  function keyToObj(key) {
+    val = LayerConfig[layerKey];
+    if (typeof val === 'string') {
+      return {
+        url: val
+      };
+    }
+    return val;
+  }
+
+  /**
+   * Layers that are active on the map but are not mentioned in LayerConfig
+   * @type {{}}
+   */
+  $scope.nomadLayers = {};
+
+
+  /**
+   * When the route changes, we should see what layers we have on there and have the layers
+   * in the panels checked accordingly.
+   */
+  $scope.$on('route-update', function() {
+    if (!$stateParams.layers) {
+      return;
+    }
+
+    // reset the nomad layers
+    for (var nk in $scope.nomadLayers) {
+      $scope.nomadLayers[nk].active = false;
+    }
+
+    // reset the layer config layers
+    for (var lck in LayerConfig) {
+      if (typeof LayerConfig[lck] === 'object' && LayerConfig[lck] !== null) {
+        LayerConfig[lck].active = false;
+      }
+    }
+
+    /**
+     * Check if the layer is active in map layers from stateParams
+     */
+    var mapLayers = $scope.mapLayers = $stateParams.layers.split(',');
+    // skip the first layer, the basemap
+    for (var i = 1, len = mapLayers.length; i < len; i++) {
+      var l = mapLayers[i];
+      // layer is in the layer config
+      if (typeof LayerConfig[l] === 'object' && LayerConfig[l] !== null) {
+        LayerConfig[l].active = true;
+      // layer is a not in the layer config. it's nomadic.
+      } else {
+        $scope.nomadLayers[l] = {
+          name: l,
+          url: l,
+          active: true
+        }
+      }
+    }
+  });
+
+
+  $scope.toggleMapLayer = function (layerKey, layer) {
+
+    // add layer
+    if (layer.active === true) {
+      $scope.mapLayers.push(layerKey);
+
+    // remove layer
+    } else {
+      $scope.mapLayers = $.grep($scope.mapLayers, function(routeLayer){
+        return routeLayer !== layerKey;
+      });
+    }
+
+    $stateParams.layers = $scope.mapLayers.join(',');
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+
   };
 
 });

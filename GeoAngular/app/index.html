@@ -34,7 +34,8 @@
     <link rel="stylesheet" href="styles/info.css">
     <link rel="stylesheet" href="styles/zoom-extent.css">
     <link rel="stylesheet" href="styles/upload.css">
-    <link rel="stylesheet" href="styles/search.css">
+      <link rel="stylesheet" href="styles/export.css">
+      <link rel="stylesheet" href="styles/search.css">
       <!-- endbuild -->
 
     <link rel="stylesheet" href="scripts/featurelabel/featurelabel.css">
@@ -384,11 +385,20 @@
                                 <!-- Tab panes -->
                                 <div class="tab-content filters-content scrollable">
                                     <div ng-class="{active: navTab==='contextual'}" class="tab-pane">
-                                        <div class="panel panel-default">
+                                        <div class="panel panel-default" ng-repeat="(panelName, panel) in layersPanels">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">{{panelName}}</h3>
+                                            </div>
                                             <div class="panel-body">
-                                                test
+
+                                                <label class="checkbox" ng-repeat="(layerKey, layer) in panel">
+                                                    <input type="checkbox" ng-model="layer.active" ng-change="toggleMapLayer(layerKey, layer)">
+                                                    {{layer.name || layer.properties.title || layerKey}}
+                                                </label>
+
                                             </div>
                                         </div>
+                                        <br/>
                                     </div>
                                     <div ng-class="{active: navTab==='uploaded'}" class="tab-pane">
 
@@ -594,7 +604,7 @@
 
                     <div class="windowEffects" ng-class="{grayout: isParam('zoom-extent')}"></div> <!-- Use this window to gray out the map -->
 
-                    <leaflet class="{{blur}}"   width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" geojson="geojson" bounds="bounds"></leaflet>
+                    <leaflet class="{{blur}}" width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" bounds="bounds"></leaflet>
 
                     <div ui-view="landing"></div>
 
@@ -633,7 +643,7 @@
                         <div class="light" ui-sref="upload(params)">
                             Upload Data
                         </div>
-                        <div class="light">Export</div>
+                        <div class="light" ui-sref="export(params)">Export</div>
                         <div class="search icon-12_search" ng-click="toggleParam('search-panel')"></div>
                     </div>
 
@@ -772,7 +782,7 @@
                 </div>
 
             <div ui-view="upload"></div>
-
+            <div ui-view="export"></div>
         </div>
 
 
@@ -830,27 +840,8 @@
     <script src="scripts/featurelabel/FeatureSet.js"></script>
     <script src="scripts/global.js"></script>
     <script src="scripts/config.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="scripts/services/LayerConfig.js"></script>
-    <script src="scripts/services/VectorProvider.js"></script>
-    <script src="scripts/services/Donuts.js"></script>
-    <script src="scripts/controllers/landing.js"></script>
-    <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/map.js"></script>
-    <script src="scripts/controllers/details.js"></script>
-    <script src="scripts/controllers/navbar.js"></script>
-    <script src="scripts/controllers/side-view.js"></script>
-    <script src="scripts/controllers/stories.js"></script>
-    <script src="scripts/controllers/layers.js"></script>
-    <script src="scripts/controllers/filters.js"></script>
-    <script src="scripts/controllers/legend.js"></script>
-    <script src="scripts/controllers/info.js"></script>
-    <script src="scripts/controllers/basemaps.js"></script>
-    <script src="scripts/controllers/breadcrumbs.js"></script>
-    <script src="scripts/controllers/zoom-extent.js"></script>
-    <script src="scripts/controllers/theme.js"></script>
-    <script src="scripts/controllers/upload.js"></script>
-    <script src="scripts/controllers/search.js"></script>
+    <script src="scripts/geo-angular.js"></script>
+
     <!-- endbuild -->
 
     <!--<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>-->
