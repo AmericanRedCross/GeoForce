@@ -1,5 +1,5 @@
 /**
- * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 6/3/14.
  */
 

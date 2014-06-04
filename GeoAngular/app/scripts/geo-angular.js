@@ -942,7 +942,6 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     $stateParams.layers = $scope.mapLayers.join(',');
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
-    $scope.$parent.$parent.drawOverlays();
 
   };
 
@@ -1208,41 +1207,49 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   function drawOverlays() {
     leafletData.getMap().then(function (map) {
 
-      for (var h = 0, len = overlays.length; h < len; ++h) {
-        map.removeLayer(overlays[h]);
-      }
-
       for (var i = 0, len = overlayNames.length; i < len; ++i) {
         var overlayName = overlayNames[i];
+        var currOverlay = overlays[i];
+
+        if (currOverlay && currOverlay.overlayName === overlayName) {
+          continue; // layer is already there, continue on!
+        }
+
+        // remove the current layer that is not what should be that layer in the list
+        else if ( currOverlay && currOverlay._map ) {
+          map.removeLayer(currOverlay);
+        }
 
         // try for WMS (not a vector layer)
+        // if things get more fancy with wms, it should get its own factory
         if (typeof LayerConfig[overlayName] === 'object'
                     && LayerConfig[overlayName].type.toLowerCase() === 'wms') {
 
           var cfg = LayerConfig[overlayName];
-          var wmsLayer = L.tileLayer.wms(cfg.url, {
+          var layer = L.tileLayer.wms(cfg.url, {
             format: cfg.format || 'image/png',
             transparent: cfg.transparent || true,
             layers: cfg.layers
           });
-          wmsLayer.addTo(map);
-          overlays.push(wmsLayer);
-
-          continue;
         }
 
-        // need to fetch data and redraw layer
-        var vecRes = VectorProvider.createResource(overlayName);
-        var layer = vecRes.getLayer();
+        // if its not wms, its a vector layer
+        else {
+          var vecRes = VectorProvider.createResource(overlayName);
+          var layer = vecRes.getLayer();
+        }
 
-        // NH TODO Only works for KML. Think through this better.
-        vecRes.eachLayer(function (l) {
-          var props = l.feature.properties;
-
-        });
-
-        overlays.push(layer);
+        layer.overlayName = overlayName;
         layer.addTo(map);
+        overlays[i] = layer;
+
+      }
+
+      // there are more overlays left in the list, less layers specified in route
+      // we need to remove those too.
+      for(var len2 = overlays.length; i < len2; ++i) {
+        map.removeLayer(overlays[i]);
+        delete overlays[i];
       }
 
     });
@@ -2731,7 +2738,7 @@ BBoxGeoJSON.prototype._removeInactiveLayers = function(self) {
 
 },{"./resource":26,"./vector":27}],23:[function(require,module,exports){
 /**
- * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 6/3/14.
  */
 

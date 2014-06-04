@@ -139,7 +139,6 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     $stateParams.layers = $scope.mapLayers.join(',');
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
-    $scope.$parent.$parent.drawOverlays();
 
   };
 
