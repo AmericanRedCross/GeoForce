@@ -25,7 +25,8 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
     // We don't want to show layers that are basemaps, and we don't want to show the find func.
     if (  typeof LayerConfig[layerKey] === 'function'
-       || LayerConfig[layerKey] === 'basemaps'
+       || layerKey === 'basemaps'
+       || layerKey === 'bbox'
        || LayerConfig[layerKey].type === 'basemap') {
 
       continue;
@@ -55,13 +56,22 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     }
 
     else {
-      $scope.layersPanels.Other[layerKey] = LayerConfig[layerKey];
+      $scope.layersPanels.Other[layerKey] = keyToObj(layerKey);
     }
 
   }
 
   debug.layersPanels = $scope.layersPanels;
 
+  function keyToObj(key) {
+    val = LayerConfig[layerKey];
+    if (typeof val === 'string') {
+      return {
+        url: val
+      };
+    }
+    return val;
+  }
 
   /**
    * Layers that are active on the map but are not mentioned in LayerConfig

@@ -828,7 +828,8 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
     // We don't want to show layers that are basemaps, and we don't want to show the find func.
     if (  typeof LayerConfig[layerKey] === 'function'
-       || LayerConfig[layerKey] === 'basemaps'
+       || layerKey === 'basemaps'
+       || layerKey === 'bbox'
        || LayerConfig[layerKey].type === 'basemap') {
 
       continue;
@@ -858,13 +859,22 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     }
 
     else {
-      $scope.layersPanels.Other[layerKey] = LayerConfig[layerKey];
+      $scope.layersPanels.Other[layerKey] = keyToObj(layerKey);
     }
 
   }
 
   debug.layersPanels = $scope.layersPanels;
 
+  function keyToObj(key) {
+    val = LayerConfig[layerKey];
+    if (typeof val === 'string') {
+      return {
+        url: val
+      };
+    }
+    return val;
+  }
 
   /**
    * Layers that are active on the map but are not mentioned in LayerConfig
@@ -2056,6 +2066,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     type: 'geojson',
     url: 'data/test/washington.geojson',
     properties: {
+      title: 'Washington (State)',
       fill: "#FFBE00"
     }
   };
@@ -2064,16 +2075,12 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     type: 'geojson',
     url: 'data/test/state_wa_lrg_fires.geojson',
     properties: {
+      "title": "Washington Fires",
       "stroke": "#FF8800",
       "stroke-width": 1,
       "fill": "#FFBE00",
       "fill-opacity": 0.5
     }
-  };
-
-  this.projectsbycountry = {
-    type: 'geojson',
-    url: 'data/test/vw_projects_by_country.geojson'
   };
 
   //GADM country extents, level 0
@@ -2243,6 +2250,12 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     url: 'http://apps.harvestchoice.org/arcgis/services/MapServices/cell_values_4/MapServer/WMSServer',
     layers: '15'
   };
+
+
+  /**
+   * Other (Vector Provider attempts to figure out the vector type)
+   */
+  this.usoutline = 'http://eric.clst.org/wupl/Stuff/gz_2010_us_outline_20m.json';
 
   /**
    * For layers, we try and get an alias for everything, so if it's a URL that
