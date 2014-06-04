@@ -234,9 +234,26 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       }
 
       for (var i = 0, len = overlayNames.length; i < len; ++i) {
+        var overlayName = overlayNames[i];
+
+        // try for WMS (not a vector layer)
+        if (typeof LayerConfig[overlayName] === 'object'
+                    && LayerConfig[overlayName].type.toLowerCase() === 'wms') {
+
+          var cfg = LayerConfig[overlayName];
+          var wmsLayer = L.tileLayer.wms(cfg.url, {
+            format: cfg.format || 'image/png',
+            transparent: cfg.transparent || true,
+            layers: cfg.layers
+          });
+          wmsLayer.addTo(map);
+          overlays.push(wmsLayer);
+
+          continue;
+        }
 
         // need to fetch data and redraw layer
-        var vecRes = VectorProvider.createResource(overlayNames[i]);
+        var vecRes = VectorProvider.createResource(overlayName);
         var layer = vecRes.getLayer();
 
         // NH TODO Only works for KML. Think through this better.

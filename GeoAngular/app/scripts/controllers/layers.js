@@ -50,6 +50,10 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
       $scope.layersPanels.CSV[layerKey] = LayerConfig[layerKey];
     }
 
+    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'wms') {
+      $scope.layersPanels.WMS[layerKey] = LayerConfig[layerKey];
+    }
+
     else {
       $scope.layersPanels.Other[layerKey] = LayerConfig[layerKey];
     }

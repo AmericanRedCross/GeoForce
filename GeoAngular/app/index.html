@@ -397,6 +397,7 @@
 
                                             </div>
                                         </div>
+                                        <br/>
                                     </div>
                                     <div ng-class="{active: navTab==='uploaded'}" class="tab-pane">
 
@@ -602,7 +603,7 @@
 
                     <div class="windowEffects" ng-class="{grayout: isParam('zoom-extent')}"></div> <!-- Use this window to gray out the map -->
 
-                    <leaflet class="{{blur}}"   width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" geojson="geojson" bounds="bounds"></leaflet>
+                    <leaflet class="{{blur}}" width="100%" height="100%" center="center" defaults="defaults" tiles="tiles" bounds="bounds"></leaflet>
 
                     <div ui-view="landing"></div>
 
