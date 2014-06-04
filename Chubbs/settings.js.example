@@ -23,6 +23,8 @@ settings.expressSessionSecret = "secret";
 //Enable Security?
 settings.enableSecurity = true;
 
+//Routes to exclude from security check
+settings.nonSecurePaths = ['/', '/mapfolio/index.html'];
 
 //Settings for postgres DB
 settings.pg.username = 'username';

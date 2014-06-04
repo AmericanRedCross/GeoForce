@@ -10,6 +10,7 @@ var express = require('express'),
     common = require("./common"),
     cors = require('cors'),
     fs = require("fs"),
+    _ = require("underscore"),
     https = require('https');
 
 
@@ -58,10 +59,6 @@ var authenticationFunctions = [];
 
 //Load up passport for security, if it's around, and if the settings ask for it
 if (passport && settings.enableSecurity && settings.enableSecurity === true) {
-	
-	//require('./endpoints/authentication/app/models/user.js');
-	//var env = process.env.NODE_ENV || 'development';
-	//require('./endpoints/authentication/config/passport')(passport, mongo_config);
 
 	app.use(express.session({
 	    secret : settings.expressSessionSecret
@@ -69,10 +66,7 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
 	
 	app.use(passport.initialize());
 	app.use(passport.session()); //TODO:  I keep reading that express sessions aren't needed if using passport with authentication followed by token bearer strategy
-	
-	//add the bearer authentication method into an object holding various types of authenticaion methods
-	//use this in a route as middleware when a token is the preferred method of authorization
-	//authenticationFunctions.push(passport.authenticate('bearer', { session: false, failureRedirect: '/login'}));
+
     authenticationFunctions.push(passport.authenticate('forcedotcom'));
 	
 	//For now, just cram this object into the passport object as a stowaway so it can be passed into all of the external route definitions
@@ -81,17 +75,22 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
     passport.authenticationFunctions = [];
 
     //Add a route to test OAUTH2
-    app.get('/login', passport.authenticate('forcedotcom'));
+    app.get('/mapfolio/salesforcelogin', passport.authenticate('forcedotcom'));
 
     // this should match the callbackURL parameter above:
     app.get('/oauth2/callback',
-        passport.authenticate('forcedotcom', { failureRedirect: '/error' }),
+        passport.authenticate('forcedotcom',
+        { failureRedirect: '/error' }),
         function(req, res){
-            res.redirect('/mapfolio/')
+            res.redirect('/mapfolio/index.html')
         }
     );
-	
-	//require('./endpoints/authentication/config/routes')(app, passport); //Adding the login routes
+
+    app.get('/mapfolio/logout', function(req,res){
+        req.session.destroy(function (err) {
+            res.redirect('/'); //Inside a callback… bulletproof!
+        });
+    });
 }
 else{
 	//keep an empty authentication functions property here
@@ -101,8 +100,6 @@ else{
 //This must be after app.use(passport.initialize())
 app.use(cors());
 app.use(app.router);
-
-
 
 //Load in all endpoint routes
 //TODO - Loop thru endpoints folder and require everything in there
@@ -180,7 +177,12 @@ else{
 
 //Root Request - show application
 app.get('/', passport.authenticationFunctions, function(req, res) {
-	res.redirect('/mapfolio/')
+    res.redirect('/mapfolio/');
+});
+
+//Mapfolio Root Request - show application
+app.use('/mapfolio/', ensureAuthenticated, function(req, res) {
+    res.redirect('/mapfolio/index.html');
 });
 
 //Redirect /services to table list
@@ -203,11 +205,27 @@ app.use(function(err, req, res, next) {
 //   login page.
 
 function ensureAuthenticated(req, res, next) {
+
+    //If the request is for index.html, then lock it down.
+//    if (req.path.indexOf("index.html") == -1) {
+//        //All other requests to the mapfolio folder should be allowed.
+//
+//        //If the request URL is in the list of unsecured paths, don't worry about it and continue.
+//        if (_.some(settings.nonSecurePaths, function(item){
+//            return req.path.indexOf(item) > -1;
+//        })) {
+//            return next();
+//        }
+//    }
+
+    //Otherwise, check for authentication
     if(req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/login');
+    res.redirect('/mapfolio/login.html');
 }
+
+//app.use(ensureAuthenticated);
 
 //look thru all tables in PostGres with a geometry column, spin up dynamic map tile services for each one
 //on startup.  Probably move this to a 'startup' module

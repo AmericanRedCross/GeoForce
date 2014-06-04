@@ -187,7 +187,6 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
    * Native Leaflet Map Object
    */
   leafletData.getMap().then(function (map) {
-    debug.map = map;
     map.on('moveend', function () { // move is good too
       var c = map.getCenter();
       var lat = c.lat.toFixed(6);
@@ -213,14 +212,17 @@ angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope,
 //    });
 
     //Connect the layout onresize end event
-    window.layout.panes.center.bind("layoutpaneonresize_end", function () {
-      map.invalidateSize();
-    });
+    try {
+        window.layout.panes.center.bind("layoutpaneonresize_end", function () {
+            map.invalidateSize();
+        });
+    }catch(e){
+        //Nothing
+    }
   });
 
 
   var overlays = [];
-  debug.overlays = overlays;
 
   /**
    * NH TODO: Be smart with inserting new layers instead of redrawing

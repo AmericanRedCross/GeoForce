@@ -85,6 +85,92 @@ UPDATE gadmrollup
 set namearc = 'AFRICA'
 where name0 = 'Côte d''Ivoire'
 
+UPDATE gadmrollup
+set namearc = 'AMEE'
+where name0 IN (
+'Åland',
+'Andorra',
+'Caspian Sea',
+'Faroe Islands',
+'Gibraltar',
+'Guernsey',
+'Isle of Man',
+'Jersey',
+'Liechtenstein',
+'Monaco',
+'Palestina',
+'San Marino',
+'Serbia',
+'Svalbard and Jan Mayen',
+'Vatican City');
+
+UPDATE gadmrollup
+set namearc = 'AMEE'
+where name0 IN (
+'American Samoa',
+'British Indian Ocean Territory',
+'Christmas Island',
+'Cocos Islands',
+'Cook Islands',
+'French Polynesia',
+'French Southern Territories',
+'Guam',
+'Heard Island and McDonald Islands',
+'Kiribati',
+'Macao',
+'Maldives',
+'Marshall Islands',
+'Mauritius',
+'Micronesia',
+'Nauru',
+'Niue',
+'Norfolk Island',
+'Northern Mariana Islands',
+'Palau',
+'Pitcairn Islands',
+'Reunion',
+'Seychelles',
+'Singapore',
+'Spratly islands',
+'Tokelau',
+'Tonga',
+'Tuvalu',
+'United States Minor Outlying Islands',
+'Wallis and Futuna'
+);
+
+UPDATE gadmrollup
+set namearc = 'LAC'
+where name0 IN (
+'Anguilla',
+'Antigua and Barbuda',
+'Aruba',
+'Bonaire, Saint Eustatius and Saba',
+'British Virgin Islands',
+'Clipperton Island',
+'Curaçao',
+'Grenada',
+'Guadeloupe',
+'Martinique',
+'Montserrat',
+'Saint-Barthélemy',
+'Saint Lucia',
+'Saint-Martin',
+'Saint Pierre and Miquelon',
+'Saint Vincent and the Grenadines',
+'South Georgia and the South Sandwich Islands',
+'Turks and Caicos Islands',
+'Virgin Islands, U.S.');
+
+UPDATE gadmrollup
+set namearc = 'AFRICA'
+where name0 IN (
+'Bouvet Island',
+'Cape Verde',
+'Comoros',
+'Mayotte',
+'Saint Helena',
+'Sao Tome and Principe');
 
 
 

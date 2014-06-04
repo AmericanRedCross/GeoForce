@@ -1,0 +1,125 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/lib.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
+    <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/fonts.css">
+    <link rel="stylesheet" href="styles/fontcustom/fontcustom.css">
+    <link rel="stylesheet" href="styles/comp.css">
+    <link rel="stylesheet" href="styles/landing.css">
+    <link rel="stylesheet" href="styles/basemaps.css">
+    <link rel="stylesheet" href="styles/zoom-extent.css">
+      <!-- endbuild -->
+
+    <link rel="stylesheet" href="scripts/featurelabel/featurelabel.css">
+
+    <!--font-family: 'Open Sans', sans-serif;-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  </head>
+  <body ng-app="GeoAngular">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+
+    <!-- AppContainer is the wrapper for the jQuery Layout plugin. -->
+    <div id="AppContainer">
+            <!-- MapCtrl is the center (center) panel controlled by the jQuery Layout plugin, and is also where the map lives. -->
+                <div id="MapCtrl" class="ui-layout-center" style="height:100%;width:100%;">
+
+                    <div class="windowEffects" ng-class="{grayout: isParam('zoom-extent')}"></div> <!-- Use this window to gray out the map -->
+
+                    <leaflet class="blur" width="100%" height="100%" center="{lat: 14.2643, lng: -23.2031, zoom: 3}" defaults="{ dragging: false, scrollWheelZoom: false, zoomControl: false, doubleClickZoom:false}"></leaflet>
+
+                    <div>
+                        <div id="ARCCircle">
+                            <div class="AppTitle">MapFolio</div>
+                            <div class="Description">Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi
+                                welsh onion daikon amaranth tatsoi tomatillo melon azuki bean.</div>
+                            <a href="salesforcelogin" class="btn btn-default">Login<div class="arrow"></div></a>
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+
+
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <script>
+//       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+//       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+//       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+//       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+//
+//       ga('create', 'UA-XXXXX-X');
+//       ga('send', 'pageview');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js scripts/lib.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
+    <script src="bower_components/ng-file-upload/angular-file-upload-html5-shim.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-mocks/angular-mocks.js"></script>
+    <script src="bower_components/leaflet-dist/leaflet-src.js"></script>
+    <script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
+    <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
+    <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+    <script src="bower_components/angular-ui-slider/src/slider.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/lib/d3.min.js"></script>
+    <script src="scripts/lib/togeojson.js"></script>
+    <script src="scripts/lib/mapbox.standalone.uncompressed.js"></script>
+    <script src="scripts/lib/jquery.layout-latest.min.js"></script>
+    <script src="scripts/lib/ui-bootstrap-tpls-0.11.0.min.js"></script>
+    <script src="scripts/lib/jquery.csv-0.71.min.js"></script>
+    <script src="scripts/config.js"></script>
+    <script src="scripts/login.js"></script>
+    <script src="scripts/controllers/landing.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/services/LayerConfig.js"></script>
+    <script src="scripts/services/VectorProvider.js"></script>
+    <script src="scripts/controllers/basemaps.js"></script>
+    <script src="scripts/controllers/zoom-extent.js"></script>
+    <!-- endbuild -->
+
+    <!--<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>-->
+
+</body>
+</html>

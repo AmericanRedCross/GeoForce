@@ -59,8 +59,7 @@ WHERE   gadm0.id_0 = gadm1.id_0
   AND   gadm3.id_3 = gadm4.id_3
   AND   gadm5.id_3 = gadm4.id_3
   AND   gadm4.id_4 = gadm5.id_4
-  AND   gadm5.guid::text = sf_project.location__r_gis_geo_id__c
-  AND sf_project.location__r_type__c = 'Admin 5';
+  AND   gadm5.guid::text = sf_project.location__r_gis_geo_id__c;
 
 
 
@@ -116,8 +115,6 @@ INSERT INTO sf_aggregated_gadm_project_counts
       AND   gadm2.id_2 = gadm3.id_2
       AND   gadm4.id_2 = gadm3.id_2
       AND   gadm3.id_3 = gadm4.id_3
-      AND   gadm4.guid::text = sf_project.location__r_gis_geo_id__c
-      AND sf_project.location__r_type__c = 'Admin 4'
       );
 
 
@@ -170,7 +167,6 @@ INSERT INTO sf_aggregated_gadm_project_counts
       AND   gadm3.id_1 = gadm2.id_1
       AND   gadm2.id_2 = gadm3.id_2
       AND   gadm3.guid::text = sf_project.location__r_gis_geo_id__c
-      AND sf_project.location__r_type__c = 'Admin 3'
       );
 
 
@@ -221,7 +217,6 @@ INSERT INTO sf_aggregated_gadm_project_counts
       AND gadm1.id_1 = gadm2.id_1
       AND gadm2.id_0 = gadm1.id_0
       AND gadm2.guid::text = sf_project.location__r_gis_geo_id__c
-      AND sf_project.location__r_type__c = 'Admin 2'
 );
 
 INSERT INTO sf_aggregated_gadm_project_counts
@@ -269,7 +264,6 @@ INSERT INTO sf_aggregated_gadm_project_counts
     FROM  gadm1, gadm0, sf_project
     WHERE gadm0.id_0 = gadm1.id_0
       AND gadm1.guid::text = sf_project.location__r_gis_geo_id__c
-      AND sf_project.location__r_type__c = 'Admin 1'
 	);
 
 
@@ -319,7 +313,6 @@ INSERT INTO sf_aggregated_gadm_project_counts
 	FROM gadm0, sf_project
 	WHERE gadm0.guid::text = sf_project.location__r_gis_geo_id__c
 	AND location__r_gis_geo_id__c IS NOT NULL
-	AND sf_project.location__r_type__c = 'Admin 0'
 	);
 
 

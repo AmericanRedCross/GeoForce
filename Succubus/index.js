@@ -16,11 +16,11 @@ preprocessing.run(function(){
 	//Start ETL
 	ecosetl.run(function(err){
 		console.log("ETL Complete. Moving on to Postprocessing.");
-
-		//when ETL is done, try postprocessing commands
+//		//when ETL is done, try postprocessing commands
 		postprocessing.run(function(){
 			//We're done postprocessing.
-			console.log("Done postprocessing.")
+			console.log("Done postprocessing.");
+            return;
 		})
 	});
 });
