@@ -522,6 +522,14 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   $scope.moreLess = 'More';
 
+  $scope.toggleMoreLess = function () {
+    if ($scope.moreLess === 'More') {
+      $scope.moreLess = 'Less';
+    } else {
+      $scope.moreLess = 'More';
+    }
+  };
+
   $scope.showDetails = function (item, themeItems, idx) {
     if (item.name || item.title) {
       $scope.title = item.name || item.title;
@@ -530,12 +538,28 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (themeItems) $scope.activeThemeItemsList = themeItems;
     $scope.itemsList = false;
     $scope.details = item;
-    $scope.lessDetails = lessDetails(item);
+    if (!$scope.contextualLayer) {
+      $scope.lessDetails = lessDetails(item);
+    }
     $scope.resizeDetailsPanel();
   };
 
   function lessDetails(details) {
-    return details;
+    var lessDetails = {};
+    if ($stateParams.theme === 'disaster') {
+      for (var key in details) {
+        if (config.disasterDetailsShortList[key]) {
+          lessDetails[key] = details[key];
+        }
+      }
+    } else {
+      for (var key in details) {
+        if (config.projectDetailsShortList[key]) {
+          lessDetails[key] = details[key];
+        }
+      }
+    }
+    return lessDetails;
   }
 
   $scope.nextThemeItem = function() {

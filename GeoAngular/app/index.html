@@ -746,20 +746,22 @@
                                     </div>
 
                                     <div class="section scrollable" ng-show="details && !(navTab && (navTab==='request' || navTab==='indicator'))">
-                                        <ul>
-                                            <li ng-repeat="(key, value) in details">
-                                                <div ng-show="true">
-                                                    <div class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
-                                                    <div ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-show="!value">Unavailable</i>
-                                                </div>
+
+                                        <ul ng-show="!contextualLayer && moreLess==='More'">
+                                            <li ng-repeat="(key, value) in lessDetails">
+                                                <div class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
+                                                <div ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-show="!value">Unavailable</i>
                                             </li>
                                         </ul>
-                                        <!--<div class="pull-right">-->
-                                            <!--<a ng-click="">Show More Details...</a><br/>-->
-                                            <!--<a ng-click="">View in ECOS...</a>-->
-                                        <!--</div>-->
+                                        <ul ng-show="contextualLayer || moreLess==='Less'">
+                                            <li ng-repeat="(key, value) in details">
+                                                <div class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
+                                                <div ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-show="!value">Unavailable</i>
+                                            </li>
+                                        </ul>
+
                                         <div class="btn-group" ng-show="!contextualLayer">
-                                            <button type="button" class="btn btn-default btn-sm" ng-click="">Show {{moreLess}} Details</button>
+                                            <button type="button" class="btn btn-default btn-sm" ng-click="toggleMoreLess()">Show {{moreLess}} Details</button>
                                             <a href="https://cs18.salesforce.com/{{details.sf_id}}" target="_blank" class="btn btn-default btn-sm" >View in ECOS</a>
                                         </div>
                                     </div>
