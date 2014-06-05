@@ -168,6 +168,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     }
   };
 
+  $scope.moreLess = 'More';
+
   $scope.showDetails = function (item, themeItems, idx) {
     if (item.name || item.title) {
       $scope.title = item.name || item.title;
@@ -176,8 +178,13 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (themeItems) $scope.activeThemeItemsList = themeItems;
     $scope.itemsList = false;
     $scope.details = item;
+    $scope.lessDetails = lessDetails(item);
     $scope.resizeDetailsPanel();
   };
+
+  function lessDetails(details) {
+    return details;
+  }
 
   $scope.nextThemeItem = function() {
     var len = $scope.activeThemeItemsList.length;

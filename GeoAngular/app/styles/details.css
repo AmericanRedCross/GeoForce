@@ -190,15 +190,7 @@
     cursor: pointer;
 }
 
-#DetailsPanel .back-link{
-    cursor:pointer;
-}
-
-#DetailsPanel .details-key{
-    cursor:pointer;
-}
-
-#DetailsPanel .details-value{
+#DetailsPanel a {
     cursor:pointer;
 }
 
