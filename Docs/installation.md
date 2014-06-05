@@ -77,7 +77,7 @@ unable to write to /var/lib/update-rc.d/nginx.new at /usr/sbin/update-rc.d line 
 ## Dump PostGIS Database from Dev Box
 
 ```
-pg_dump redcross-localdev | gzip > 2014-04-21.gz
+pg_dump redcross_dev | gzip > 2014-04-21.gz
 ```
 
 ## Install PostGIS
@@ -164,7 +164,7 @@ Then, execute:
 
 ```
 ﻿sudo su postgres
-﻿gunzip -c 2014-04-21.gz | psql rc
+﻿gunzip -c 2014-06-04.gz | psql redcross_dev
 ```
 
 Where 2014-04-21.gz is the dump and rc is the empty database that you just created. This may take quite a while...
@@ -305,10 +305,17 @@ node index.js
 ### 6.5 Install npm Forever
 sudo npm install -g forever
 
-### 6. Run Chubbs (be in Chubbs dir)
+### 6. Run Chubbs Temporarily (be in Chubbs dir)
 
 ```
 node app.js
+```
+
+### Run Chubbs in Forever (stays up even if the server crashes)
+```
+sudo forever list
+sudo forever stop 0
+sudo forever start app.js
 ```
 
 
@@ -381,4 +388,3 @@ or
 ```
 /etc/postgresql/9.3/main/pg_hba.conf
 ```
-
