@@ -187,6 +187,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    * Native Leaflet Map Object
    */
   leafletData.getMap().then(function (map) {
+    window.map = map;
     map.on('moveend', function () { // move is good too
       var c = map.getCenter();
       var lat = c.lat.toFixed(6);

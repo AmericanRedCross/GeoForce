@@ -1522,6 +1522,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    * Native Leaflet Map Object
    */
   leafletData.getMap().then(function (map) {
+    window.map = map;
     map.on('moveend', function () { // move is good too
       var c = map.getCenter();
       var lat = c.lat.toFixed(6);
@@ -3058,13 +3059,13 @@ function BBoxGeoJSON_removeInactiveLabels(self) {
       var featureLayer = allFeatureLayers[key];
       if ( featureLayer.geojsonLayer && featureLayer.label) {
         console.log("REMOVING: " + featureLayer.feature.properties.name);
-        debug.map.removeLayer(featureLayer.label); // NH FIXME
+        window.map.removeLayer(featureLayer.label); // NH FIXME
         featureLayer.label = null;
       }
 
       if ( featureLayer.geojsonLayer && featureLayer.geojsonLayer.label) {
         console.log("REMOVING: " + featureLayer.feature.properties.name);
-        debug.map.removeLayer(featureLayer.geojsonLayer.label); // NH FIXME
+        window.map.removeLayer(featureLayer.geojsonLayer.label); // NH FIXME
         featureLayer.geojsonLayer.label = null;
       }
     }

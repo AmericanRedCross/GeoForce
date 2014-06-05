@@ -213,13 +213,13 @@ function BBoxGeoJSON_removeInactiveLabels(self) {
       var featureLayer = allFeatureLayers[key];
       if ( featureLayer.geojsonLayer && featureLayer.label) {
         console.log("REMOVING: " + featureLayer.feature.properties.name);
-        debug.map.removeLayer(featureLayer.label); // NH FIXME
+        window.map.removeLayer(featureLayer.label); // NH FIXME
         featureLayer.label = null;
       }
 
       if ( featureLayer.geojsonLayer && featureLayer.geojsonLayer.label) {
         console.log("REMOVING: " + featureLayer.feature.properties.name);
-        debug.map.removeLayer(featureLayer.geojsonLayer.label); // NH FIXME
+        window.map.removeLayer(featureLayer.geojsonLayer.label); // NH FIXME
         featureLayer.geojsonLayer.label = null;
       }
     }
