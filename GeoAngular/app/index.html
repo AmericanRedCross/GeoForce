@@ -410,7 +410,7 @@
                                             <div class="panel-body">
 
                                                 <label class="checkbox" ng-repeat="gist in gists">
-                                                    <input type="checkbox" ng-model="gist.active" ng-change="">
+                                                    <input type="checkbox" ng-model="gist.active" ng-change="toggleMapLayer(gist.url, gist)">
                                                     {{gist.name}} (<a href="{{gist.htmlUrl}}" target="_blank">View on Github</a>)
                                                 </label>
 
