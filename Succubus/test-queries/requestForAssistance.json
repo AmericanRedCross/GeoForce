@@ -11745,8 +11745,8 @@
     },
     "Name": "RFA TEST 1",
     "Id": "a0e11000000N3YVAA0",
-    "LastModifiedDate": "2014-05-02T09:03:47.000+0000",
-    "SystemModstamp": "2014-05-02T09:03:47.000+0000",
+    "LastModifiedDate": "2014-05-26T12:00:24.000+0000",
+    "SystemModstamp": "2014-05-26T12:00:24.000+0000",
     "CreatedDate": "2014-04-11T07:15:40.000+0000",
     "Disaster__r": {
       "attributes": {
@@ -11767,14 +11767,14 @@
     "End_Date__c": null,
     "Exchange_Rate__c": null,
     "Future_Contribution__c": null,
-    "Requested_Amount__c": 4000,
+    "Requested_Amount__c": 5000,
     "Requested_Amount_Foreign_Currerncy__c": null,
-    "Requested_Amount_USD__c": 4000,
+    "Requested_Amount_USD__c": 5000,
     "Response_Strategy_Comments__c": null,
     "Start_Date__c": null,
     "Status__c": null,
     "Subject__c": null,
     "Target_Population__c": null,
-    "Total_ARC_Contributions__c": 4000
+    "Total_ARC_Contributions__c": 5067
   }
 ]
