@@ -105,6 +105,7 @@ html, body {
     bottom: 25px;
     left: auto;
     font-family: oswaldregular;
+    z-index: 2001;
 }
 
 #ThemeSelectorMenu .dropdown-toggle {
