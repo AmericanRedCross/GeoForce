@@ -13,7 +13,7 @@ div.breadcrumbs-container div {
     padding: 0 10px;
 }
 
-div.breadcrumbs-container .stack .bc:hover{
+div.breadcrumbs-container .bc:hover{
     text-decoration: underline;
 }
 

@@ -618,7 +618,7 @@
                         <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('zoom-extent')"><span class="glyphicon glyphicon-chevron-down"></span></button>
                         <div ng-controller="BreadcrumbsCtrl" class="breadcrumbs-container">
                             <div class="world">
-                                {{title}}
+                                <div class="bc" ng-click="zoomToWorld()">World</div>
                             </div>
                             <div class="stack">
                                 <div class="icon-10_arrow_right" ng-show="levelarc"></div>

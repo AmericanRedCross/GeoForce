@@ -4,9 +4,6 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $rootScope, $state, $stateParams, $http, VectorProvider) {
-	console.log('BreadcrumbsCtrl');
-
-	var title = $scope.title = $stateParams.title || 'World';
 
 	//var fullStackURL = config.chubbsPath('services/getAdminStack?format=json&adminlevel=:adminlevel&stackid=:guid&datasource=gadm');
 	var fullStackURL = config.chubbsPath('services/custom/custom_operation?name=GetBreadCrumbsWithThemeCountsByID&format=json&gadm_level=:adminlevel&ids=:guid&datasource=gadm&theme=projects');
@@ -80,18 +77,23 @@ module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', func
 		}
 	}
 
-    $scope.zoomToGUID = function(featObj, level){
-        //Given a GUID, zoom to the feature.
+  $scope.zoomToGUID = function (featObj, level) {
+    //Given a GUID, zoom to the feature.
 
-        //Grab the feature from the VectorProvider.
-        VectorProvider.fetchFeature(featObj["guid" + level], level, null, function(feat){
-            //Make a temp geojson layer and add the geojson.
-            //Then grab the bounds from it and zoom to it.
+    //Grab the feature from the VectorProvider.
+    VectorProvider.fetchFeature(featObj["guid" + level], level, null, function (feat) {
+      //Make a temp geojson layer and add the geojson.
+      //Then grab the bounds from it and zoom to it.
 
-            var gjl = L.geoJson(feat.geometry);
-            $scope.$parent.zoomToBounds(gjl.getBounds());
-        });
+      var gjl = L.geoJson(feat.geometry);
+      $scope.$parent.zoomToBounds(gjl.getBounds());
+    });
 
-    }
+  };
+
+  $scope.zoomToWorld = function () {
+    var bounds = L.latLngBounds(L.latLng(-50,-179), L.latLng(50,179));
+    $scope.$parent.zoomToBounds(bounds);
+  };
 
 });
