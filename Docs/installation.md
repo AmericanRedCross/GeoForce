@@ -145,7 +145,7 @@ Make sure that you have the right version of PostGIS installed.
 SELECT PostGIS_full_version();
 ```
 
-It needs to be 2.1.1 or 2.1.2
+It needs to be 2.1.1 or 2.1.2 or 2.1.3
 
 
 ### 4. Load database that was dumped from another machine.

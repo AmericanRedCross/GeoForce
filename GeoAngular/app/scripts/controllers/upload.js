@@ -4,7 +4,6 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $state, $stateParams, $upload) {
-  console.log('UploadCtrl');
 
   $scope.showAlert = false;
   $scope.showProgress = false;
@@ -58,11 +57,12 @@ module.exports = angular.module('GeoAngular').controller('UploadCtrl', function(
         $scope.kbTotal = (evt.totalSize / 1024).toFixed(2);
       }).success(function (data, status, headers, config) {
         $scope.showProgress = false;
+        var filename = data.files[fileName].filename;
         $scope.gistRawUrl = data.files[fileName].raw_url;
         $scope.gistHtmlUrl = data.html_url;
         $scope.disabled = true;
         $scope.showUploadedUrl = true;
-        window.gists.append(data);
+        window.gists.append({name: filename, url: $scope.gistRawUrl, htmlUrl: $scope.gistHtmlUrl});
       }).error(function (data, status, headers, config) {
         $scope.showAlert = true;
         $scope.errorMessage = JSON.stringify(data,null,2);

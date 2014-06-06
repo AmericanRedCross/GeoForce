@@ -407,13 +407,16 @@
                                     <div ng-class="{active: navTab==='uploaded'}" class="tab-pane">
 
                                         <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h3 class="panel-title">test2</h3>
-                                            </div>
                                             <div class="panel-body">
-                                                test2
+
+                                                <label class="checkbox" ng-repeat="gist in gists">
+                                                    <input type="checkbox" ng-model="gist.active" ng-change="">
+                                                    {{gist.name}} (<a href="{{gist.htmlUrl}}" target="_blank">View on Github</a>)
+                                                </label>
+
                                             </div>
                                         </div>
+
                                     </div>
 
                                 </div>

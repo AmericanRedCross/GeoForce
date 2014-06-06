@@ -73,6 +73,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     return val;
   }
 
+  //NH TODO: Not yet fully implemented - possible extra feature...
   /**
    * Layers that are active on the map but are not mentioned in LayerConfig
    * @type {{}}
@@ -141,5 +142,12 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     $state.go(state, $stateParams);
 
   };
+
+
+  $scope.listGists = function () {
+    $scope.gists = gists.fetch();
+  };
+  $scope.listGists();
+  debug.gistsLayersPanel = $scope.gists;
 
 });

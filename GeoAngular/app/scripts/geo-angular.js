@@ -1236,6 +1236,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     return val;
   }
 
+  //NH TODO: Not yet fully implemented - possible extra feature...
   /**
    * Layers that are active on the map but are not mentioned in LayerConfig
    * @type {{}}
@@ -1304,6 +1305,13 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     $state.go(state, $stateParams);
 
   };
+
+
+  $scope.listGists = function () {
+    $scope.gists = gists.fetch();
+  };
+  $scope.listGists();
+  debug.gistsLayersPanel = $scope.gists;
 
 });
 
@@ -1802,7 +1810,6 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
  */
 
 module.exports = angular.module('GeoAngular').controller('UploadCtrl', function($scope, $http, $state, $stateParams, $upload) {
-  console.log('UploadCtrl');
 
   $scope.showAlert = false;
   $scope.showProgress = false;
@@ -1856,11 +1863,12 @@ module.exports = angular.module('GeoAngular').controller('UploadCtrl', function(
         $scope.kbTotal = (evt.totalSize / 1024).toFixed(2);
       }).success(function (data, status, headers, config) {
         $scope.showProgress = false;
+        var filename = data.files[fileName].filename;
         $scope.gistRawUrl = data.files[fileName].raw_url;
         $scope.gistHtmlUrl = data.html_url;
         $scope.disabled = true;
         $scope.showUploadedUrl = true;
-        window.gists.append(data);
+        window.gists.append({name: filename, url: $scope.gistRawUrl, htmlUrl: $scope.gistHtmlUrl});
       }).error(function (data, status, headers, config) {
         $scope.showAlert = true;
         $scope.errorMessage = JSON.stringify(data,null,2);
