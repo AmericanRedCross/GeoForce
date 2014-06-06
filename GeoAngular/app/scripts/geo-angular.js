@@ -1253,6 +1253,9 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
       return;
     }
 
+    // github gists
+    $scope.listGists();
+
     // reset the nomad layers
     for (var nk in $scope.nomadLayers) {
       $scope.nomadLayers[nk].active = false;
@@ -1275,8 +1278,13 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
       // layer is in the layer config
       if (typeof LayerConfig[l] === 'object' && LayerConfig[l] !== null) {
         LayerConfig[l].active = true;
+      }
+      // layer is a github gist
+      else if ($scope.gists[l]) {
+        $scope.gists[l].active = true;
+      }
       // layer is a not in the layer config. it's nomadic.
-      } else {
+      else {
         $scope.nomadLayers[l] = {
           name: l,
           url: l,
