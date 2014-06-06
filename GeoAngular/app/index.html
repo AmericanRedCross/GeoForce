@@ -750,13 +750,13 @@
                                         <ul ng-show="!contextualLayer && moreLess==='More'">
                                             <li ng-repeat="(key, value) in lessDetails">
                                                 <div class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
-                                                <div ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-show="!value">Unavailable</i>
+                                                <div ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-if="!value">Unavailable</i>
                                             </li>
                                         </ul>
                                         <ul ng-show="contextualLayer || moreLess==='Less'">
                                             <li ng-repeat="(key, value) in details">
                                                 <div class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
-                                                <div ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-show="!value">Unavailable</i>
+                                                <div ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-if="!value">Unavailable</i>
                                             </li>
                                         </ul>
 
