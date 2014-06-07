@@ -204,8 +204,8 @@ module.exports = {
   location: "Select " + metaFields + ", Admin_0__c, Admin_1__c, Admin_2__c, Admin_3__c, Admin_4__c, Admin_5__c, Custom_Name__c, GIS_GEO_ID__c, Internal_Region__c, ISD_Region__c, Latitude__c, Longitude__c, Type__c From Location__c",
 
 
-  indicator: "Select " + indicatorFields + " From Indicator__c",
-  indicatorValue: "Select " + indicatorValueFields + " From Indicator_Value__c",
-  logframeElement: "Select " + logframeElementFields + " From Logframe_Element__c"
+  indicator: "Select " + indicatorFields + ", Project__r.Id, Logframe_Element__r.Id From Indicator__c",
+  indicatorValue: "Select " + indicatorValueFields + ", Indicator__r.Id From Indicator_Value__c",
+  logframeElement: "Select " + logframeElementFields + ", Project__r.Id From Logframe_Element__c"
 
 };

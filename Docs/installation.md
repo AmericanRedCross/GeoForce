@@ -172,7 +172,7 @@ Where 2014-04-21.gz is the dump and rc is the empty database that you just creat
 If you would like to load a dump to a remote database such as geo.redcross.org, you can do the following:
 
 ```
-﻿gunzip -c 2014-04-21.gz | psql -h geo.redcross.org -p 5432 -U user_name -W database_name
+﻿gunzip -c 2014-06-06.gz | psql -h redcrossgeo.colkd43xjmvs.us-west-2.rds.amazonaws.com -p 5432 -U user_name -W database_name
 ```
 
 
