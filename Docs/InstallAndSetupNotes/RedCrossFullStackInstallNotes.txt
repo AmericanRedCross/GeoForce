@@ -1,0 +1,24 @@
+--Installing GeoForce (Chubbs, Angular App, Succubus) on RedCross Amazon server
+--Following Chubbs install notes for Ubuntu
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install g++ curl libssl-dev apache2-utils git-core
+sudo apt-get install make
+sudo add-apt-repository ppa:chris-lea/node.js
+sudo apt-get update 
+sudo apt-get install nodejs
+
+(Also checked that openssl was the latest build on or after April 7th, 2014 to protect againt HeartBleed)
+
+
+--continued following chubbs server install notes.
+protoc didn't install correctly. (on this step, no protoc was installed: protoc --version)
+...so trying sudo apt-get install protobuf-compiler
+
+--navigate to home, then clone geoforce
+git clone https://github.com/AmericanRedCross/GeoForce.git
+
+--install chubbs
+cd GeoForce/Chubbs
+sudo npm install
+

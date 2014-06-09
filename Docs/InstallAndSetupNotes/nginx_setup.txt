@@ -1,0 +1,56 @@
+from --http://stackoverflow.com/questions/5009324/node-js-nginx-and-now
+
+--create a file in /etc/nginx/sites-available/redcross
+
+sudo pico /etc/nginx/sites-available/redcross
+—Then add this text, update redcross names to be yours
+
+# the IP(s) on which your node server is running. I chose port 3000.
+upstream app_geoforce {
+    server 127.0.0.1:3000;
+}
+
+#Point http requests to https
+server {
+    listen 0.0.0.0:80;
+    server_name geo.redcross.org;
+    server_tokens off;
+    return 301 https://$host$request_uri;
+}
+
+# the secure nginx server instance
+server {
+    listen 443 ssl;
+    ssl_certificate /etc/nginx/ssl/public.crt;
+    ssl_certificate_key /etc/nginx/ssl/private.rsa;
+
+    server_name geo.redcross.org  geoforce;
+    access_log /var/log/nginx/geoforce.log;
+    error_log /var/log/nginx/geoforce_error.log;
+    # pass the request to the node.js server with the correct headers and much more can be added, see nginx config options
+
+    location /favicon.ico { alias /home/ubuntu/GeoForce/Chubbs/public/img/favicon_rc.ico; }
+
+    location / {
+      # auth_basic "Restricted";
+      # auth_basic_user_file /home/ubuntu/GeoForce/GeoAngular/app/.htpasswd;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_set_header X-NginX-Proxy true;
+      proxy_set_header X-Ssl on;
+
+      proxy_pass https://app_geoforce;
+      proxy_redirect off;
+    }
+ }
+
+--Then enable the site defined above
+cd /etc/nginx/sites-enabled/ 
+sudo ln -s /etc/nginx/sites-available/redcross redcross
+
+
+--restart nginx
+sudo /etc/init.d/nginx restart
+
+

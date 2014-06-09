@@ -1,0 +1,27 @@
+IP: 54.201.181.57
+--http://stackoverflow.com/questions/5009324/node-js-nginx-and-now
+
+--Installing nginx as a front end to node apps.
+sudo apt-get install nginx
+
+--Start it
+sudo service nginx start
+
+--Add it to auto start
+update-rc.d nginx defaults
+
+--Install Node
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install g++ curl libssl-dev apache2-utils git-core
+sudo apt-get install make
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:chris-lea/node.js
+sudo apt-get update 
+sudo apt-get install nodejs
+
+--Install NPM
+cd /tmp 
+git clone http://github.com/isaacs/npm.git 
+cd npm 
+sudo make install
