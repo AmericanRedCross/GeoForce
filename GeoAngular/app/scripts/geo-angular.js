@@ -889,7 +889,8 @@ module.exports = angular.module('GeoAngular').controller('ExportCtrl', function(
         codeblock = codeblock.replace(/(\r\n|\n|\r)/gm, "");  //remove line breaks
 
         var printPostArgs = {
-            url: 'http://geo.redcross.com/mapfolio/print.htm',
+            //url: 'http://geo.redcross.com/mapfolio/print.htm',
+            url: 'http://demo.spatialdev.com/RedCross/print.html',
             imageformat: self._ImageFormat || 'png',
             format: 'json',
             codeblock: codeblock,

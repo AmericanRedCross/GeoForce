@@ -1,21 +1,21 @@
-.redbox{
+#exportModal .redbox{
     padding: 4px;
     background-color: #ff0000;
     color: #fff;
 }
 
-.checkbox{
+#exportModal .checkbox{
     width: 18px;
     height: 18px;
     background: url(../images/check_off.jpg) no-repeat;
     cursor:pointer;
 }
 
-.checkbox.checked{
+#exportModal .checkbox.checked{
     background: url(../images/check_on.jpg) no-repeat;
 }
 
-.redbtn {
+#exportModal .redbtn {
     background-color: #ed1b2e;
     padding: 6px 25px;
     border-radius: 0px;
@@ -27,7 +27,7 @@
     cursor:pointer;
 }
 
-.redbtn .arrow {
+#exportModal .redbtn .arrow {
     background: url(../images/explore_arrow.png) no-repeat;
     width: 28px;
     height: 28px;
@@ -36,6 +36,6 @@
     margin-left: 22px;
 }
 
-.modal-footer{
+#exportModal .modal-footer{
     text-align: left;
 }

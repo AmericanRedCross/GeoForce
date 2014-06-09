@@ -48,3 +48,8 @@ body {
 .checkbox {
     visibility: hidden;
 }
+
+#upperMapWrapper{
+    overflow: hidden;
+    position: relative;
+}
