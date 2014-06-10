@@ -39,3 +39,24 @@
 #exportModal .modal-footer{
     text-align: left;
 }
+
+#exportModal .knightRiderLoader {
+    background: url(../images/knightrider_loader.gif) 50% 0px no-repeat;
+    height: 24px;
+}
+
+
+#exportModal .modal-footer {
+    padding-right: 0px;
+    margin-top: 0px;
+    text-align: left;
+    border-top: 0px;
+}
+
+#exportModal .modal-body {
+    padding-bottom: 0px;
+}
+
+#exportModal #exportWaitingPanel{
+    margin-top: 20px;
+}

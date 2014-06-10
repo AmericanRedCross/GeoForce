@@ -50,6 +50,7 @@ div.breadcrumbs-container {
 
 #DetailsWrapper .InnerContainer{
     height: auto !important;
+    border: 0px;
 }
 
 #DetailsWrapper .InnerContainer .btn-group {
@@ -62,4 +63,14 @@ div.breadcrumbs-container {
 
 #DetailsPanel{
     margin-top: 0px;
+    background-color: #fff;
+    border: 0px;
+}
+
+#printFooter .print-logo{
+    float: right;
+}
+
+#printFooter .print-logo img {
+    height: 100px;
 }
