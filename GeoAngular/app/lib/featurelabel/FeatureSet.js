@@ -107,6 +107,7 @@
 
 
   var selectedFeatureLayer = null;
+  var selectedIcon = null;
 
   function createLabel(featureLayer) {
     var point = featureLayer.labelCenterPoint;
@@ -137,6 +138,7 @@
       // self is the label
       var self = this;
       if (self.featureLayer !== selectedFeatureLayer) {
+        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
         // yellow EAED6B
         self.featureLayer.setStyle({
           color: '#EDB229'
@@ -149,6 +151,7 @@
       // self is the label
       var self = this;
       if (self.featureLayer !== selectedFeatureLayer) {
+        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
         self.featureLayer.setStyle({
           color: properties.color || 'white'
         });
@@ -180,6 +183,7 @@
       // TURN ON
       else {
         if (selectedFeatureLayer) {
+          selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
           selectedFeatureLayer.setStyle({
             color: properties.color || 'white'
           });
@@ -193,6 +197,7 @@
         });
         self.featureLayer.bringToFront();
         selectedFeatureLayer = self.featureLayer;
+        selectedIcon = self._icon;
         if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
           properties.onSelect(self.featureLayer);
         }
