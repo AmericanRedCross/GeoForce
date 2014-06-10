@@ -5,8 +5,8 @@
 
 module.exports = angular.module('GeoAngular').controller('LegendCtrl', function($scope) {
 
-  $scope.$on('layers-update', function (layers) {
-    console.log('layers-update');
+  $scope.$on('layers-update', function (evt, layers) {
+
   });
 
 });

@@ -4,7 +4,6 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig) {
-  console.log('LayersCtrl');
   $scope.params = $stateParams;
 
   $scope.navTab = 'contextual';
@@ -85,10 +84,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
    * When the route changes, we should see what layers we have on there and have the layers
    * in the panels checked accordingly.
    */
-  $scope.$on('route-update', function() {
-    if (!$stateParams.layers) {
-      return;
-    }
+  $scope.$on('layers-update', function(evt, layers) {
 
     // github gists
     $scope.listGists();
@@ -106,12 +102,12 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     }
 
     /**
-     * Check if the layer is active in map layers from stateParams
+     * Check if the layer is active in map layers
      */
-    var mapLayers = $scope.mapLayers = $stateParams.layers.split(',');
+    $scope.mapLayers = layers;
     // skip the first layer, the basemap
-    for (var i = 1, len = mapLayers.length; i < len; i++) {
-      var l = mapLayers[i];
+    for (var i = 1, len = layers.length; i < len; i++) {
+      var l = layers[i];
       // layer is in the layer config
       if (typeof LayerConfig[l] === 'object' && LayerConfig[l] !== null) {
         LayerConfig[l].active = true;
