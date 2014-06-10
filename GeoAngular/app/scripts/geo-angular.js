@@ -54,6 +54,14 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
     $state.go(state, $stateParams);
   };
 
+  $rootScope.setParamWithVal = function (paramName, val) {
+    $stateParams[paramName] = val;
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+  };
+  debug.$rootScope = $rootScope;
+
+
   $rootScope.openParam = function(paramName) {
     var bool = $stateParams[paramName];
     if (!bool) {
@@ -96,7 +104,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('main', {
-      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel',
+      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id',
       views: {
         'details': {
           template: ' ',
@@ -109,7 +117,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('landing', {
-      url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel',
+      url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id',
       views: {
         'details': {
           template: ' ',
@@ -122,7 +130,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('upload', {
-      url: '/map@:lat,:lng,:zoom(*layers)/upload?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel',
+      url: '/map@:lat,:lng,:zoom(*layers)/upload?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id',
       views: {
         'details': {
           template: ' ',
@@ -135,7 +143,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('export', {
-          url: '/map@:lat,:lng,:zoom(*layers)/export?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel',
+          url: '/map@:lat,:lng,:zoom(*layers)/export?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id',
           views: {
               'details': {
                   template: ' ',
@@ -516,6 +524,19 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   });
 
+  $scope.$on('route-update', function () {
+    if ($scope.alertUserToClick === false) return;
+    var sf_id = $stateParams.sf_id;
+    if (sf_id && typeof sf_id === 'string') {
+      var url = config.chubbsPath('services/custom/custom_operation?name=doecostextsearch&format=json&text=') + sf_id;
+      $http.get(url).success(function (result, status) {
+        if (result[0]) {
+          $rootScope.$broadcast('details', { feature: { properties: result[0] } });
+        }
+      });
+    }
+  });
+
   $scope.createDonuts = function() {
     // uses jquery to put donut in a div.
     if ($scope.groupings && $scope.groupings.Projects) {
@@ -534,6 +555,9 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.showDetails = function (item, themeItems, idx) {
+    if (item.sf_id) {
+      $rootScope.setParamWithVal('sf_id', item.sf_id);
+    }
     if (item.name || item.title) {
       $scope.title = item.name || item.title;
     }
@@ -1299,8 +1323,10 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
  */
 
 module.exports = angular.module('GeoAngular').controller('LegendCtrl', function($scope) {
-  console.log('LegendCtrl');
-  $scope.params = $stateParams;
+
+  $scope.$on('layers-update', function (layers) {
+    console.log('layers-update');
+  });
 
 });
 },{}],11:[function(require,module,exports){
@@ -1314,9 +1340,18 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   // weird bug where redirect peels out '://{s' when ':' is there
   // $routeParams.layers We just dont have the : in main.js so that
   // part of the path does not go away...
-  $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
+  var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
 
   $rootScope.$broadcast('route-update');
+
+  /**
+   * Only if the latest route has a different layer string than before.
+   */
+  if (layersStr !== window.prevLayersStr) {
+    window.prevLayersStr = layersStr;
+    var layers = layersStr.split(',');
+    $rootScope.$broadcast('layers-update', layers);
+  }
 
 });
 
