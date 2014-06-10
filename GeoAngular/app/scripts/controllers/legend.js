@@ -4,7 +4,9 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('LegendCtrl', function($scope) {
-  console.log('LegendCtrl');
-  $scope.params = $stateParams;
+
+  $scope.$on('layers-update', function (layers) {
+    console.log('layers-update');
+  });
 
 });

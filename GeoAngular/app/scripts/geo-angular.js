@@ -1331,8 +1331,10 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
  */
 
 module.exports = angular.module('GeoAngular').controller('LegendCtrl', function($scope) {
-  console.log('LegendCtrl');
-  $scope.params = $stateParams;
+
+  $scope.$on('layers-update', function (layers) {
+    console.log('layers-update');
+  });
 
 });
 },{}],11:[function(require,module,exports){
@@ -1346,9 +1348,18 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   // weird bug where redirect peels out '://{s' when ':' is there
   // $routeParams.layers We just dont have the : in main.js so that
   // part of the path does not go away...
-  $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
+  var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
 
   $rootScope.$broadcast('route-update');
+
+  /**
+   * Only if the latest route has a different layer string than before.
+   */
+  if (layersStr !== window.prevLayersStr) {
+    window.prevLayersStr = layersStr;
+    var layers = layersStr.split(',');
+    $rootScope.$broadcast('layers-update', layers);
+  }
 
 });
 

@@ -38,3 +38,5 @@ gists.fetch = function() {
   var str = localStorage.getItem('gists');
   return JSON.parse(str);
 };
+
+window.prevLayersStr = '';
