@@ -66,3 +66,11 @@ div.breadcrumbs-container {
     background-color: #fff;
     border: 0px;
 }
+
+#printFooter .print-logo{
+    float: right;
+}
+
+#printFooter .print-logo img {
+    height: 100px;
+}
