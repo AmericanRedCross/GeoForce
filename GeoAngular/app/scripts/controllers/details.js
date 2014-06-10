@@ -161,6 +161,19 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   });
 
+  $scope.$on('route-update', function () {
+    if ($scope.alertUserToClick === false) return;
+    var sf_id = $stateParams.sf_id;
+    if (sf_id && typeof sf_id === 'string') {
+      var url = config.chubbsPath('services/custom/custom_operation?name=doecostextsearch&format=json&text=') + sf_id;
+      $http.get(url).success(function (result, status) {
+        if (result[0]) {
+          $rootScope.$broadcast('details', { feature: { properties: result[0] } });
+        }
+      });
+    }
+  });
+
   $scope.createDonuts = function() {
     // uses jquery to put donut in a div.
     if ($scope.groupings && $scope.groupings.Projects) {
@@ -179,6 +192,9 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.showDetails = function (item, themeItems, idx) {
+    if (item.sf_id) {
+      $rootScope.setParamWithVal('sf_id', item.sf_id);
+    }
     if (item.name || item.title) {
       $scope.title = item.name || item.title;
     }
