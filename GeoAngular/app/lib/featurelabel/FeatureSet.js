@@ -125,8 +125,8 @@
     console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
 
     var icon = L.divIcon({
-      className: $.isNumeric(text) ? 'btn btn-danger featurelabel-icon-number' : 'featurelabel-icon',
-      iconSize: [60,60],
+      className: $.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon',
+      iconSize: [45,45],
       html: text
     });
 
@@ -139,7 +139,7 @@
       if (self.featureLayer !== selectedFeatureLayer) {
         // yellow EAED6B
         self.featureLayer.setStyle({
-          color: '#EAED6B'
+          color: '#EDB229'
         });
         self.featureLayer.bringToFront();
       }
@@ -166,6 +166,7 @@
 
       // TURN OFF
       if (self.featureLayer === selectedFeatureLayer) {
+        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
         self.featureLayer.setStyle({
           color: properties.color || 'white'
         });
@@ -185,6 +186,7 @@
           selectedFeatureLayer.bringToFront();
           selectedFeatureLayer = null;
         }
+        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
         // red cross red #ed1b2e
         self.featureLayer.setStyle({
           color: '#d9534f' // red
