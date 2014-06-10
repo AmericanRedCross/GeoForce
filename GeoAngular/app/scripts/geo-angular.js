@@ -670,7 +670,7 @@ module.exports = angular.module('GeoAngular').controller('ExportCtrl', function(
     var self = this;
 
     //defaults
-    self._LayoutElements = { "map": true, "legend": true, "countryoverview": false, "accesspointsoverview": false, "bankingoverview": false, "tooloutput": false };
+    self._LayoutElements = { "map": true, "legend": true, "optionalthemedetails": false };
     self._ImageFormat = 'png';
 
     self._init = function () {
@@ -716,10 +716,8 @@ module.exports = angular.module('GeoAngular').controller('ExportCtrl', function(
 
         $("#optionalOutputMap").on("click", self._getLayoutElementOnClick('map'));
         $("#optionalOutputLegend").on("click", self._getLayoutElementOnClick('legend'));
-        $("#optionalOutputCountryOverview").on("click", self._getLayoutElementOnClick('countryoverview'));
-        $("#optionalOutputAccessPointsPanel").on("click", self._getLayoutElementOnClick('accesspointsoverview'));
-        $("#optionalOutputBankingOverview").on("click", self._getLayoutElementOnClick('bankingoverview'));
-        $("#optionalOutputToolOutput").on("click", self._getLayoutElementOnClick('tooloutput'));
+        $("#optionalThemeDetails").on("click", self._getLayoutElementOnClick('optionalthemedetails'));
+
 
         var pngRBNode = $("#pngImageFormat");
         pngRBNode.on("click", self._getImageButtonRadioButtonOnClick(pngRBNode, 'png'));
@@ -836,26 +834,16 @@ module.exports = angular.module('GeoAngular').controller('ExportCtrl', function(
 
                     case "legend":
                         if (self._LayoutElements[key] === true) {
-                            var legendsHTML = $('<div>').append($("#LayerListWrapper").clone()).html().replace(/\"/g, '\\"');
-                            codeblock += "$('#legends').append('" + legendsHTML + "');";
-
-                            //Adjust Title of CICOs
-                            codeblock += "$('#legends').prepend($('#parentCICO'));";
-                            codeblock += "$('#legends').prepend($('#LayerListWrapper header'));";
-
-                            //adjust layout
-                            codeblock += "$('#grpCICO').addClass('clearfix');";
-                            codeblock += "$('#LayerListWrapper').addClass('clearfix');";
-                            codeblock += "$('#LayerListWrapper').append($('<div id=\\\"otherLayerHolder\\\" style=\\\"float:left;\\\"></div>'));";
-                            codeblock += "$('.countryspecificbaselayer').each(function(idx,node){ $('#otherLayerHolder').append($(node)); });";
-
-
-                            //get filters if used.
-                            var legendFiltersHTML = $('<div>').append($('<div class="footnote">* Selected Financial Locations - {Title}</div>'.replace("{Title}", _FSP.TableBuilder.buildCICOLabelExpression())).html().replace(/\"/g, '\\"'));
-                            codeblock += "$('#legendFilters').append($('" + legendFiltersHTML.html() + "'));";
-
-                            //Move panelTitle to grpCICO.  1st thing.
-                            codeblock += "$('#grpCICO').prepend($('.panelTitle'));";
+//                            var legendsHTML = $('<div>').append($("#LayerListWrapper").clone()).html().replace(/\"/g, '\\"');
+//                            codeblock += "$('#legends').append('" + legendsHTML + "');";
+//
+//                            //Adjust Title of CICOs
+//                            codeblock += "$('#legends').prepend($('#parentCICO'));";
+//                            codeblock += "$('#legends').prepend($('#LayerListWrapper header'));";
+//
+//
+//                            //Move panelTitle to grpCICO.  1st thing.
+//                            codeblock += "$('#grpCICO').prepend($('.panelTitle'));";
                         }
                         else {
                             //if both map and legend are excluded, hide the wrapper with border
@@ -865,34 +853,14 @@ module.exports = angular.module('GeoAngular').controller('ExportCtrl', function(
                         }
                         break;
 
-                    case "countryoverview":
+                    case "optionalthemedetails":
                         if (self._LayoutElements[key] === true) {
-                            var COHTML = $('<div>').append($("#uxCountryOverview").clone().addClass("on")).html().replace(/\"/g, '\\"');
-                            codeblock += "$('#countryOverview').append('" + COHTML + "');";
+                            //#DetailsPanel .title.ng-binding
+
+                            var COHTML = $('<div>').append($("#DetailsPanel .InnerContainer.scrollable").clone().addClass("on")).html().replace(/\"/g, '\\"').replace(/<!--(.*?)-->/gm, "");
+                            codeblock += "$('#uxThemeDetails').append('" + COHTML + "');";
                         }
                         break;
-
-                    case "accesspointsoverview":
-                        if (self._LayoutElements[key] === true) {
-                            var APHTML = $('<div>').append($("#uxAccessPointSummary").clone().addClass("on")).html().replace(/\"/g, '\\"');
-                            codeblock += "$('#uxAccessPointSummary').append('" + APHTML + "');";
-                        }
-                        break;
-
-                    case "bankingoverview":
-                        if (self._LayoutElements[key] === true) {
-                            var BOHTML = $('<div>').append($("#uxAccessVsUsageWrapper").clone().addClass("on")).html().replace(/\"/g, '\\"');
-                            codeblock += "$('#uxAccessVsUsageWrapper').append('" + BOHTML + "');";
-                        }
-                        break;
-
-                    case "tooloutput":
-                        if (self._LayoutElements[key] === true) {
-                            var TOHTML = $('<div>').append($("#resultStackPlaceholder").clone().addClass("on")).html().replace(/\"/g, '\\"').replace(/\'/g, "\\'");
-                            codeblock += "$('#resultStackPlaceholder').append('" + TOHTML + "');";
-                        }
-                        break;
-
                 }
             }
         }

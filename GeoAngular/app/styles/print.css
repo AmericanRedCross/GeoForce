@@ -1,55 +1,65 @@
-#main {
-    padding:10px;
+#AppContainer{
+    height:1px;
+    width:1px;
+    position:absolute;
+    left:-10px;
 }
 
-body {
-    background-color: #fff;
-}
-
-.checkbox {
-    background-image: none !important;
-}
-
-#legends header {
-    font-size: 18px;
-    padding: 15px 0 1px 8px !important;
-}
-
-#LayerListWrapper .child.checkbox {
-    padding: 0 !important;
-    width: 0 !important;
-}
-
-#LayerListWrapper .parent {
-    padding: 0 !important;
-}
-
-#SiteFooter {
-    background-color: inherit !important;
-}
-
-#SiteFooter .copyright {
-    margin: 20px 0 0 1px !important;
-    font-weight: bold !important;
-    color: #383838 !important;
-}
-
-#printHeader {
-    font-size: 20px;
-    font-weight: 600;
-    margin:0 auto;
-    padding: 8px;
-}
-
-body {
-    min-width: 0px !important;
-}
-
-.checkbox {
-    visibility: hidden;
-}
-
-#upperMapWrapper{
+#MapCtrl{
+    width: 100%;
+    height: 600px;
     overflow: hidden;
+}
+
+#ThemeSelectorMenu{
+    display: none;
+}
+
+div.light {
+    display: none;
+}
+
+.search.icon-12_search{
+    display: none;
+}
+
+.side-view-close.btn.btn-lg.btn-danger{
+    display:none;
+}
+
+#MapUpperRightToolbarWrapper {
     position: relative;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    width: 100%;
+}
+
+div.breadcrumbs-container {
+    width: 100%;
+}
+
+#DetailsButtonWrapper {
+    display: none;
+}
+
+#DetailsWrapper {
+    position: relative;
+    top: 0px;
+}
+
+#DetailsWrapper .InnerContainer{
+    height: auto !important;
+}
+
+#DetailsWrapper .InnerContainer .btn-group {
+    display:none;
+}
+
+#DetailsPanel span.ng-binding{
+    display:none;
+}
+
+#DetailsPanel{
+    margin-top: 0px;
 }
