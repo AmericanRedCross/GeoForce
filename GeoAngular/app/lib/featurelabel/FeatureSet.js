@@ -214,13 +214,12 @@
 //    }
 
     L.spatialdev.featurelabel.labels[featureLayer.feature.properties.guid] = label;
-    return label;
   }
 
 
   function updateLabel(featureLayer) {
     if ( ! featureLayer.label ) {
-      featureLayer.label = createLabel(featureLayer);
+      createLabel(featureLayer);
     } else {
       featureLayer.label.update(featureLayer.labelCenterPoint);
     }

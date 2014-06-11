@@ -27,7 +27,10 @@ L.Label = L.Class.extend({
     L.setOptions(this, options);
 //    this._latlng = L.latLng(latlng);
     this._point = point;
-    this.featureLayer = featureLayer;
+    if (featureLayer){
+      this.featureLayer = featureLayer;
+      featureLayer.label = this;
+    }
     this.isLabel = true;
   },
 
