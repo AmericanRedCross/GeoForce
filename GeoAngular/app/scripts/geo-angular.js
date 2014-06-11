@@ -3582,7 +3582,7 @@ function BBoxGeoJSON(config) {
   this._features = {};
   this._featureLayersByLevel = {};
   this._allFeatureLayers = {};
-  this._featureLabels = new FeatureSet();
+  this._featureSet = new FeatureSet();
   this._defaultTheme = config.defaultTheme || 'project';
 
   if (config.detailsUrl) {
@@ -3682,9 +3682,9 @@ function processFeatures(self, featObj, geojson) {
  */
 function addLayer(self, featLayer) {
 
-  self._featureLabels.addFeature(featLayer, self._geojsonLayer);
+  self._featureSet.addFeature(featLayer, self._geojsonLayer);
   self._geojsonLayer.addLayer(featLayer);
-//    self._featureLabels.addFeature(featLayer, self._geojsonLayer);
+//    self._featureSet.addFeature(featLayer, self._geojsonLayer);
 
   var props = featLayer.feature.properties;
   var level = props.level;
