@@ -3,6 +3,7 @@
  *       on 6/3/14.
  */
 
+var FeatureSet = require('../../../lib/featurelabel/FeatureSet');
 var Resource = require('./resource');
 var bboxUrl = require('./vector').bboxUrl;
 var bboxResources = require('./vector').bboxResources;
@@ -23,7 +24,7 @@ function BBoxGeoJSON(config) {
   this._features = {};
   this._featureLayersByLevel = {};
   this._allFeatureLayers = {};
-  this._featureLabels = new L.spatialdev.featurelabel.FeatureSet();
+  this._featureLabels = new FeatureSet();
   this._defaultTheme = config.defaultTheme || 'project';
 
   if (config.detailsUrl) {

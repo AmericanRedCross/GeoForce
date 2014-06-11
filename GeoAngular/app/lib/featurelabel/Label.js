@@ -6,7 +6,7 @@
  */
 
 
-L.Label = L.Class.extend({
+module.exports = L.Label = L.Class.extend({
 
   includes: L.Mixin.Events,
 
@@ -330,7 +330,3 @@ L.Label = L.Class.extend({
     this._updateZIndex(0);
   }
 });
-
-L.label = function (point, featureLayer, options) {
-  return new L.Label(point, featureLayer, options);
-};

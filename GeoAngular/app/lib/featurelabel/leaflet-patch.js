@@ -7,7 +7,9 @@
  * All this is doing is broadcasting the leaflet id for the path that is being redrawn.
  */
 
-L.Polyline.prototype._updatePath = function () {
+var featurelabel = require('./featurelabel');
+
+module.exports = L.Polyline.prototype._updatePath = function () {
   if (!this._map) { return; }
 
   this._clipPoints();
@@ -15,7 +17,7 @@ L.Polyline.prototype._updatePath = function () {
 
   L.Path.prototype._updatePath.call(this);
 
-  if (L.spatialdev && L.spatialdev.featurelabel) {
-    L.spatialdev.featurelabel.pathUpdated(this._leaflet_id);
+  if (featurelabel) {
+    featurelabel.pathUpdated(this._leaflet_id);
   }
 };

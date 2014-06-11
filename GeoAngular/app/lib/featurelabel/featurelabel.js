@@ -3,14 +3,11 @@
  *       on 4/7/14.
  */
 
-(function(){ 'use strict';
+var featureSets = [];
 
-if (!L.spatialdev) L.spatialdev = {};
-
-L.spatialdev.featurelabel = {
-  featureSets: [],
+module.exports = {
+  featureSets: featureSets,
   pathUpdated: function(leafletId) {
-    var featureSets = L.spatialdev.featurelabel.featureSets;
     for(var i= 0, len=featureSets.length; i<len; ++i) {
       featureSets[i]._pathUpdated(leafletId);
     }
@@ -18,4 +15,4 @@ L.spatialdev.featurelabel = {
   labels: {}
 };
 
-}());
+require('./leaflet-patch');
