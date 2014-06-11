@@ -3,6 +3,7 @@
  *       on 6/3/14.
  */
 
+var FeatureSet = require('../../../lib/featurelabel/FeatureSet');
 var Resource = require('./resource');
 var bboxUrl = require('./vector').bboxUrl;
 var bboxResources = require('./vector').bboxResources;
@@ -23,7 +24,7 @@ function BBoxGeoJSON(config) {
   this._features = {};
   this._featureLayersByLevel = {};
   this._allFeatureLayers = {};
-  this._featureLabels = new L.spatialdev.featurelabel.FeatureSet();
+  this._featureLabels = new FeatureSet();
   this._defaultTheme = config.defaultTheme || 'project';
 
   if (config.detailsUrl) {
@@ -51,17 +52,17 @@ BBoxGeoJSON.prototype._getFeatures = function (featObj) {
 
   // a cache makes sense if the bboxgeojson object is reinstantiated
   $http.get(url, {cache: true}).success(function (geojson, status) {
-    BBoxGeoJSON_processFeatures(self, featObj, geojson);
+    processFeatures(self, featObj, geojson);
   }).error(function(err) {
     $http.get(proxyPath).success(function (geojson, status) {
-      BBoxGeoJSON_processFeatures(self, featObj, geojson);
+      processFeatures(self, featObj, geojson);
     }).error(function (err) {
       console.error('Unable to getFeatures: ' + url);
     });
   });
 };
 
-function BBoxGeoJSON_processFeatures(self, featObj, geojson) {
+function processFeatures(self, featObj, geojson) {
   if (geojson.error) {
     console.error('Unable to fetch feature: ' + geojson.error);
     return;
@@ -110,7 +111,7 @@ function BBoxGeoJSON_processFeatures(self, featObj, geojson) {
     options.onEachFeature(featObj, featLayer);
   }
 
-  BBoxGeoJSON_addLayer(self, featLayer);
+  addLayer(self, featLayer);
 }
 
 
@@ -121,7 +122,7 @@ function BBoxGeoJSON_processFeatures(self, featObj, geojson) {
  * @param self
  * @param featLayer
  */
-function BBoxGeoJSON_addLayer(self, featLayer) {
+function addLayer(self, featLayer) {
 
   self._featureLabels.addFeature(featLayer, self._geojsonLayer);
   self._geojsonLayer.addLayer(featLayer);
@@ -156,13 +157,13 @@ BBoxGeoJSON.prototype.processFeatureItinerary = function (featItinerary) {
       // if we already have a layer and it is not on the map but should be there, add it to the geojson layer
       var l = self._allFeatureLayers[guid];
       if (l) {
-        BBoxGeoJSON_addLayer(self, l);
+        addLayer(self, l);
       }
 
     }
   }
   self._removeInactiveLayers(self);
-  BBoxGeoJSON_removeInactiveLabels(self);
+  removeInactiveLabels(self);
 };
 
 
@@ -196,19 +197,15 @@ BBoxGeoJSON.prototype.fetchFeatureDetails = function(featureLayer) {
 
 };
 
-// TODO: I don't like this way of doing things... (works though)
 BBoxGeoJSON.prototype.closeDetails = function () {
   $rootScope.closeParam('details-panel');
 };
 
 
-function BBoxGeoJSON_removeInactiveLabels(self) {
+function removeInactiveLabels(self) {
   var allFeatureLayers = self._allFeatureLayers;
   var featureItinerary = self._featItineraryHash;
   for (var key in allFeatureLayers) {
-    if (key == '5ba17a19-4a92-40bd-9dfe-46aa0ecdec7b') {
-      console.log('kenya');
-    }
     if (!featureItinerary[key]) {
       var featureLayer = allFeatureLayers[key];
       if ( featureLayer.geojsonLayer && featureLayer.label) {

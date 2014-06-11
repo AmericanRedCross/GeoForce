@@ -6,7 +6,7 @@
  */
 
 
-L.Label = L.Class.extend({
+module.exports = L.Label = L.Class.extend({
 
   includes: L.Mixin.Events,
 
@@ -23,10 +23,14 @@ L.Label = L.Class.extend({
     riseOffset: 250
   },
 
-  initialize: function (point, options) {
+  initialize: function (point, featureLayer, options) {
     L.setOptions(this, options);
 //    this._latlng = L.latLng(latlng);
     this._point = point;
+    if (featureLayer){
+      this.featureLayer = featureLayer;
+      featureLayer.label = this;
+    }
     this.isLabel = true;
   },
 
@@ -326,7 +330,3 @@ L.Label = L.Class.extend({
     this._updateZIndex(0);
   }
 });
-
-L.label = function (point, options) {
-  return new L.Label(point, options);
-};

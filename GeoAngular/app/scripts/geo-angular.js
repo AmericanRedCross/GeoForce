@@ -1,5 +1,700 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 4/7/14.
+ */
+
+var featurelabel = require('./featurelabel');
+var featureSets = featurelabel.featureSets;
+var Label = require('./Label.js');
+
+function FeatureSet() {
+  this.features = [];
+  this._pathIdHash = {};
+  featureSets.push(this);
+}
+module.exports = FeatureSet;
+
+FeatureSet.prototype.addFeature = function (featureLayer, geojsonLayer) {
+  featureLayer.geojsonLayer = geojsonLayer;
+  if (!featureLayer._leaflet_id) {
+    L.stamp(featureLayer);
+  }
+  this.features.push(featureLayer);
+
+  // feature consists of one polygon
+  if (!featureLayer._layers) {
+    var leafletId = featureLayer._leaflet_id;
+    this._pathIdHash[leafletId] = featureLayer;
+  }
+
+  // feature consists of several polygons
+  else {
+    for (var id in featureLayer._layers) {
+      var pathLayer = featureLayer._layers[id];
+      var leafletId = pathLayer._leaflet_id;
+      this._pathIdHash[leafletId] = featureLayer;
+    }
+  }
+
+  pathUpdated(featureLayer);
+};
+
+FeatureSet.prototype._pathUpdated = function (leafletId) {
+  var featureLayer = this._pathIdHash[leafletId];
+  // the hash doesn't always catch the id if the graphic has not yet been rendered.
+  if (!featureLayer) {
+    var features = this.features;
+    for (var key in features) {
+      var feat = this.features[key];
+      if (feat._leaflet_id === leafletId) {
+        featureLayer = feat;
+        break;
+      }
+    }
+  }
+  pathUpdated(featureLayer);
+};
+
+function pathUpdated(featureLayer) {
+  // If the id doesnt hash, no path for the features in our feature set apply.
+  if (!featureLayer) {
+    //console.error('pathUpdated featureLayer empty');
+    return;
+  }
+
+  if (featureLayer._layers) {
+
+    // only calculate center after all of the polygons have been updated
+    if (!featureLayer.pathsUpdated) featureLayer.pathsUpdated = 0;
+    ++featureLayer.pathsUpdated;
+
+    if (featureLayer.pathsUpdated === Object.keys(featureLayer._layers).length) {
+      var l = findLargestLayer(featureLayer._layers);
+
+      if (l) {
+        featureLayer.labelCenterPoint = calculateCenter(l._parts);
+        updateLabel(featureLayer);
+      }
+
+      featureLayer.pathsUpdated = 0;
+    }
+
+    return;
+  }
+
+  // there is only one polygon, so calculate center. also check to see if there are parts
+  if ( featureLayer._parts && featureLayer._parts.length ) {
+    featureLayer.labelCenterPoint = calculateCenter(featureLayer._parts);
+    updateLabel(featureLayer);
+
+    return;
+  }
+
+}
+
+
+var selectedFeatureLayer = null;
+var selectedIcon = null;
+
+function createLabel(featureLayer) {
+  var point = featureLayer.labelCenterPoint;
+
+  var properties = featureLayer.feature.properties;
+  var text = properties.title || properties.name || 'Label';
+  if (properties.labelProperty) {
+    if (typeof properties.labelProperty === 'function') {
+      text = properties.labelProperty(properties);
+    } else {
+      text = properties[properties.labelProperty];
+    }
+
+  }
+
+  console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
+
+  var icon = L.divIcon({
+    className: $.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon',
+    iconSize: [45,45],
+    html: text
+  });
+
+  var label = new Label(point, featureLayer, {icon:icon});
+
+  label.on('mouseover', function(e) {
+    mouseover(this, this.featureLayer);
+  });
+
+  featureLayer.on('mouseover', function (e) {
+    mouseover(this.label, this);
+  });
+
+  function mouseover(label, featureLayer) {
+    if (featureLayer !== selectedFeatureLayer) {
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+      featureLayer.setStyle({
+        color: '#EDB229'  // gold
+      });
+      featureLayer.bringToFront();
+    }
+  }
+
+  label.on('mouseout', function(e) {
+    mouseout(this, this.featureLayer);
+  });
+
+  featureLayer.on('mouseout', function (e) {
+    mouseout(this.label, this);
+  });
+
+  function mouseout(label, featureLayer) {
+    if (featureLayer !== selectedFeatureLayer) {
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+      featureLayer.setStyle({
+        color: properties.color || 'white'
+      });
+      if (selectedFeatureLayer) {
+        selectedFeatureLayer.bringToFront();
+      } else {
+        featureLayer.bringToFront();
+      }
+    }
+  }
+
+  label.on('click', function (e) {
+    click(this, this.featureLayer);
+  });
+
+  featureLayer.on('click', function (e) {
+    click(this.label, this);
+  });
+
+  function click(label, featureLayer) {
+    // TURN OFF
+    if (featureLayer === selectedFeatureLayer) {
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+      featureLayer.setStyle({
+        color: properties.color || 'white'
+      });
+      featureLayer.bringToFront();
+      selectedFeatureLayer = null;
+      if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
+        properties.onDeselect(featureLayer);
+      }
+    }
+
+    // TURN ON
+    else {
+      if (selectedFeatureLayer) {
+        selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+        selectedFeatureLayer.setStyle({
+          color: properties.color || 'white'
+        });
+        selectedFeatureLayer.bringToFront();
+        selectedFeatureLayer = null;
+      }
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+      // red cross red #ed1b2e
+      featureLayer.setStyle({
+        color: '#d9534f' // red
+      });
+      featureLayer.bringToFront();
+      selectedFeatureLayer = featureLayer;
+      selectedIcon = label._icon;
+      if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
+        properties.onSelect(featureLayer);
+      }
+    }
+  }
+
+  /**
+   * Fixes the double label bug.
+   */
+  featureLayer.geojsonLayer.addLayer(label);
+
+  /**
+   * Ideally we want to be adding labels to the actual layer they are on
+   * rather than the parent GeoJSON layer.
+   */
+//    if (!featureLayer.addLayer) {
+//      featureLayer.geojsonLayer.addLayer(label);
+//    } else {
+//      featureLayer.addLayer(label);
+//    }
+
+  featurelabel.labels[featureLayer.feature.properties.guid] = label;
+}
+
+
+function updateLabel(featureLayer) {
+  if ( ! featureLayer.label ) {
+    createLabel(featureLayer);
+  } else {
+    featureLayer.label.update(featureLayer.labelCenterPoint);
+  }
+}
+
+
+function calculateCenter(parts) {
+
+  var part = findLargestPart(parts);
+  var center = centroid(part);
+
+  return center.round();
+}
+
+
+//  http://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
+
+function area(partArr) {
+  var area = 0;
+  var len = partArr.length;
+  for (var i = 0, j = len - 1; i < len; j=i, i++) {
+    var p1 = partArr[j];
+    var p2 = partArr[i];
+
+    area += p1.x * p2.y - p2.x * p1.y;
+  }
+
+  return area / 2;
+}
+
+function centroid(partArr) {
+  var len = partArr.length;
+  var x = 0;
+  var y = 0;
+  for (var i = 0, j = len - 1; i < len; j=i, i++) {
+    var p1 = partArr[j];
+    var p2 = partArr[i];
+    var f = p1.x * p2.y - p2.x * p1.y;
+    x += (p1.x + p2.x) * f;
+    y += (p1.y + p2.y) * f;
+  }
+  f = area(partArr) * 6;
+  return L.point(x/f, y/f);
+
+}
+
+
+function findLargestLayer(layers) {
+  var largestLayer = null;
+  var maxArea = 0;
+
+  for (var id in layers) {
+    var l = layers[id];
+    var parts = l._parts;
+    var a = 0;
+    if (!parts) {
+      continue;
+    }
+    for (var i = 0, len = parts.length; i < len; ++i) {
+      a += area(parts[i]);
+    }
+    if (a > maxArea) {
+      maxArea = a;
+      largestLayer = l;
+    }
+  }
+
+  return largestLayer;
+}
+
+function findLargestPart(parts) {
+  var largestPart = parts[0];
+  var maxArea = 0;
+
+  for (var i = 0, len = parts.length; i < len; ++i) {
+    var p = parts[i];
+    var a = area(p);
+    if ( a > maxArea ) {
+      largestPart = p;
+      maxArea = a;
+    }
+  }
+  return largestPart;
+}
+
+},{"./Label.js":2,"./featurelabel":3}],2:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 4/7/14.
+ *
+ *       Based on L.Marker from v0.7.2
+ */
+
+
+module.exports = L.Label = L.Class.extend({
+
+  includes: L.Mixin.Events,
+
+  options: {
+    icon: new L.Icon.Default(),
+    title: '',
+    alt: '',
+    clickable: true,
+    draggable: false,
+    keyboard: true,
+    zIndexOffset: 0,
+    opacity: 1,
+    riseOnHover: false,
+    riseOffset: 250
+  },
+
+  initialize: function (point, featureLayer, options) {
+    L.setOptions(this, options);
+//    this._latlng = L.latLng(latlng);
+    this._point = point;
+    if (featureLayer){
+      this.featureLayer = featureLayer;
+      featureLayer.label = this;
+    }
+    this.isLabel = true;
+  },
+
+  onAdd: function (map) {
+    this._map = map;
+
+    map.on('viewreset', this.update, this);
+
+    this._initIcon();
+    this.update();
+    this.fire('add');
+
+    if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
+      map.on('zoomanim', this._animateZoom, this);
+    }
+  },
+
+  addTo: function (map) {
+    map.addLayer(this);
+    return this;
+  },
+
+  onRemove: function (map) {
+    if (this.dragging) {
+      this.dragging.disable();
+    }
+
+    this._removeIcon();
+    this._removeShadow();
+
+    this.fire('remove');
+
+    map.off({
+      'viewreset': this.update,
+      'zoomanim': this._animateZoom
+    }, this);
+
+    this._map = null;
+  },
+
+//  getLatLng: function () {
+//    return this._latlng;
+//  },
+//
+//  setLatLng: function (latlng) {
+//    this._latlng = L.latLng(latlng);
+//
+//    this.update();
+//
+//    return this.fire('move', { latlng: this._latlng });
+//  },
+
+
+
+  setZIndexOffset: function (offset) {
+    this.options.zIndexOffset = offset;
+    this.update();
+
+    return this;
+  },
+
+  setIcon: function (icon) {
+
+    this.options.icon = icon;
+
+    if (this._map) {
+      this._initIcon();
+      this.update();
+    }
+
+    if (this._popup) {
+      this.bindPopup(this._popup);
+    }
+
+    return this;
+  },
+
+  update: function (point) {
+    if (point) {
+      this._point = point;
+    }
+    if (this._icon) {
+//      var pos = this._map.latLngToLayerPoint(this._latlng).round();
+      this._setPos(this._point);
+    }
+
+    return this;
+  },
+
+  _initIcon: function () {
+    var options = this.options,
+      map = this._map,
+      animation = (map.options.zoomAnimation && map.options.markerZoomAnimation),
+      classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide';
+
+    var icon = options.icon.createIcon(this._icon),
+      addIcon = false;
+
+    // if we're not reusing the icon, remove the old one and init new one
+    if (icon !== this._icon) {
+      if (this._icon) {
+        this._removeIcon();
+      }
+      addIcon = true;
+
+      if (options.title) {
+        icon.title = options.title;
+      }
+
+      if (options.alt) {
+        icon.alt = options.alt;
+      }
+    }
+
+    L.DomUtil.addClass(icon, classToAdd);
+
+    if (options.keyboard) {
+      icon.tabIndex = '0';
+    }
+
+    this._icon = icon;
+
+    this._initInteraction();
+
+    if (options.riseOnHover) {
+      L.DomEvent
+        .on(icon, 'mouseover', this._bringToFront, this)
+        .on(icon, 'mouseout', this._resetZIndex, this);
+    }
+
+    var newShadow = options.icon.createShadow(this._shadow),
+      addShadow = false;
+
+    if (newShadow !== this._shadow) {
+      this._removeShadow();
+      addShadow = true;
+    }
+
+    if (newShadow) {
+      L.DomUtil.addClass(newShadow, classToAdd);
+    }
+    this._shadow = newShadow;
+
+
+    if (options.opacity < 1) {
+      this._updateOpacity();
+    }
+
+
+    var panes = this._map._panes;
+
+    if (addIcon) {
+      panes.markerPane.appendChild(this._icon);
+    }
+
+    if (newShadow && addShadow) {
+      panes.shadowPane.appendChild(this._shadow);
+    }
+  },
+
+  _removeIcon: function () {
+    if (this.options.riseOnHover) {
+      L.DomEvent
+        .off(this._icon, 'mouseover', this._bringToFront)
+        .off(this._icon, 'mouseout', this._resetZIndex);
+    }
+
+    this._map._panes.markerPane.removeChild(this._icon);
+
+    this._icon = null;
+  },
+
+  _removeShadow: function () {
+    if (this._shadow) {
+      this._map._panes.shadowPane.removeChild(this._shadow);
+    }
+    this._shadow = null;
+  },
+
+  _setPos: function (pos) {
+    L.DomUtil.setPosition(this._icon, pos);
+
+    if (this._shadow) {
+      L.DomUtil.setPosition(this._shadow, pos);
+    }
+
+    this._zIndex = pos.y + this.options.zIndexOffset;
+
+    this._resetZIndex();
+  },
+
+  _updateZIndex: function (offset) {
+    this._icon.style.zIndex = this._zIndex + offset;
+  },
+
+  _animateZoom: function (opt) {
+//    var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
+//
+//    this._setPos(pos);
+  },
+
+  _initInteraction: function () {
+
+    if (!this.options.clickable) { return; }
+
+    // TODO refactor into something shared with Map/Path/etc. to DRY it up
+
+    var icon = this._icon,
+      events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu'];
+
+    L.DomUtil.addClass(icon, 'leaflet-clickable');
+    L.DomEvent.on(icon, 'click', this._onMouseClick, this);
+    L.DomEvent.on(icon, 'keypress', this._onKeyPress, this);
+
+    for (var i = 0; i < events.length; i++) {
+      L.DomEvent.on(icon, events[i], this._fireMouseEvent, this);
+    }
+
+    if (L.Handler.MarkerDrag) {
+      this.dragging = new L.Handler.MarkerDrag(this);
+
+      if (this.options.draggable) {
+        this.dragging.enable();
+      }
+    }
+  },
+
+  _onMouseClick: function (e) {
+    var wasDragged = this.dragging && this.dragging.moved();
+
+    if (this.hasEventListeners(e.type) || wasDragged) {
+      L.DomEvent.stopPropagation(e);
+    }
+
+    if (wasDragged) { return; }
+
+    if ((!this.dragging || !this.dragging._enabled) && this._map.dragging && this._map.dragging.moved()) { return; }
+
+    this.fire(e.type, {
+      originalEvent: e,
+//      latlng: this._latlng
+      point: this._point
+    });
+  },
+
+  _onKeyPress: function (e) {
+    if (e.keyCode === 13) {
+      this.fire('click', {
+        originalEvent: e,
+//        latlng: this._latlng
+        point: this._point
+      });
+    }
+  },
+
+  _fireMouseEvent: function (e) {
+
+    this.fire(e.type, {
+      originalEvent: e,
+//      latlng: this._latlng
+      point: this._point
+    });
+
+    // TODO proper custom event propagation
+    // this line will always be called if marker is in a FeatureGroup
+    if (e.type === 'contextmenu' && this.hasEventListeners(e.type)) {
+      L.DomEvent.preventDefault(e);
+    }
+    if (e.type !== 'mousedown') {
+      L.DomEvent.stopPropagation(e);
+    } else {
+      L.DomEvent.preventDefault(e);
+    }
+  },
+
+  setOpacity: function (opacity) {
+    this.options.opacity = opacity;
+    if (this._map) {
+      this._updateOpacity();
+    }
+
+    return this;
+  },
+
+  _updateOpacity: function () {
+    L.DomUtil.setOpacity(this._icon, this.options.opacity);
+    if (this._shadow) {
+      L.DomUtil.setOpacity(this._shadow, this.options.opacity);
+    }
+  },
+
+  _bringToFront: function () {
+    this._updateZIndex(this.options.riseOffset);
+  },
+
+  _resetZIndex: function () {
+    this._updateZIndex(0);
+  }
+});
+
+},{}],3:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 4/7/14.
+ */
+
+var featureSets = [];
+
+module.exports = {
+  featureSets: featureSets,
+  pathUpdated: function(leafletId) {
+    for(var i= 0, len=featureSets.length; i<len; ++i) {
+      featureSets[i]._pathUpdated(leafletId);
+    }
+  },
+  labels: {}
+};
+
+require('./leaflet-patch');
+
+},{"./leaflet-patch":4}],4:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 5/7/14.
+ *
+ * This is a patch that overrides the L.Polyline class in Leaflet 0.7.2
+ *
+ * All this is doing is broadcasting the leaflet id for the path that is being redrawn.
+ */
+
+var featurelabel = require('./featurelabel');
+
+module.exports = L.Polyline.prototype._updatePath = function () {
+  if (!this._map) { return; }
+
+  this._clipPoints();
+  this._simplifyPoints();
+
+  L.Path.prototype._updatePath.call(this);
+
+  if (featurelabel) {
+    featurelabel.pathUpdated(this._leaflet_id);
+  }
+};
+
+},{"./featurelabel":3}],5:[function(require,module,exports){
+/**
  * This is the entry point of the application. We declare the main module here and then configure the main router
  * that creates corresponding views. The array parameter for module declares this module's dependencies.
  */
@@ -215,7 +910,7 @@ require('./controllers/search');
 require('./controllers/export');
 
 
-},{"./controllers/basemaps":2,"./controllers/breadcrumbs":3,"./controllers/details":4,"./controllers/export":5,"./controllers/filters":6,"./controllers/info":7,"./controllers/landing":8,"./controllers/layers":9,"./controllers/legend":10,"./controllers/main":11,"./controllers/map":12,"./controllers/navbar":13,"./controllers/search":14,"./controllers/side-view":15,"./controllers/stories":16,"./controllers/theme":17,"./controllers/upload":18,"./controllers/zoom-extent":19,"./services/Donuts":20,"./services/LayerConfig":21,"./services/Vector/VectorProvider":22}],2:[function(require,module,exports){
+},{"./controllers/basemaps":6,"./controllers/breadcrumbs":7,"./controllers/details":8,"./controllers/export":9,"./controllers/filters":10,"./controllers/info":11,"./controllers/landing":12,"./controllers/layers":13,"./controllers/legend":14,"./controllers/main":15,"./controllers/map":16,"./controllers/navbar":17,"./controllers/search":18,"./controllers/side-view":19,"./controllers/stories":20,"./controllers/theme":21,"./controllers/upload":22,"./controllers/zoom-extent":23,"./services/Donuts":24,"./services/LayerConfig":25,"./services/Vector/VectorProvider":26}],6:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 3/28/14.
@@ -257,7 +952,7 @@ module.exports = angular.module('GeoAngular').controller('BasemapsCtrl', functio
   };
 
 });
-},{}],3:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 4/17/14.
@@ -358,7 +1053,7 @@ module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', func
 
 });
 
-},{}],4:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 4/9/14.
@@ -633,7 +1328,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
 });
 
-},{}],5:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Created by Ryan Whitley
  *       on 6/4/14.
@@ -914,7 +1609,7 @@ module.exports = angular.module('GeoAngular').controller('ExportCtrl', function(
     self._init();
 });
 
-},{}],6:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/27/14.
@@ -1131,7 +1826,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
 });
 
-},{}],7:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/27/14.
@@ -1140,7 +1835,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 module.exports = angular.module('GeoAngular').controller('InfoCtrl', function($scope) {
   $scope.params = $stateParams;
 });
-},{}],8:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = angular.module('GeoAngular').controller('LandingCtrl', function($scope, $rootScope, $stateParams) {
   console.log('LandingCtrl');
   $scope.params = $stateParams;
@@ -1149,7 +1844,7 @@ module.exports = angular.module('GeoAngular').controller('LandingCtrl', function
 
 });
 
-},{}],9:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/27/14.
@@ -1308,7 +2003,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
 });
 
-},{}],10:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/27/14.
@@ -1336,7 +2031,7 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
   });
 
 });
-},{}],11:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = angular.module('GeoAngular').controller('MainCtrl', function($scope, $rootScope, $state, $stateParams, $location) {
   debug.$location = $location;
   localStorage.setItem('defaultRoute', $location.path());
@@ -1360,7 +2055,7 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
 
 });
 
-},{}],12:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *     on Mon Mar 17 2014
@@ -1620,13 +2315,13 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   $scope.drawOverlays = drawOverlays;
 
 });
-},{}],13:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = angular.module('GeoAngular').controller('NavBarCtrl', function($scope, $state, $stateParams) {
   $scope.params = $stateParams;
 
 });
 
-},{}],14:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 5/21/14.
@@ -1703,7 +2398,7 @@ module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', funct
     };
 });
 
-},{}],15:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *        and Ryan Whitley      <rwhitley@spatialdev.com>
@@ -1725,7 +2420,7 @@ module.exports = angular.module('GeoAngular').controller('SideViewCtrl', functio
 
 });
 
-},{}],16:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/26/14.
@@ -1735,7 +2430,7 @@ module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function
   $scope.params = $stateParams;
 
 });
-},{}],17:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 5/6/14.
@@ -1812,7 +2507,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
    */
 
 });
-},{}],18:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 4/17/14.
@@ -1918,7 +2613,7 @@ module.exports = angular.module('GeoAngular').controller('UploadCtrl', function(
 
 });
 
-},{}],19:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *        and Ryan Whitley      <rwhitley@spatialdev.com>
@@ -1962,7 +2657,7 @@ module.exports = angular.module('GeoAngular').controller('ZoomExtentCtrl', funct
 
 });
 
-},{}],20:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *   and Rich Gwozdz <rgwozdz@spatialdev.com>
@@ -2269,7 +2964,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
 
 });
 
-},{}],21:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/18/14.
@@ -2671,7 +3366,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
 
 });
 
-},{}],22:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/19/14.
@@ -2867,12 +3562,13 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
 });
 
 
-},{"./bboxgeojson":23,"./csv":24,"./geojson":25,"./kml":26,"./resource":27,"./vector":28}],23:[function(require,module,exports){
+},{"./bboxgeojson":27,"./csv":28,"./geojson":29,"./kml":30,"./resource":31,"./vector":32}],27:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
  */
 
+var FeatureSet = require('../../../lib/featurelabel/FeatureSet');
 var Resource = require('./resource');
 var bboxUrl = require('./vector').bboxUrl;
 var bboxResources = require('./vector').bboxResources;
@@ -2893,7 +3589,7 @@ function BBoxGeoJSON(config) {
   this._features = {};
   this._featureLayersByLevel = {};
   this._allFeatureLayers = {};
-  this._featureLabels = new L.spatialdev.featurelabel.FeatureSet();
+  this._featureLabels = new FeatureSet();
   this._defaultTheme = config.defaultTheme || 'project';
 
   if (config.detailsUrl) {
@@ -2921,17 +3617,17 @@ BBoxGeoJSON.prototype._getFeatures = function (featObj) {
 
   // a cache makes sense if the bboxgeojson object is reinstantiated
   $http.get(url, {cache: true}).success(function (geojson, status) {
-    BBoxGeoJSON_processFeatures(self, featObj, geojson);
+    processFeatures(self, featObj, geojson);
   }).error(function(err) {
     $http.get(proxyPath).success(function (geojson, status) {
-      BBoxGeoJSON_processFeatures(self, featObj, geojson);
+      processFeatures(self, featObj, geojson);
     }).error(function (err) {
       console.error('Unable to getFeatures: ' + url);
     });
   });
 };
 
-function BBoxGeoJSON_processFeatures(self, featObj, geojson) {
+function processFeatures(self, featObj, geojson) {
   if (geojson.error) {
     console.error('Unable to fetch feature: ' + geojson.error);
     return;
@@ -2980,7 +3676,7 @@ function BBoxGeoJSON_processFeatures(self, featObj, geojson) {
     options.onEachFeature(featObj, featLayer);
   }
 
-  BBoxGeoJSON_addLayer(self, featLayer);
+  addLayer(self, featLayer);
 }
 
 
@@ -2991,7 +3687,7 @@ function BBoxGeoJSON_processFeatures(self, featObj, geojson) {
  * @param self
  * @param featLayer
  */
-function BBoxGeoJSON_addLayer(self, featLayer) {
+function addLayer(self, featLayer) {
 
   self._featureLabels.addFeature(featLayer, self._geojsonLayer);
   self._geojsonLayer.addLayer(featLayer);
@@ -3026,13 +3722,13 @@ BBoxGeoJSON.prototype.processFeatureItinerary = function (featItinerary) {
       // if we already have a layer and it is not on the map but should be there, add it to the geojson layer
       var l = self._allFeatureLayers[guid];
       if (l) {
-        BBoxGeoJSON_addLayer(self, l);
+        addLayer(self, l);
       }
 
     }
   }
   self._removeInactiveLayers(self);
-  BBoxGeoJSON_removeInactiveLabels(self);
+  removeInactiveLabels(self);
 };
 
 
@@ -3066,19 +3762,15 @@ BBoxGeoJSON.prototype.fetchFeatureDetails = function(featureLayer) {
 
 };
 
-// TODO: I don't like this way of doing things... (works though)
 BBoxGeoJSON.prototype.closeDetails = function () {
   $rootScope.closeParam('details-panel');
 };
 
 
-function BBoxGeoJSON_removeInactiveLabels(self) {
+function removeInactiveLabels(self) {
   var allFeatureLayers = self._allFeatureLayers;
   var featureItinerary = self._featItineraryHash;
   for (var key in allFeatureLayers) {
-    if (key == '5ba17a19-4a92-40bd-9dfe-46aa0ecdec7b') {
-      console.log('kenya');
-    }
     if (!featureItinerary[key]) {
       var featureLayer = allFeatureLayers[key];
       if ( featureLayer.geojsonLayer && featureLayer.label) {
@@ -3120,7 +3812,7 @@ BBoxGeoJSON.prototype._removeInactiveLayers = function(self) {
   }
 };
 
-},{"./resource":27,"./vector":28}],24:[function(require,module,exports){
+},{"../../../lib/featurelabel/FeatureSet":1,"./resource":31,"./vector":32}],28:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 6/3/14.
@@ -3424,7 +4116,7 @@ CSV.prototype.Base64 = {
 
 };
 
-},{"./resource":27,"./vector":28}],25:[function(require,module,exports){
+},{"./resource":31,"./vector":32}],29:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -3488,7 +4180,7 @@ GeoJSON.prototype.getLayer = function() {
   return layer;
 };
 
-},{"./resource":27,"./vector":28}],26:[function(require,module,exports){
+},{"./resource":31,"./vector":32}],30:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -3556,7 +4248,7 @@ KML.prototype.eachLayer = function (cb) {
   });
 };
 
-},{"./resource":27,"./vector":28}],27:[function(require,module,exports){
+},{"./resource":31,"./vector":32}],31:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -3646,7 +4338,7 @@ Resource.prototype.eachLayer = function (cb) {
   this._geojsonLayer.eachLayer(cb);
 };
 
-},{"./vector":28}],28:[function(require,module,exports){
+},{"./vector":32}],32:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -3698,4 +4390,4 @@ var centerLevel = vector.centerLevel = 0;
 
 
 
-},{}]},{},[1])
+},{}]},{},[5])

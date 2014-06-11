@@ -3,314 +3,312 @@
  *       on 4/7/14.
  */
 
-(function () {
-  'use strict';
+var featurelabel = require('./featurelabel');
+var featureSets = featurelabel.featureSets;
+var Label = require('./Label.js');
 
-  L.spatialdev.featurelabel.FeatureSet = function () {
-    this.features = [];
-    this._pathIdHash = {};
-    L.spatialdev.featurelabel.featureSets.push(this);
-  };
+function FeatureSet() {
+  this.features = [];
+  this._pathIdHash = {};
+  featureSets.push(this);
+}
+module.exports = FeatureSet;
 
-  L.spatialdev.featurelabel.FeatureSet.prototype.addFeature = function (featureLayer, geojsonLayer) {
-    featureLayer.geojsonLayer = geojsonLayer;
-    if (!featureLayer._leaflet_id) {
-      L.stamp(featureLayer);
-    }
-    this.features.push(featureLayer);
+FeatureSet.prototype.addFeature = function (featureLayer, geojsonLayer) {
+  featureLayer.geojsonLayer = geojsonLayer;
+  if (!featureLayer._leaflet_id) {
+    L.stamp(featureLayer);
+  }
+  this.features.push(featureLayer);
 
-    // feature consists of one polygon
-    if (!featureLayer._layers) {
-      var leafletId = featureLayer._leaflet_id;
+  // feature consists of one polygon
+  if (!featureLayer._layers) {
+    var leafletId = featureLayer._leaflet_id;
+    this._pathIdHash[leafletId] = featureLayer;
+  }
+
+  // feature consists of several polygons
+  else {
+    for (var id in featureLayer._layers) {
+      var pathLayer = featureLayer._layers[id];
+      var leafletId = pathLayer._leaflet_id;
       this._pathIdHash[leafletId] = featureLayer;
     }
+  }
 
-    // feature consists of several polygons
-    else {
-      for (var id in featureLayer._layers) {
-        var pathLayer = featureLayer._layers[id];
-        var leafletId = pathLayer._leaflet_id;
-        this._pathIdHash[leafletId] = featureLayer;
+  pathUpdated(featureLayer);
+};
+
+FeatureSet.prototype._pathUpdated = function (leafletId) {
+  var featureLayer = this._pathIdHash[leafletId];
+  // the hash doesn't always catch the id if the graphic has not yet been rendered.
+  if (!featureLayer) {
+    var features = this.features;
+    for (var key in features) {
+      var feat = this.features[key];
+      if (feat._leaflet_id === leafletId) {
+        featureLayer = feat;
+        break;
       }
     }
+  }
+  pathUpdated(featureLayer);
+};
 
-    pathUpdated(featureLayer);
-  };
+function pathUpdated(featureLayer) {
+  // If the id doesnt hash, no path for the features in our feature set apply.
+  if (!featureLayer) {
+    //console.error('pathUpdated featureLayer empty');
+    return;
+  }
 
-  L.spatialdev.featurelabel.FeatureSet.prototype._pathUpdated = function (leafletId) {
-    var featureLayer = this._pathIdHash[leafletId];
-    // the hash doesn't always catch the id if the graphic has not yet been rendered.
-    if (!featureLayer) {
-      var features = this.features;
-      for (var key in features) {
-        var feat = this.features[key];
-        if (feat._leaflet_id === leafletId) {
-          featureLayer = feat;
-          break;
-        }
-      }
-    }
-    pathUpdated(featureLayer);
-  };
+  if (featureLayer._layers) {
 
-  function pathUpdated(featureLayer) {
-    // If the id doesnt hash, no path for the features in our feature set apply.
-    if (!featureLayer) {
-      //console.error('pathUpdated featureLayer empty');
-      return;
-    }
+    // only calculate center after all of the polygons have been updated
+    if (!featureLayer.pathsUpdated) featureLayer.pathsUpdated = 0;
+    ++featureLayer.pathsUpdated;
 
-    if (featureLayer._layers) {
+    if (featureLayer.pathsUpdated === Object.keys(featureLayer._layers).length) {
+      var l = findLargestLayer(featureLayer._layers);
 
-      // only calculate center after all of the polygons have been updated
-      if (!featureLayer.pathsUpdated) featureLayer.pathsUpdated = 0;
-      ++featureLayer.pathsUpdated;
-
-      if (featureLayer.pathsUpdated === Object.keys(featureLayer._layers).length) {
-        var l = findLargestLayer(featureLayer._layers);
-
-        if (l) {
-          featureLayer.labelCenterPoint = calculateCenter(l._parts);
-          updateLabel(featureLayer);
-        }
-
-        featureLayer.pathsUpdated = 0;
+      if (l) {
+        featureLayer.labelCenterPoint = calculateCenter(l._parts);
+        updateLabel(featureLayer);
       }
 
-      return;
+      featureLayer.pathsUpdated = 0;
     }
 
-    // there is only one polygon, so calculate center. also check to see if there are parts
-    if ( featureLayer._parts && featureLayer._parts.length ) {
-      featureLayer.labelCenterPoint = calculateCenter(featureLayer._parts);
-      updateLabel(featureLayer);
+    return;
+  }
 
-      return;
+  // there is only one polygon, so calculate center. also check to see if there are parts
+  if ( featureLayer._parts && featureLayer._parts.length ) {
+    featureLayer.labelCenterPoint = calculateCenter(featureLayer._parts);
+    updateLabel(featureLayer);
+
+    return;
+  }
+
+}
+
+
+var selectedFeatureLayer = null;
+var selectedIcon = null;
+
+function createLabel(featureLayer) {
+  var point = featureLayer.labelCenterPoint;
+
+  var properties = featureLayer.feature.properties;
+  var text = properties.title || properties.name || 'Label';
+  if (properties.labelProperty) {
+    if (typeof properties.labelProperty === 'function') {
+      text = properties.labelProperty(properties);
+    } else {
+      text = properties[properties.labelProperty];
     }
-
-//    // no paths for the feature are on the screen anymore
-//    if ( featureLayer.geojsonLayer && featureLayer.label) {
-//      console.log("REMOVING: " + featureLayer.feature.properties.name);
-//      featureLayer.geojsonLayer.removeLayer(featureLayer.label);
-//      featureLayer.label = null;
-//      return;
-//    }
-//
-//    if ( featureLayer.geojsonLayer && featureLayer.geojsonLayer.label) {
-//      console.log("REMOVING: " + featureLayer.feature.properties.name);
-//      featureLayer.geojsonLayer.removeLayer(featureLayer.geojsonLayer.label);
-//      featureLayer.geojsonLayer.label = null;
-//    }
-
 
   }
 
+  console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
 
-  var selectedFeatureLayer = null;
-  var selectedIcon = null;
+  var icon = L.divIcon({
+    className: $.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon',
+    iconSize: [45,45],
+    html: text
+  });
 
-  function createLabel(featureLayer) {
-    var point = featureLayer.labelCenterPoint;
+  var label = new Label(point, featureLayer, {icon:icon});
 
-    var properties = featureLayer.feature.properties;
-    var text = properties.title || properties.name || 'Label';
-    if (properties.labelProperty) {
-      if (typeof properties.labelProperty === 'function') {
-        text = properties.labelProperty(properties);
+  label.on('mouseover', function(e) {
+    mouseover(this, this.featureLayer);
+  });
+
+  featureLayer.on('mouseover', function (e) {
+    mouseover(this.label, this);
+  });
+
+  function mouseover(label, featureLayer) {
+    if (featureLayer !== selectedFeatureLayer) {
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+      featureLayer.setStyle({
+        color: '#EDB229'  // gold
+      });
+      featureLayer.bringToFront();
+    }
+  }
+
+  label.on('mouseout', function(e) {
+    mouseout(this, this.featureLayer);
+  });
+
+  featureLayer.on('mouseout', function (e) {
+    mouseout(this.label, this);
+  });
+
+  function mouseout(label, featureLayer) {
+    if (featureLayer !== selectedFeatureLayer) {
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+      featureLayer.setStyle({
+        color: properties.color || 'white'
+      });
+      if (selectedFeatureLayer) {
+        selectedFeatureLayer.bringToFront();
       } else {
-        text = properties[properties.labelProperty];
+        featureLayer.bringToFront();
       }
+    }
+  }
 
+  label.on('click', function (e) {
+    click(this, this.featureLayer);
+  });
+
+  featureLayer.on('click', function (e) {
+    click(this.label, this);
+  });
+
+  function click(label, featureLayer) {
+    // TURN OFF
+    if (featureLayer === selectedFeatureLayer) {
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+      featureLayer.setStyle({
+        color: properties.color || 'white'
+      });
+      featureLayer.bringToFront();
+      selectedFeatureLayer = null;
+      if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
+        properties.onDeselect(featureLayer);
+      }
     }
 
-    console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
-
-    var icon = L.divIcon({
-      className: $.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon',
-      iconSize: [45,45],
-      html: text
-    });
-
-    var label = L.label(point, {icon:icon});
-    label.featureLayer = featureLayer;
-
-    label.on('mouseover', function(e) {
-      // self is the label
-      var self = this;
-      if (self.featureLayer !== selectedFeatureLayer) {
-        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
-        // yellow EAED6B
-        self.featureLayer.setStyle({
-          color: '#EDB229'
-        });
-        self.featureLayer.bringToFront();
-      }
-    });
-
-    label.on('mouseout', function(e) {
-      // self is the label
-      var self = this;
-      if (self.featureLayer !== selectedFeatureLayer) {
-        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-        self.featureLayer.setStyle({
+    // TURN ON
+    else {
+      if (selectedFeatureLayer) {
+        selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+        selectedFeatureLayer.setStyle({
           color: properties.color || 'white'
         });
-        if (selectedFeatureLayer) {
-          selectedFeatureLayer.bringToFront();
-        } else {
-          self.featureLayer.bringToFront();
-        }
-      }
-    });
-
-    label.on('click', function (e) {
-      // self is the label
-      var self = this;
-
-      // TURN OFF
-      if (self.featureLayer === selectedFeatureLayer) {
-        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-        self.featureLayer.setStyle({
-          color: properties.color || 'white'
-        });
-        featureLayer.bringToFront();
+        selectedFeatureLayer.bringToFront();
         selectedFeatureLayer = null;
-        if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
-          properties.onDeselect(self.featureLayer);
-        }
       }
-
-      // TURN ON
-      else {
-        if (selectedFeatureLayer) {
-          selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-          selectedFeatureLayer.setStyle({
-            color: properties.color || 'white'
-          });
-          selectedFeatureLayer.bringToFront();
-          selectedFeatureLayer = null;
-        }
-        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
-        // red cross red #ed1b2e
-        self.featureLayer.setStyle({
-          color: '#d9534f' // red
-        });
-        self.featureLayer.bringToFront();
-        selectedFeatureLayer = self.featureLayer;
-        selectedIcon = self._icon;
-        if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
-          properties.onSelect(self.featureLayer);
-        }
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+      // red cross red #ed1b2e
+      featureLayer.setStyle({
+        color: '#d9534f' // red
+      });
+      featureLayer.bringToFront();
+      selectedFeatureLayer = featureLayer;
+      selectedIcon = label._icon;
+      if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
+        properties.onSelect(featureLayer);
       }
+    }
+  }
 
-    });
+  /**
+   * Fixes the double label bug.
+   */
+  featureLayer.geojsonLayer.addLayer(label);
 
-    /**
-     * Fixes the double label bug.
-     */
-    featureLayer.geojsonLayer.addLayer(label);
-
-    /**
-     * Ideally we want to be adding labels to the actual layer they are on
-     * rather than the parent GeoJSON layer.
-     */
+  /**
+   * Ideally we want to be adding labels to the actual layer they are on
+   * rather than the parent GeoJSON layer.
+   */
 //    if (!featureLayer.addLayer) {
 //      featureLayer.geojsonLayer.addLayer(label);
 //    } else {
 //      featureLayer.addLayer(label);
 //    }
 
-    L.spatialdev.featurelabel.labels[featureLayer.feature.properties.guid] = label;
-    return label;
+  featurelabel.labels[featureLayer.feature.properties.guid] = label;
+}
+
+
+function updateLabel(featureLayer) {
+  if ( ! featureLayer.label ) {
+    createLabel(featureLayer);
+  } else {
+    featureLayer.label.update(featureLayer.labelCenterPoint);
   }
+}
 
 
-  function updateLabel(featureLayer) {
-    if ( ! featureLayer.label ) {
-      featureLayer.label = createLabel(featureLayer);
-    } else {
-      featureLayer.label.update(featureLayer.labelCenterPoint);
-    }
-  }
+function calculateCenter(parts) {
 
+  var part = findLargestPart(parts);
+  var center = centroid(part);
 
-  function calculateCenter(parts) {
-
-    var part = findLargestPart(parts);
-    var center = centroid(part);
-
-    return center.round();
-  }
+  return center.round();
+}
 
 
 //  http://en.wikipedia.org/wiki/Centroid#Centroid_of_polygon
 
-  function area(partArr) {
-    var area = 0;
-    var len = partArr.length;
-    for (var i = 0, j = len - 1; i < len; j=i, i++) {
-      var p1 = partArr[j];
-      var p2 = partArr[i];
+function area(partArr) {
+  var area = 0;
+  var len = partArr.length;
+  for (var i = 0, j = len - 1; i < len; j=i, i++) {
+    var p1 = partArr[j];
+    var p2 = partArr[i];
 
-      area += p1.x * p2.y - p2.x * p1.y;
-    }
-
-    return area / 2;
+    area += p1.x * p2.y - p2.x * p1.y;
   }
 
-  function centroid(partArr) {
-    var len = partArr.length;
-    var x = 0;
-    var y = 0;
-    for (var i = 0, j = len - 1; i < len; j=i, i++) {
-      var p1 = partArr[j];
-      var p2 = partArr[i];
-      var f = p1.x * p2.y - p2.x * p1.y;
-      x += (p1.x + p2.x) * f;
-      y += (p1.y + p2.y) * f;
-    }
-    f = area(partArr) * 6;
-    return L.point(x/f, y/f);
+  return area / 2;
+}
 
+function centroid(partArr) {
+  var len = partArr.length;
+  var x = 0;
+  var y = 0;
+  for (var i = 0, j = len - 1; i < len; j=i, i++) {
+    var p1 = partArr[j];
+    var p2 = partArr[i];
+    var f = p1.x * p2.y - p2.x * p1.y;
+    x += (p1.x + p2.x) * f;
+    y += (p1.y + p2.y) * f;
   }
+  f = area(partArr) * 6;
+  return L.point(x/f, y/f);
+
+}
 
 
-  function findLargestLayer(layers) {
-    var largestLayer = null;
-    var maxArea = 0;
+function findLargestLayer(layers) {
+  var largestLayer = null;
+  var maxArea = 0;
 
-    for (var id in layers) {
-      var l = layers[id];
-      var parts = l._parts;
-      var a = 0;
-      if (!parts) {
-        continue;
-      }
-      for (var i = 0, len = parts.length; i < len; ++i) {
-        a += area(parts[i]);
-      }
-      if (a > maxArea) {
-        maxArea = a;
-        largestLayer = l;
-      }
+  for (var id in layers) {
+    var l = layers[id];
+    var parts = l._parts;
+    var a = 0;
+    if (!parts) {
+      continue;
     }
-
-    return largestLayer;
-  }
-
-  function findLargestPart(parts) {
-    var largestPart = parts[0];
-    var maxArea = 0;
-
     for (var i = 0, len = parts.length; i < len; ++i) {
-      var p = parts[i];
-      var a = area(p);
-      if ( a > maxArea ) {
-        largestPart = p;
-        maxArea = a;
-      }
+      a += area(parts[i]);
     }
-    return largestPart;
+    if (a > maxArea) {
+      maxArea = a;
+      largestLayer = l;
+    }
   }
 
-}());
+  return largestLayer;
+}
+
+function findLargestPart(parts) {
+  var largestPart = parts[0];
+  var maxArea = 0;
+
+  for (var i = 0, len = parts.length; i < len; ++i) {
+    var p = parts[i];
+    var a = area(p);
+    if ( a > maxArea ) {
+      largestPart = p;
+      maxArea = a;
+    }
+  }
+  return largestPart;
+}
