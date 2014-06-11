@@ -19,8 +19,8 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   var overlayNames = [];
 
   function redraw() {
-    var lat = parseFloat($stateParams.lat)   || -65;
-    var lng = parseFloat($stateParams.lng)   || -150;
+    var lat = parseFloat($stateParams.lat)   || 0;
+    var lng = parseFloat($stateParams.lng)   || 0;
     var zoom = parseFloat($stateParams.zoom) || 18;
     layersStr = $stateParams.layers || LayerConfig.redcross.url;
     var layers = layersStr.split(',');
