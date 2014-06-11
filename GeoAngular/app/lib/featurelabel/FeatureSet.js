@@ -119,52 +119,64 @@
     var label = L.label(point, featureLayer, {icon:icon});
 
     label.on('mouseover', function(e) {
-      var label = this;
-      if (label.featureLayer !== selectedFeatureLayer) {
-        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
-        label.featureLayer.setStyle({
-          color: '#EDB229'  // gold
-        });
-        label.featureLayer.bringToFront();
-      }
+      mouseover(this, this.featureLayer);
     });
 
     featureLayer.on('mouseover', function (e) {
-      console.log('mouseover featurelayer');
+      mouseover(this.label, this);
     });
 
+    function mouseover(label, featureLayer) {
+      if (featureLayer !== selectedFeatureLayer) {
+        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+        featureLayer.setStyle({
+          color: '#EDB229'  // gold
+        });
+        featureLayer.bringToFront();
+      }
+    }
+
     label.on('mouseout', function(e) {
-      var label = this;
-      if (label.featureLayer !== selectedFeatureLayer) {
+      mouseout(this, this.featureLayer);
+    });
+
+    featureLayer.on('mouseout', function (e) {
+      mouseout(this.label, this);
+    });
+
+    function mouseout(label, featureLayer) {
+      if (featureLayer !== selectedFeatureLayer) {
         label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-        label.featureLayer.setStyle({
+        featureLayer.setStyle({
           color: properties.color || 'white'
         });
         if (selectedFeatureLayer) {
           selectedFeatureLayer.bringToFront();
         } else {
-          label.featureLayer.bringToFront();
+          featureLayer.bringToFront();
         }
       }
-    });
-
-    featureLayer.on('mouseout', function (e) {
-      console.log('mouseout featurelayer');
-    });
+    }
 
     label.on('click', function (e) {
-      var label = this;
+      click(this, this.featureLayer);
+    });
 
+    featureLayer.on('click', function (e) {
+      click(this.label, this);
+    });
+
+    function click(label, featureLayer) {
       // TURN OFF
-      if (label.featureLayer === selectedFeatureLayer) {
+      if (featureLayer === selectedFeatureLayer) {
         label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-        label.featureLayer.setStyle({
+        featureLayer.setStyle({
           color: properties.color || 'white'
         });
         featureLayer.bringToFront();
         selectedFeatureLayer = null;
         if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
-          properties.onDeselect(label.featureLayer);
+          properties.onDeselect(featureLayer);
         }
       }
 
@@ -180,23 +192,17 @@
         }
         label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
         // red cross red #ed1b2e
-        label.featureLayer.setStyle({
+        featureLayer.setStyle({
           color: '#d9534f' // red
         });
-        label.featureLayer.bringToFront();
-        selectedFeatureLayer = label.featureLayer;
+        featureLayer.bringToFront();
+        selectedFeatureLayer = featureLayer;
         selectedIcon = label._icon;
         if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
-          properties.onSelect(label.featureLayer);
+          properties.onSelect(featureLayer);
         }
       }
-
-    });
-
-    featureLayer.on('click', function (e) {
-      console.log('click featurelayer');
-    });
-
+    }
 
     /**
      * Fixes the double label bug.
