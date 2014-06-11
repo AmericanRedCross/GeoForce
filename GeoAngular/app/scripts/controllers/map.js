@@ -9,7 +9,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   $scope.params = $stateParams;
 
   var lastLayersStr = '';
-	var title = $scope.title = $stateParams.title || 'World';
   $scope.blur = '';
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
 
@@ -26,10 +25,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   var overlayNames = [];
 
   function redraw() {
-    $scope.title = $stateParams.title || 'World';
-    var lat = parseFloat($stateParams.lat)   || 0;
-    var lng = parseFloat($stateParams.lng)   || 0;
-    var zoom = parseFloat($stateParams.zoom) || 2;
+    var lat = parseFloat($stateParams.lat)   || -65;
+    var lng = parseFloat($stateParams.lng)   || -150;
+    var zoom = parseFloat($stateParams.zoom) || 18;
     layersStr = $stateParams.layers || LayerConfig.redcross.url;
     var layers = layersStr.split(',');
 
@@ -83,7 +81,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     } else if (   $stateParams.lat    !== lat
         || $stateParams.lng    !== lng
         || $stateParams.zoom   !== zoom
-        || $stateParams.title  !== title
         || $stateParams.layers !== layersStr ) {
 
       console.log('map.js route-update Updating Map...');
@@ -208,10 +205,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       }
     });
 
-//    map.on('zoomend', function() {
-//      broadcastBBox();
-//    });
-
     //Connect the layout onresize end event
     try {
         window.layout.panes.center.bind("layoutpaneonresize_end", function () {
@@ -225,10 +218,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   var overlays = [];
 
-  /**
-   * NH TODO: Be smart with inserting new layers instead of redrawing
-   *          everything...
-   */
   function drawOverlays() {
     leafletData.getMap().then(function (map) {
 
