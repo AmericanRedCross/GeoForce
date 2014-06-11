@@ -3,7 +3,8 @@
  *       on 4/7/14.
  */
 
-var featureSets = require('./featurelabel').featureSets;
+var featurelabel = require('./featurelabel');
+var featureSets = featurelabel.featureSets;
 var Label = require('./Label.js');
 
 function FeatureSet() {
@@ -220,7 +221,7 @@ function createLabel(featureLayer) {
 //      featureLayer.addLayer(label);
 //    }
 
-  L.spatialdev.featurelabel.labels[featureLayer.feature.properties.guid] = label;
+  featurelabel.labels[featureLayer.feature.properties.guid] = label;
 }
 
 
