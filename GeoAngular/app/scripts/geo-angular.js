@@ -1324,18 +1324,16 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
     $scope.layers = [];
     for (var i = layers.length - 1; i >= 1; i--){
       var l = layers[i];
+      var layer = {};
       var lcfg = LayerConfig.find(l);
 
-      var name = lcfg.name;
+      layer.alias = l;
+      layer.name = lcfg.name;
       if (!name && lcfg.properties && lcfg.properties.title) {
-        name = lcfg.properties.title;
-      } else if (!name) {
-        name = l;
+        layer.name = lcfg.properties.title;
+      } else if (!layer.name) {
+        layer.name = l;
       }
-
-      var layer = {
-        name: name
-      };
 
       $scope.layers.push(layer);
     }

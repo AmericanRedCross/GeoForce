@@ -555,7 +555,7 @@
                             <div class="row scrollable">
                                 <ul class="list-group legend-list">
                                     <li class="list-group-item" ng-repeat="layer in layers">
-                                        <div class="btn btn-danger featurelabel-icon-number" style="width: 50px; height: 50px;">12</div>
+                                        <div ng-if="layer.alias === 'themecount'" class="featurelabel-icon-number" style="width: 45px; height: 45px; box-shadow: rgba(255, 255, 255, 0.701961) 0px 0px 0px 6px;">28</div>
                                         {{layer.name}}
                                     </li>
                                 </ul>
