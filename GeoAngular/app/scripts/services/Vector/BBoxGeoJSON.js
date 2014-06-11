@@ -205,9 +205,6 @@ function removeInactiveLabels(self) {
   var allFeatureLayers = self._allFeatureLayers;
   var featureItinerary = self._featItineraryHash;
   for (var key in allFeatureLayers) {
-    if (key == '5ba17a19-4a92-40bd-9dfe-46aa0ecdec7b') {
-      console.log('kenya');
-    }
     if (!featureItinerary[key]) {
       var featureLayer = allFeatureLayers[key];
       if ( featureLayer.geojsonLayer && featureLayer.label) {
