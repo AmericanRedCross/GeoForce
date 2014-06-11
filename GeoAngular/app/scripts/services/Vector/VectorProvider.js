@@ -65,11 +65,9 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
       var feat = featItinerary[j];
       if ( feat.iscenter ) {
         vector.centerLevel = feat.level || 0;
-        console.log('CENTER ' + feat.name + ' ' + feat.guid + ' ' + feat.level);
-      } else {
-        console.log(feat.name + ' ' + feat.guid + ' ' + feat.level);
       }
     }
+    console.log(['featItinerary',featItinerary]);
 
     // if there are no features for the current bounding box
     if (!featItinerary || featItinerary.length === 0) {

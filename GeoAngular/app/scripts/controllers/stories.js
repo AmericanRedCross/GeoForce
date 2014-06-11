@@ -4,7 +4,6 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function($scope, $stateParams) {
-  console.log('StoriesCtrl');
   $scope.params = $stateParams;
 
 });

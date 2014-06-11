@@ -222,8 +222,6 @@ require('./controllers/export');
  */
 
 module.exports = angular.module('GeoAngular').controller('BasemapsCtrl', function($scope, $state, $stateParams, LayerConfig) {
-  console.log('BasemapsCtrl');
-
   $scope.basemaps = LayerConfig.basemaps;
 
   $scope.name = function (alias) {
@@ -1140,9 +1138,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
  */
 
 module.exports = angular.module('GeoAngular').controller('InfoCtrl', function($scope) {
-  console.log('InfoCtrl');
   $scope.params = $stateParams;
-
 });
 },{}],8:[function(require,module,exports){
 module.exports = angular.module('GeoAngular').controller('LandingCtrl', function($scope, $rootScope, $stateParams) {
@@ -1498,8 +1494,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
           if(maxx > extremeValue) maxx = extremeValue;
           if(maxy > extremeValue) maxy = extremeValue;
 
-
-            var str = zoom + "," +  minx + ',' +
+          var str = zoom + "," +  minx + ',' +
                                   maxx + ',' +
                                   miny + ',' +
                                   maxy;
@@ -1627,19 +1622,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 });
 },{}],13:[function(require,module,exports){
 module.exports = angular.module('GeoAngular').controller('NavBarCtrl', function($scope, $state, $stateParams) {
-  console.log('NavBarCtrl');
   $scope.params = $stateParams;
-
-
-
-//  $scope.toggleState = function(stateName) {
-//    var state = $state.current.name !== stateName ? stateName : 'main';
-//    $state.go(state, $stateParams);
-//    $scope['is'+stateName[0].toUpperCase()+stateName.slice(1)+'Active'] = false;
-//  };
-
-
-
 
 });
 
@@ -1650,7 +1633,6 @@ module.exports = angular.module('GeoAngular').controller('NavBarCtrl', function(
  */
 
 module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', function($scope, $rootScope, $stateParams, $http) {
-  console.log('SearchECOSCtrl');
   $scope.params = $stateParams;
 
   var url = config.chubbsPath('services/custom/custom_operation?name=doecostextsearch&format=json&text=:text');
@@ -1717,7 +1699,6 @@ module.exports = angular.module('GeoAngular').controller('SideViewCtrl', functio
  */
 
 module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function($scope, $stateParams) {
-  console.log('StoriesCtrl');
   $scope.params = $stateParams;
 
 });
@@ -1912,7 +1893,6 @@ module.exports = angular.module('GeoAngular').controller('UploadCtrl', function(
  */
 
 module.exports = angular.module('GeoAngular').controller('ZoomExtentCtrl', function($scope, $rootScope, $stateParams, VectorProvider) {
-  console.log('ZoomExtentCtrl');
   $scope.params = $stateParams;
 
   //Initialize the country selector menu by loading the json file and writing out the names into the panel
@@ -2719,11 +2699,9 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
       var feat = featItinerary[j];
       if ( feat.iscenter ) {
         vector.centerLevel = feat.level || 0;
-        console.log('CENTER ' + feat.name + ' ' + feat.guid + ' ' + feat.level);
-      } else {
-        console.log(feat.name + ' ' + feat.guid + ' ' + feat.level);
       }
     }
+    console.log(['featItinerary',featItinerary]);
 
     // if there are no features for the current bounding box
     if (!featItinerary || featItinerary.length === 0) {

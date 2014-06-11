@@ -131,8 +131,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
           if(maxx > extremeValue) maxx = extremeValue;
           if(maxy > extremeValue) maxy = extremeValue;
 
-
-            var str = zoom + "," +  minx + ',' +
+          var str = zoom + "," +  minx + ',' +
                                   maxx + ',' +
                                   miny + ',' +
                                   maxy;
