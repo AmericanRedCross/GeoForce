@@ -661,6 +661,7 @@
 
                     <!-- Region / Country Selector Panel -->
                     <div ng-controller="ZoomExtentCtrl" id="CountrySelectorPanelWrapper" ng-class="{on: isParam('zoom-extent')}">
+                        <button ng-click="closeParam('zoom-extent')" type="button" class="close" aria-hidden="true">&times;</button>
                         <div id="RegionArea">
                             <div class="title">Regions:</div>
                             <div class="row content">
