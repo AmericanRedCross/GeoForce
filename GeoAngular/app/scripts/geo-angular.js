@@ -2518,7 +2518,14 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke-opacity": 1,
       "fill": "green",
       "fill-opacity": 0,
-      "labelProperty": "theme_count",
+      "labelProperty": function(properties){
+          if(properties.hasOwnProperty("rfa_count")){
+            return "<span>" + properties.theme_count + "<sub>" + properties.rfa_count + "</sub></span>";
+          }
+          else{
+              return properties.theme_count;
+          }
+      },
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
       "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off

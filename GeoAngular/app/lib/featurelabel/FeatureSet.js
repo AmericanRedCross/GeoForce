@@ -116,7 +116,7 @@
     var text = properties.title || properties.name || 'Label';
     if (properties.labelProperty) {
       if (typeof properties.labelProperty === 'function') {
-        text = properties.labelProperty();
+        text = properties.labelProperty(properties);
       } else {
         text = properties[properties.labelProperty];
       }
