@@ -4,18 +4,11 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider) {
-  console.log('MapCtrl');
-
   $scope.params = $stateParams;
 
   var lastLayersStr = '';
-	var title = $scope.title = $stateParams.title || 'World';
   $scope.blur = '';
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
-
-  //Init activeTheme property
-  $scope.activeTheme = "Projects";
-
 
   $scope.toggleState = function(stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
@@ -26,10 +19,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   var overlayNames = [];
 
   function redraw() {
-    $scope.title = $stateParams.title || 'World';
-    var lat = parseFloat($stateParams.lat)   || 0;
-    var lng = parseFloat($stateParams.lng)   || 0;
-    var zoom = parseFloat($stateParams.zoom) || 2;
+    var lat = parseFloat($stateParams.lat)   || -65;
+    var lng = parseFloat($stateParams.lng)   || -150;
+    var zoom = parseFloat($stateParams.zoom) || 18;
     layersStr = $stateParams.layers || LayerConfig.redcross.url;
     var layers = layersStr.split(',');
 
@@ -83,7 +75,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     } else if (   $stateParams.lat    !== lat
         || $stateParams.lng    !== lng
         || $stateParams.zoom   !== zoom
-        || $stateParams.title  !== title
         || $stateParams.layers !== layersStr ) {
 
       console.log('map.js route-update Updating Map...');
@@ -140,8 +131,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
           if(maxx > extremeValue) maxx = extremeValue;
           if(maxy > extremeValue) maxy = extremeValue;
 
-
-            var str = zoom + "," +  minx + ',' +
+          var str = zoom + "," +  minx + ',' +
                                   maxx + ',' +
                                   miny + ',' +
                                   maxy;
@@ -173,15 +163,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         return tileBounds;
     }
 
-    function areBoundsEqual(a,b, za, zb){
-        if(a.min.x != b.min.x) { return false; }
-        if(a.min.y != b.min.y) { return false; }
-        if(a.max.x != b.max.x) { return false; }
-        if(a.max.y != b.max.y) { return false; }
-        if(za != zb) { return false; }
-        return true;
-    }
-
 
   /**
    * Native Leaflet Map Object
@@ -208,10 +189,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       }
     });
 
-//    map.on('zoomend', function() {
-//      broadcastBBox();
-//    });
-
     //Connect the layout onresize end event
     try {
         window.layout.panes.center.bind("layoutpaneonresize_end", function () {
@@ -225,10 +202,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   var overlays = [];
 
-  /**
-   * NH TODO: Be smart with inserting new layers instead of redrawing
-   *          everything...
-   */
   function drawOverlays() {
     leafletData.getMap().then(function (map) {
 

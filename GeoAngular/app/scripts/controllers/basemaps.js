@@ -4,8 +4,6 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('BasemapsCtrl', function($scope, $state, $stateParams, LayerConfig) {
-  console.log('BasemapsCtrl');
-
   $scope.basemaps = LayerConfig.basemaps;
 
   $scope.name = function (alias) {
