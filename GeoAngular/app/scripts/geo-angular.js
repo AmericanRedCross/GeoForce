@@ -1660,7 +1660,7 @@ module.exports = angular.module('GeoAngular').controller('NavBarCtrl', function(
  *       on 5/21/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', function($scope, $rootScope, $stateParams, $http) {
+module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', function($scope, $rootScope, $stateParams, $http, VectorProvider) {
   console.log('SearchECOSCtrl');
   $scope.params = $stateParams;
 
@@ -1688,15 +1688,47 @@ module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', funct
               return;
           }
 
-          $scope.results = result;
+          //break up the results by type.
+          $scope.projectResults = result.filter(function(item){
+             return item.theme_type == 'Project';
+          });
+
+          $scope.disasterResults = result.filter(function(item){
+              return item.theme_type == 'Disaster';
+          });
 
       });
   }
 
-    $scope.sendProjectToDetailsPanel = function(properties){
+    $scope.handleSearchResultClick = function(properties){
+        //Send to deatils panel
+        sendProjectToDetailsPanel(properties);
+
+        //If we have a guid, then try to zoom to it.
+        if(properties.location__r_gis_geo_id__c){
+            zoomToGUID(properties.location__r_gis_geo_id__c);
+        }
+    };
+
+    function sendProjectToDetailsPanel (properties){
         $rootScope.$broadcast('details', { feature: { properties: properties } });
     }
 
+
+    //this is a duplicate from breadcrumbs.js  Should be refactored to a single function
+    function zoomToGUID (guid) {
+        //Given a GUID, zoom to the feature.
+
+        //Grab the feature from the VectorProvider.
+        VectorProvider.fetchFeature(guid, -2, null, function (feat) {
+            //Make a temp geojson layer and add the geojson.
+            //Then grab the bounds from it and zoom to it.
+
+            var gjl = L.geoJson(feat.geometry);
+            $scope.$parent.zoomToBounds(gjl.getBounds());
+        });
+
+    };
 });
 
 },{}],15:[function(require,module,exports){

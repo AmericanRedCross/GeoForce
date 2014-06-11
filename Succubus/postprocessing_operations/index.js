@@ -13,33 +13,39 @@ module.exports = {};
 
 var operations = {};
 
-function createThemeView(themeName, user) {
-  var str =
-"CREATE OR REPLACE VIEW vw_theme_"+themeName+"_gadm AS \
-  SELECT  text_search.name, \
-          text_search.level, \
-          text_search.country, \
-          text_search.geom, \
-          text_search.fullname, \
+
+
+function createProjectView(user) {
+    var str =
+        "CREATE OR REPLACE VIEW vw_theme_project_gadm AS \
+  SELECT  text_search.level, \
           text_search.stack_guid::character varying as guid, \
-          count(text_search.id) as theme_count \
-  FROM sf_"+themeName+" a \
-  JOIN text_search ON text_search.stack_guid::character varying::text = a.location__r_gis_geo_id__c \
-  GROUP BY text_search.name, \
-          text_search.level, \
-          text_search.country, \
-          text_search.geom, \
-          text_search.fullname, \
-          text_search.stack_guid; \
-  ALTER TABLE vw_theme_"+themeName+"_gadm \
+          a.*\
+  FROM sf_project AS a \
+  JOIN text_search ON text_search.stack_guid::character varying::text = a.location__r_gis_geo_id__c; \
+  ALTER TABLE vw_theme_project_gadm \
   OWNER TO "+user+";";
 
-  return str;
+    return str;
+}
+
+function createDisasterView(user) {
+    var str =
+        "CREATE OR REPLACE VIEW vw_theme_disaster_gadm AS \
+          SELECT text_search.level, \
+          text_search.stack_guid::character varying as guid, \
+          dis.* FROM sf_disaster_location AS loc \
+          LEFT JOIN sf_disaster as dis ON loc.disaster__r_id = dis.sf_id \
+          JOIN text_search ON text_search.stack_guid::character varying::text = loc.location__r_gis_geo_id__c; \
+          ALTER TABLE vw_theme_disaster_gadm \
+          OWNER TO "+user+";";
+
+    return str;
 }
 
 //Drop/Create Theme Views used by the client app
-operations.createProjectThemeView = createThemeView('project', pg.user);
-operations.createDisasterThemeView = createThemeView('disaster_location', pg.user);
+operations.createProjectThemeView = createProjectView(pg.user);
+operations.createDisasterThemeView = createDisasterView(pg.user);
 
 //Create the aggregated project counts by all gaul levels, with counts rolled up to parents
 operations.createAggregateProjectCountsForGADM =

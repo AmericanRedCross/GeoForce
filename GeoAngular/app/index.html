@@ -687,8 +687,13 @@
                             <span class="input-group-addon">ECOS Search</span>
                             <input type="text" class="form-control" placeholder="Enter search term" ng-model="SearchInput">
                         </div>
-                        <div id="searchResults" >
-                            <div ng-repeat="row in results" class="resultItem" ng-click="sendProjectToDetailsPanel(row)">{{row.name}}</div>
+                        <div id="searchResults">
+                            <div class="searchResult Header" ng-show="projectResults">Project Results ({{projectResults.length}})</div>
+                            <div ng-repeat="row in projectResults" class="resultItem" ng-click="handleSearchResultClick(row)">{{row.name}}</div>
+
+                            <div class="searchResult Header" ng-show="disasterResults">Disaster Results ({{disasterResults.length}})</div>
+                            <div ng-repeat="row in disasterResults" class="resultItem" ng-click="handleSearchResultClick(row)">{{row.name}}</div>
+
                         </div>
                     </div>
 

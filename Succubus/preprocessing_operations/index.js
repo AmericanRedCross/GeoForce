@@ -28,6 +28,7 @@ function dropView(viewName) {
 
 //Drop Theme Views used by the client app
 operations.dropProjectThemeView = dropThemeView('project');
+operations.dropDisasterThemeView = dropThemeView('disaster');
 operations.dropDisasterLocationThemeView = dropThemeView('disaster_location');
 operations.dropDisastersView = dropView('vw_sf_disaster');
 
