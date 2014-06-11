@@ -67,7 +67,7 @@
       ++featureLayer.pathsUpdated;
 
       if (featureLayer.pathsUpdated === Object.keys(featureLayer._layers).length) {
-        var l = findMostComplexLayer(featureLayer._layers);
+        var l = findLargestLayer(featureLayer._layers);
 
         if (l) {
           featureLayer.labelCenterPoint = calculateCenter(l._parts);
@@ -236,7 +236,7 @@
 
   function calculateCenter(parts) {
 
-    var part = findMostComplexPart(parts);
+    var part = findLargestPart(parts);
     var center = centroid(part);
 
     return center.round();
@@ -274,47 +274,43 @@
 
   }
 
-  /**
-   * NH TODO: Calculate the layer with the most area rather than the most paths.
-   * @param layers
-   * @returns {*}
-   */
-  function findMostComplexLayer(layers) {
-    var complexLayer = null;
-    var numPoints = 0;
+
+  function findLargestLayer(layers) {
+    var largestLayer = null;
+    var maxArea = 0;
 
     for (var id in layers) {
       var l = layers[id];
       var parts = l._parts;
-      var pointsLen = 0;
+      var a = 0;
       if (!parts) {
         continue;
       }
       for (var i = 0, len = parts.length; i < len; ++i) {
-        pointsLen += parts[i].length;
+        a += area(parts[i]);
       }
-      if (pointsLen > numPoints) {
-        numPoints = pointsLen;
-        complexLayer = l;
+      if (a > maxArea) {
+        maxArea = a;
+        largestLayer = l;
       }
     }
 
-    return complexLayer;
+    return largestLayer;
   }
 
-  function findMostComplexPart(parts) {
-    var complexPart = parts[0];
-    var maxLen = 0;
+  function findLargestPart(parts) {
+    var largestPart = parts[0];
+    var maxArea = 0;
 
     for (var i = 0, len = parts.length; i < len; ++i) {
-      var length = parts[i].length;
-      if (length > maxLen) {
-        maxLen = length;
-        complexPart = parts[i];
+      var p = parts[i];
+      var a = area(p);
+      if ( a > maxArea ) {
+        largestPart = p;
+        maxArea = a;
       }
     }
-
-    return complexPart;
+    return largestPart;
   }
 
 }());
