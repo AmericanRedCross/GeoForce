@@ -7,7 +7,7 @@
     -ms-transition: all .5s ease; /* This is the animation UP for the country selector wrapper */
     top: -250px;
     padding: 20px 25px;
-    z-index: 1;
+    z-index: 2001;
     width: 500px;
 }
 
@@ -28,4 +28,10 @@
 #searchResults .resultItem{
     padding: 5px;
     cursor:pointer;
+    margin-left: 15px;
+}
+
+#searchResults .searchResult.Header{
+    font-weight: bold;
+    font-size: 16px;
 }

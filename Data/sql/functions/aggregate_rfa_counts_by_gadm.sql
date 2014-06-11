@@ -3,60 +3,54 @@
     WHERE sf_disaster.sf_id = sf_disaster_location.disaster__r_id; \
     DROP TABLE IF EXISTS sf_aggregated_gadm_disaster_counts; \
     \
-        SELECT  0 as countARC,
-            ''::character varying as nameARC,
-            0 as guidARC,
-            null::geometry as geomarc,
-            1 as count0,
-            (SELECT count(id) FROM sf_request_for_assistance rfa WHERE rfa.disaster__r_id = vw_sf_disaster.sf_id) as rfacount0,
-            gadm0.name_0 as name0,
-            gadm0.guid as guid0,
-            gadm0.geom_simplify_med as geom0,
-            1 as count1,
-            (SELECT count(id) FROM sf_request_for_assistance rfa WHERE rfa.disaster__r_id = vw_sf_disaster.sf_id) as rfacount1,
-            gadm1.name_1 as name1, gadm1.guid as guid1,
-            gadm1.geom_simplify_med as geom1,
-            1 as count2,
-            (SELECT count(id) FROM sf_request_for_assistance rfa WHERE rfa.disaster__r_id = vw_sf_disaster.sf_id) as rfacount2,
-            gadm2.name_2 as name2,
-            gadm2.guid as guid2,
-            gadm2.geom_simplify_med as geom2,
-            1 as count3,
-            (SELECT count(id) FROM sf_request_for_assistance rfa WHERE rfa.disaster__r_id = vw_sf_disaster.sf_id) as rfacount3,
-            gadm3.name_3 as name3,
-            gadm3.guid as guid3,
-            gadm3.geom_simplify_med as geom3,
-            1 as count4,
-            (SELECT count(id) FROM sf_request_for_assistance rfa WHERE rfa.disaster__r_id = vw_sf_disaster.sf_id) as rfacount4,
-            gadm4.name_4 as name4,
-            gadm4.guid as guid4,
-            gadm4.geom_simplify_med as geom4,
-            1 as count5,
-            (SELECT count(id) FROM sf_request_for_assistance rfa WHERE rfa.disaster__r_id = vw_sf_disaster.sf_id) as rfacount5,
-            gadm5.name_5 as name5,
-            gadm5.guid as guid5,
-            gadm5.geom_simplify_med as geom5,
-
-            vw_sf_disaster.sf_id
-        INTO    sf_aggregated_gadm_disaster_counts
-        FROM    gadm0, gadm1, gadm2, gadm3, gadm4, gadm5, vw_sf_disaster
-
-        WHERE   gadm0.id_0 = gadm1.id_0
-        AND   gadm2.id_0 = gadm1.id_0
-        AND   gadm3.id_0 = gadm1.id_0
-        AND   gadm4.id_0 = gadm1.id_0
-        AND   gadm5.id_0 = gadm1.id_0
-        AND   gadm1.id_1 = gadm2.id_1
-        AND   gadm3.id_1 = gadm2.id_1
-        AND   gadm4.id_1 = gadm2.id_1
-        AND   gadm5.id_1 = gadm2.id_1
-        AND   gadm2.id_2 = gadm3.id_2
-        AND   gadm4.id_2 = gadm3.id_2
-        AND   gadm5.id_2 = gadm3.id_2
-        AND   gadm3.id_3 = gadm4.id_3
-        AND   gadm5.id_3 = gadm4.id_3
-        AND   gadm4.id_4 = gadm5.id_4
-        AND   gadm5.guid::text = vw_sf_disaster.location__r_gis_geo_id__c;
+    SELECT  0 as countARC, \
+        ''::character varying as nameARC, \
+        0 as guidARC, \
+        null::geometry as geomarc, \
+        1 as count0, \
+        gadm0.name_0 as name0, \
+        gadm0.guid as guid0, \
+        gadm0.geom_simplify_med as geom0, \
+        1 as count1, \
+        gadm1.name_1 as name1, gadm1.guid as guid1, \
+        gadm1.geom_simplify_med as geom1, \
+        1 as count2, \
+        gadm2.name_2 as name2, \
+        gadm2.guid as guid2, \
+        gadm2.geom_simplify_med as geom2, \
+        1 as count3, \
+        gadm3.name_3 as name3, \
+        gadm3.guid as guid3, \
+        gadm3.geom_simplify_med as geom3, \
+        1 as count4, \
+        gadm4.name_4 as name4, \
+        gadm4.guid as guid4, \
+        gadm4.geom_simplify_med as geom4, \
+        1 as count5, \
+        gadm5.name_5 as name5, \
+        gadm5.guid as guid5, \
+        gadm5.geom_simplify_med as geom5, \
+\
+        vw_sf_disaster.sf_id \
+    INTO    sf_aggregated_gadm_disaster_counts \
+    FROM    gadm0, gadm1, gadm2, gadm3, gadm4, gadm5, vw_sf_disaster \
+     \
+    WHERE   gadm0.id_0 = gadm1.id_0 \
+    AND   gadm2.id_0 = gadm1.id_0 \
+    AND   gadm3.id_0 = gadm1.id_0 \
+    AND   gadm4.id_0 = gadm1.id_0 \
+    AND   gadm5.id_0 = gadm1.id_0 \
+    AND   gadm1.id_1 = gadm2.id_1 \
+    AND   gadm3.id_1 = gadm2.id_1 \
+    AND   gadm4.id_1 = gadm2.id_1 \
+    AND   gadm5.id_1 = gadm2.id_1 \
+    AND   gadm2.id_2 = gadm3.id_2 \
+    AND   gadm4.id_2 = gadm3.id_2 \
+    AND   gadm5.id_2 = gadm3.id_2 \
+    AND   gadm3.id_3 = gadm4.id_3 \
+    AND   gadm5.id_3 = gadm4.id_3 \
+    AND   gadm4.id_4 = gadm5.id_4 \
+    AND   gadm5.guid::text = vw_sf_disaster.location__r_gis_geo_id__c;  \
       \
       \
     INSERT INTO sf_aggregated_gadm_disaster_counts  \
@@ -89,7 +83,6 @@
               gadm4.guid as guid4,
               gadm4.geom_simplify_med as geom4,
               0 as count5,
-              0 as rfacount5,
               '' as name5,
               null as guid5,
               null::geometry as geom5,
@@ -136,12 +129,10 @@
               gadm3.guid as guid3,
               gadm3.geom_simplify_med as geom3,
               0 as count4,
-              0 as rfacount4,
               '' as name4,
               null as guid4,
               null::geometry as geom4,
               0 as count5,
-              0 as rfacount5,
               '' as name5,
               null as guid5,
               null::geometry as geom5,
@@ -179,17 +170,14 @@
               gadm2.guid as guid2,
               gadm2.geom_simplify_med as geom2,
               0 as count3,
-              0 as rfacount3,
               '' as name3,
               null as guid3,
               null::geometry as geom3,
               0 as count4,
-              0 as rfacount4,
               '' as name4,
               null as guid4,
               null::geometry as geom4,
               0 as count5,
-              0 as rfacount5,
               '' as name5,
               null as guid5,
               null::geometry as geom5,
@@ -220,22 +208,18 @@
               gadm1.guid,
               gadm1.geom_simplify_med as geom1,
               0 as count2,
-              0 as rfacount2,
               '' as name2,
               null as guid2,
               null::geometry as geom2,
               0 as count3,
-              0 as rfacount3,
               '' as name3,
               null as guid3,
               null::geometry as geom3,
               0 as count4,
-              0 as rfacount4,
               '' as name4,
               null as guid4,
               null::geometry as geom4,
               0 as count5,
-              0 as rfacount5,
               '' as name5,
               null as guid5,
               null::geometry as geom5,
@@ -258,27 +242,22 @@
         gadm0.guid, \
         gadm0.geom_simplify_med as geom0, \
         0 as count1, \
-        0 as rfacount1,
         '' as name1, \
         null as guid1, \
         null::geometry as geom1, \
         0 as count2, \
-        0 as rfacount2,
         '' as name2, \
         null as guid2, \
         null::geometry as geom2, \
         0 as count3, \
-        0 as rfacount3,
         '' as name3, \
         null as guid3, \
         null::geometry as geom3, \
         0 as count4, \
-        0 as rfacount4,
         '' as name4, \
         null as guid4, \
         null::geometry as geom4, \
         0 as count5, \
-        0 as rfacount5,
         '' as name5, \
         null as guid5, \
         null::geometry as geom5, \

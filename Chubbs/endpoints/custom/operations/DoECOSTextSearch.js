@@ -16,25 +16,25 @@ operation.inputs["text"] = {}; //search text
 operation.Queries = []; //Query will be built dynamically below
 
 operation.ProjectSearchFields = ["sector__c", "status__c", "stage_name__c", "sub_sector__c", "name", "summary__c", "sf_id"]; //List columns from sf_project thru which to search
-operation.DisasterSearchFields = []; //List columns from sf_disaster thru which to search
+operation.DisasterSearchFields = ["name", "disaster_type__c", "summary__c", "unique_disaster_id__c", "sf_id", "category__c"]; //List columns from sf_disaster thru which to search
 
 function getSQLQueries (){
-    operation.Queries.push({ type: 'project', query: buildQueryClause(operation.ProjectSearchFields, 'sf_project')});
-    operation.Queries.push({ type: 'disaster', query: buildQueryClause(operation.DisasterSearchFields, 'sf_disaster')});
+    operation.Queries.push({ type: 'project', query: buildQueryClause(operation.ProjectSearchFields, 'vw_theme_project_gadm', 'sf_project')});
+    operation.Queries.push({ type: 'disaster', query: buildQueryClause(operation.DisasterSearchFields, 'vw_theme_disaster_gadm', 'vw_theme_disaster_gadm')});
 }
 
-function buildQueryClause(searchFields, tableName){
+function buildQueryClause(searchFields, tableName, tableAlias){
     //Loop thru Search Field Array and build SQL query
     var sql = "";
     if(searchFields && searchFields.length > 0) {
-        sql += "SELECT * from " + tableName + " WHERE ";
+        sql += "SELECT * from " + tableName + " AS " + tableAlias + " WHERE ";
         sql += searchFields.join(" ILIKE '%{{text}}%' OR ");
-        sql += "= '{{text}}';";
+        sql += " ILIKE '%{{text}}%';";
     }
-    if(tableName == 'sf_project'){
-       sql = sql.replace(" * ", " " + settings.projectDetails.join(" ,") + " "); //Replace * with whitelist
-    }else if(tableName == 'sf_disaster'){
-        sql = sql.replace(" * ", " " + settings.disasterDetails.join(" ,") + " "); //Replace * with whitelist
+    if(tableName == 'vw_theme_project_gadm'){
+       sql = sql.replace(" * ", " 'Project' as theme_type, " + settings.projectDetails.join(" ,") + " "); //Replace * with whitelist
+    }else if(tableName == 'vw_theme_disaster_gadm'){
+        sql = sql.replace(" * ", " 'Disaster' as theme_type, " + settings.disasterDetails.join(" ,") + " "); //Replace * with whitelist
     }
     return sql;
 }

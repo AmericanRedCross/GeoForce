@@ -56,7 +56,7 @@ html, body {
     position: absolute;
     top: 0;
     right: 0;
-    z-index: 2000;
+    z-index: 2002;
     min-width: 865px;
 }
 

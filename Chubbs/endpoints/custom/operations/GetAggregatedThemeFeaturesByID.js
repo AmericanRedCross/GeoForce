@@ -15,7 +15,7 @@ operation.inputs["theme"] = ""; //string - theme name
 operation.inputs["gadm_level"] = ""; //string - gadm_level (0 -5)
 operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
-operation.Query = "SELECT sum(count{{gadm_level}}) as theme_count, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
+operation.Query = "SELECT sum(count{{gadm_level}}) as theme_count, {{rfacount}}, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
 
 operation.execute = flow.define(
     function (args, callback) {
@@ -43,7 +43,14 @@ operation.execute = flow.define(
               var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g,'%').replace(/%27/g,"'");
               filters = " AND (" + inputFilters + ")";
             }
-			      query = {
+            if(operation.inputs["theme"] && operation.inputs["theme"].toLowerCase() == 'disaster'){
+                //If a disaster, include RFA counts from rollup table
+                operation.Query = operation.Query.replace("{{rfacount}},", "count(rfacount{{gadm_level}}) as rfa_count,");
+            }else{
+                //No RFA counts.
+                operation.Query = operation.Query.replace("{{rfacount}},", "");
+            }
+			query = {
               text: operation.Query.split('{{gadm_level}}').join(operation.inputs["gadm_level"]).replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)).replace("{{filters}}", filters)
             };
             common.executePgQuery(query, this);//Flow to next function when done.
