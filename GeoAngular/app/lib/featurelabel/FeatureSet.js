@@ -67,7 +67,7 @@
       ++featureLayer.pathsUpdated;
 
       if (featureLayer.pathsUpdated === Object.keys(featureLayer._layers).length) {
-        var l = findMostComplexLayer(featureLayer._layers);
+        var l = findLargestLayer(featureLayer._layers);
 
         if (l) {
           featureLayer.labelCenterPoint = calculateCenter(l._parts);
@@ -107,6 +107,7 @@
 
 
   var selectedFeatureLayer = null;
+  var selectedIcon = null;
 
   function createLabel(featureLayer) {
     var point = featureLayer.labelCenterPoint;
@@ -125,8 +126,8 @@
     console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
 
     var icon = L.divIcon({
-      className: $.isNumeric(text) ? 'btn btn-danger featurelabel-icon-number' : 'featurelabel-icon',
-      iconSize: [60,60],
+      className: $.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon',
+      iconSize: [45,45],
       html: text
     });
 
@@ -137,9 +138,10 @@
       // self is the label
       var self = this;
       if (self.featureLayer !== selectedFeatureLayer) {
+        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
         // yellow EAED6B
         self.featureLayer.setStyle({
-          color: '#EAED6B'
+          color: '#EDB229'
         });
         self.featureLayer.bringToFront();
       }
@@ -149,6 +151,7 @@
       // self is the label
       var self = this;
       if (self.featureLayer !== selectedFeatureLayer) {
+        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
         self.featureLayer.setStyle({
           color: properties.color || 'white'
         });
@@ -166,6 +169,7 @@
 
       // TURN OFF
       if (self.featureLayer === selectedFeatureLayer) {
+        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
         self.featureLayer.setStyle({
           color: properties.color || 'white'
         });
@@ -179,18 +183,21 @@
       // TURN ON
       else {
         if (selectedFeatureLayer) {
+          selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
           selectedFeatureLayer.setStyle({
             color: properties.color || 'white'
           });
           selectedFeatureLayer.bringToFront();
           selectedFeatureLayer = null;
         }
+        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
         // red cross red #ed1b2e
         self.featureLayer.setStyle({
           color: '#d9534f' // red
         });
         self.featureLayer.bringToFront();
         selectedFeatureLayer = self.featureLayer;
+        selectedIcon = self._icon;
         if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
           properties.onSelect(self.featureLayer);
         }
@@ -229,7 +236,7 @@
 
   function calculateCenter(parts) {
 
-    var part = findMostComplexPart(parts);
+    var part = findLargestPart(parts);
     var center = centroid(part);
 
     return center.round();
@@ -267,47 +274,43 @@
 
   }
 
-  /**
-   * NH TODO: Calculate the layer with the most area rather than the most paths.
-   * @param layers
-   * @returns {*}
-   */
-  function findMostComplexLayer(layers) {
-    var complexLayer = null;
-    var numPoints = 0;
+
+  function findLargestLayer(layers) {
+    var largestLayer = null;
+    var maxArea = 0;
 
     for (var id in layers) {
       var l = layers[id];
       var parts = l._parts;
-      var pointsLen = 0;
+      var a = 0;
       if (!parts) {
         continue;
       }
       for (var i = 0, len = parts.length; i < len; ++i) {
-        pointsLen += parts[i].length;
+        a += area(parts[i]);
       }
-      if (pointsLen > numPoints) {
-        numPoints = pointsLen;
-        complexLayer = l;
+      if (a > maxArea) {
+        maxArea = a;
+        largestLayer = l;
       }
     }
 
-    return complexLayer;
+    return largestLayer;
   }
 
-  function findMostComplexPart(parts) {
-    var complexPart = parts[0];
-    var maxLen = 0;
+  function findLargestPart(parts) {
+    var largestPart = parts[0];
+    var maxArea = 0;
 
     for (var i = 0, len = parts.length; i < len; ++i) {
-      var length = parts[i].length;
-      if (length > maxLen) {
-        maxLen = length;
-        complexPart = parts[i];
+      var p = parts[i];
+      var a = area(p);
+      if ( a > maxArea ) {
+        largestPart = p;
+        maxArea = a;
       }
     }
-
-    return complexPart;
+    return largestPart;
   }
 
 }());

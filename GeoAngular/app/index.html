@@ -553,7 +553,12 @@
                                 </div>
                             </div>
                             <div class="row scrollable">
-                                LegendCtrl
+                                <ul class="list-group legend-list">
+                                    <li class="list-group-item" ng-repeat="layer in layers">
+                                        <div ng-if="layer.alias === 'themecount'" class="featurelabel-icon-number" style="width: 45px; height: 45px; box-shadow: rgba(255, 255, 255, 0.701961) 0px 0px 0px 6px;">28</div>
+                                        {{layer.name}}
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <!--End Legend Panel-->

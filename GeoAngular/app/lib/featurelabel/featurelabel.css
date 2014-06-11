@@ -1,15 +1,21 @@
 
 .featurelabel-icon-number {
+    background-color: #ed1b2e;
+    display: inline-block;
+    cursor: pointer;
     color: #ffffff;
     font-size: 20px;
     border-radius: 50%;
     text-align: center;
     vertical-align: middle;
     line-height: 43px;
+    box-shadow: 0px 0px 0px 6px rgba(255,255,255,0.7);
 }
 
 .featurelabel-icon {
+    display: inline-block;
     color: #ffffff;
+    cursor: pointer;
     font-size: 16px;
     text-align: center;
     vertical-align: middle;
