@@ -23,10 +23,11 @@ L.Label = L.Class.extend({
     riseOffset: 250
   },
 
-  initialize: function (point, options) {
+  initialize: function (point, featureLayer, options) {
     L.setOptions(this, options);
 //    this._latlng = L.latLng(latlng);
     this._point = point;
+    this.featureLayer = featureLayer;
     this.isLabel = true;
   },
 
@@ -327,6 +328,6 @@ L.Label = L.Class.extend({
   }
 });
 
-L.label = function (point, options) {
-  return new L.Label(point, options);
+L.label = function (point, featureLayer, options) {
+  return new L.Label(point, featureLayer, options);
 };

@@ -88,21 +88,6 @@
       return;
     }
 
-//    // no paths for the feature are on the screen anymore
-//    if ( featureLayer.geojsonLayer && featureLayer.label) {
-//      console.log("REMOVING: " + featureLayer.feature.properties.name);
-//      featureLayer.geojsonLayer.removeLayer(featureLayer.label);
-//      featureLayer.label = null;
-//      return;
-//    }
-//
-//    if ( featureLayer.geojsonLayer && featureLayer.geojsonLayer.label) {
-//      console.log("REMOVING: " + featureLayer.feature.properties.name);
-//      featureLayer.geojsonLayer.removeLayer(featureLayer.geojsonLayer.label);
-//      featureLayer.geojsonLayer.label = null;
-//    }
-
-
   }
 
 
@@ -131,52 +116,55 @@
       html: text
     });
 
-    var label = L.label(point, {icon:icon});
-    label.featureLayer = featureLayer;
+    var label = L.label(point, featureLayer, {icon:icon});
 
     label.on('mouseover', function(e) {
-      // self is the label
-      var self = this;
-      if (self.featureLayer !== selectedFeatureLayer) {
-        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
-        // yellow EAED6B
-        self.featureLayer.setStyle({
-          color: '#EDB229'
+      var label = this;
+      if (label.featureLayer !== selectedFeatureLayer) {
+        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+        label.featureLayer.setStyle({
+          color: '#EDB229'  // gold
         });
-        self.featureLayer.bringToFront();
+        label.featureLayer.bringToFront();
       }
     });
 
+    featureLayer.on('mouseover', function (e) {
+      console.log('mouseover featurelayer');
+    });
+
     label.on('mouseout', function(e) {
-      // self is the label
-      var self = this;
-      if (self.featureLayer !== selectedFeatureLayer) {
-        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-        self.featureLayer.setStyle({
+      var label = this;
+      if (label.featureLayer !== selectedFeatureLayer) {
+        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+        label.featureLayer.setStyle({
           color: properties.color || 'white'
         });
         if (selectedFeatureLayer) {
           selectedFeatureLayer.bringToFront();
         } else {
-          self.featureLayer.bringToFront();
+          label.featureLayer.bringToFront();
         }
       }
     });
 
+    featureLayer.on('mouseout', function (e) {
+      console.log('mouseout featurelayer');
+    });
+
     label.on('click', function (e) {
-      // self is the label
-      var self = this;
+      var label = this;
 
       // TURN OFF
-      if (self.featureLayer === selectedFeatureLayer) {
-        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-        self.featureLayer.setStyle({
+      if (label.featureLayer === selectedFeatureLayer) {
+        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+        label.featureLayer.setStyle({
           color: properties.color || 'white'
         });
         featureLayer.bringToFront();
         selectedFeatureLayer = null;
         if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
-          properties.onDeselect(self.featureLayer);
+          properties.onDeselect(label.featureLayer);
         }
       }
 
@@ -190,20 +178,25 @@
           selectedFeatureLayer.bringToFront();
           selectedFeatureLayer = null;
         }
-        self._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
         // red cross red #ed1b2e
-        self.featureLayer.setStyle({
+        label.featureLayer.setStyle({
           color: '#d9534f' // red
         });
-        self.featureLayer.bringToFront();
-        selectedFeatureLayer = self.featureLayer;
-        selectedIcon = self._icon;
+        label.featureLayer.bringToFront();
+        selectedFeatureLayer = label.featureLayer;
+        selectedIcon = label._icon;
         if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
-          properties.onSelect(self.featureLayer);
+          properties.onSelect(label.featureLayer);
         }
       }
 
     });
+
+    featureLayer.on('click', function (e) {
+      console.log('click featurelayer');
+    });
+
 
     /**
      * Fixes the double label bug.
