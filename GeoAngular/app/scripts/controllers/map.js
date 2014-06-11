@@ -4,17 +4,11 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider) {
-  console.log('MapCtrl');
-
   $scope.params = $stateParams;
 
   var lastLayersStr = '';
   $scope.blur = '';
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
-
-  //Init activeTheme property
-  $scope.activeTheme = "Projects";
-
 
   $scope.toggleState = function(stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
@@ -168,15 +162,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
             bounds.max.divideBy(tileSize).floor());
 
         return tileBounds;
-    }
-
-    function areBoundsEqual(a,b, za, zb){
-        if(a.min.x != b.min.x) { return false; }
-        if(a.min.y != b.min.y) { return false; }
-        if(a.max.x != b.max.x) { return false; }
-        if(a.max.y != b.max.y) { return false; }
-        if(za != zb) { return false; }
-        return true;
     }
 
 
