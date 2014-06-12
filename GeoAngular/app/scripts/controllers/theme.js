@@ -14,19 +14,16 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   $scope.project = function () {
     $scope.themeName = themeNameHash.project;
     $scope.setThemeQueryParam('project');
-    $scope.$parent.drawOverlays();
   };
 
   $scope.disaster = function () {
     $scope.themeName = themeNameHash.disaster;
     $scope.setThemeQueryParam('disaster');
-    $scope.$parent.drawOverlays();
   };
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
     $scope.setThemeQueryParam();
-    $scope.$parent.drawOverlays();
   };
 
   $scope.setThemeQueryParam = function (theme) {
@@ -55,10 +52,10 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   $scope.unfurlThemes = function(){
     $scope.refurlThemes();
     //Try jQuery to add an 'on' class to each of the theme LI elements on a timer.
-    $($('#ThemeSelectorMenu .dropdown-menu li').get().reverse()).each(function(index){
+    $($('#ThemeMenu li').get().reverse()).each(function(index){
       var self = this;
       setTimeout(function () {
-        $(self).addClass("on");
+        $(self).addClass("theme-selector-li-on");
       }, index*150);
     });
   };
@@ -66,7 +63,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   //Refurl?
   $scope.refurlThemes = function(){
     //Try jQuery to remove the 'on' class to each of the theme LI elements on a timer.
-    $('#ThemeSelectorMenu .dropdown-menu li').removeClass("on");
+    $('#ThemeSelectorMenu .dropdown-menu li').removeClass("theme-selector-li-on");
   };
 
   /*

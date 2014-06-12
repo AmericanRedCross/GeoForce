@@ -17,6 +17,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   var layersStr = null;
   var overlayNames = [];
+  var theme = null;
 
   function redraw() {
     var lat = parseFloat($stateParams.lat)   || 0;
@@ -47,6 +48,11 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       };
     }
 
+    if (theme !== $stateParams.theme) {
+      resetThemeCount();
+      theme = $stateParams.theme;
+    }
+
     $scope.center = {
       lat: lat,
       lng: lng,
@@ -72,10 +78,11 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     var zoom = c.zoom.toString();
     if (mapMoveEnd) {
       mapMoveEnd = false;
-    } else if (   $stateParams.lat    !== lat
-        || $stateParams.lng    !== lng
-        || $stateParams.zoom   !== zoom
-        || $stateParams.layers !== layersStr ) {
+    } else if (  $stateParams.lat    !== lat
+              || $stateParams.lng    !== lng
+              || $stateParams.zoom   !== zoom
+              || $stateParams.layers !== layersStr
+              || $stateParams.theme  !== theme      ) {
 
       console.log('map.js route-update Updating Map...');
       redraw();
@@ -253,7 +260,17 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     });
   }
 
-  // Used by theme to redraw the overlays when the theme is changed.
-  $scope.drawOverlays = drawOverlays;
+  function resetThemeCount() {
+    leafletData.getMap().then(function (map) {
+      for (var j = 0, len = overlayNames.length; j < len; j++) {
+        var nme = overlayNames[j];
+        if (nme === 'themecount') {
+          map.removeLayer(overlays[j]);
+          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
+          newLyr.addTo(map);
+        }
+      }
+    });
+  }
 
 });

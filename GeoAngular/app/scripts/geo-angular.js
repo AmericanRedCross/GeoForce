@@ -2095,6 +2095,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   var layersStr = null;
   var overlayNames = [];
+  var theme = null;
 
   function redraw() {
     var lat = parseFloat($stateParams.lat)   || 0;
@@ -2125,6 +2126,11 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       };
     }
 
+    if (theme !== $stateParams.theme) {
+      resetThemeCount();
+      theme = $stateParams.theme;
+    }
+
     $scope.center = {
       lat: lat,
       lng: lng,
@@ -2150,10 +2156,11 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     var zoom = c.zoom.toString();
     if (mapMoveEnd) {
       mapMoveEnd = false;
-    } else if (   $stateParams.lat    !== lat
-        || $stateParams.lng    !== lng
-        || $stateParams.zoom   !== zoom
-        || $stateParams.layers !== layersStr ) {
+    } else if (  $stateParams.lat    !== lat
+              || $stateParams.lng    !== lng
+              || $stateParams.zoom   !== zoom
+              || $stateParams.layers !== layersStr
+              || $stateParams.theme  !== theme      ) {
 
       console.log('map.js route-update Updating Map...');
       redraw();
@@ -2331,8 +2338,18 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     });
   }
 
-  // Used by theme to redraw the overlays when the theme is changed.
-  $scope.drawOverlays = drawOverlays;
+  function resetThemeCount() {
+    leafletData.getMap().then(function (map) {
+      for (var j = 0, len = overlayNames.length; j < len; j++) {
+        var nme = overlayNames[j];
+        if (nme === 'themecount') {
+          map.removeLayer(overlays[j]);
+          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
+          newLyr.addTo(map);
+        }
+      }
+    });
+  }
 
 });
 },{}],17:[function(require,module,exports){
@@ -2467,19 +2484,16 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   $scope.project = function () {
     $scope.themeName = themeNameHash.project;
     $scope.setThemeQueryParam('project');
-    $scope.$parent.drawOverlays();
   };
 
   $scope.disaster = function () {
     $scope.themeName = themeNameHash.disaster;
     $scope.setThemeQueryParam('disaster');
-    $scope.$parent.drawOverlays();
   };
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
     $scope.setThemeQueryParam();
-    $scope.$parent.drawOverlays();
   };
 
   $scope.setThemeQueryParam = function (theme) {
@@ -2508,10 +2522,10 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   $scope.unfurlThemes = function(){
     $scope.refurlThemes();
     //Try jQuery to add an 'on' class to each of the theme LI elements on a timer.
-    $($('#ThemeSelectorMenu .dropdown-menu li').get().reverse()).each(function(index){
+    $($('#ThemeMenu li').get().reverse()).each(function(index){
       var self = this;
       setTimeout(function () {
-        $(self).addClass("on");
+        $(self).addClass("theme-selector-li-on");
       }, index*150);
     });
   };
@@ -2519,7 +2533,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   //Refurl?
   $scope.refurlThemes = function(){
     //Try jQuery to remove the 'on' class to each of the theme LI elements on a timer.
-    $('#ThemeSelectorMenu .dropdown-menu li').removeClass("on");
+    $('#ThemeSelectorMenu .dropdown-menu li').removeClass("theme-selector-li-on");
   };
 
   /*
@@ -3622,7 +3636,7 @@ function BBoxGeoJSON(config) {
   this._features = {};
   this._featureLayersByLevel = {};
   this._allFeatureLayers = {};
-  this._featureLabels = new FeatureSet();
+  this._featureSet = new FeatureSet();
   this._defaultTheme = config.defaultTheme || 'project';
 
   if (config.detailsUrl) {
@@ -3722,9 +3736,9 @@ function processFeatures(self, featObj, geojson) {
  */
 function addLayer(self, featLayer) {
 
-  self._featureLabels.addFeature(featLayer, self._geojsonLayer);
+  self._featureSet.addFeature(featLayer, self._geojsonLayer);
   self._geojsonLayer.addLayer(featLayer);
-//    self._featureLabels.addFeature(featLayer, self._geojsonLayer);
+//    self._featureSet.addFeature(featLayer, self._geojsonLayer);
 
   var props = featLayer.feature.properties;
   var level = props.level;
