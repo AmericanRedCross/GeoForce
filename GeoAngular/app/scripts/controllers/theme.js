@@ -55,10 +55,10 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   $scope.unfurlThemes = function(){
     $scope.refurlThemes();
     //Try jQuery to add an 'on' class to each of the theme LI elements on a timer.
-    $($('#ThemeSelectorMenu .dropdown-menu li').get().reverse()).each(function(index){
+    $($('#ThemeMenu li').get().reverse()).each(function(index){
       var self = this;
       setTimeout(function () {
-        $(self).addClass("on");
+        $(self).addClass("theme-selector-li-on");
       }, index*150);
     });
   };
@@ -66,7 +66,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   //Refurl?
   $scope.refurlThemes = function(){
     //Try jQuery to remove the 'on' class to each of the theme LI elements on a timer.
-    $('#ThemeSelectorMenu .dropdown-menu li').removeClass("on");
+    $('#ThemeSelectorMenu .dropdown-menu li').removeClass("theme-selector-li-on");
   };
 
   /*

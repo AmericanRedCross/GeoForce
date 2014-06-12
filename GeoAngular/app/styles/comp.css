@@ -144,7 +144,7 @@ html, body {
 }
 
 /* Unfurl Up */
-#ThemeSelectorMenu .dropdown-menu li.on {
+#ThemeSelectorMenu li.theme-selector-li-on {
     -webkit-transform: translateY(0%) rotateX(0deg);
 }
 
