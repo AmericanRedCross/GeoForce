@@ -2099,7 +2099,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   function redraw() {
     var lat = parseFloat($stateParams.lat)   || 0;
     var lng = parseFloat($stateParams.lng)   || 0;
-    var zoom = parseFloat($stateParams.zoom) || 18;
+    var zoom = parseFloat($stateParams.zoom) || 17;
     layersStr = $stateParams.layers || LayerConfig.redcross.url;
     var layers = layersStr.split(',');
 

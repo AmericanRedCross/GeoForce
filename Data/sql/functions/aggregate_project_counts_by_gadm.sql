@@ -41,7 +41,7 @@ SELECT  0 as countARC,
 	sf_project.sf_id
 
 	
---INTO    sf_aggregated_gadm_project_counts
+INTO    sf_aggregated_gadm_project_counts
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, gadm5, sf_project
 
 WHERE   gadm0.id_0 = gadm1.id_0
@@ -344,15 +344,24 @@ WHERE ST_INTERSECTS(a.geom, geom0);
 --GROUP BY a.gid, a.region, a.geom);
 --End Theoretical section
 
-ALTER TABLE sf_aggregated_gadm_projects_counts ADD COLUMN id SERIAL;
-UPDATE sf_aggregated_gadm_projects_counts SET id = DEFAULT;
-ALTER TABLE sf_aggregated_gadm_projects_counts ADD PRIMARY KEY (id);
+ALTER TABLE sf_aggregated_gadm_project_counts ADD COLUMN id SERIAL;
+UPDATE sf_aggregated_gadm_project_counts SET id = DEFAULT;
+ALTER TABLE sf_aggregated_gadm_project_counts ADD PRIMARY KEY (id);
 CREATE INDEX idx_sf_projectcounts_id ON sf_aggregated_gadm_projects_counts USING btree (id);
-UPDATE sf_aggregated_gadm_projects_counts SET geom0 = ST_BUFFER(geom0, 0);
+UPDATE sf_aggregated_gadm_project_counts SET geom0 = ST_BUFFER(geom0, 0);
 
-update sf_aggregated_gadm_projects_counts
+update sf_aggregated_gadm_project_counts
 set nameARC = a.region, countarc = count0, guidarc = a.gid, geomarc = a.geom
 FROM ARC_REGIONS_DISSOLVED a
 WHERE ST_INTERSECTS(a.geom, geom0);
 
-select * from sf_aggregated_gadm_projects_counts;
+--The above geom intersection doesn't work for USA.  It puts United states in the LAC region.
+--so manually assign gadm0 projects to USA red cross region.
+UPDATE sf_aggregated_gadm_project_counts
+set nameARC = 'USA',
+guidarc = 3,
+geomarc = (select geom from ARC_REGIONS_DISSOLVED where gid = 3)
+where name0 = 'United States';
+
+
+select * from sf_aggregated_gadm_project_counts;

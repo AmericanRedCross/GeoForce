@@ -38,7 +38,14 @@ SELECT  0 as countARC,
     gadm5.guid as guid5,
     gadm5.geom_simplify_med as geom5,
 
-    vw_sf_disaster.sf_id 
+    vw_sf_disaster.sf_id,
+    vw_sf_disaster.iroc_status__c,
+    vw_sf_disaster.disaster_type__c,
+    vw_sf_disaster.people_affected__c,
+    vw_sf_disaster.name,
+    vw_sf_disaster.total_arc_contributions__c,
+    vw_sf_disaster.summary
+
 INTO    sf_aggregated_gadm_disaster_counts 
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, gadm5, vw_sf_disaster 
 
@@ -96,8 +103,13 @@ INSERT INTO sf_aggregated_gadm_disaster_counts
     null as guid5, 
     null::geometry as geom5, 
  
- 
-    vw_sf_disaster.sf_id 
+    vw_sf_disaster.sf_id,
+    vw_sf_disaster.iroc_status__c,
+    vw_sf_disaster.disaster_type__c,
+    vw_sf_disaster.people_affected__c,
+    vw_sf_disaster.name,
+    vw_sf_disaster.total_arc_contributions__c,
+    vw_sf_disaster.summary
  
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, vw_sf_disaster 
 WHERE   gadm0.id_0 = gadm1.id_0 
@@ -149,7 +161,13 @@ INSERT INTO sf_aggregated_gadm_disaster_counts
     null as guid5, 
     null::geometry as geom5, 
  
-    vw_sf_disaster.sf_id 
+    vw_sf_disaster.sf_id,
+    vw_sf_disaster.iroc_status__c,
+    vw_sf_disaster.disaster_type__c,
+    vw_sf_disaster.people_affected__c,
+    vw_sf_disaster.name,
+    vw_sf_disaster.total_arc_contributions__c,
+    vw_sf_disaster.summary
  
 FROM    gadm0, gadm1, gadm2, gadm3, vw_sf_disaster 
 WHERE   gadm0.id_0 = gadm1.id_0 
@@ -197,7 +215,13 @@ INSERT INTO sf_aggregated_gadm_disaster_counts
     null as guid5, 
     null::geometry as geom5, 
  
-    vw_sf_disaster.sf_id 
+    vw_sf_disaster.sf_id,
+    vw_sf_disaster.iroc_status__c,
+    vw_sf_disaster.disaster_type__c,
+    vw_sf_disaster.people_affected__c,
+    vw_sf_disaster.name,
+    vw_sf_disaster.total_arc_contributions__c,
+    vw_sf_disaster.summary
  
 FROM  gadm0, gadm1, gadm2, vw_sf_disaster 
 WHERE gadm0.id_0 = gadm1.id_0 
@@ -243,7 +267,13 @@ INSERT INTO sf_aggregated_gadm_disaster_counts
     null as guid5, 
     null::geometry as geom5, 
  
-    vw_sf_disaster.sf_id 
+    vw_sf_disaster.sf_id,
+    vw_sf_disaster.iroc_status__c,
+    vw_sf_disaster.disaster_type__c,
+    vw_sf_disaster.people_affected__c,
+    vw_sf_disaster.name,
+    vw_sf_disaster.total_arc_contributions__c,
+    vw_sf_disaster.summary
  
 FROM  gadm1, gadm0, vw_sf_disaster 
 WHERE gadm0.id_0 = gadm1.id_0 
@@ -286,7 +316,13 @@ null::geometry as geom4,
 null as guid5, 
 null::geometry as geom5, 
 
-vw_sf_disaster.sf_id 
+    vw_sf_disaster.sf_id,
+    vw_sf_disaster.iroc_status__c,
+    vw_sf_disaster.disaster_type__c,
+    vw_sf_disaster.people_affected__c,
+    vw_sf_disaster.name,
+    vw_sf_disaster.total_arc_contributions__c,
+    vw_sf_disaster.summary
 
 FROM gadm0, vw_sf_disaster 
 WHERE gadm0.guid::text = vw_sf_disaster.location__r_gis_geo_id__c 
