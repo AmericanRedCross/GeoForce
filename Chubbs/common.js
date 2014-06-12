@@ -66,14 +66,14 @@ common.respond = function (req, res, args, callback) {
     }
     else {
       //Send back json file
-//      res.writeHead(200, {
-//        'Content-Type': 'application/json'
-//      });
+      res.writeHead(200, {
+        'Content-Type': 'application/json'
+      });
 
-      res.setHeader('Content-Type', 'application/json');
+      //res.setHeader('Content-Type', 'application/json');
+      //this.compress(req, res, JSON.stringify(args.featureCollection, null, indent));
 
-      this.compress(req, res, JSON.stringify(args.featureCollection, null, indent));
-      //res.end(JSON.stringify(args.featureCollection, null, indent));
+      res.end(JSON.stringify(args.featureCollection, null, indent));
     }
   }
   else if (args.format && (args.format.toLowerCase() == "shapefile")) {
