@@ -2095,11 +2095,12 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   var layersStr = null;
   var overlayNames = [];
+  var theme = null;
 
   function redraw() {
     var lat = parseFloat($stateParams.lat)   || 0;
     var lng = parseFloat($stateParams.lng)   || 0;
-    var zoom = parseFloat($stateParams.zoom) || 18;
+    var zoom = parseFloat($stateParams.zoom) || 17;
     layersStr = $stateParams.layers || LayerConfig.redcross.url;
     var layers = layersStr.split(',');
 
@@ -2123,6 +2124,11 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       $scope.tiles = {
         url: basemapUrl
       };
+    }
+
+    if (theme !== $stateParams.theme) {
+      resetThemeCount();
+      theme = $stateParams.theme;
     }
 
     $scope.center = {
@@ -2150,10 +2156,11 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     var zoom = c.zoom.toString();
     if (mapMoveEnd) {
       mapMoveEnd = false;
-    } else if (   $stateParams.lat    !== lat
-        || $stateParams.lng    !== lng
-        || $stateParams.zoom   !== zoom
-        || $stateParams.layers !== layersStr ) {
+    } else if (  $stateParams.lat    !== lat
+              || $stateParams.lng    !== lng
+              || $stateParams.zoom   !== zoom
+              || $stateParams.layers !== layersStr
+              || $stateParams.theme  !== theme      ) {
 
       console.log('map.js route-update Updating Map...');
       redraw();
@@ -2331,8 +2338,18 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     });
   }
 
-  // Used by theme to redraw the overlays when the theme is changed.
-  $scope.drawOverlays = drawOverlays;
+  function resetThemeCount() {
+    leafletData.getMap().then(function (map) {
+      for (var j = 0, len = overlayNames.length; j < len; j++) {
+        var nme = overlayNames[j];
+        if (nme === 'themecount') {
+          map.removeLayer(overlays[j]);
+          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
+          newLyr.addTo(map);
+        }
+      }
+    });
+  }
 
 });
 },{}],17:[function(require,module,exports){
@@ -2467,19 +2484,16 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   $scope.project = function () {
     $scope.themeName = themeNameHash.project;
     $scope.setThemeQueryParam('project');
-    $scope.$parent.drawOverlays();
   };
 
   $scope.disaster = function () {
     $scope.themeName = themeNameHash.disaster;
     $scope.setThemeQueryParam('disaster');
-    $scope.$parent.drawOverlays();
   };
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
     $scope.setThemeQueryParam();
-    $scope.$parent.drawOverlays();
   };
 
   $scope.setThemeQueryParam = function (theme) {

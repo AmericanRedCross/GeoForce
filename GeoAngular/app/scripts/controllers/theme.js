@@ -14,19 +14,16 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   $scope.project = function () {
     $scope.themeName = themeNameHash.project;
     $scope.setThemeQueryParam('project');
-    $scope.$parent.drawOverlays();
   };
 
   $scope.disaster = function () {
     $scope.themeName = themeNameHash.disaster;
     $scope.setThemeQueryParam('disaster');
-    $scope.$parent.drawOverlays();
   };
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
     $scope.setThemeQueryParam();
-    $scope.$parent.drawOverlays();
   };
 
   $scope.setThemeQueryParam = function (theme) {
