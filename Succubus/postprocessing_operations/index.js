@@ -392,6 +392,7 @@ WHERE sf_disaster.sf_id = sf_disaster_location.disaster__r_id; \
 DROP TABLE IF EXISTS sf_aggregated_gadm_disaster_counts; \
 \
 SELECT  0 as countARC, \
+0 as rfacountarc, \
     ''::character varying as nameARC, \
     0 as guidARC, \
     null::geometry as geomarc,\
@@ -449,6 +450,7 @@ AND   gadm5.guid::text = vw_sf_disaster.location__r_gis_geo_id__c; \
 \
 INSERT INTO sf_aggregated_gadm_disaster_counts  \
 (     SELECT  0 as countARC, \
+0 as rfacountarc, \
     ''::character varying as nameARC, \
     0 as guidARC, \
     null::geometry as geomarc, \
@@ -501,6 +503,7 @@ AND   gadm4.guid::text = vw_sf_disaster.location__r_gis_geo_id__c); \
 \
 INSERT INTO sf_aggregated_gadm_disaster_counts \
 (   SELECT  0 as countARC, \
+0 as rfacountarc, \
     ''::character varying as nameARC, \
     0 as guidARC, \
     null::geometry as geomarc, \
@@ -547,6 +550,7 @@ AND   gadm3.guid::text = vw_sf_disaster.location__r_gis_geo_id__c); \
 \
 INSERT INTO sf_aggregated_gadm_disaster_counts \
 ( SELECT 0 as countARC, \
+0 as rfacountarc, \
     ''::character varying as nameARC, \
     0 as guidARC, \
     null::geometry as geomarc, \
@@ -592,6 +596,7 @@ AND gadm2.guid::text = vw_sf_disaster.location__r_gis_geo_id__c); \
  \
 INSERT INTO sf_aggregated_gadm_disaster_counts \
 ( SELECT 0 as countARC, \
+0 as rfacountarc, \
     ''::character varying as nameARC, \
     0 as guidARC, \
     null::geometry as geomarc, \
@@ -634,6 +639,7 @@ AND gadm1.guid::text = vw_sf_disaster.location__r_gis_geo_id__c); \
 \
 INSERT INTO sf_aggregated_gadm_disaster_counts \
 ( SELECT 0 as countARC, \
+0 as rfacountarc, \
 ''::character varying as nameARC, \
 0 as guidARC, \
 null::geometry as geomarc, \
@@ -699,7 +705,7 @@ UPDATE sf_aggregated_gadm_disaster_counts SET geom0 = ST_BUFFER(geom0, 0); \
 \
 \
 UPDATE sf_aggregated_gadm_disaster_counts \
-SET nameARC = a.region, countarc = count0, guidarc = a.gid, geomarc = a.geom \
+SET nameARC = a.region, countarc = count0, rfacountarc = rfacount0,  guidarc = a.gid, geomarc = a.geom \
 FROM ARC_REGIONS_DISSOLVED a \
 WHERE ST_INTERSECTS(a.geom, geom0);"
 

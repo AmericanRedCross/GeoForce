@@ -81,7 +81,7 @@ module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', func
     //Given a GUID, zoom to the feature.
 
     //Grab the feature from the VectorProvider.
-    VectorProvider.fetchFeature(featObj["guid" + level], level, null, function (feat) {
+    VectorProvider.fetchFeature(featObj["guid" + (level >= 0 ? level : "arc")], level, null, function (feat) {
       //Make a temp geojson layer and add the geojson.
       //Then grab the bounds from it and zoom to it.
 
