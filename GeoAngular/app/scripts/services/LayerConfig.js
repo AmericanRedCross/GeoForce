@@ -254,6 +254,19 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
               return properties.theme_count;
           }
       },
+      "map-icon-class": function(properties){
+            //Return a css class used to style the map icon
+          if(properties.hasOwnProperty("rfa_count")){
+              return "featurelabel-icon-RFA";
+          }
+          else{
+              return "featurelabel-icon-number";
+          }
+      },
+      "map-icon-size": function(properties){
+            //Return an array of 2 items. size of map icon
+          return [45,45];
+      },
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
       "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off

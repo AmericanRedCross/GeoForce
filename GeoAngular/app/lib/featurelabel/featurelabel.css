@@ -20,3 +20,17 @@
     text-align: center;
     vertical-align: middle;
 }
+
+
+.featurelabel-icon-RFA {
+    background-color: #6eafff;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 20px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 43px;
+    box-shadow: 0px 0px 0px 6px rgba(255,255,255,0.7);
+}

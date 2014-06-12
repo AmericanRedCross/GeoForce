@@ -62,7 +62,9 @@ set namearc = (select region from arc_regions a where a.name = gadmrollup.name0)
 
 --Fill in a few that slipped thru the cracks
 UPDATE gadmrollup
-set namearc = 'USA'
+set namearc = 'USA',
+geomarc = (select geom from arc_regions_dissolved where region = 'USA'),
+guidarc = 3
 where name0 = 'United States'
 
 UPDATE gadmrollup

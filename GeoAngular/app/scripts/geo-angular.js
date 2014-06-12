@@ -111,11 +111,31 @@ function createLabel(featureLayer) {
 
   }
 
+  //Determine map icon class
+  var iconClass = "featurelabel-icon";
+  if (properties["map-icon-class"]) {
+      if (typeof properties["map-icon-class"] === 'function') {
+          iconClass = properties["map-icon-class"](properties);
+      } else {
+          iconClass = properties[properties["map-icon-class"]];
+      }
+  }
+
+  //Determine map icon size
+  var iconSize = [45,45];
+  if (properties["map-icon-size"]) {
+      if (typeof properties["map-icon-size"] === 'function') {
+          iconSize = properties["map-icon-size"](properties);
+      } else {
+          iconSize = properties[properties["map-icon-size"]];
+      }
+  }
+
   console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
 
   var icon = L.divIcon({
-    className: $.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon',
-    iconSize: [45,45],
+    className: iconClass || ($.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon'),
+    iconSize: iconSize,
     html: text
   });
 
@@ -170,41 +190,41 @@ function createLabel(featureLayer) {
   });
 
   function click(label, featureLayer) {
-    // TURN OFF
-    if (featureLayer === selectedFeatureLayer) {
-      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-      featureLayer.setStyle({
-        color: properties.color || 'white'
-      });
-      featureLayer.bringToFront();
-      selectedFeatureLayer = null;
-      if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
-        properties.onDeselect(featureLayer);
+      // TURN OFF
+      if (featureLayer === selectedFeatureLayer) {
+          label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+          featureLayer.setStyle({
+              color: properties.color || 'white'
+          });
+          featureLayer.bringToFront();
+          selectedFeatureLayer = null;
+          if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
+              properties.onDeselect(featureLayer);
+          }
       }
-    }
 
-    // TURN ON
-    else {
-      if (selectedFeatureLayer) {
-        selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-        selectedFeatureLayer.setStyle({
-          color: properties.color || 'white'
-        });
-        selectedFeatureLayer.bringToFront();
-        selectedFeatureLayer = null;
+      // TURN ON
+      else {
+          if (selectedFeatureLayer) {
+              selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+              selectedFeatureLayer.setStyle({
+                  color: properties.color || 'white'
+              });
+              selectedFeatureLayer.bringToFront();
+              selectedFeatureLayer = null;
+          }
+          label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+          // red cross red #ed1b2e
+          featureLayer.setStyle({
+              color: '#d9534f' // red
+          });
+          featureLayer.bringToFront();
+          selectedFeatureLayer = featureLayer;
+          selectedIcon = label._icon;
+          if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
+              properties.onSelect(featureLayer);
+          }
       }
-      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
-      // red cross red #ed1b2e
-      featureLayer.setStyle({
-        color: '#d9534f' // red
-      });
-      featureLayer.bringToFront();
-      selectedFeatureLayer = featureLayer;
-      selectedIcon = label._icon;
-      if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
-        properties.onSelect(featureLayer);
-      }
-    }
   }
 
   /**
@@ -1036,7 +1056,7 @@ module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', func
     //Given a GUID, zoom to the feature.
 
     //Grab the feature from the VectorProvider.
-    VectorProvider.fetchFeature(featObj["guid" + level], level, null, function (feat) {
+    VectorProvider.fetchFeature(featObj["guid" + (level >= 0 ? level : "arc")], level, null, function (feat) {
       //Make a temp geojson layer and add the geojson.
       //Then grab the bounds from it and zoom to it.
 
@@ -3220,6 +3240,19 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
           else{
               return properties.theme_count;
           }
+      },
+      "map-icon-class": function(properties){
+            //Return a css class used to style the map icon
+          if(properties.hasOwnProperty("rfa_count")){
+              return "featurelabel-icon-RFA";
+          }
+          else{
+              return "featurelabel-icon-number";
+          }
+      },
+      "map-icon-size": function(properties){
+            //Return an array of 2 items. size of map icon
+          return [45,45];
       },
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
