@@ -37,7 +37,6 @@ FeatureSet.prototype.addFeature = function (featureLayer, geojsonLayer) {
     }
   }
 
-  pathUpdated(featureLayer);
 };
 
 FeatureSet.prototype._pathUpdated = function (leafletId) {
