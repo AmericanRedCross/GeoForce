@@ -701,6 +701,13 @@ var featurelabel = require('./featurelabel');
 
 module.exports = function() {
 
+  /**
+   * Leaflet puts too much of a buffer around the area in which a shape
+   * is clipped, thus we were not getting good centroids for shapes that
+   * were being clipped. This resolves that.
+   */
+  L.Path.CLIP_PADDING = 0.02;
+
   L.Polyline.prototype._updatePath = function () {
     if (!this._map) { return; }
 
