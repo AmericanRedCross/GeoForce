@@ -48,7 +48,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       };
     }
 
-    if (theme !== $stateParams.theme) {
+    if (theme != $stateParams.theme) { // null and undefined should be ==
       resetThemeCount();
       theme = $stateParams.theme;
     }
@@ -265,9 +265,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       for (var j = 0, len = overlayNames.length; j < len; j++) {
         var nme = overlayNames[j];
         if (nme === 'themecount') {
-//          map.removeLayer(overlays[j]);
-//          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
-//          newLyr.addTo(map);
+          map.removeLayer(overlays[j]);
+          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
+          newLyr.addTo(map);
         }
       }
     });

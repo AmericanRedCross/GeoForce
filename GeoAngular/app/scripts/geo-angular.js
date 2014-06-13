@@ -700,19 +700,38 @@ require('./leaflet-patch');
 
 var featurelabel = require('./featurelabel');
 
-module.exports = L.Polyline.prototype._updatePath = function () {
-  if (!this._map) { return; }
+module.exports = function() {
 
-  this._clipPoints();
-  this._simplifyPoints();
+  L.Polyline.prototype._updatePath = function () {
+    if (!this._map) { return; }
 
-  L.Path.prototype._updatePath.call(this);
+    this._clipPoints();
+    this._simplifyPoints();
 
-  if (featurelabel) {
+    L.Path.prototype._updatePath.call(this);
+
+    /**
+     * Notifies featurelabel that a path for a vector has been redrawn and the label should
+     * positioned or repositioned.
+     */
     featurelabel.pathUpdated(this._leaflet_id);
-  }
-};
+  };
 
+  /**
+   * Fixes a Leaflet bug where a reference to this._map is sometimes missing.
+   */
+  L.Path.prototype.bringToFront = function () {
+    this._map = window.map;
+    var root = this._map._pathRoot,
+        path = this._container;
+
+    if (path && root.lastChild !== path) {
+      root.appendChild(path);
+    }
+    return this;
+  };
+
+}();
 },{"./featurelabel":3}],5:[function(require,module,exports){
 /**
  * This is the entry point of the application. We declare the main module here and then configure the main router
@@ -2126,7 +2145,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       };
     }
 
-    if (theme !== $stateParams.theme) {
+    if (theme != $stateParams.theme) { // null and undefined should be ==
       resetThemeCount();
       theme = $stateParams.theme;
     }
@@ -2343,9 +2362,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       for (var j = 0, len = overlayNames.length; j < len; j++) {
         var nme = overlayNames[j];
         if (nme === 'themecount') {
-//          map.removeLayer(overlays[j]);
-//          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
-//          newLyr.addTo(map);
+          map.removeLayer(overlays[j]);
+          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
+          newLyr.addTo(map);
         }
       }
     });

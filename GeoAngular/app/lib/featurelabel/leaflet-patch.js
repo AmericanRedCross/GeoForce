@@ -9,15 +9,35 @@
 
 var featurelabel = require('./featurelabel');
 
-module.exports = L.Polyline.prototype._updatePath = function () {
-  if (!this._map) { return; }
+module.exports = function() {
 
-  this._clipPoints();
-  this._simplifyPoints();
+  L.Polyline.prototype._updatePath = function () {
+    if (!this._map) { return; }
 
-  L.Path.prototype._updatePath.call(this);
+    this._clipPoints();
+    this._simplifyPoints();
 
-  if (featurelabel) {
+    L.Path.prototype._updatePath.call(this);
+
+    /**
+     * Notifies featurelabel that a path for a vector has been redrawn and the label should
+     * positioned or repositioned.
+     */
     featurelabel.pathUpdated(this._leaflet_id);
-  }
-};
+  };
+
+  /**
+   * Fixes a Leaflet bug where a reference to this._map is sometimes missing.
+   */
+  L.Path.prototype.bringToFront = function () {
+    this._map = window.map;
+    var root = this._map._pathRoot,
+        path = this._container;
+
+    if (path && root.lastChild !== path) {
+      root.appendChild(path);
+    }
+    return this;
+  };
+
+}();
