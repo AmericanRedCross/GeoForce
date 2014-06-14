@@ -265,7 +265,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       for (var j = 0, len = overlayNames.length; j < len; j++) {
         var nme = overlayNames[j];
         if (nme === 'themecount') {
-          map.removeLayer(overlays[j]);
+          var oldLyr = overlays[j];
+          oldLyr.destroyResource();
+          map.removeLayer(oldLyr);
           var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
           newLyr.addTo(map);
         }
