@@ -2328,6 +2328,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
         // remove the current layer that is not what should be that layer in the list
         else if ( currOverlay && currOverlay._map ) {
+          if (currOverlay.destroyResource) currOverlay.destroyResource();
           map.removeLayer(currOverlay);
         }
 
@@ -2359,6 +2360,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       // there are more overlays left in the list, less layers specified in route
       // we need to remove those too.
       for(var len2 = overlays.length; i < len2; ++i) {
+        if (overlays[i].destroyResource) overlays[i].destroyResource();
         map.removeLayer(overlays[i]);
         delete overlays[i];
       }
@@ -2523,7 +2525,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
-    $scope.setThemeQueryParam();
+    $scope.setThemeQueryParam('none');
   };
 
   $scope.setThemeQueryParam = function (theme) {

@@ -23,7 +23,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
-    $scope.setThemeQueryParam();
+    $scope.setThemeQueryParam('none');
   };
 
   $scope.setThemeQueryParam = function (theme) {
