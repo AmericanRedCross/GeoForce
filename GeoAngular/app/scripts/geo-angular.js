@@ -8,12 +8,16 @@ var featurelabel = require('./featurelabel');
 var featureSets = featurelabel.featureSets;
 var Label = require('./Label.js');
 
+
 function FeatureSet() {
   this.features = [];
   this._pathIdHash = {};
   featureSets.push(this);
+  this.selectedFeatureLayer = null;
+  this.selectedIcon = null;
 }
 module.exports = FeatureSet;
+
 
 FeatureSet.prototype.addFeature = function (featureLayer, geojsonLayer) {
   featureLayer.geojsonLayer = geojsonLayer;
@@ -39,6 +43,7 @@ FeatureSet.prototype.addFeature = function (featureLayer, geojsonLayer) {
 
 };
 
+
 FeatureSet.prototype._pathUpdated = function (leafletId) {
   var featureLayer = this._pathIdHash[leafletId];
   // the hash doesn't always catch the id if the graphic has not yet been rendered.
@@ -52,10 +57,11 @@ FeatureSet.prototype._pathUpdated = function (leafletId) {
       }
     }
   }
-  pathUpdated(featureLayer);
+  pathUpdated(featureLayer, this);
 };
 
-function pathUpdated(featureLayer) {
+
+function pathUpdated(featureLayer, featureSet) {
   // If the id doesnt hash, no path for the features in our feature set apply.
   if (!featureLayer) {
     //console.error('pathUpdated featureLayer empty');
@@ -73,7 +79,7 @@ function pathUpdated(featureLayer) {
 
       if (l) {
         featureLayer.labelCenterPoint = calculateCenter(l._parts);
-        updateLabel(featureLayer);
+        updateLabel(featureLayer, featureSet);
       }
 
       featureLayer.pathsUpdated = 0;
@@ -85,7 +91,7 @@ function pathUpdated(featureLayer) {
   // there is only one polygon, so calculate center. also check to see if there are parts
   if ( featureLayer._parts && featureLayer._parts.length ) {
     featureLayer.labelCenterPoint = calculateCenter(featureLayer._parts);
-    updateLabel(featureLayer);
+    updateLabel(featureLayer, featureSet);
 
     return;
   }
@@ -93,10 +99,7 @@ function pathUpdated(featureLayer) {
 }
 
 
-var selectedFeatureLayer = null;
-var selectedIcon = null;
-
-function createLabel(featureLayer) {
+function createLabel(featureLayer, featureSet) {
   var point = featureLayer.labelCenterPoint;
 
   var properties = featureLayer.feature.properties;
@@ -149,8 +152,8 @@ function createLabel(featureLayer) {
   });
 
   function mouseover(label, featureLayer) {
-    if (featureLayer !== selectedFeatureLayer) {
-      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+    if (featureLayer !== featureSet.selectedFeatureLayer) {
+      if (label._icon) label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
       featureLayer.setStyle({
         color: '#EDB229'  // gold
       });
@@ -167,13 +170,13 @@ function createLabel(featureLayer) {
   });
 
   function mouseout(label, featureLayer) {
-    if (featureLayer !== selectedFeatureLayer) {
-      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+    if (featureLayer !== featureSet.selectedFeatureLayer) {
+      if (label._icon) label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
       featureLayer.setStyle({
         color: properties.color || 'white'
       });
-      if (selectedFeatureLayer) {
-        selectedFeatureLayer.bringToFront();
+      if (featureSet.selectedFeatureLayer) {
+        featureSet.selectedFeatureLayer.bringToFront();
       } else {
         featureLayer.bringToFront();
       }
@@ -189,41 +192,41 @@ function createLabel(featureLayer) {
   });
 
   function click(label, featureLayer) {
-      // TURN OFF
-      if (featureLayer === selectedFeatureLayer) {
-          label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-          featureLayer.setStyle({
-              color: properties.color || 'white'
-          });
-          featureLayer.bringToFront();
-          selectedFeatureLayer = null;
-          if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
-              properties.onDeselect(featureLayer);
-          }
+    // TURN OFF
+    if (featureLayer === featureSet.selectedFeatureLayer) {
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+      featureLayer.setStyle({
+        color: properties.color || 'white'
+      });
+      featureLayer.bringToFront();
+      featureSet.selectedFeatureLayer = null;
+      if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
+        properties.onDeselect(featureLayer);
       }
+    }
 
-      // TURN ON
-      else {
-          if (selectedFeatureLayer) {
-              selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-              selectedFeatureLayer.setStyle({
-                  color: properties.color || 'white'
-              });
-              selectedFeatureLayer.bringToFront();
-              selectedFeatureLayer = null;
-          }
-          label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
-          // red cross red #ed1b2e
-          featureLayer.setStyle({
-              color: '#d9534f' // red
-          });
-          featureLayer.bringToFront();
-          selectedFeatureLayer = featureLayer;
-          selectedIcon = label._icon;
-          if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
-              properties.onSelect(featureLayer);
-          }
+    // TURN ON
+    else {
+      if (featureSet.selectedFeatureLayer) {
+        featureSet.selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+        featureSet.selectedFeatureLayer.setStyle({
+          color: properties.color || 'white'
+        });
+        featureSet.selectedFeatureLayer.bringToFront();
+        featureSet.selectedFeatureLayer = null;
       }
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+      // red cross red #ed1b2e
+      featureLayer.setStyle({
+        color: '#d9534f' // red
+      });
+      featureLayer.bringToFront();
+      featureSet.selectedFeatureLayer = featureLayer;
+      featureSet.selectedIcon = label._icon;
+      if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
+        properties.onSelect(featureLayer);
+      }
+    }
   }
 
   /**
@@ -245,9 +248,9 @@ function createLabel(featureLayer) {
 }
 
 
-function updateLabel(featureLayer) {
+function updateLabel(featureLayer, featureSet) {
   if ( ! featureLayer.label ) {
-    createLabel(featureLayer);
+    createLabel(featureLayer, featureSet);
   } else {
     featureLayer.label.update(featureLayer.labelCenterPoint);
   }
