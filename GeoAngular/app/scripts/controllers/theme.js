@@ -13,18 +13,30 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
 
   $scope.project = function () {
     $scope.themeName = themeNameHash.project;
+    ensureThemeCount();
     $scope.setThemeQueryParam('project');
   };
 
   $scope.disaster = function () {
     $scope.themeName = themeNameHash.disaster;
+    ensureThemeCount();
     $scope.setThemeQueryParam('disaster');
   };
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
+    var layersArr = $.grep($stateParams.layers.split(','), function(routeLayer){
+      return routeLayer !== 'themecount';
+    });
+    $stateParams.layers = layersArr.join(',');
     $scope.setThemeQueryParam('none');
   };
+
+  function ensureThemeCount() {
+    if ($stateParams.layers.indexOf('themecount') === -1) {
+      $stateParams.layers += ',themecount';
+    }
+  }
 
   $scope.setThemeQueryParam = function (theme) {
     $stateParams.theme = theme;
