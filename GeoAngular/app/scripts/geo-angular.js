@@ -3293,15 +3293,15 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
                   switch(properties.iroc_status__c.toLowerCase()){
                       case "active":
                           style.fillColor = "red";
-                          style.fillOpacity = 0.5;
+                          style.fillOpacity = 0.3;
                           break;
                       case "monitoring":
                           style.fillColor = "yellow";
-                          style.fillOpacity = 0.5;
+                          style.fillOpacity = 0.3;
                           break;
                       case "inactive":
                           style.fillColor = "green";
-                          style.fillOpacity = 0.5;
+                          style.fillOpacity = 0.3;
                           break;
                   }
               }
