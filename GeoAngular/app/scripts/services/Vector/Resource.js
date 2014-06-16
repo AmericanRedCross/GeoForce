@@ -65,9 +65,11 @@ Resource.prototype.getLayer = function () {
   }
 
   this._geojsonLayer = L.geoJson(this._geojson || null, {
-    //style: L.mapbox.simplestyle.style,
     style: function(feature) {
-       return feature.properties.style(feature.properties);
+      if (typeof feature.properties.styleFn === 'function') {
+        return feature.properties.styleFn(feature.properties);
+      }
+      return L.mapbox.simplestyle.style(feature);
     },
     pointToLayer: function(feature, latlon) {
       if (!feature.properties) feature.properties = {};
