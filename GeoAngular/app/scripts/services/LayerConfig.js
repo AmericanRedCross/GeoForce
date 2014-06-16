@@ -241,55 +241,55 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     type: 'bboxgeojson',
     url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=:theme&gadm_level=:level&ids=:ids&filters=:filters"),
     properties: {
-      "styleFn": function(properties){
-          var style = {
-            color: 'white',
-            opacity: 1,
-            fillOpacity: 0.07,
-            weight: 1.5
-          };
+      "styleFn": function (properties) {
+        var style = {
+          color: 'white',
+          opacity: 1,
+          fillOpacity: 0.07,
+          weight: 1.5
+        };
 
-          if(properties.hasOwnProperty("rfa_count")){
-              if(properties && properties.iroc_status__c){
-                  switch(properties.iroc_status__c.toLowerCase()){
-                      case "active":
-                          style.fillColor = "red";
-                          style.fillOpacity = 0.3;
-                          break;
-                      case "monitoring":
-                          style.fillColor = "yellow";
-                          style.fillOpacity = 0.3;
-                          break;
-                      case "inactive":
-                          style.fillColor = "green";
-                          style.fillOpacity = 0.3;
-                          break;
-                  }
-              }
+        if (properties.hasOwnProperty("rfa_count")) {
+          if (properties && properties.iroc_status__c) {
+            switch (properties.iroc_status__c.toLowerCase()) {
+              case "active":
+                style.fillColor = "red";
+                style.fillOpacity = 0.3;
+                break;
+              case "monitoring":
+                style.fillColor = "yellow";
+                style.fillOpacity = 0.3;
+                break;
+              case "inactive":
+                style.fillColor = "green";
+                style.fillOpacity = 0.3;
+                break;
+            }
+          }
 
-          }
-          return style;
+        }
+        return style;
       },
-      "labelProperty": function(properties){
-          if(properties.hasOwnProperty("rfa_count")){
-            return "<span>" + properties.theme_count + "<sub>" + properties.rfa_count + "</sub></span>";
-          }
-          else{
-              return properties.theme_count;
-          }
+      "labelProperty": function (properties) {
+        if (properties.hasOwnProperty("rfa_count")) {
+          return "<span>" + properties.theme_count + "<sub>" + properties.rfa_count + "</sub></span>";
+        }
+        else {
+          return properties.theme_count;
+        }
       },
-      "map-icon-class": function(properties){
-            //Return a css class used to style the map icon
-          if(properties.hasOwnProperty("rfa_count")){
-              return "featurelabel-icon-RFA";
-          }
-          else{
-              return "featurelabel-icon-number";
-          }
+      "map-icon-class": function (properties) {
+        //Return a css class used to style the map icon
+        if (properties.hasOwnProperty("rfa_count")) {
+          return "featurelabel-icon-RFA";
+        }
+        else {
+          return "featurelabel-icon-number";
+        }
       },
-      "map-icon-size": function(properties){
-            //Return an array of 2 items. size of map icon
-          return [45,45];
+      "map-icon-size": function (properties) {
+        //Return an array of 2 items. size of map icon
+        return [45, 45];
       },
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
