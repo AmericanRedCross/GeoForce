@@ -5,8 +5,8 @@
     },
     "Admin_0__c": null,
     "GIS_GEO_ID__c": null,
-    "project_count": 510,
-    "total_budget": 4010284146
+    "project_count": 554,
+    "total_budget": 4013334146
   },
   {
     "attributes": {
@@ -131,7 +131,7 @@
     },
     "Admin_0__c": "India",
     "GIS_GEO_ID__c": "602bffb6-b4de-412b-84a2-2161704f7a90",
-    "project_count": 1,
+    "project_count": 2,
     "total_budget": 20000
   },
   {
@@ -282,6 +282,15 @@
     "attributes": {
       "type": "AggregateResult"
     },
+    "Admin_0__c": "Russia",
+    "GIS_GEO_ID__c": "8652eb9c-8390-4e67-93d3-bc73fc8d70e5",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
     "Admin_0__c": "Uganda",
     "GIS_GEO_ID__c": "3d698eb3-9d85-405a-a994-253cd7edf25c",
     "project_count": 1,
@@ -295,6 +304,15 @@
     "GIS_GEO_ID__c": "5c3a3754-0c4a-4c9e-9686-b89dfd0cbeca",
     "project_count": 1,
     "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Germany",
+    "GIS_GEO_ID__c": "0648dd0b-7519-4c5e-8ddf-7dcfa88601a1",
+    "project_count": 1,
+    "total_budget": 100000
   },
   {
     "attributes": {
@@ -363,8 +381,26 @@
     "attributes": {
       "type": "AggregateResult"
     },
+    "Admin_0__c": "Senegal",
+    "GIS_GEO_ID__c": "2a1d95de-d860-47c6-bb93-96dc7d30be87",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
     "Admin_0__c": "Somalia",
     "GIS_GEO_ID__c": "1168a546-0da9-4c52-9c4b-d38ea77ed012",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Ukraine",
+    "GIS_GEO_ID__c": "91002494-0bc9-41d3-8e1c-74fa6417cf50",
     "project_count": 1,
     "total_budget": 0
   },
@@ -448,6 +484,15 @@
     "GIS_GEO_ID__c": "78ebd129-eecc-46c1-a165-76c24a4c82e7",
     "project_count": 3,
     "total_budget": 168027
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "Guatemala",
+    "GIS_GEO_ID__c": "2233286f-84bf-4689-960d-3532cb8c5da1",
+    "project_count": 1,
+    "total_budget": 0
   },
   {
     "attributes": {
@@ -607,6 +652,15 @@
       "type": "AggregateResult"
     },
     "Admin_0__c": "United States",
+    "GIS_GEO_ID__c": "0e0df6cb-4a0e-473a-9c7d-b65b9cc884a6",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "United States",
     "GIS_GEO_ID__c": "34e73060-1d2e-4908-a603-f32b71284e42",
     "project_count": 1,
     "total_budget": 0
@@ -643,7 +697,25 @@
       "type": "AggregateResult"
     },
     "Admin_0__c": "United States",
+    "GIS_GEO_ID__c": "ba12d977-5e88-45f9-9fa6-f43ce837ee67",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "United States",
     "GIS_GEO_ID__c": "e19eff49-2eee-4e24-aef3-e49fceed3dd0",
+    "project_count": 1,
+    "total_budget": 0
+  },
+  {
+    "attributes": {
+      "type": "AggregateResult"
+    },
+    "Admin_0__c": "United States",
+    "GIS_GEO_ID__c": "eb2dc039-3ba9-4a1c-afa5-cdcacc6329fa",
     "project_count": 1,
     "total_budget": 0
   },

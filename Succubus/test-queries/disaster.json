@@ -2,6 +2,39 @@
   {
     "attributes": {
       "type": "Disaster__c",
+      "url": "/services/data/v29.0/sobjects/Disaster__c/a0F11000001XUA9EAO"
+    },
+    "Name": "Disaster - Hurricane Sandy-2014",
+    "Id": "a0F11000001XUA9EAO",
+    "LastModifiedDate": "2014-06-13T16:05:21.000+0000",
+    "SystemModstamp": "2014-06-13T16:05:21.000+0000",
+    "CreatedDate": "2014-06-13T15:51:26.000+0000",
+    "Deaths__c": null,
+    "People_Affected__c": null,
+    "People_Injured__c": null,
+    "People_Missing__c": null,
+    "Affected_As_Of__c": null,
+    "ARC_Region__c": "North America",
+    "Category__c": "Biological",
+    "Deaths_As_Of__c": null,
+    "Date__c": "2014-06-13",
+    "Disaster_Type__c": "Epidemic",
+    "GLIDE_Number__c": null,
+    "Injured_As_Of__c": null,
+    "IROC_Status__c": "Monitoring",
+    "Is_Test_Data__c": false,
+    "Missing_As_Of__c": null,
+    "Source_Deaths__c": null,
+    "Source_People_Affected__c": null,
+    "Source_People_Injured__c": null,
+    "Source_People_Missing__c": null,
+    "Summary__c": "Hurricane - affected multiple state",
+    "Total_ARC_Contributions__c": 0,
+    "Unique_Disaster_Id__c": "a0F11000001XUA9EAO"
+  },
+  {
+    "attributes": {
+      "type": "Disaster__c",
       "url": "/services/data/v29.0/sobjects/Disaster__c/a0F11000001WpsWEAS"
     },
     "Name": "For Documentation-2014",
