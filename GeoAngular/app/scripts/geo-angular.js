@@ -3287,7 +3287,13 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=:theme&gadm_level=:level&ids=:ids&filters=:filters"),
     properties: {
       "styleFn": function(properties){
-          var style = { color: 'white','weight': 1, 'opacity': 1 };
+          var style = {
+            color: 'white',
+            opacity: 1,
+            fillOpacity: 0.07,
+            weight: 1.5
+          };
+
           if(properties.hasOwnProperty("rfa_count")){
               if(properties && properties.iroc_status__c){
                   switch(properties.iroc_status__c.toLowerCase()){
@@ -3305,12 +3311,6 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
                           break;
                   }
               }
-
-          }
-          else{
-                //not a disaster
-              style.fill = false;
-              style.color = "white";
 
           }
           return style;
