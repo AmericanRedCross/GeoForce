@@ -1258,7 +1258,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       $scope.openParam('details-panel');
       $scope.createDonuts();
     } else { // standard geojson, show properties as details
-      $scope.contextualLayer = true;
+
+      $scope.contextualLayer = (properties.sf_id ? false : true);
       $scope.showDetails(properties);
       $scope.openParam('details-panel');
     }
