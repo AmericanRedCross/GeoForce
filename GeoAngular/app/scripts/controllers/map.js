@@ -48,7 +48,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       };
     }
 
-    if (theme !== $stateParams.theme) {
+    if (theme != $stateParams.theme) { // null and undefined should be ==
       resetThemeCount();
       theme = $stateParams.theme;
     }
@@ -222,6 +222,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
         // remove the current layer that is not what should be that layer in the list
         else if ( currOverlay && currOverlay._map ) {
+          if (currOverlay.destroyResource) currOverlay.destroyResource();
           map.removeLayer(currOverlay);
         }
 
@@ -253,6 +254,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       // there are more overlays left in the list, less layers specified in route
       // we need to remove those too.
       for(var len2 = overlays.length; i < len2; ++i) {
+        if (overlays[i].destroyResource) overlays[i].destroyResource();
         map.removeLayer(overlays[i]);
         delete overlays[i];
       }
@@ -265,9 +267,11 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       for (var j = 0, len = overlayNames.length; j < len; j++) {
         var nme = overlayNames[j];
         if (nme === 'themecount') {
-//          map.removeLayer(overlays[j]);
-//          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
-//          newLyr.addTo(map);
+          var oldLyr = overlays[j];
+          oldLyr.destroyResource();
+          map.removeLayer(oldLyr);
+          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
+          newLyr.addTo(map);
         }
       }
     });

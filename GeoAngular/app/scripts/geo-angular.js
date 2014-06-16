@@ -8,12 +8,16 @@ var featurelabel = require('./featurelabel');
 var featureSets = featurelabel.featureSets;
 var Label = require('./Label.js');
 
+
 function FeatureSet() {
   this.features = [];
   this._pathIdHash = {};
   featureSets.push(this);
+  this.selectedFeatureLayer = null;
+  this.selectedIcon = null;
 }
 module.exports = FeatureSet;
+
 
 FeatureSet.prototype.addFeature = function (featureLayer, geojsonLayer) {
   featureLayer.geojsonLayer = geojsonLayer;
@@ -37,8 +41,8 @@ FeatureSet.prototype.addFeature = function (featureLayer, geojsonLayer) {
     }
   }
 
-  pathUpdated(featureLayer);
 };
+
 
 FeatureSet.prototype._pathUpdated = function (leafletId) {
   var featureLayer = this._pathIdHash[leafletId];
@@ -53,10 +57,11 @@ FeatureSet.prototype._pathUpdated = function (leafletId) {
       }
     }
   }
-  pathUpdated(featureLayer);
+  pathUpdated(featureLayer, this);
 };
 
-function pathUpdated(featureLayer) {
+
+function pathUpdated(featureLayer, featureSet) {
   // If the id doesnt hash, no path for the features in our feature set apply.
   if (!featureLayer) {
     //console.error('pathUpdated featureLayer empty');
@@ -74,7 +79,7 @@ function pathUpdated(featureLayer) {
 
       if (l) {
         featureLayer.labelCenterPoint = calculateCenter(l._parts);
-        updateLabel(featureLayer);
+        updateLabel(featureLayer, featureSet);
       }
 
       featureLayer.pathsUpdated = 0;
@@ -86,7 +91,7 @@ function pathUpdated(featureLayer) {
   // there is only one polygon, so calculate center. also check to see if there are parts
   if ( featureLayer._parts && featureLayer._parts.length ) {
     featureLayer.labelCenterPoint = calculateCenter(featureLayer._parts);
-    updateLabel(featureLayer);
+    updateLabel(featureLayer, featureSet);
 
     return;
   }
@@ -94,10 +99,7 @@ function pathUpdated(featureLayer) {
 }
 
 
-var selectedFeatureLayer = null;
-var selectedIcon = null;
-
-function createLabel(featureLayer) {
+function createLabel(featureLayer, featureSet) {
   var point = featureLayer.labelCenterPoint;
 
   var properties = featureLayer.feature.properties;
@@ -150,8 +152,8 @@ function createLabel(featureLayer) {
   });
 
   function mouseover(label, featureLayer) {
-    if (featureLayer !== selectedFeatureLayer) {
-      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+    if (featureLayer !== featureSet.selectedFeatureLayer) {
+      if (label._icon) label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
       featureLayer.setStyle({
         color: '#EDB229'  // gold
       });
@@ -168,13 +170,13 @@ function createLabel(featureLayer) {
   });
 
   function mouseout(label, featureLayer) {
-    if (featureLayer !== selectedFeatureLayer) {
-      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+    if (featureLayer !== featureSet.selectedFeatureLayer) {
+      if (label._icon) label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
       featureLayer.setStyle({
         color: properties.color || 'white'
       });
-      if (selectedFeatureLayer) {
-        selectedFeatureLayer.bringToFront();
+      if (featureSet.selectedFeatureLayer) {
+        featureSet.selectedFeatureLayer.bringToFront();
       } else {
         featureLayer.bringToFront();
       }
@@ -190,41 +192,41 @@ function createLabel(featureLayer) {
   });
 
   function click(label, featureLayer) {
-      // TURN OFF
-      if (featureLayer === selectedFeatureLayer) {
-          label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-          featureLayer.setStyle({
-              color: properties.color || 'white'
-          });
-          featureLayer.bringToFront();
-          selectedFeatureLayer = null;
-          if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
-              properties.onDeselect(featureLayer);
-          }
+    // TURN OFF
+    if (featureLayer === featureSet.selectedFeatureLayer) {
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+      featureLayer.setStyle({
+        color: properties.color || 'white'
+      });
+      featureLayer.bringToFront();
+      featureSet.selectedFeatureLayer = null;
+      if (properties && properties.onDeselect && typeof properties.onDeselect === 'function') {
+        properties.onDeselect(featureLayer);
       }
+    }
 
-      // TURN ON
-      else {
-          if (selectedFeatureLayer) {
-              selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
-              selectedFeatureLayer.setStyle({
-                  color: properties.color || 'white'
-              });
-              selectedFeatureLayer.bringToFront();
-              selectedFeatureLayer = null;
-          }
-          label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
-          // red cross red #ed1b2e
-          featureLayer.setStyle({
-              color: '#d9534f' // red
-          });
-          featureLayer.bringToFront();
-          selectedFeatureLayer = featureLayer;
-          selectedIcon = label._icon;
-          if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
-              properties.onSelect(featureLayer);
-          }
+    // TURN ON
+    else {
+      if (featureSet.selectedFeatureLayer) {
+        featureSet.selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+        featureSet.selectedFeatureLayer.setStyle({
+          color: properties.color || 'white'
+        });
+        featureSet.selectedFeatureLayer.bringToFront();
+        featureSet.selectedFeatureLayer = null;
       }
+      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+      // red cross red #ed1b2e
+      featureLayer.setStyle({
+        color: '#d9534f' // red
+      });
+      featureLayer.bringToFront();
+      featureSet.selectedFeatureLayer = featureLayer;
+      featureSet.selectedIcon = label._icon;
+      if (properties && properties.onSelect && typeof properties.onSelect === 'function') {
+        properties.onSelect(featureLayer);
+      }
+    }
   }
 
   /**
@@ -246,9 +248,9 @@ function createLabel(featureLayer) {
 }
 
 
-function updateLabel(featureLayer) {
+function updateLabel(featureLayer, featureSet) {
   if ( ! featureLayer.label ) {
-    createLabel(featureLayer);
+    createLabel(featureLayer, featureSet);
   } else {
     featureLayer.label.update(featureLayer.labelCenterPoint);
   }
@@ -700,19 +702,45 @@ require('./leaflet-patch');
 
 var featurelabel = require('./featurelabel');
 
-module.exports = L.Polyline.prototype._updatePath = function () {
-  if (!this._map) { return; }
+module.exports = function() {
 
-  this._clipPoints();
-  this._simplifyPoints();
+  /**
+   * Leaflet puts too much of a buffer around the area in which a shape
+   * is clipped, thus we were not getting good centroids for shapes that
+   * were being clipped. This resolves that.
+   */
+  L.Path.CLIP_PADDING = 0.02;
 
-  L.Path.prototype._updatePath.call(this);
+  L.Polyline.prototype._updatePath = function () {
+    if (!this._map) { return; }
 
-  if (featurelabel) {
+    this._clipPoints();
+    this._simplifyPoints();
+
+    L.Path.prototype._updatePath.call(this);
+
+    /**
+     * Notifies featurelabel that a path for a vector has been redrawn and the label should
+     * positioned or repositioned.
+     */
     featurelabel.pathUpdated(this._leaflet_id);
-  }
-};
+  };
 
+  /**
+   * Fixes a Leaflet bug where a reference to this._map is sometimes missing.
+   */
+  L.Path.prototype.bringToFront = function () {
+    this._map = window.map;
+    var root = this._map._pathRoot,
+        path = this._container;
+
+    if (path && root.lastChild !== path) {
+      root.appendChild(path);
+    }
+    return this;
+  };
+
+}();
 },{"./featurelabel":3}],5:[function(require,module,exports){
 /**
  * This is the entry point of the application. We declare the main module here and then configure the main router
@@ -2126,7 +2154,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       };
     }
 
-    if (theme !== $stateParams.theme) {
+    if (theme != $stateParams.theme) { // null and undefined should be ==
       resetThemeCount();
       theme = $stateParams.theme;
     }
@@ -2300,6 +2328,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
         // remove the current layer that is not what should be that layer in the list
         else if ( currOverlay && currOverlay._map ) {
+          if (currOverlay.destroyResource) currOverlay.destroyResource();
           map.removeLayer(currOverlay);
         }
 
@@ -2331,6 +2360,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       // there are more overlays left in the list, less layers specified in route
       // we need to remove those too.
       for(var len2 = overlays.length; i < len2; ++i) {
+        if (overlays[i].destroyResource) overlays[i].destroyResource();
         map.removeLayer(overlays[i]);
         delete overlays[i];
       }
@@ -2343,9 +2373,11 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       for (var j = 0, len = overlayNames.length; j < len; j++) {
         var nme = overlayNames[j];
         if (nme === 'themecount') {
-//          map.removeLayer(overlays[j]);
-//          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
-//          newLyr.addTo(map);
+          var oldLyr = overlays[j];
+          oldLyr.destroyResource();
+          map.removeLayer(oldLyr);
+          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
+          newLyr.addTo(map);
         }
       }
     });
@@ -2483,18 +2515,30 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
 
   $scope.project = function () {
     $scope.themeName = themeNameHash.project;
+    ensureThemeCount();
     $scope.setThemeQueryParam('project');
   };
 
   $scope.disaster = function () {
     $scope.themeName = themeNameHash.disaster;
+    ensureThemeCount();
     $scope.setThemeQueryParam('disaster');
   };
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
-    $scope.setThemeQueryParam();
+    var layersArr = $.grep($stateParams.layers.split(','), function(routeLayer){
+      return routeLayer !== 'themecount';
+    });
+    $stateParams.layers = layersArr.join(',');
+    $scope.setThemeQueryParam('none');
   };
+
+  function ensureThemeCount() {
+    if ($stateParams.layers.indexOf('themecount') === -1) {
+      $stateParams.layers += ',themecount';
+    }
+  }
 
   $scope.setThemeQueryParam = function (theme) {
     $stateParams.theme = theme;
@@ -3668,10 +3712,24 @@ function BBoxGeoJSON(config) {
   }
 
   bboxResources.push(this);
+  this._resIdx = bboxResources.length - 1;
 }
 
 BBoxGeoJSON.prototype = Object.create(Resource.prototype);
 BBoxGeoJSON.prototype.constructor = BBoxGeoJSON;
+
+
+BBoxGeoJSON.prototype.destroy = function() {
+  bboxResources.splice(this._resIdx,1);
+};
+
+
+BBoxGeoJSON.prototype.getLayer = function () {
+  var layer = Resource.prototype.getLayer.call(this);
+  layer.destroyResource = this.destroy; // gives the map to destroy the bboxgeojson vector provider resource
+  return layer;
+};
+
 
 BBoxGeoJSON.prototype._getFeatures = function (featObj) {
   var self = this;
