@@ -39,8 +39,7 @@ function addLevelToSFProjectTable() {
 
 function addLevelToSFDisasterTable() {
     var str = "ALTER TABLE sf_disaster ADD COLUMN level character varying;";
-    str += "ALTER TABLE sf_disaster ADD COLUMN level character varying; \
-    UPDATE sf_disaster \
+    str += "UPDATE sf_disaster \
     SET level = text_search.level \
     FROM text_search, sf_disaster sfd \
     LEFT JOIN sf_disaster_location ON sf_disaster_location.disaster__r_id = sfd.sf_id \
@@ -64,8 +63,8 @@ function createDisasterView(user) {
 }
 
 //Drop/Create Theme Views used by the client app
-operations.createProjectThemeView = createProjectView(pg.user);
-operations.createDisasterThemeView = createDisasterView(pg.user);
+//operations.createProjectThemeView = createProjectView(pg.user);
+//operations.createDisasterThemeView = createDisasterView(pg.user);
 
 //Add 'level' column to sf_project, sf_disaster tables for fast searches with zoom to capability.
 operations.addLevelToSFProjectTable = addLevelToSFProjectTable();

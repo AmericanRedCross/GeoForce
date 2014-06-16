@@ -64,6 +64,10 @@ operation.execute = flow.define(
       operation.inputs["guids"] = args.guids;
       operation.inputs["gadm_level"] = args.gadm_level;
 
+      if(operation.inputs["gadm_level"] == -1) {
+          operation.inputs["gadm_level"] = "arc";
+      }
+
       //need to wrap ids in single quotes
       //Execute the query
       var disasterQuery = { text: operation.DisasterQuery.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])).replace("{{gadm_level}}", operation.inputs["gadm_level"]) };
