@@ -691,7 +691,10 @@
                         </div>
                         <div id="searchResults">
                             <div class="searchResult Header" ng-show="projectResults">Project Results ({{projectResults.length}})</div>
-                            <div ng-repeat="row in projectResults" class="resultItem" ng-click="handleSearchResultClick(row)">{{row.name}}</div>
+                            <div ng-repeat="row in projectResults" class="resultItem" ng-click="handleSearchResultClick(row)">
+                                <span ng-show="row.level">(Mapped) </span>
+                                {{row.name}}
+                            </div>
 
                             <div class="searchResult Header" ng-show="disasterResults">Disaster Results ({{disasterResults.length}})</div>
                             <div ng-repeat="row in disasterResults" class="resultItem" ng-click="handleSearchResultClick(row)">{{row.name}}</div>

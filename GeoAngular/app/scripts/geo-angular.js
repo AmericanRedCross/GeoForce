@@ -2409,8 +2409,8 @@ module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', funct
         sendProjectToDetailsPanel(properties);
 
         //If we have a guid, then try to zoom to it.
-        if(properties.location__r_gis_geo_id__c){
-            zoomToGUID(properties.location__r_gis_geo_id__c);
+        if(properties.location__r_gis_geo_id__c && properties.level){
+            zoomToGUID(properties.location__r_gis_geo_id__c, properties.level);
         }
     };
 
@@ -2420,11 +2420,11 @@ module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', funct
 
 
     //this is a duplicate from breadcrumbs.js  Should be refactored to a single function
-    function zoomToGUID (guid) {
+    function zoomToGUID (guid, level) {
         //Given a GUID, zoom to the feature.
 
         //Grab the feature from the VectorProvider.
-        VectorProvider.fetchFeature(guid, -2, null, function (feat) {
+        VectorProvider.fetchFeature(guid, level, null, function (feat) {
             //Make a temp geojson layer and add the geojson.
             //Then grab the bounds from it and zoom to it.
 
@@ -3245,8 +3245,36 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke": 'white',
       "stroke-width": 2,
       "stroke-opacity": 1,
-      "fill": "green",
       "fill-opacity": 0,
+      "style": function(properties){
+          var style = { color: 'white','weight': 1, 'opacity': 1 };
+          if(properties.hasOwnProperty("rfa_count")){
+              if(properties && properties.iroc_status__c){
+                  switch(properties.iroc_status__c.toLowerCase()){
+                      case "active":
+                          style.fillColor = "red";
+                          style.fillOpacity = 0.5;
+                          break;
+                      case "monitoring":
+                          style.fillColor = "yellow";
+                          style.fillOpacity = 0.5;
+                          break;
+                      case "inactive":
+                          style.fillColor = "green";
+                          style.fillOpacity = 0.5;
+                          break;
+                  }
+              }
+
+          }
+          else{
+                //not a disaster
+              style.fill = false;
+              style.color = "white";
+
+          }
+          return style;
+      },
       "labelProperty": function(properties){
           if(properties.hasOwnProperty("rfa_count")){
             return "<span>" + properties.theme_count + "<sub>" + properties.rfa_count + "</sub></span>";
@@ -4363,7 +4391,10 @@ Resource.prototype.getLayer = function () {
   }
 
   this._geojsonLayer = L.geoJson(this._geojson || null, {
-    style: L.mapbox.simplestyle.style,
+    //style: L.mapbox.simplestyle.style,
+    style: function(feature) {
+       return feature.properties.style(feature.properties);
+    },
     pointToLayer: function(feature, latlon) {
       if (!feature.properties) feature.properties = {};
       if (feature.properties.scale) {

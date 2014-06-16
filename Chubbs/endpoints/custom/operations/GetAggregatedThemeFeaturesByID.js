@@ -15,10 +15,16 @@ operation.inputs["theme"] = ""; //string - theme name
 operation.inputs["gadm_level"] = ""; //string - gadm_level (0 -5)
 operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
+//Specific fields we want to pull from the aggregated theme features tables
+var theme_details = {
+    project: [],
+    disaster: ["iroc_status__c"]
+}
+
 
 operation.execute = flow.define(
     function (args, callback) {
-        this.Query = "SELECT sum(count{{gadm_level}}) as theme_count, {{rfacount}}, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
+        this.Query = "SELECT sum(count{{gadm_level}}) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}, {{theme_details_group_by}}";
 
         this.args = args;
         this.callback = callback;
@@ -47,9 +53,13 @@ operation.execute = flow.define(
             if(operation.inputs["theme"].toLowerCase() == 'disaster'){
                 //If a disaster, include RFA counts from rollup table
                 this.Query = this.Query.replace("{{rfacount}},", "sum(rfacount{{gadm_level}}) as rfa_count,");
+                this.Query = this.Query.replace("{{theme_details}},", theme_details["disaster"].join(",") + ",");
+                this.Query = this.Query.replace("{{theme_details_group_by}}", theme_details["disaster"].join(","));
             }else{
                 //No RFA counts.
                 this.Query = this.Query.replace("{{rfacount}},", "");
+                this.Query = this.Query.replace("{{theme_details}},", "");
+                this.Query = this.Query.replace("{{theme_details_group_by}}", "");
             }
 			query = {
               text: this.Query.split('{{gadm_level}}').join(operation.inputs["gadm_level"]).replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)).replace("{{filters}}", filters)

@@ -29,6 +29,26 @@ function createProjectView(user) {
     return str;
 }
 
+
+
+function addLevelToSFProjectTable() {
+    var str = "ALTER TABLE sf_project ADD COLUMN level character varying;";
+    str += "UPDATE sf_project SET level = text_search.level FROM text_search WHERE text_search.stack_guid::character varying::text = sf_project.location__r_gis_geo_id__c;";
+    return str;
+}
+
+function addLevelToSFDisasterTable() {
+    var str = "ALTER TABLE sf_disaster ADD COLUMN level character varying;";
+    str += "ALTER TABLE sf_disaster ADD COLUMN level character varying; \
+    UPDATE sf_disaster \
+    SET level = text_search.level \
+    FROM text_search, sf_disaster sfd \
+    LEFT JOIN sf_disaster_location ON sf_disaster_location.disaster__r_id = sfd.sf_id \
+    WHERE text_search.stack_guid::character varying::text = sf_disaster_location.location__r_gis_geo_id__c \
+    AND sfd.id = sf_disaster.id;";
+    return str;
+}
+
 function createDisasterView(user) {
     var str =
         "CREATE OR REPLACE VIEW vw_theme_disaster_gadm AS \
@@ -46,6 +66,10 @@ function createDisasterView(user) {
 //Drop/Create Theme Views used by the client app
 operations.createProjectThemeView = createProjectView(pg.user);
 operations.createDisasterThemeView = createDisasterView(pg.user);
+
+//Add 'level' column to sf_project, sf_disaster tables for fast searches with zoom to capability.
+operations.addLevelToSFProjectTable = addLevelToSFProjectTable();
+operations.addLevelToSFDisasterTable = addLevelToSFDisasterTable();
 
 //Create the aggregated project counts by all gaul levels, with counts rolled up to parents
 operations.createAggregateProjectCountsForGADM =

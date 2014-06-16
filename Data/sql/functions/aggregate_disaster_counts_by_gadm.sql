@@ -322,7 +322,7 @@ null::geometry as geom5,
     vw_sf_disaster.people_affected__c,
     vw_sf_disaster.name,
     vw_sf_disaster.total_arc_contributions__c,
-    vw_sf_disaster.summary
+    vw_sf_disaster.summary__c
 
 FROM gadm0, vw_sf_disaster 
 WHERE gadm0.guid::text = vw_sf_disaster.location__r_gis_geo_id__c 

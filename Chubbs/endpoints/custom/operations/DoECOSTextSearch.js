@@ -19,22 +19,22 @@ operation.ProjectSearchFields = ["sector__c", "status__c", "stage_name__c", "sub
 operation.DisasterSearchFields = ["name", "disaster_type__c", "summary__c", "unique_disaster_id__c", "sf_id", "category__c"]; //List columns from sf_disaster thru which to search
 
 function getSQLQueries (){
-    operation.Queries.push({ type: 'project', query: buildQueryClause(operation.ProjectSearchFields, 'vw_theme_project_gadm', 'sf_project')});
-    operation.Queries.push({ type: 'disaster', query: buildQueryClause(operation.DisasterSearchFields, 'vw_theme_disaster_gadm', 'vw_theme_disaster_gadm')});
+    operation.Queries.push({ type: 'project', query: buildQueryClause(operation.ProjectSearchFields, 'sf_project')});
+    operation.Queries.push({ type: 'disaster', query: buildQueryClause(operation.DisasterSearchFields, 'sf_disaster')});
 }
 
 function buildQueryClause(searchFields, tableName, tableAlias){
     //Loop thru Search Field Array and build SQL query
     var sql = "";
     if(searchFields && searchFields.length > 0) {
-        sql += "SELECT * from " + tableName + " AS " + tableAlias + " WHERE ";
+        sql += "SELECT * from " + tableName + " WHERE ";
         sql += searchFields.join(" ILIKE '%{{text}}%' OR ");
         sql += " ILIKE '%{{text}}%';";
     }
-    if(tableName == 'vw_theme_project_gadm'){
-       sql = sql.replace(" * ", " 'Project' as theme_type, " + settings.projectDetails.join(" ,") + " "); //Replace * with whitelist
-    }else if(tableName == 'vw_theme_disaster_gadm'){
-        sql = sql.replace(" * ", " 'Disaster' as theme_type, " + settings.disasterDetails.join(" ,") + " "); //Replace * with whitelist
+    if(tableName == 'sf_project'){
+       sql = sql.replace(" * ", " 'Project' as theme_type, " + settings.projectDetails.join(" ,") + ",level "); //Replace * with whitelist
+    }else if(tableName == 'sf_disaster'){
+        sql = sql.replace(" * ", " 'Disaster' as theme_type, " + settings.disasterDetails.join(" ,") + ",level "); //Replace * with whitelist
     }
     return sql;
 }
@@ -76,7 +76,13 @@ operation.execute = flow.define(
         var mergedResults = {rows: []};
         operation.Queries.forEach(function(queryObj) {
             if(queryObj.query.length > 0) {
-                mergedResults.rows = mergedResults.rows.concat(results[queryObj.type][1].rows);
+                if(results[queryObj.type][0]){
+                    //There was an error.
+                    //Skip this.
+                    common.log("Error searching for " + queryObj.type);
+                }else{
+                    mergedResults.rows = mergedResults.rows.concat(results[queryObj.type][1].rows);
+                }
             }
         });
         this.callback(null, mergedResults);

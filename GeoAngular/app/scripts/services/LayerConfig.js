@@ -244,8 +244,36 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke": 'white',
       "stroke-width": 2,
       "stroke-opacity": 1,
-      "fill": "green",
       "fill-opacity": 0,
+      "style": function(properties){
+          var style = { color: 'white','weight': 1, 'opacity': 1 };
+          if(properties.hasOwnProperty("rfa_count")){
+              if(properties && properties.iroc_status__c){
+                  switch(properties.iroc_status__c.toLowerCase()){
+                      case "active":
+                          style.fillColor = "red";
+                          style.fillOpacity = 0.5;
+                          break;
+                      case "monitoring":
+                          style.fillColor = "yellow";
+                          style.fillOpacity = 0.5;
+                          break;
+                      case "inactive":
+                          style.fillColor = "green";
+                          style.fillOpacity = 0.5;
+                          break;
+                  }
+              }
+
+          }
+          else{
+                //not a disaster
+              style.fill = false;
+              style.color = "white";
+
+          }
+          return style;
+      },
       "labelProperty": function(properties){
           if(properties.hasOwnProperty("rfa_count")){
             return "<span>" + properties.theme_count + "<sub>" + properties.rfa_count + "</sub></span>";

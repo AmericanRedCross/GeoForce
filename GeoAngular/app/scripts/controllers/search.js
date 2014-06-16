@@ -48,8 +48,8 @@ module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', funct
         sendProjectToDetailsPanel(properties);
 
         //If we have a guid, then try to zoom to it.
-        if(properties.location__r_gis_geo_id__c){
-            zoomToGUID(properties.location__r_gis_geo_id__c);
+        if(properties.location__r_gis_geo_id__c && properties.level){
+            zoomToGUID(properties.location__r_gis_geo_id__c, properties.level);
         }
     };
 
@@ -59,11 +59,11 @@ module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', funct
 
 
     //this is a duplicate from breadcrumbs.js  Should be refactored to a single function
-    function zoomToGUID (guid) {
+    function zoomToGUID (guid, level) {
         //Given a GUID, zoom to the feature.
 
         //Grab the feature from the VectorProvider.
-        VectorProvider.fetchFeature(guid, -2, null, function (feat) {
+        VectorProvider.fetchFeature(guid, level, null, function (feat) {
             //Make a temp geojson layer and add the geojson.
             //Then grab the bounds from it and zoom to it.
 
