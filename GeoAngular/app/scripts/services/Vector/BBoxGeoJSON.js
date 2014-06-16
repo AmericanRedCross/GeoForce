@@ -32,10 +32,24 @@ function BBoxGeoJSON(config) {
   }
 
   bboxResources.push(this);
+  this._resIdx = bboxResources.length - 1;
 }
 
 BBoxGeoJSON.prototype = Object.create(Resource.prototype);
 BBoxGeoJSON.prototype.constructor = BBoxGeoJSON;
+
+
+BBoxGeoJSON.prototype.destroy = function() {
+  bboxResources.splice(this._resIdx,1);
+};
+
+
+BBoxGeoJSON.prototype.getLayer = function () {
+  var layer = Resource.prototype.getLayer.call(this);
+  layer.destroyResource = this.destroy; // gives the map to destroy the bboxgeojson vector provider resource
+  return layer;
+};
+
 
 BBoxGeoJSON.prototype._getFeatures = function (featObj) {
   var self = this;

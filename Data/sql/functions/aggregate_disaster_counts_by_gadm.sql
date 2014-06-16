@@ -44,7 +44,7 @@ SELECT  0 as countARC,
     vw_sf_disaster.people_affected__c,
     vw_sf_disaster.name,
     vw_sf_disaster.total_arc_contributions__c,
-    vw_sf_disaster.summary
+    vw_sf_disaster.summary__c
 
 INTO    sf_aggregated_gadm_disaster_counts 
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, gadm5, vw_sf_disaster 
@@ -109,7 +109,7 @@ INSERT INTO sf_aggregated_gadm_disaster_counts
     vw_sf_disaster.people_affected__c,
     vw_sf_disaster.name,
     vw_sf_disaster.total_arc_contributions__c,
-    vw_sf_disaster.summary
+    vw_sf_disaster.summary__c
  
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, vw_sf_disaster 
 WHERE   gadm0.id_0 = gadm1.id_0 
@@ -167,7 +167,7 @@ INSERT INTO sf_aggregated_gadm_disaster_counts
     vw_sf_disaster.people_affected__c,
     vw_sf_disaster.name,
     vw_sf_disaster.total_arc_contributions__c,
-    vw_sf_disaster.summary
+    vw_sf_disaster.summary__c
  
 FROM    gadm0, gadm1, gadm2, gadm3, vw_sf_disaster 
 WHERE   gadm0.id_0 = gadm1.id_0 
@@ -221,7 +221,7 @@ INSERT INTO sf_aggregated_gadm_disaster_counts
     vw_sf_disaster.people_affected__c,
     vw_sf_disaster.name,
     vw_sf_disaster.total_arc_contributions__c,
-    vw_sf_disaster.summary
+    vw_sf_disaster.summary__c
  
 FROM  gadm0, gadm1, gadm2, vw_sf_disaster 
 WHERE gadm0.id_0 = gadm1.id_0 
@@ -273,7 +273,7 @@ INSERT INTO sf_aggregated_gadm_disaster_counts
     vw_sf_disaster.people_affected__c,
     vw_sf_disaster.name,
     vw_sf_disaster.total_arc_contributions__c,
-    vw_sf_disaster.summary
+    vw_sf_disaster.summary__c
  
 FROM  gadm1, gadm0, vw_sf_disaster 
 WHERE gadm0.id_0 = gadm1.id_0 

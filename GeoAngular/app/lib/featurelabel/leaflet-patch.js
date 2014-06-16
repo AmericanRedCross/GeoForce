@@ -9,15 +9,42 @@
 
 var featurelabel = require('./featurelabel');
 
-module.exports = L.Polyline.prototype._updatePath = function () {
-  if (!this._map) { return; }
+module.exports = function() {
 
-  this._clipPoints();
-  this._simplifyPoints();
+  /**
+   * Leaflet puts too much of a buffer around the area in which a shape
+   * is clipped, thus we were not getting good centroids for shapes that
+   * were being clipped. This resolves that.
+   */
+  L.Path.CLIP_PADDING = 0.02;
 
-  L.Path.prototype._updatePath.call(this);
+  L.Polyline.prototype._updatePath = function () {
+    if (!this._map) { return; }
 
-  if (featurelabel) {
+    this._clipPoints();
+    this._simplifyPoints();
+
+    L.Path.prototype._updatePath.call(this);
+
+    /**
+     * Notifies featurelabel that a path for a vector has been redrawn and the label should
+     * positioned or repositioned.
+     */
     featurelabel.pathUpdated(this._leaflet_id);
-  }
-};
+  };
+
+  /**
+   * Fixes a Leaflet bug where a reference to this._map is sometimes missing.
+   */
+  L.Path.prototype.bringToFront = function () {
+    this._map = window.map;
+    var root = this._map._pathRoot,
+        path = this._container;
+
+    if (path && root.lastChild !== path) {
+      root.appendChild(path);
+    }
+    return this;
+  };
+
+}();

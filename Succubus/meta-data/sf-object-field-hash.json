@@ -2591,6 +2591,11 @@
       "inlineHelpText": "This field represents total ARC contributions provided for this request.",
       "picklistValues": []
     },
+    "latest_checklist__c": {
+      "label": "Latest Checklist",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
     "arc_response_date__c": {
       "label": "ARC Response Date",
       "inlineHelpText": null,
@@ -2703,6 +2708,11 @@
       "inlineHelpText": null,
       "picklistValues": []
     },
+    "location__r_name__c": {
+      "label": "Name",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
     "location__r_type__c": {
       "label": "Type",
       "inlineHelpText": null,
@@ -2800,6 +2810,11 @@
     },
     "location__r_admin_5__c": {
       "label": "Admin 5",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "location__r_country_iso_code__c": {
+      "label": "Country ISO Code",
       "inlineHelpText": null,
       "picklistValues": []
     },
