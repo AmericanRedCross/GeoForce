@@ -244,20 +244,21 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "styleFn": function(properties){
           var style = { color: 'white','weight': 1, 'opacity': 1 };
           if(properties.hasOwnProperty("rfa_count")){
-              if(properties && properties.iroc_status__c) {
-                  if (properties.iroc_status__c.toLowerCase().indexOf("active") > -1) {
-                      style.fillColor = "red";
-                      style.fillOpacity = 0.5;
+              if(properties && properties.iroc_status__c){
+                  switch(properties.iroc_status__c.toLowerCase()){
+                      case "active":
+                          style.fillColor = "red";
+                          style.fillOpacity = 0.3;
+                          break;
+                      case "monitoring":
+                          style.fillColor = "yellow";
+                          style.fillOpacity = 0.3;
+                          break;
+                      case "inactive":
+                          style.fillColor = "green";
+                          style.fillOpacity = 0.3;
+                          break;
                   }
-                  else if (properties.iroc_status__c.toLowerCase().indexOf("monitoring") > -1) {
-                      style.fillColor = "yellow";
-                      style.fillOpacity = 0.5;
-                  }
-                  else {
-                      style.fillColor = "green";
-                      style.fillOpacity = 0.5;
-                  }
-
               }
 
           }
