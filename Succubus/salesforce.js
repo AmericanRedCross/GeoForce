@@ -68,7 +68,7 @@ function execQuery(queryStr,cb) {
         .on("record", function(record) {
             if(records.length == 0){ console.log("Getting results for " + queryStr) }
             records.push(record);
-            console.log("adding record. " + records.length)
+//            console.log("adding record. " + records.length)
         })
         .on("end", function(query) {
             console.log("total in database : " + query.totalSize);
@@ -78,7 +78,10 @@ function execQuery(queryStr,cb) {
         .on("error", function(err) {
             console.error(err);
         })
-        .run({ autoFetch : true});
+        .run({
+          autoFetch: true,
+          maxFetch : 1000000000000000000000000000000000000000000000000000000000000000000000000000
+        });
 }
 
 function handleResult(result, cb, recordsCollection) {

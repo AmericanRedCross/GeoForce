@@ -25,7 +25,7 @@ var query = module.exports.query = function(queryStr, cb) {
         if(err) {
             console.error('error fetching client from pool', err);
         }
-			  console.log(queryStr);
+//			  console.log(queryStr);
         client.query(queryStr, function(queryerr, result) {
             //call `done()` to release the client back to the pool
             done();
@@ -343,7 +343,7 @@ function insertAllQueryTables (cb){
         insertQuery(sfQueryName, this);
     },function(err){
         //After every iteration is complete.
-            console.log("Finished processing a SOQL Query.")
+        console.log("Finished processing a SOQL Query.")
     },
     function(){
         //When all are done.
