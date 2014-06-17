@@ -149,7 +149,7 @@ if (datablaster)
 if(process.env.NODE_ENV.toLowerCase() == "production"){
     //Create web server (https)
     https.createServer(SSLoptions, app).listen(app.get('port'), app.get('ipaddr'), function() {
-        var startMessage = "Express server listening";
+        var startMessage = "Express server listening (HTTPS)";
 
         if (app.get('ipaddr')) {
             startMessage += ' on IP:' + app.get('ipaddr') + ', ';
