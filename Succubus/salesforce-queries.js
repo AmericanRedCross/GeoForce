@@ -159,18 +159,6 @@ module.exports = {
    */
   project: "Select " + metaFields + ", " + locationFields + ", " + projectFields + " From Project__c",
 
-
-  /**
-   * Shows number of projects and the budget per country.
-   */
-  numProjAndBudgetPerCountry: "Select Count(Name) project_count, Sum(Total_Budget__c) total_budget, Location__r.Admin_0__c From Project__c Group By Location__r.Admin_0__c",
-
-  /**
-   * Shows all of the projects grouped by country
-   */
-  projGroupedByCountry: "Select Location__r.Admin_0__c, Location__r.GIS_GEO_ID__c, Count(Name) project_count, Sum(Total_Budget__c) total_budget From Project__c Group By Location__r.Admin_0__c, Location__r.GIS_GEO_ID__c",
-
-
   /**
    * Selects all applicable information relating to the disasters table.
    */

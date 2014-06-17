@@ -183,10 +183,12 @@ function createLabel(featureLayer, featureSet) {
     }
   }
 
+  label.clearAllEventListeners();
   label.on('click', function (e) {
     click(this, this.featureLayer);
   });
 
+  featureLayer.clearAllEventListeners();
   featureLayer.on('click', function (e) {
     click(this.label, this);
   });
@@ -212,8 +214,6 @@ function createLabel(featureLayer, featureSet) {
         featureSet.selectedFeatureLayer.setStyle({
           color: properties.color || 'white'
         });
-        featureSet.selectedFeatureLayer.bringToFront();
-        featureSet.selectedFeatureLayer = null;
       }
       label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
       // red cross red #ed1b2e
@@ -281,6 +281,12 @@ function area(partArr) {
   return area / 2;
 }
 
+/*
+    NH TODO: We are indeed getting the centroid, but ideally we
+    want to check if the centroid is actually within the polygon
+    for the polygons that bend like a boomarang. If it is outside,
+    we need to nudge it over until it is inside...
+ */
 function centroid(partArr) {
   var len = partArr.length;
   var x = 0;
@@ -730,7 +736,9 @@ module.exports = function() {
    * Fixes a Leaflet bug where a reference to this._map is sometimes missing.
    */
   L.Path.prototype.bringToFront = function () {
-    this._map = window.map;
+    if (!this._map) {
+      return this;
+    }
     var root = this._map._pathRoot,
         path = this._container;
 
