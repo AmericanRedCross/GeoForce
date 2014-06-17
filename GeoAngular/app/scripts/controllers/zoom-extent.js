@@ -29,13 +29,11 @@ module.exports = angular.module('GeoAngular').controller('ZoomExtentCtrl', funct
   vecResRegion.fetch(function(geojson){
     //Sort alphabetically
     geojson.features = geojson.features.sort(function(a,b){
-      var textA = a.properties.region;
-      var textB = b.properties.region;
+      var textA = a.properties.arc_region;
+      var textB = b.properties.arc_region;
       return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     });
 
-    //Break up the file into thirds
-    var length = geojson.features.length;
     $scope.regionList1 = geojson.features;
   });
 
