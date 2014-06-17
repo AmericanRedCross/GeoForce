@@ -26,6 +26,7 @@ app.set('ipaddr', settings.application.ip);
 app.set('port', process.env.PORT || settings.application.port);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
+app.set('trust proxy', true);
 app.enable("jsonp callback"); //TODO: Remove this if not needed because of CORS
 app.use(express.favicon(path.join(__dirname, 'public/img/favicon_rc.jpg')));
 app.use(express.logger('dev'));
@@ -202,7 +203,8 @@ function ensureAuthenticated(req, res, next) {
         //All other requests to the mapfolio folder should be allowed.
 
         //check for authentication
-        if(req.isAuthenticated()) {
+        //req.isAuthenticated() - always returns false.
+        if(req.session && req.session.passport && req.session.passport.user) {
             next();
         }
         else{
