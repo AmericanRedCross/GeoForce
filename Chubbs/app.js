@@ -48,6 +48,7 @@ app.use(require('less-middleware')({
 //Items in these folder will be served statically.
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
+app.use(ensureAuthenticated);
 app.use('/mapfolio/', express.static('../GeoAngular/app/'));
 
 
@@ -176,26 +177,18 @@ else{
 
 
 //Root Request - show application
-app.get('/', passport.authenticationFunctions, function(req, res) {
-    res.redirect('/mapfolio/');
+app.get('/', function(req, res) {
+    res.redirect('/mapfolio/index.html');
 });
 
 //Mapfolio Root Request - show application
-app.use('/mapfolio/', ensureAuthenticated, function(req, res) {
-    res.redirect('/mapfolio/index.html');
-});
+//app.use('/mapfolio/', function(req, res) {
+//    res.redirect('/mapfolio/index.html');
+//});
 
 //Redirect /services to table list
 app.get('/services', function(req, res) {
 	res.redirect('/services/tables')
-});
-
-//Look for any errors (this signature is for error handling), this is generally defined after all other app.uses.
-app.use(function(err, req, res, next) {
-	console.error(err.stack);
-	common.log(err.message);
-	res.send(500, 'There was an error with the web service. Please try your operation again.');
-	common.log('There was an error with the web service. Please try your operation again.');
 });
 
 // Simple route middleware to ensure user is authenticated.
@@ -207,25 +200,30 @@ app.use(function(err, req, res, next) {
 function ensureAuthenticated(req, res, next) {
 
     //If the request is for index.html, then lock it down.
-//    if (req.path.indexOf("index.html") == -1) {
-//        //All other requests to the mapfolio folder should be allowed.
-//
-//        //If the request URL is in the list of unsecured paths, don't worry about it and continue.
-//        if (_.some(settings.nonSecurePaths, function(item){
-//            return req.path.indexOf(item) > -1;
-//        })) {
-//            return next();
-//        }
-//    }
+    if (req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/") {
+        //All other requests to the mapfolio folder should be allowed.
 
-    //Otherwise, check for authentication
-    if(req.isAuthenticated()) {
-        return next();
+        //check for authentication
+        if(req.isAuthenticated()) {
+            next();
+        }
+        else{
+            res.redirect('/mapfolio/login.html');
+            return;
+        }
     }
-    res.redirect('/mapfolio/login.html');
+
+    next();
 }
 
-//app.use(ensureAuthenticated);
+
+//Look for any errors (this signature is for error handling), this is generally defined after all other app.uses.
+app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    common.log(err.message);
+    res.send(500, 'There was an error with the web service. Please try your operation again.');
+    common.log('There was an error with the web service. Please try your operation again.');
+});
 
 //look thru all tables in PostGres with a geometry column, spin up dynamic map tile services for each one
 //on startup.  Probably move this to a 'startup' module

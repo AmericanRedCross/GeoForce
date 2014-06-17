@@ -79,6 +79,8 @@
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
+    <!--<script src="lib/leaflet/leaflet-src.js"></script>-->
+
     <!-- build:js scripts/lib.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -86,6 +88,7 @@
     <script src="bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
     <script src="bower_components/ng-file-upload/angular-file-upload-html5-shim.js"></script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -103,20 +106,16 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/lib/d3.min.js"></script>
-    <script src="scripts/lib/togeojson.js"></script>
-    <script src="scripts/lib/mapbox.standalone.uncompressed.js"></script>
-    <script src="scripts/lib/jquery.layout-latest.min.js"></script>
-    <script src="scripts/lib/ui-bootstrap-tpls-0.11.0.min.js"></script>
-    <script src="scripts/lib/jquery.csv-0.71.min.js"></script>
+    <script src="lib/d3.min.js"></script>
+    <script src="lib/togeojson.js"></script>
+    <script src="lib/mapbox.standalone.uncompressed.js"></script>
+    <script src="lib/jquery.layout-latest.min.js"></script>
+    <script src="lib/ui-bootstrap-no-dropdown-tpls-0.11.0.js"></script>
+    <script src="lib/jquery.csv-0.71.min.js"></script>
+    <script src="scripts/global.js"></script>
     <script src="scripts/config.js"></script>
-    <script src="scripts/login.js"></script>
-    <script src="scripts/controllers/landing.js"></script>
-    <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/services/LayerConfig.js"></script>
-    <script src="scripts/services/VectorProvider.js"></script>
-    <script src="scripts/controllers/basemaps.js"></script>
-    <script src="scripts/controllers/zoom-extent.js"></script>
+    <script src="scripts/geo-angular.js"></script>
+
     <!-- endbuild -->
 
     <!--<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>-->
