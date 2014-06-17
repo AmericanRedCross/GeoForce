@@ -1,6 +1,6 @@
 //nonsensitiveSettings.js is part of the repository.
 //passwords and sensitive settings are in settings.js
-var nonsensitiveSettings = {}
+var nonsensitiveSettings = {};
 
 process.env.NODE_ENV = 'development'; //Change to 'production' or 'test' depending on deployment.
 
@@ -13,7 +13,7 @@ nonsensitiveSettings.application.port = 3001;
 nonsensitiveSettings.application.ip = "localhost";
 
 //Enable Security?
-nonsensitiveSettings.enableSecurity = true;
+nonsensitiveSettings.enableSecurity = false;
 
 
 nonsensitiveSettings.tilestream.host = "54.212.254.185";
