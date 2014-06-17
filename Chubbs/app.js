@@ -30,9 +30,8 @@ app.enable("jsonp callback"); //TODO: Remove this if not needed because of CORS
 app.use(express.favicon(path.join(__dirname, 'public/img/favicon_rc.jpg')));
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
-app.use(express.methodOverride());
 app.use(express.cookieParser());
-app.use(express.session({secret: settings.expressSessionSecret}));
+app.use(express.methodOverride());
 
 //Configure HTTPS
 var SSLoptions = {
