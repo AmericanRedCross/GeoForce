@@ -31,8 +31,8 @@ app.use(express.favicon(path.join(__dirname, 'public/img/favicon_rc.jpg')));
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
-app.use(express.session());
+app.use(express.cookieParser());
+app.use(express.session({secret: settings.expressSessionSecret}));
 
 //Configure HTTPS
 var SSLoptions = {
@@ -78,7 +78,7 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
     //Add a route to test OAUTH2
     app.get('/mapfolio/salesforcelogin', passport.authenticate('forcedotcom'));
 
-    // this should match the callbackURL parameter above:
+    // this should match the callbackURL parameter defined in config:
     app.get('/oauth2/callback',
         passport.authenticate('forcedotcom',
         { failureRedirect: '/error' }),
@@ -89,7 +89,7 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
 
     app.get('/mapfolio/logout', function(req,res){
         req.session.destroy(function (err) {
-            res.redirect('/'); //Inside a callback… bulletproof!
+            res.redirect('/');
         });
     });
 }
