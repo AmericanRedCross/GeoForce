@@ -777,7 +777,7 @@ operations.AddIndicesForSFTables =
     DROP INDEX IF EXISTS idx_sf_project_end_date__c; CREATE INDEX idx_sf_project_end_date__c ON sf_project USING btree (end_date__c); \
     DROP INDEX IF EXISTS idx_sf_project_sub_sector__c; CREATE INDEX idx_sf_project_sub_sector__c ON sf_project USING btree (sub_sector__c); \
     DROP INDEX IF EXISTS idx_sf_project_name; CREATE INDEX idx_sf_project_name ON sf_project USING btree (name); \
-    DROP INDEX IF EXISTS idx_sf_project_summary__c; CREATE INDEX idx_sf_project_summary__c ON sf_project USING btree (summary__c); \
+    DROP INDEX IF EXISTS idx_sf_project_summary__c; CREATE INDEX idx_sf_project_summary__c ON sf_project USING gist (summary__c); \
     DROP INDEX IF EXISTS idx_sf_project_total_budget__c; CREATE INDEX idx_sf_project_total_budget__c ON sf_project USING btree (total_budget__c); \
     DROP INDEX IF EXISTS idx_sf_project_sf_id; CREATE INDEX idx_sf_project_sf_id ON sf_project USING btree (sf_id);"
 
