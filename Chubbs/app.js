@@ -205,7 +205,7 @@ function ensureAuthenticated(req, res, next) {
         //check for authentication
         //req.isAuthenticated() - always returns false.
         if(req.session && req.session.passport && req.session.passport.user) {
-            next();
+            return next();
         }
         else{
             res.redirect('/mapfolio/login.html');
@@ -213,7 +213,7 @@ function ensureAuthenticated(req, res, next) {
         }
     }
 
-    next();
+    return next();
 }
 
 
