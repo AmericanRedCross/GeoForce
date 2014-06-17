@@ -841,9 +841,9 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
 GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider
     .when('/landing', '/map@35.029996,-89.340820,4(redcross,themecount)/landing')
-    .when('/default', '/map@0,0,2(pinterest,themecount)')
+    .when('/default', '/map@0,0,2(satellite,themecount)')
     .when('/phl', '/map@11.759815,121.893311,6(redcross,phl)')
-    .otherwise(localStorage.getItem('defaultRoute') || '/map@0,0,2(pinterest,themecount)/landing');
+    .otherwise(localStorage.getItem('defaultRoute') || '/map@0,0,2(satellite,themecount)/landing');
 
   $stateProvider
     .state('main', {
@@ -3062,7 +3062,6 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
    * list, can still be manually referenced in the url. This is just for the User Interface.
    */
   this.basemaps = [
-    'pinterest',
     'osmhot',
     'osm',
     'satellite',
@@ -3092,11 +3091,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
    *    images/{aliasName}.jpg
    *
    */
-  this.pinterest = {
-    url: 'http://{s}.tiles.mapbox.com/v3/pinterest.map-ho21rkos/{z}/{x}/{y}.png',
-    name: 'Pinterest',
-    type: 'basemap'
-  };
+
   this.osmhot = {
     url: 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
     name: 'Humanitarian OpenStreetMap',

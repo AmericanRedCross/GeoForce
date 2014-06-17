@@ -16,7 +16,6 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
    * list, can still be manually referenced in the url. This is just for the User Interface.
    */
   this.basemaps = [
-    'pinterest',
     'osmhot',
     'osm',
     'satellite',
@@ -46,11 +45,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
    *    images/{aliasName}.jpg
    *
    */
-  this.pinterest = {
-    url: 'http://{s}.tiles.mapbox.com/v3/pinterest.map-ho21rkos/{z}/{x}/{y}.png',
-    name: 'Pinterest',
-    type: 'basemap'
-  };
+
   this.osmhot = {
     url: 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
     name: 'Humanitarian OpenStreetMap',
