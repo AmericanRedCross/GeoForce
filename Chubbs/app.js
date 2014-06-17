@@ -39,18 +39,6 @@ var SSLoptions = {
     passphrase: settings.ssl.password
 };
 
-//Set up a public folder.  
-app.use(require('less-middleware')({
-	src : __dirname + '/public'
-}));
-
-//Items in these folder will be served statically.
-app.use(express.static(path.join(__dirname, 'public')));
-app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
-app.use(ensureAuthenticated);
-app.use('/mapfolio/', express.static('../GeoAngular/app/'));
-
-
 var passport = require('./endpoints/authentication').passport();
 
 //express app.get can be passed an array of intermediate functions before rendering.
@@ -96,6 +84,17 @@ else{
 	//keep an empty authentication functions property here
 	passport = { authenticationFunctions: []}; 
 }
+
+//Set up a public folder.
+app.use(require('less-middleware')({
+    src : __dirname + '/public'
+}));
+
+//Items in these folder will be served statically.
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
+app.use(ensureAuthenticated);
+app.use('/mapfolio/', express.static('../GeoAngular/app/'));
 
 //This must be after app.use(passport.initialize())
 app.use(cors());
