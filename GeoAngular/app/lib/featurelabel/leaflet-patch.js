@@ -37,7 +37,9 @@ module.exports = function() {
    * Fixes a Leaflet bug where a reference to this._map is sometimes missing.
    */
   L.Path.prototype.bringToFront = function () {
-    this._map = window.map;
+    if (!this._map) {
+      return this;
+    }
     var root = this._map._pathRoot,
         path = this._container;
 
