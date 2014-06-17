@@ -249,9 +249,9 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   $scope.resizeDetailsPanel = function() {
     var detailsPanelTop = $('#DetailsPanel').offset().top;
-//    var themeSelectorTop = $('#ThemeSelectorMenu').offset().top;
-    var themeSelectorTop = 694;
-    var height = themeSelectorTop - detailsPanelTop - 150;
+    //var themeSelectorTop = 694;
+    //var height = themeSelectorTop - detailsPanelTop - 150;
+      var height = $('#MapCtrl').height() - 350;
     $('#DetailsPanel .InnerContainer ').height(height);
   };
 
