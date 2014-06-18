@@ -105,5 +105,39 @@ config.disasterDetailsFormatting = {
  * @type {{}}
  */
 config.unwantedDisasterDetails = {
-    requestsForAssistance: "false"
+    requestsForAssistance: true,
+    affected_as_of__c: true,
+    createddate: true,
+    deaths_as_of__c: true,
+    unique_disaster_id__c: true,
+    disaster_id__c: true,
+    disaster__r_id: true,
+    id: true,
+    injured_as_of__c: true,
+    is_test_data__c: true,
+    lastmodifieddate: true,
+    level: true,
+    location__r_custom_name__c: true,
+    location__r_gis_geo_id__c: true,
+    location__r_internal_region__c: true,
+    location__r_isd_region__c: true,
+    location__r_latitude__c: true,
+    location__r_longitude__c: true,
+    location__r_type__c: true,
+    missing_as_of__c: true,
+    sf_id: true,
+    source_deaths__c: true,
+    source_people_affected__c: true,
+    source_people_injured__c: true,
+    source_people_missing__c: true,
+    systemmodstamp: true,
+    location__r_admin_0__c: function(item){ return (item ? false : true); }, //If item is something, then return false to show it.  Return true to hide it.
+    location__r_admin_1__c: function(item){ return (item ? false : true); },
+    location__r_admin_2__c: function(item){ return (item ? false : true); },
+    location__r_admin_3__c: function(item){ return (item ? false : true); },
+    location__r_admin_4__c: function(item){ return (item ? false : true); },
+    location__r_admin_5__c: function(item){ return (item ? false : true); }
+
+
+
 };

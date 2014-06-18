@@ -216,7 +216,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     $scope.itemsList = false;
     $scope.details = removeUnwantedItems(formatDetails(item));
     if (!$scope.contextualLayer) {
-      $scope.lessDetails = lessDetails(removeUnwantedItems(formatDetails(item)));
+      $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item)));
     }
     $scope.resizeDetailsPanel();
   };
@@ -225,6 +225,10 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
         var passthroughDetails = {};
         for(var key in details){
             var blacklisted = config.unwantedDisasterDetails[key];
+            if(blacklisted && (typeof blacklisted == 'function')){
+                //evaluate the function to decide if the key should be shown.
+                blacklisted = blacklisted(details[key]);
+            }
             if(!blacklisted){
                 //Allow the item thru if it is not blacklisted
                 passthroughDetails[key] = details[key];
