@@ -97,3 +97,13 @@ config.disasterDetailsFormatting = {
     systemmodstamp: "date",
     lastmodifieddate: "date"
 };
+
+
+/**
+ * This defines the fields we DON'T want to show in the Details panel
+ *
+ * @type {{}}
+ */
+config.unwantedDisasterDetails = {
+    requestsForAssistance: "false"
+};
