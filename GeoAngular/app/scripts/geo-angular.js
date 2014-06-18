@@ -944,6 +944,7 @@ angular.module('GeoAngular').directive('myShow', function($animate) {
 
 
 require('./services/LayerConfig');
+require('./services/StoriesConfig');
 require('./services/Vector/VectorProvider');
 require('./services/Donuts');
 require('./controllers/landing');
@@ -966,7 +967,7 @@ require('./controllers/search');
 require('./controllers/export');
 
 
-},{"./controllers/basemaps":6,"./controllers/breadcrumbs":7,"./controllers/details":8,"./controllers/export":9,"./controllers/filters":10,"./controllers/info":11,"./controllers/landing":12,"./controllers/layers":13,"./controllers/legend":14,"./controllers/main":15,"./controllers/map":16,"./controllers/navbar":17,"./controllers/search":18,"./controllers/side-view":19,"./controllers/stories":20,"./controllers/theme":21,"./controllers/upload":22,"./controllers/zoom-extent":23,"./services/Donuts":24,"./services/LayerConfig":25,"./services/Vector/VectorProvider":26}],6:[function(require,module,exports){
+},{"./controllers/basemaps":6,"./controllers/breadcrumbs":7,"./controllers/details":8,"./controllers/export":9,"./controllers/filters":10,"./controllers/info":11,"./controllers/landing":12,"./controllers/layers":13,"./controllers/legend":14,"./controllers/main":15,"./controllers/map":16,"./controllers/navbar":17,"./controllers/search":18,"./controllers/side-view":19,"./controllers/stories":20,"./controllers/theme":21,"./controllers/upload":22,"./controllers/zoom-extent":23,"./services/Donuts":24,"./services/LayerConfig":25,"./services/StoriesConfig":26,"./services/Vector/VectorProvider":27}],6:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 3/28/14.
@@ -2560,8 +2561,22 @@ module.exports = angular.module('GeoAngular').controller('SideViewCtrl', functio
  *       on 3/26/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function($scope, $stateParams) {
+module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function($scope, $stateParams, StoriesConfig) {
   $scope.params = $stateParams;
+
+  //Get Stories from config file and load them.
+  $scope.storiesConfig = StoriesConfig;
+  $scope.stories = [];
+
+    for (var storiesKey in StoriesConfig) {
+
+        // We don't want to show the find func.
+        if (  typeof StoriesConfig[storiesKey] === 'function' || storiesKey == 'stories') {
+            continue;
+        }
+
+       $scope.stories.push(StoriesConfig[storiesKey]);
+    }
 
 });
 },{}],21:[function(require,module,exports){
@@ -3542,6 +3557,77 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
 },{}],26:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 3/18/14.
+ */
+
+/**
+ * Config File for Stories Panel
+ */
+module.exports = angular.module('GeoAngular').service('StoriesConfig', function () {
+
+  /**
+   * Stories Panel List
+   *
+   * List of stories that get shown in the Stories Panel. Edit this to add or remove
+   * stories that the user will see as choices. All stories, including ones not in this
+   * list, can still be manually referenced in the url. This is just for the User Interface.
+   */
+  this.stories = [
+    'haiyan',
+    'ebola',
+  ];
+
+
+  /**
+   * Stories
+   *
+   * All story aliases can be referred to in the url. The corresponding
+   * path to the thumbnail in the Stories Panel should be:
+   *    images/{aliasName}.jpg
+   *
+   */
+
+  this.haiyan = {
+    url: '/mapfolio/index.html#/map@12.768946,122.486572,6(ortho,themecount,gdacs)?theme=disaster&details-panel=open&sf_id=a0Ed000000qZntUEAS',
+    name: 'Typhoon Haiyan Response',
+    date: '2013-10-12',
+    thumbnail: 'images/stories/haiyan.png',
+    keywords: 'Typhoon, Disaster Response, Haiyan, Disaster'
+  };
+  this.ebola = {
+    url: '/mapfolio/index.html#/map@15.072124,-3.460693,6(ortho,themecount,gdacs)?theme=disaster',
+    name: 'Ebola Outbreak Resopnse',
+    date: '2014-15-5',
+    thumbnail: 'images/stories/ebola.png',
+    keywords: 'Ebola, Disaster Response, Guinea, Disease, Mali'
+
+
+  };
+
+  /**
+   * For layers, we try and get an alias for everything, so if it's a URL that
+   * does not match, we just want to return itself so we can fetch that given url.
+   *
+   * @param name
+   * @returns {*}
+   */
+  this.find = function(name) {
+    var val = this[name] || this[name.toLowerCase()];
+    if (typeof val !== 'undefined' && val !== null) {
+      return val;
+    }
+    if (name.slice(0, 4).toLowerCase() === 'http') {
+      return name;
+    }
+    console.error('COULD NOT FIND ALIAS: ' + name);
+    return null;
+  };
+
+});
+
+},{}],27:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/19/14.
  */
 
@@ -3735,7 +3821,7 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
 });
 
 
-},{"./bboxgeojson":27,"./csv":28,"./geojson":29,"./kml":30,"./resource":31,"./vector":32}],27:[function(require,module,exports){
+},{"./bboxgeojson":28,"./csv":29,"./geojson":30,"./kml":31,"./resource":32,"./vector":33}],28:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -3999,7 +4085,7 @@ BBoxGeoJSON.prototype._removeInactiveLayers = function(self) {
   }
 };
 
-},{"../../../lib/featurelabel/FeatureSet":1,"./resource":31,"./vector":32}],28:[function(require,module,exports){
+},{"../../../lib/featurelabel/FeatureSet":1,"./resource":32,"./vector":33}],29:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 6/3/14.
@@ -4303,7 +4389,7 @@ CSV.prototype.Base64 = {
 
 };
 
-},{"./resource":31,"./vector":32}],29:[function(require,module,exports){
+},{"./resource":32,"./vector":33}],30:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -4367,7 +4453,7 @@ GeoJSON.prototype.getLayer = function() {
   return layer;
 };
 
-},{"./resource":31,"./vector":32}],30:[function(require,module,exports){
+},{"./resource":32,"./vector":33}],31:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -4435,7 +4521,7 @@ KML.prototype.eachLayer = function (cb) {
   });
 };
 
-},{"./resource":31,"./vector":32}],31:[function(require,module,exports){
+},{"./resource":32,"./vector":33}],32:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -4530,7 +4616,7 @@ Resource.prototype.eachLayer = function (cb) {
   this._geojsonLayer.eachLayer(cb);
 };
 
-},{"./vector":32}],32:[function(require,module,exports){
+},{"./vector":33}],33:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.

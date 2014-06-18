@@ -152,7 +152,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-offset-4 col-md-4">
-                            23 Stories
+                            {{stories.length}} Stories
                         </div>
                     </div>
                     <div class="row scrollable">
@@ -166,7 +166,7 @@
                                     <fieldset>
                                         <h4>Keywords:</h4>
 
-                                        <input class="form-control" type="text" placeholder="Search keywords...">
+                                        <input class="form-control" type="text" placeholder="Search keywords..." ng-model="storiesSearchText">
 
                                         <label class="checkbox">
                                             <input type="checkbox" value="all">
@@ -243,10 +243,10 @@
                     </div>
                     <div class="col-md-8">
                         <div class="row">
-                            <div class="col-md-6">
-                                <a href="#/thumbnail" class="thumbnail">
+                            <div class="col-md-6" ng-repeat="story in stories | filter:storiesSearchText">
+                                <a href="{{story.url}}" class="thumbnail">
                                     <div class="image">
-                                        <img src="images/thumb-tmp.png" alt="...">
+                                        <img ng-src="{{story.thumbnail}}" alt="...">
                                     </div>
                                     <div class="caption">
                                         <div class="container thumbnail-container">
@@ -255,108 +255,12 @@
                                                     <i class="item-arrow RCRed icon-14_arrow_stories"></i>
                                                 </div>
                                                 <div class="col-md-11 nopaddingnomargin">
-                                                    Haiyan Affected Areas Traced by Digital Volunteers
+                                                    {{story.name}}
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-offset-1 col-md-11 nopadding">
-                                                    <p>Dec 12 2013</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-6">
-                                <a href="#/thumbnail" class="thumbnail">
-                                    <div class="image">
-                                        <img src="images/thumb-tmp.png" alt="...">
-                                    </div>
-                                    <div class="caption">
-                                        <div class="container thumbnail-container">
-                                            <div class="row">
-                                                <div class="col-md-1 nopaddingnomargin">
-                                                    <i class="item-arrow RCRed icon-14_arrow_stories"></i>
-                                                </div>
-                                                <div class="col-md-11 nopaddingnomargin">
-                                                    Haiyan Affected Areas Traced by Digital Volunteers
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-offset-1 col-md-11 nopadding">
-                                                    <p>Dec 12 2013</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-6">
-                                <a href="#/thumbnail" class="thumbnail">
-                                    <div class="image">
-                                        <img src="images/thumb-tmp.png" alt="...">
-                                    </div>
-                                    <div class="caption">
-                                        <div class="container thumbnail-container">
-                                            <div class="row">
-                                                <div class="col-md-1 nopaddingnomargin">
-                                                    <i class="item-arrow RCRed icon-14_arrow_stories"></i>
-                                                </div>
-                                                <div class="col-md-11 nopaddingnomargin">
-                                                    Haiyan Affected Areas Traced by Digital Volunteers
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-offset-1 col-md-11 nopadding">
-                                                    <p>Dec 12 2013</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-6">
-                                <a href="#/thumbnail" class="thumbnail">
-                                    <div class="image">
-                                        <img src="images/thumb-tmp.png" alt="...">
-                                    </div>
-                                    <div class="caption">
-                                        <div class="container thumbnail-container">
-                                            <div class="row">
-                                                <div class="col-md-1 nopaddingnomargin">
-                                                    <i class="item-arrow RCRed icon-14_arrow_stories"></i>
-                                                </div>
-                                                <div class="col-md-11 nopaddingnomargin">
-                                                    Haiyan Affected Areas Traced by Digital Volunteers
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-offset-1 col-md-11 nopadding">
-                                                    <p>Dec 12 2013</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-6">
-                                <a href="#/thumbnail" class="thumbnail">
-                                    <div class="image">
-                                        <img src="images/thumb-tmp.png" alt="...">
-                                    </div>
-                                    <div class="caption">
-                                        <div class="container thumbnail-container">
-                                            <div class="row">
-                                                <div class="col-md-1 nopaddingnomargin">
-                                                    <i class="item-arrow RCRed icon-14_arrow_stories"></i>
-                                                </div>
-                                                <div class="col-md-11 nopaddingnomargin">
-                                                    Haiyan Affected Areas Traced by Digital Volunteers
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-offset-1 col-md-11 nopadding">
-                                                    <p>Dec 12 2013</p>
+                                                    <p>{{story.date}}</p>
                                                 </div>
                                             </div>
                                         </div>

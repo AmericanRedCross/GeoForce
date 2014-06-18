@@ -192,6 +192,7 @@ angular.module('GeoAngular').directive('myShow', function($animate) {
 
 
 require('./services/LayerConfig');
+require('./services/StoriesConfig');
 require('./services/Vector/VectorProvider');
 require('./services/Donuts');
 require('./controllers/landing');
