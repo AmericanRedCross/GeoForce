@@ -211,6 +211,12 @@ BBoxGeoJSON.prototype.fetchFeatureDetails = function(featureLayer) {
 
 };
 
+
+BBoxGeoJSON.prototype.showFeatureProperties = function(featureLayer) {
+  $rootScope.$broadcast('details', featureLayer);
+};
+
+
 BBoxGeoJSON.prototype.closeDetails = function () {
   $rootScope.closeParam('details-panel');
 };

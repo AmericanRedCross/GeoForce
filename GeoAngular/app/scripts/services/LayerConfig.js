@@ -302,7 +302,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke-width": 1.3,
       "stroke-opacity": 1,
       "fill-opacity": 0,
-      "labelProperty": "name"
+      "labelProperty": "name",
+      "onSelect": 'showFeatureProperties',
+      "onDeselect": 'closeDetails'
     }
 
   };

@@ -3475,7 +3475,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke-width": 1.3,
       "stroke-opacity": 1,
       "fill-opacity": 0,
-      "labelProperty": "name"
+      "labelProperty": "name",
+      "onSelect": 'showFeatureProperties',
+      "onDeselect": 'closeDetails'
     }
 
   };
@@ -4083,6 +4085,12 @@ BBoxGeoJSON.prototype.fetchFeatureDetails = function(featureLayer) {
   });
 
 };
+
+
+BBoxGeoJSON.prototype.showFeatureProperties = function(featureLayer) {
+  $rootScope.$broadcast('details', featureLayer);
+};
+
 
 BBoxGeoJSON.prototype.closeDetails = function () {
   $rootScope.closeParam('details-panel');
