@@ -769,7 +769,7 @@ SET nameARC = a.region, countarc = count0, rfacountarc = rfacount0,  guidarc = a
 FROM ARC_REGIONS_DISSOLVED a \
 WHERE ST_INTERSECTS(a.geom, geom0);"
 
-operations.AddIndicesForSFTables =
+operations.AddIndicesForProjecTable =
     "DROP INDEX IF EXISTS idx_sf_project_sector__c; CREATE INDEX idx_sf_project_sector__c ON sf_project USING btree (sector__c); \
     DROP INDEX IF EXISTS idx_sf_project_status__c; CREATE INDEX idx_sf_project_status__c ON sf_project USING btree (status__c); \
     DROP INDEX IF EXISTS idx_sf_project_stage_name__c; CREATE INDEX idx_sf_project_stage_name__c ON sf_project USING btree (stage_name__c); \
@@ -777,9 +777,21 @@ operations.AddIndicesForSFTables =
     DROP INDEX IF EXISTS idx_sf_project_end_date__c; CREATE INDEX idx_sf_project_end_date__c ON sf_project USING btree (end_date__c); \
     DROP INDEX IF EXISTS idx_sf_project_sub_sector__c; CREATE INDEX idx_sf_project_sub_sector__c ON sf_project USING btree (sub_sector__c); \
     DROP INDEX IF EXISTS idx_sf_project_name; CREATE INDEX idx_sf_project_name ON sf_project USING btree (name); \
-    DROP INDEX IF EXISTS idx_sf_project_summary__c; CREATE INDEX idx_sf_project_summary__c ON sf_project USING gist (summary__c); \
+    DROP INDEX IF EXISTS idx_sf_project_summary__c; CREATE INDEX idx_sf_project_summary__c ON sf_project USING gin(to_tsvector('english', summary__c)); \
     DROP INDEX IF EXISTS idx_sf_project_total_budget__c; CREATE INDEX idx_sf_project_total_budget__c ON sf_project USING btree (total_budget__c); \
-    DROP INDEX IF EXISTS idx_sf_project_sf_id; CREATE INDEX idx_sf_project_sf_id ON sf_project USING btree (sf_id);"
+    DROP INDEX IF EXISTS idx_sf_project_sf_id; CREATE INDEX idx_sf_project_sf_id ON sf_project USING btree (sf_id);";
+
+operations.AddIndicesForIndicatorTable =
+  "DROP INDEX IF EXISTS idx_sf_indicator_sf_id; CREATE INDEX idx_sf_indicator_sf_id ON sf_indicator USING btree (sf_id); \
+  DROP INDEX IF EXISTS idx_sf_indicator_logframe_element__c; CREATE INDEX idx_sf_indicator_logframe_element__c ON sf_indicator USING btree (logframe_element__c); \
+  DROP INDEX IF EXISTS idx_sf_indicator_project__c; CREATE INDEX idx_sf_indicator_project__c ON sf_indicator USING btree (project__c); ";
+
+operations.AddIndicesForIndicatorValueTable =
+  "DROP INDEX IF EXISTS idx_sf_indicator_value_sf_id; CREATE INDEX idx_sf_indicator_value_sf_id ON sf_indicator_value USING btree (sf_id); \
+  DROP INDEX IF EXISTS idx_sf_indicator_value_indicator__c; CREATE INDEX idx_sf_indicator_value_indicator__c ON sf_indicator_value USING btree (indicator__c); ";
+
+operations.AddIndicesForLogframeElementTable =
+  "DROP INDEX IF EXISTS idx_sf_logframe_element_sf_id; CREATE INDEX idx_sf_logframe_element_sf_id ON sf_logframe_element USING btree (sf_id); ";
 
 //operations.vacuum = "VACUUM ANALYZE;";
 
@@ -787,7 +799,9 @@ module.exports.run = flow.define(
 	function(cb) {
 		this.cb = cb;
 		for (var operation in operations) {
+      console.log("Postprocessing: " + operation);
 			ecosetl.query(operations[operation], this.MULTI());
+      console.log("Done.");
 		}
 	},
 	function(){

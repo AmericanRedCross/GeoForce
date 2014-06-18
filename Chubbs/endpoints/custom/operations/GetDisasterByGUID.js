@@ -109,8 +109,7 @@ operation.execute = flow.define(
             if (!disaster.requestsForAssistance) {
               disaster.requestsForAssistance = [];
             }
-            disaster.requestsForAssistance = reqForAssist[1].rows; // the second arg from the query, which would be the result.
-
+            disaster.requestsForAssistance = disaster.requestsForAssistance.concat(reqForAssist[1].rows); // the second arg from the query, which would be the result.
           }
         }
       }

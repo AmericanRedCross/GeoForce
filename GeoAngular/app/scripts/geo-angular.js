@@ -1120,6 +1120,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   $scope.details = {};
 
+  $scope.salesforceUrl = config.salesforceUrl;
+
   $http.get('data/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
     $scope.sfFieldHash = sfFieldHash;
   });

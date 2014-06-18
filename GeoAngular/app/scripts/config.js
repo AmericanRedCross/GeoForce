@@ -13,6 +13,8 @@ config.proxyPath = function(path) {
   return config.chubbsPath('services/utilities/proxy?url=' + path);
 };
 
+config.salesforceUrl = "https://na14.salesforce.com";
+
 
 /**
  * These are the details initially shown for projects.
