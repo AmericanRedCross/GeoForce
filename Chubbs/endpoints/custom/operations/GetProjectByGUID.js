@@ -87,10 +87,10 @@ operation.execute = flow.define(
             this.callback(indicRes[0]);
           } else {
             // apply indicator data to project
-            if (!proj.indicators) {
-              proj.indicators = [];
+            proj.indicators = indicRes[1].rows;
+            if (proj.indicators.length === 0) {
+              proj.indicators = 'none';
             }
-            proj.indicators = proj.indicators.concat(indicRes[1].rows);
           }
           break;
         }

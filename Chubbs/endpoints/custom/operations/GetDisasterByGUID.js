@@ -106,10 +106,10 @@ operation.execute = flow.define(
             this.callback(reqForAssist[0]);
           } else {
             // apply request for assistance data to disaster
-            if (!disaster.requestsForAssistance) {
-              disaster.requestsForAssistance = [];
+            disaster.requestsForAssistance = reqForAssist[1].rows; // the second arg from the query, which would be the result.
+            if (disaster.requestsForAssistance.length === 0) {
+              disaster.requestsForAssistance = 'none';
             }
-            disaster.requestsForAssistance = disaster.requestsForAssistance.concat(reqForAssist[1].rows); // the second arg from the query, which would be the result.
           }
         }
       }
