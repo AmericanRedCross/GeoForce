@@ -113,7 +113,7 @@ function createLabel(featureLayer, featureSet) {
   }
 
   //Determine map icon class
-  var iconClass = "featurelabel-icon";
+  var iconClass = "featurelabel-icon-text";
   if (properties["map-icon-class"]) {
       if (typeof properties["map-icon-class"] === 'function') {
           iconClass = properties["map-icon-class"](properties);
@@ -135,7 +135,7 @@ function createLabel(featureLayer, featureSet) {
   console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
 
   var icon = L.divIcon({
-    className: iconClass || ($.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon'),
+    className: iconClass || ($.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon-text'),
     iconSize: iconSize,
     html: text
   });
@@ -156,7 +156,7 @@ function createLabel(featureLayer, featureSet) {
   function whitenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon') > -1) {
+      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
         label._icon.style['color'] = 'rgba(255,255,255,0.7)';
       }
       // label has a badge
@@ -169,7 +169,7 @@ function createLabel(featureLayer, featureSet) {
   function goldenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon') > -1) {
+      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
         label._icon.style['color'] = 'rgba(237,178,41,0.8)';
       }
       // label has a badge
@@ -182,7 +182,7 @@ function createLabel(featureLayer, featureSet) {
   function reddenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon') > -1) {
+      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
         label._icon.style['color'] = 'rgba(237,27,46,0.5)';
       }
       // label has a badge
