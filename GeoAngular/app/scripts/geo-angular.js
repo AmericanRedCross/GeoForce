@@ -1181,7 +1181,17 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   $scope.hideRfa = function (details, value) {
     details.showRfa = false;
-    value.showRfa = false;s
+    value.showRfa = false;
+  };
+
+  $scope.showIndicators = function (details, value) {
+    details.showIndicators = true;
+    value.showIndicators = true;
+  };
+
+  $scope.hideIndicators = function (details, value) {
+    details.showIndicators = false;
+    value.showIndicators = false;
   };
 
   $scope.label = function (key) {
