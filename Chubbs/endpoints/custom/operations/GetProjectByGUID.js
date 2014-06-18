@@ -98,9 +98,6 @@ operation.execute = flow.define(
     }
     var results = { rows: this.projects };
 
-    // Celebrate your ability to savor the flavor of your
-    // project / indicator / indicator value / logframe element sandwich.
-    // Or maybe this sounds more like a kebab???
     this.callback(null, results);
   }
 );

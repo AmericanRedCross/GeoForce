@@ -727,10 +727,10 @@
                                 {{title}}
                             </div>
 
-                            <ul ng-show="details.requestsForAssistance" class="nav nav-tabs">
+                            <ul ng-show="details.requestsForAssistance || details.indicators" class="nav nav-tabs">
                                 <li class="active"><a class="a-nav-tab" ng-click="navTab='details'" data-toggle="tab">Details</a></li>
-                                <li><a class="a-nav-tab" ng-click="navTab='request'" data-toggle="tab">Requests For Assistance</a></li>
-                                <li><a class="a-nav-tab" ng-show="false" ng-click="navTab='indicators'" data-toggle="tab">Indicators</a></li>
+                                <li><a class="a-nav-tab" ng-show="details.requestsForAssistance" ng-click="navTab='request'" data-toggle="tab">Requests For Assistance</a></li>
+                                <li><a class="a-nav-tab" ng-show="details.indicators" ng-click="navTab='indicator'" data-toggle="tab">Indicators</a></li>
                             </ul>
 
                             <div class="InnerContainer scrollable">
@@ -785,6 +785,23 @@
 
                                             <ul>
                                                 <li ng-repeat="(key2, value2) in value">
+                                                    <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
+                                                    <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                </li>
+                                            </ul>
+
+                                            <hr/>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="section scrollable" ng-show="details && (navTab && navTab==='indicator')">
+                                    <ul>
+                                        <li ng-repeat="(key_, value_) in details.indicators">
+                                            <h4>{{value_.name}}</h4>
+
+                                            <ul>
+                                                <li ng-repeat="(key2, value2) in value_">
                                                     <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
                                                     <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
                                                 </li>
