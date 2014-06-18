@@ -357,3 +357,11 @@ UPDATE sf_aggregated_gadm_disaster_counts
 SET nameARC = a.region, countarc = count0, rfacountarc = rfacount0,  guidarc = a.gid, geomarc = a.geom 
 FROM ARC_REGIONS_DISSOLVED a 
 WHERE ST_INTERSECTS(a.geom, geom0);
+
+--The above geom intersection doesn't work for USA.  It puts United states in the LAC region.
+--so manually assign gadm0 projects to USA red cross region.
+UPDATE sf_aggregated_gadm_disaster_counts
+set nameARC = 'USA',
+guidarc = 3,
+geomarc = (select geom from ARC_REGIONS_DISSOLVED where gid = 3)
+where name0 = 'United States';

@@ -402,7 +402,14 @@ UPDATE sf_aggregated_gadm_project_counts SET geom0 = ST_BUFFER(geom0, 0); \
 UPDATE sf_aggregated_gadm_project_counts \
 SET nameARC = a.region, countarc = count0, guidarc = a.gid, geomarc = a.geom \
 FROM ARC_REGIONS_DISSOLVED a \
-WHERE ST_INTERSECTS(a.geom, geom0);";
+WHERE ST_INTERSECTS(a.geom, geom0); \
+\
+UPDATE sf_aggregated_gadm_project_counts \
+set nameARC = 'USA', \
+    guidarc = 3, \
+    geomarc = (select geom from ARC_REGIONS_DISSOLVED where gid = 3) \
+where name0 = 'United States';";
+
 
 
 
@@ -767,7 +774,13 @@ UPDATE sf_aggregated_gadm_disaster_counts SET geom0 = ST_BUFFER(geom0, 0); \
 UPDATE sf_aggregated_gadm_disaster_counts \
 SET nameARC = a.region, countarc = count0, rfacountarc = rfacount0,  guidarc = a.gid, geomarc = a.geom \
 FROM ARC_REGIONS_DISSOLVED a \
-WHERE ST_INTERSECTS(a.geom, geom0);"
+WHERE ST_INTERSECTS(a.geom, geom0); \
+\
+UPDATE sf_aggregated_gadm_disaster_counts \
+set nameARC = 'USA', \
+    guidarc = 3, \
+    geomarc = (select geom from ARC_REGIONS_DISSOLVED where gid = 3) \
+where name0 = 'United States';";
 
 operations.AddIndicesForProjecTable =
     "DROP INDEX IF EXISTS idx_sf_project_sector__c; CREATE INDEX idx_sf_project_sector__c ON sf_project USING btree (sector__c); \
