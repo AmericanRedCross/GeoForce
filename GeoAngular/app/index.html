@@ -173,32 +173,19 @@
                                             All
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="lorem">
-                                            Lorem ipsum
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="desdolore">
-                                            Des Dolore
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="disasterpreparedness">
-                                            Disaster Preparedness
+                                            <input type="checkbox" value="disasterpreparedness" ng-model="disasterpreparedness" ng-change="filterByCheckbox('Disaster Preparedness')">
                                             Disaster Preparedness
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="disasterresponse">
+                                            <input type="checkbox" value="disasterresponse" ng-model="disasterresponse" ng-change="filterByCheckbox('Disaster Response')">
                                             Disaster Response
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="haiti">
+                                            <input type="checkbox" value="haiti" ng-model="haiti" ng-change="filterByCheckbox('Haiti')">
                                             Haiti
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="programmap">
-                                            Program Map
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="restoringfamilylinks">
+                                            <input type="checkbox" value="restoringfamilylinks" ng-model="restoringfamilylinks" ng-change="filterByCheckbox('Restoring Family Links')">
                                             Restoring Family Links
                                         </label>
 
