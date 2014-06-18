@@ -153,9 +153,50 @@ function createLabel(featureLayer, featureSet) {
     mouseover(this.label, this);
   });
 
+  function whitenLabel(label) {
+    if (label._icon) {
+      // label is text only, no badge
+      if (label._icon.className.indexOf('featurelabel-icon') > -1) {
+        label._icon.style['color'] = 'rgba(255,255,255,0.7)';
+      }
+      // label has a badge
+      else {
+        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+      }
+    }
+  }
+
+  function goldenLabel(label) {
+    if (label._icon) {
+      // label is text only, no badge
+      if (label._icon.className.indexOf('featurelabel-icon') > -1) {
+        label._icon.style['color'] = 'rgba(237,178,41,0.8)';
+      }
+      // label has a badge
+      else {
+        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+      }
+    }
+  }
+
+  function reddenLabel(label) {
+    if (label._icon) {
+      // label is text only, no badge
+      if (label._icon.className.indexOf('featurelabel-icon') > -1) {
+        label._icon.style['color'] = 'rgba(237,27,46,0.5)';
+      }
+      // label has a badge
+      else {
+        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+      }
+    }
+  }
+
   function mouseover(label, featureLayer) {
     if (featureLayer !== featureSet.selectedFeatureLayer) {
-      if (label._icon) label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+
+      goldenLabel(label);
+
       featureLayer.setStyle({
         color: '#EDB229'  // gold
       });
@@ -173,7 +214,9 @@ function createLabel(featureLayer, featureSet) {
 
   function mouseout(label, featureLayer) {
     if (featureLayer !== featureSet.selectedFeatureLayer) {
-      if (label._icon) label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+
+      whitenLabel(label);
+
       featureLayer.setStyle({
         color: properties.color || 'white'
       });
@@ -196,7 +239,9 @@ function createLabel(featureLayer, featureSet) {
   function click(label, featureLayer) {
     // TURN OFF
     if (featureLayer === featureSet.selectedFeatureLayer) {
-      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+
+      whitenLabel(label);
+
       featureLayer.setStyle({
         color: properties.color || 'white'
       });
@@ -210,12 +255,14 @@ function createLabel(featureLayer, featureSet) {
     // TURN ON
     else {
       if (featureSet.selectedFeatureLayer) {
-        featureSet.selectedIcon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+        whitenLabel({_icon: featureSet.selectedIcon});
         featureSet.selectedFeatureLayer.setStyle({
           color: properties.color || 'white'
         });
       }
-      label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+
+      reddenLabel(label);
+
       // red cross red #ed1b2e
       featureLayer.setStyle({
         color: '#d9534f' // red

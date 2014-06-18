@@ -299,9 +299,8 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
-      "stroke-width": 2,
+      "stroke-width": 1.3,
       "stroke-opacity": 1,
-      "fill": "green",
       "fill-opacity": 0,
       "labelProperty": "name"
     }
