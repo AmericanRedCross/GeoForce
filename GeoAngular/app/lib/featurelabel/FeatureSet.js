@@ -142,6 +142,9 @@ function createLabel(featureLayer, featureSet) {
 
   var label = new Label(point, featureLayer, {icon:icon});
 
+  label.clearAllEventListeners();
+  featureLayer.clearAllEventListeners();
+
   label.on('mouseover', function(e) {
     mouseover(this, this.featureLayer);
   });
@@ -182,12 +185,10 @@ function createLabel(featureLayer, featureSet) {
     }
   }
 
-  label.clearAllEventListeners();
   label.on('click', function (e) {
     click(this, this.featureLayer);
   });
 
-  featureLayer.clearAllEventListeners();
   featureLayer.on('click', function (e) {
     click(this.label, this);
   });
