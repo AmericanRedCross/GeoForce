@@ -670,23 +670,32 @@
                                 </div>
 
                                 <div class="section scrollable" ng-show="details && (navTab && navTab==='request')">
+                                    <p ng-show="details.requestsForAssistance === 'none'">
+                                        There are currently no requests for assistance for this disaster...
+                                    </p>
                                     <ul>
                                         <li ng-repeat="(key, value) in details.requestsForAssistance">
-                                            <h4>{{value.name}}</h4>
+                                            <a ng-show="!details.showRfa" ng-click="details.showRfa=true"><h4>{{value.name}}</h4></a>
 
-                                            <ul>
-                                                <li ng-repeat="(key2, value2) in value">
-                                                    <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
-                                                    <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
-                                                </li>
-                                            </ul>
+                                            <div ng-show="details.showRfa">
+                                                <a ng-click="details.showRfa=false">< Back to RFA List</a>
+                                                <h4>{{value.name}}</h4>
+                                                <ul>
+                                                    <li ng-repeat="(key2, value2) in value">
+                                                        <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
+                                                        <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                    </li>
+                                                </ul>
+                                            </div>
 
-                                            <hr/>
                                         </li>
                                     </ul>
                                 </div>
 
                                 <div class="section scrollable" ng-show="details && (navTab && navTab==='indicator')">
+                                    <p ng-show="details.indicators === 'none'">
+                                        There are currently no indicators for this project...
+                                    </p>
                                     <ul>
                                         <li ng-repeat="(key_, value_) in details.indicators">
                                             <h4>{{value_.name}}</h4>
