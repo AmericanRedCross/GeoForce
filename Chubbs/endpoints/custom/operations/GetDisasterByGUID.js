@@ -42,6 +42,7 @@ operation.DisasterQuery =
 "SELECT dis.*, loc.* FROM sf_disaster_location AS loc \
 LEFT JOIN sf_disaster as dis ON loc.disaster__r_id = dis.sf_id \
 INNER JOIN sf_aggregated_gadm_disaster_counts ON dis.sf_id = sf_aggregated_gadm_disaster_counts.sf_id \
+AND sf_aggregated_gadm_disaster_counts.guid{{gadm_level}}::text = loc.location__r_gis_geo_id__c \
 WHERE guid{{gadm_level}} = ({{guids}});";
 
 
@@ -70,7 +71,7 @@ operation.execute = flow.define(
 
       //need to wrap ids in single quotes
       //Execute the query
-      var disasterQuery = { text: operation.DisasterQuery.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])).replace("{{gadm_level}}", operation.inputs["gadm_level"]) };
+      var disasterQuery = { text: operation.DisasterQuery.split("{{guids}}").join(operation.wrapIdsInQuotes(operation.inputs["guids"])).split("{{gadm_level}}").join(operation.inputs["gadm_level"]) };
       common.executePgQuery(disasterQuery, this);//Flow to next function when done.
     }
     else {
