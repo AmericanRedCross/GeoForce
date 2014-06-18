@@ -675,10 +675,10 @@
                                     </p>
                                     <ul>
                                         <li ng-repeat="(key, value) in details.requestsForAssistance">
-                                            <a ng-show="!details.showRfa" ng-click="details.showRfa=true"><h4>{{value.name}}</h4></a>
+                                            <a ng-show="!details.showRfa" ng-click="showRfa(details, value)"><h4>{{value.name}}</h4></a>
 
-                                            <div ng-show="details.showRfa">
-                                                <a ng-click="details.showRfa=false">< Back to RFA List</a>
+                                            <div ng-show="value.showRfa">
+                                                <a ng-click="hideRfa(details, value)">< Back to RFA List</a>
                                                 <h4>{{value.name}}</h4>
                                                 <ul>
                                                     <li ng-repeat="(key2, value2) in value">

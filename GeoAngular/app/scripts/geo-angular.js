@@ -1174,6 +1174,16 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     $scope.sfFieldHash = sfFieldHash;
   });
 
+  $scope.showRfa = function (details, value) {
+    details.showRfa = true;
+    value.showRfa = true;
+  };
+
+  $scope.hideRfa = function (details, value) {
+    details.showRfa = false;
+    value.showRfa = false;s
+  };
+
   $scope.label = function (key) {
 
     var desc = key;
