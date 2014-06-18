@@ -42,5 +42,58 @@ config.projectDetailsShortList = {
  * @type {{}}
  */
 config.disasterDetailsShortList = {
-  name: true
+  name: true,
+  date__c: true,
+  category__c: true,
+  people_affected__c: true,
+  total_arc_contributions__c: true
+};
+
+
+
+/**
+ * This defines the type of formatting used for each field in the details panel
+ *
+ * @type {{}}
+ */
+config.projectDetailsFormatting = {
+    createddate: "date",
+    systemmodstamp: "date",
+    lastmodifieddate: "date",
+    concept_start_date__c: "date",
+    project_close_out_date__c: "date",
+    end_date__c: "date",
+    start_date__c: "date",
+    proposal_approved_on__c: "date",
+    proposal_submitted_on__c: "date",
+    target_beneficiaries_direct__c: "number",
+    target_beneficiaries_indirect__c: "number",
+    total_budget__c: "currency,$"
+};
+
+
+/**
+ * This defines the type of formatting used for each field in the details panel
+ *
+ * @type {{}}
+ */
+config.disasterDetailsFormatting = {
+    date__c: "date",
+    source_people_affected__c: "number",
+    total_arc_contributions__c: "currency,$", //Should be 'currency' followed by a comma and then an ANGULAR currency specification ("CHF" or "USD" or "$" or etc.)
+    source_people_missing__c: "number",
+    source_people_injured__c: "number",
+    source_people_affected__c: "number",
+    source_deaths__c: "number",
+    missing_as_of__c: "number",
+    injured_as_of__c: "number",
+    deaths_as_of__c: "number",
+    affected_as_of__c: "number",
+    people_missing__c: "number",
+    people_injured__c: "number",
+    people_affected__c: "number",
+    deaths__c: "number",
+    createddate: "date",
+    systemmodstamp: "date",
+    lastmodifieddate: "date"
 };

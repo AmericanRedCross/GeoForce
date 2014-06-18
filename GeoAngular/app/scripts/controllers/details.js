@@ -3,7 +3,7 @@
  *       on 4/9/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http, Donuts) {
+module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http, Donuts, $filter) {
 
   $scope.details = {};
 
@@ -204,12 +204,70 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (typeof idx === 'number') $scope.activeThemeItemIdx = idx;
     if (themeItems) $scope.activeThemeItemsList = themeItems;
     $scope.itemsList = false;
-    $scope.details = item;
+    $scope.details = formatDetails(item);
     if (!$scope.contextualLayer) {
-      $scope.lessDetails = lessDetails(item);
+      $scope.lessDetails = lessDetails(formatDetails(item));
     }
     $scope.resizeDetailsPanel();
   };
+
+  function formatDetails(details) {
+      var formattedDetails = {};
+      if ($stateParams.theme === 'disaster') {
+          for (var key in details) {
+              var formatter = config.disasterDetailsFormatting[key];
+              if (formatter) {
+                  switch(formatter.split(",")[0]){
+                      case "currency":
+                          formattedDetails[key] = $filter('currency')(details[key], (formatter.split(",")[1] || "USD"));
+                          break;
+
+                      case "number":
+                          formattedDetails[key] = $filter('number')(details[key]);
+                          break;
+
+                      case "date":
+                          formattedDetails[key] = $filter('date')(details[key], "yyyy-dd-MM");
+                          break;
+
+                      default:
+                          formattedDetails[key] = details[key];
+                  }
+              }
+              else{
+                  //No formatting
+                  formattedDetails[key] = details[key];
+              }
+          }
+      } else {
+          for (var key in details) {
+              var formatter = config.projectDetailsFormatting[key];
+              if (formatter) {
+                  switch(formatter.split(",")[0]){
+                      case "currency":
+                          formattedDetails[key] = $filter('currency')(details[key], (formatter.split(",")[1] || "USD"));
+                          break;
+
+                      case "number":
+                          formattedDetails[key] = $filter('number')(details[key]);
+                          break;
+
+                      case "date":
+                          formattedDetails[key] = $filter('date')(details[key], "yyyy-dd-MM");
+                          break;
+
+                      default:
+                          formattedDetails[key] = details[key];
+                  }
+              }
+              else{
+                  //No formatting
+                  formattedDetails[key] = details[key];
+              }
+          }
+      }
+      return formattedDetails;
+  }
 
   function lessDetails(details) {
     var lessDetails = {};
@@ -251,9 +309,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   $scope.resizeDetailsPanel = function() {
     var detailsPanelTop = $('#DetailsPanel').offset().top;
-    //var themeSelectorTop = 694;
-    //var height = themeSelectorTop - detailsPanelTop - 150;
-      var height = $('#MapCtrl').height() - 350;
+      var height = $('#MapCtrl').height() - 350; //Magic Number
     $('#DetailsPanel .InnerContainer ').height(height);
   };
 

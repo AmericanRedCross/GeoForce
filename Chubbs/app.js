@@ -26,31 +26,19 @@ app.set('ipaddr', settings.application.ip);
 app.set('port', process.env.PORT || settings.application.port);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
+app.set('trust proxy', true);
 app.enable("jsonp callback"); //TODO: Remove this if not needed because of CORS
 app.use(express.favicon(path.join(__dirname, 'public/img/favicon_rc.jpg')));
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
+app.use(express.cookieParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
-app.use(express.session());
 
 //Configure HTTPS
 var SSLoptions = {
     pfx: fs.readFileSync(settings.ssl.pfx),
     passphrase: settings.ssl.password
 };
-
-//Set up a public folder.  
-app.use(require('less-middleware')({
-	src : __dirname + '/public'
-}));
-
-//Items in these folder will be served statically.
-app.use(express.static(path.join(__dirname, 'public')));
-app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
-app.use(ensureAuthenticated);
-app.use('/mapfolio/', express.static('../GeoAngular/app/'));
-
 
 var passport = require('./endpoints/authentication').passport();
 
@@ -78,7 +66,7 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
     //Add a route to test OAUTH2
     app.get('/mapfolio/salesforcelogin', passport.authenticate('forcedotcom'));
 
-    // this should match the callbackURL parameter above:
+    // this should match the callbackURL parameter defined in config:
     app.get('/oauth2/callback',
         passport.authenticate('forcedotcom',
         { failureRedirect: '/error' }),
@@ -89,7 +77,7 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
 
     app.get('/mapfolio/logout', function(req,res){
         req.session.destroy(function (err) {
-            res.redirect('/'); //Inside a callback… bulletproof!
+            res.redirect('/');
         });
     });
 }
@@ -97,6 +85,17 @@ else{
 	//keep an empty authentication functions property here
 	passport = { authenticationFunctions: []}; 
 }
+
+//Set up a public folder.
+app.use(require('less-middleware')({
+    src : __dirname + '/public'
+}));
+
+//Items in these folder will be served statically.
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
+app.use(ensureAuthenticated);
+app.use('/mapfolio/', express.static('../GeoAngular/app/'));
 
 //This must be after app.use(passport.initialize())
 app.use(cors());
@@ -204,8 +203,9 @@ function ensureAuthenticated(req, res, next) {
         //All other requests to the mapfolio folder should be allowed.
 
         //check for authentication
-        if(req.isAuthenticated()) {
-            next();
+        //req.isAuthenticated() - always returns false.
+        if(req.session && req.session.passport && req.session.passport.user) {
+            return next();
         }
         else{
             res.redirect('/mapfolio/login.html');
@@ -213,7 +213,7 @@ function ensureAuthenticated(req, res, next) {
         }
     }
 
-    next();
+    return next();
 }
 
 
