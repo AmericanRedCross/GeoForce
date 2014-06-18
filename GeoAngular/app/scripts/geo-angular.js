@@ -1181,7 +1181,17 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   $scope.hideRfa = function (details, value) {
     details.showRfa = false;
-    value.showRfa = false;s
+    value.showRfa = false;
+  };
+
+  $scope.showIndicators = function (details, value) {
+    details.showIndicators = true;
+    value.showIndicators = true;
+  };
+
+  $scope.hideIndicators = function (details, value) {
+    details.showIndicators = false;
+    value.showIndicators = false;
   };
 
   $scope.label = function (key) {
@@ -1375,12 +1385,24 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (typeof idx === 'number') $scope.activeThemeItemIdx = idx;
     if (themeItems) $scope.activeThemeItemsList = themeItems;
     $scope.itemsList = false;
-    $scope.details = formatDetails(item);
+    $scope.details = removeUnwantedItems(formatDetails(item));
     if (!$scope.contextualLayer) {
-      $scope.lessDetails = lessDetails(formatDetails(item));
+      $scope.lessDetails = lessDetails(removeUnwantedItems(formatDetails(item)));
     }
     $scope.resizeDetailsPanel();
   };
+
+  function removeUnwantedItems(details){
+        var passthroughDetails = {};
+        for(var key in details){
+            var blacklisted = config.unwantedDisasterDetails[key];
+            if(!blacklisted){
+                //Allow the item thru if it is not blacklisted
+                passthroughDetails[key] = details[key];
+            }
+        }
+      return passthroughDetails;
+  }
 
   function formatDetails(details) {
       var formattedDetails = {};
