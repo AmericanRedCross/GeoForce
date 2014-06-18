@@ -683,6 +683,9 @@
                                 </div>
 
                                 <div class="section scrollable" ng-show="details && (navTab && navTab==='request')">
+                                    <p ng-show="details.requestsForAssistance === 'none'">
+                                        There are currently no requests for assistance for this disaster...
+                                    </p>
                                     <ul>
                                         <li ng-repeat="(key, value) in details.requestsForAssistance">
                                             <h4>{{value.name}}</h4>
@@ -700,6 +703,9 @@
                                 </div>
 
                                 <div class="section scrollable" ng-show="details && (navTab && navTab==='indicator')">
+                                    <p ng-show="details.indicators === 'none'">
+                                        There are currently no indicators for this project...
+                                    </p>
                                     <ul>
                                         <li ng-repeat="(key_, value_) in details.indicators">
                                             <h4>{{value_.name}}</h4>
