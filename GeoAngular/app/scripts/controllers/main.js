@@ -9,6 +9,7 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
 
   var levelStr = $stateParams.level;
+  var zoomStr = $stateParams.zoomStr;
 
   $rootScope.$broadcast('route-update');
 
@@ -24,6 +25,11 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   if (levelStr !== null && levelStr !== window.prevLevelStr) {
     window.prevLevelStr = levelStr;
     $rootScope.$broadcast('level-update', levelStr);
+  }
+
+  if (zoomStr !== window.prevZoomStr) {
+    window.prevZoomStr = zoomStr;
+    $rootScope.$broadcast('zoom-update', zoomStr);
   }
 
 });

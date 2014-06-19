@@ -2071,7 +2071,7 @@ module.exports = angular.module('GeoAngular').controller('LandingCtrl', function
 
 module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig, VectorProvider) {
   $scope.params = $stateParams;
-  $scope.zoom = $stateParams.zoom;
+  $scope.zoom = parseInt($stateParams.zoom);
   $scope.navTab = 'contextual';
 
   debug.LayerConfig = LayerConfig;
@@ -2087,6 +2087,12 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
   $scope.$on('level-update', function () {
     VectorProvider.setGadmLevel($stateParams.level);
+    $scope.gadmLevel = $stateParams.level
+  });
+
+  $scope.$on('zoom-update', function () {
+    console.log("zoom: " + $stateParams.zoom);
+    $scope.zoom = parseInt($stateParams.zoom);
   });
 
   $scope.layersPanels = {
@@ -2275,6 +2281,7 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
 
   var levelStr = $stateParams.level;
+  var zoomStr = $stateParams.zoomStr;
 
   $rootScope.$broadcast('route-update');
 
@@ -2290,6 +2297,11 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   if (levelStr !== null && levelStr !== window.prevLevelStr) {
     window.prevLevelStr = levelStr;
     $rootScope.$broadcast('level-update', levelStr);
+  }
+
+  if (zoomStr !== window.prevZoomStr) {
+    window.prevZoomStr = zoomStr;
+    $rootScope.$broadcast('zoom-update', zoomStr);
   }
 
 });

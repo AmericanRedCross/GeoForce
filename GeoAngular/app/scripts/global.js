@@ -40,4 +40,5 @@ gists.fetch = function() {
 };
 
 window.prevLayersStr = '';
-widnow.prevLevelStr = '';
+window.prevLevelStr = '';
+window.prevZoomStr = '';
