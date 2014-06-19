@@ -3,12 +3,26 @@
  *       on 3/27/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig) {
+module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig, VectorProvider) {
   $scope.params = $stateParams;
 
   $scope.navTab = 'contextual';
 
   debug.LayerConfig = LayerConfig;
+
+  debug.setGadmLevel = VectorProvider.setGadmLevel;
+
+  $scope.gadmLevel = 'auto';
+
+  $scope.$watch('gadmLevel', function (newValue) {
+    $stateParams.level = newValue;
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+  });
+
+  $scope.$on('route-update', function () {
+    VectorProvider.setGadmLevel($stateParams.level);
+  });
 
   $scope.layersPanels = {
     'Boundaries': {},

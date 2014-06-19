@@ -903,7 +903,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('main', {
-      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id',
+      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id&level',
       views: {
         'details': {
           template: ' ',
@@ -916,7 +916,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('landing', {
-      url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id',
+      url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id&level',
       views: {
         'details': {
           template: ' ',
@@ -929,7 +929,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('upload', {
-      url: '/map@:lat,:lng,:zoom(*layers)/upload?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id',
+      url: '/map@:lat,:lng,:zoom(*layers)/upload?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id&level',
       views: {
         'details': {
           template: ' ',
@@ -942,7 +942,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('export', {
-          url: '/map@:lat,:lng,:zoom(*layers)/export?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id',
+          url: '/map@:lat,:lng,:zoom(*layers)/export?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id&level',
           views: {
               'details': {
                   template: ' ',
@@ -2069,12 +2069,26 @@ module.exports = angular.module('GeoAngular').controller('LandingCtrl', function
  *       on 3/27/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig) {
+module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig, VectorProvider) {
   $scope.params = $stateParams;
 
   $scope.navTab = 'contextual';
 
   debug.LayerConfig = LayerConfig;
+
+  debug.setGadmLevel = VectorProvider.setGadmLevel;
+
+  $scope.gadmLevel = 'auto';
+
+  $scope.$watch('gadmLevel', function (newValue) {
+    $stateParams.level = newValue;
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+  });
+
+  $scope.$on('route-update', function () {
+    VectorProvider.setGadmLevel($stateParams.level);
+  });
 
   $scope.layersPanels = {
     'Boundaries': {},
@@ -3930,6 +3944,23 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
       fetchFeatureItinerary();
 
     },
+
+
+    /**
+     * Provides the ability to override the gadm level being shown by BBoxGeoJSON
+     * features on the map. You may specify -1 to 5. No args or anything else
+     * switches back on smart gadm (automatically choosing the level based on bbox).
+     *
+     * @param level
+     */
+    setGadmLevel: function(levelStr) {
+      var level = parseInt(levelStr);
+      vector.bboxUrl = vector.bboxUrl.replace(/&gadm_level=\d/,'');
+      if (level >= -1 && level <= 5) {
+        vector.bboxUrl += '&gadm_level=' + level;
+      }
+    },
+
 
     /**
      * Returns a feature based on guid and level. You may merge in a set of properties into the

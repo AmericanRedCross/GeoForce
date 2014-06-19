@@ -140,6 +140,23 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
 
     },
 
+
+    /**
+     * Provides the ability to override the gadm level being shown by BBoxGeoJSON
+     * features on the map. You may specify -1 to 5. No args or anything else
+     * switches back on smart gadm (automatically choosing the level based on bbox).
+     *
+     * @param level
+     */
+    setGadmLevel: function(levelStr) {
+      var level = parseInt(levelStr);
+      vector.bboxUrl = vector.bboxUrl.replace(/&gadm_level=\d/,'');
+      if (level >= -1 && level <= 5) {
+        vector.bboxUrl += '&gadm_level=' + level;
+      }
+    },
+
+
     /**
      * Returns a feature based on guid and level. You may merge in a set of properties into the
      * called back object if desired (optional).
