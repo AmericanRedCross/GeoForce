@@ -658,8 +658,8 @@
                                     </ul>
                                     <ul ng-show="contextualLayer || moreLess==='Less'">
                                         <li ng-repeat="(key, value) in details">
-                                            <div class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
-                                            <div ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-if="!value">Unavailable</i>
+                                            <div ng-if="key != 'requestsForAssistance' && key != 'indicators'" class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
+                                            <div ng-if="key != 'requestsForAssistance' && key != 'indicators'" ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-if="!value">Unavailable</i>
                                         </li>
                                     </ul>
 

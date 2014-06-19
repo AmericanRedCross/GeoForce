@@ -98,6 +98,44 @@ config.disasterDetailsFormatting = {
     lastmodifieddate: "date"
 };
 
+/**
+ * This defines the type of formatting used for each field in the details panel
+ *
+ * @type {{}}
+ */
+config.RFADetailsFormatting = {
+    arc_response_date__c: "date",
+    beneficiaries_reached_households__c: "number",
+    requested_amount__c: "currency,$", //Should be 'currency' followed by a comma and then an ANGULAR currency specification ("CHF" or "USD" or "$" or etc.)
+    beneficiaries_reached_individuals__c: "number",
+    beneficiaries_targeted_households__c: "number",
+    beneficiaries_targeted_individuals__c: "number",
+    end_date__c: "date",
+    start_date__c: "date",
+    total_arc_contributions__c: "currency,$",
+    requested_amount_foreign_currerncy__c: "currency,CHF ",
+    requested_amount_usd__c: "currency,$"
+};
+
+
+/**
+ * This defines the type of formatting used for each field in the details panel
+ *
+ * @type {{}}
+ */
+config.indicatorDetailsFormatting = {
+
+};
+
+/**
+ * This defines the fields we DON'T want to show in the Details panel
+ *
+ * @type {{}}
+ */
+config.unwantedProjectDetails = {
+
+};
+
 
 /**
  * This defines the fields we DON'T want to show in the Details panel
@@ -105,7 +143,6 @@ config.disasterDetailsFormatting = {
  * @type {{}}
  */
 config.unwantedDisasterDetails = {
-    requestsForAssistance: true,
     affected_as_of__c: true,
     createddate: true,
     deaths_as_of__c: true,
@@ -137,7 +174,33 @@ config.unwantedDisasterDetails = {
     location__r_admin_3__c: function(item){ return (item ? false : true); },
     location__r_admin_4__c: function(item){ return (item ? false : true); },
     location__r_admin_5__c: function(item){ return (item ? false : true); }
+};
 
+/**
+ * This defines the fields we DON'T want to show in the Details panel
+ * Specify true to hide it.
+ * @type {{}}
+ */
+config.unwantedRFADetails = {
+    beneficiaries_reached_as_of__c: true,
+    createddate: true,
+    date_issued__c: true,
+    disaster__r_id: true,
+    exchange_rate__c: true,
+    future_contribution__c: true,
+    id: true,
+    lastmodifieddate: true,
+    sf_id: true,
+    subject__c: true,
+    target_population__c: true,
+    systemmodstamp: true
+};
 
+/**
+ * This defines the fields we DON'T want to show in the Details panel
+ * Specify true to hide it.
+ * @type {{}}
+ */
+config.unwantedIndicatorDetails = {
 
 };

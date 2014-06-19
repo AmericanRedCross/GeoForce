@@ -215,26 +215,57 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.showDetails = function (item, themeItems, idx) {
-    if (item.sf_id) {
-      $rootScope.setParamWithVal('sf_id', item.sf_id);
-    }
-    if (item.name || item.title) {
-      $scope.title = item.name || item.title;
-    }
-    if (typeof idx === 'number') $scope.activeThemeItemIdx = idx;
-    if (themeItems) $scope.activeThemeItemsList = themeItems;
-    $scope.itemsList = false;
-    $scope.details = removeUnwantedItems(formatDetails(item));
-    if (!$scope.contextualLayer) {
-      $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item)));
-    }
-    $scope.resizeDetailsPanel();
+      if (item.sf_id) {
+          $rootScope.setParamWithVal('sf_id', item.sf_id);
+      }
+      if (item.name || item.title) {
+          $scope.title = item.name || item.title;
+      }
+      if (typeof idx === 'number') $scope.activeThemeItemIdx = idx;
+      if (themeItems) $scope.activeThemeItemsList = themeItems;
+      $scope.itemsList = false;
+      $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+      if (!$scope.contextualLayer) {
+          $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item, $stateParams.theme)), $stateParams.theme);
+      }
+
+      //Filter/Format RFAs and Indicators
+      if ($scope.details.requestsForAssistance) {
+          //Filter/Format
+          $scope.details.requestsForAssistance = $scope.details.requestsForAssistance.map(function (rfa) {
+              return removeUnwantedItems(formatDetails(rfa, "RFA"), "RFA");
+          });
+      }
+
+      if ($scope.details.indicators) {
+          //Filter/Format
+          $scope.details.indicators = $scope.details.indicators.map(function (indicator) {
+              return removeUnwantedItems(formatDetails(indicator, "indicator"), "indicator");
+          });
+      }
+
+      $scope.resizeDetailsPanel();
   };
 
-  function removeUnwantedItems(details){
-        var passthroughDetails = {};
+  function removeUnwantedItems(details, type){
+      var passthroughDetails = {};
+      var blacklistDictionary = config.unwantedProjectDetails;
+
+      if (type === 'disaster') {
+          blacklistDictionary = config.unwantedDisasterDetails;
+      }
+      else if(type === 'project') {
+          blacklistDictionary = config.unwantedProjectDetails;
+      }
+      else if(type === 'RFA'){
+          blacklistDictionary = config.unwantedRFADetails;
+      }
+      else if(type === 'indicator'){
+          blacklistDictionary = config.unwantedIndicatorDetails;
+      }
+
         for(var key in details){
-            var blacklisted = config.unwantedDisasterDetails[key];
+            var blacklisted = blacklistDictionary[key];
             if(blacklisted && (typeof blacklisted == 'function')){
                 //evaluate the function to decide if the key should be shown.
                 blacklisted = blacklisted(details[key]);
@@ -244,64 +275,53 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
                 passthroughDetails[key] = details[key];
             }
         }
+
       return passthroughDetails;
   }
 
-  function formatDetails(details) {
+  function formatDetails(details, type) {
       var formattedDetails = {};
-      if ($stateParams.theme === 'disaster') {
-          for (var key in details) {
-              var formatter = config.disasterDetailsFormatting[key];
-              if (formatter) {
-                  switch(formatter.split(",")[0]){
-                      case "currency":
-                          formattedDetails[key] = $filter('currency')(details[key], (formatter.split(",")[1] || "USD"));
-                          break;
+      var formattingDictionary = config.projectDetailsFormatting;
 
-                      case "number":
-                          formattedDetails[key] = $filter('number')(details[key]);
-                          break;
+      if (type === 'disaster') {
+          formattingDictionary = config.disasterDetailsFormatting;
+      }
+      else if(type === 'project') {
+          formattingDictionary = config.projectDetailsFormatting;
+      }
+      else if(type === 'RFA'){
+          formattingDictionary = config.RFADetailsFormatting;
+      }
+      else if(type === 'indicator'){
+          formattingDictionary = config.indicatorDetailsFormatting;
+      }
 
-                      case "date":
-                          formattedDetails[key] = $filter('date')(details[key], "yyyy-dd-MM");
-                          break;
+      for (var key in details) {
+          var formatter = formattingDictionary[key];
+          if (formatter) {
+              switch(formatter.split(",")[0]){
+                  case "currency":
+                      formattedDetails[key] = $filter('currency')(details[key], (formatter.split(",")[1] || "USD"));
+                      break;
 
-                      default:
-                          formattedDetails[key] = details[key];
-                  }
-              }
-              else{
-                  //No formatting
-                  formattedDetails[key] = details[key];
+                  case "number":
+                      formattedDetails[key] = $filter('number')(details[key]);
+                      break;
+
+                  case "date":
+                      formattedDetails[key] = $filter('date')(details[key], "yyyy-dd-MM");
+                      break;
+
+                  default:
+                      formattedDetails[key] = details[key];
               }
           }
-      } else {
-          for (var key in details) {
-              var formatter = config.projectDetailsFormatting[key];
-              if (formatter) {
-                  switch(formatter.split(",")[0]){
-                      case "currency":
-                          formattedDetails[key] = $filter('currency')(details[key], (formatter.split(",")[1] || "USD"));
-                          break;
-
-                      case "number":
-                          formattedDetails[key] = $filter('number')(details[key]);
-                          break;
-
-                      case "date":
-                          formattedDetails[key] = $filter('date')(details[key], "yyyy-dd-MM");
-                          break;
-
-                      default:
-                          formattedDetails[key] = details[key];
-                  }
-              }
-              else{
-                  //No formatting
-                  formattedDetails[key] = details[key];
-              }
+          else{
+              //No formatting
+              formattedDetails[key] = details[key];
           }
       }
+
       return formattedDetails;
   }
 
