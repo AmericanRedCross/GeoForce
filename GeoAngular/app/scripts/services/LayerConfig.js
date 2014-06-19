@@ -270,19 +270,12 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       },
       "labelProperty": function (properties) {
         if (properties.hasOwnProperty("rfa_count")) {
-          return "<span>" + properties.theme_count + "<sub>" + properties.rfa_count + "</sub></span>";
+          var text = '<div class="absolute featurelabel-icon-RFA"><span>' + properties.rfa_count + '</span></div>';
+          text +=  '<div class="absolute featurelabel-icon-RFA top"><span>' + properties.theme_count + '</span></div>';
+          return text;
         }
         else {
-          return properties.theme_count;
-        }
-      },
-      "map-icon-class": function (properties) {
-        //Return a css class used to style the map icon
-        if (properties.hasOwnProperty("rfa_count")) {
-          return "featurelabel-icon-RFA";
-        }
-        else {
-          return "featurelabel-icon-number";
+          return '<div class="featurelabel-icon-number"><span>' + properties.theme_count + '</span></div>';
         }
       },
       "map-icon-size": function (properties) {
@@ -296,15 +289,15 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "legend" : function(theme){
           if (theme.toLowerCase() == 'disaster') {
               //disaster
-              return '<div class="leaflet-marker-icon featurelabel-icon-RFA leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(771px, 384px, 0px); z-index: 384; box-shadow: rgba(255, 255, 255, 0.701961) 0px 0px 0px 6px;"><span>1<sub>2</sub></span></div>';
+              return '<div class="absolute featurelabel-icon-RFA"></div><div class="absolute featurelabel-icon-RFA top"></div>';
           }
           else if(theme.toLowerCase() == 'disaster'){
               //project
-              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;">3</div>';
+              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;"></div>';
           }
           else{
               //project
-              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;">3</div>';
+              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;"></div>';
           }
       }
 

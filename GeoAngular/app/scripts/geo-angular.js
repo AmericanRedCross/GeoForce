@@ -136,7 +136,7 @@ function createLabel(featureLayer, featureSet) {
   console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
 
   var icon = L.divIcon({
-    className: iconClass || ($.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon-text'),
+    className: iconClass || "", //iconClass || ($.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon-text'),
     iconSize: iconSize,
     html: text
   });
@@ -157,12 +157,12 @@ function createLabel(featureLayer, featureSet) {
   function whitenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
-        label._icon.style['color'] = 'rgba(255,255,255,0.7)';
+      if (label._icon.children[0].className.indexOf('featurelabel-icon-text') > -1) {
+        label._icon.children[0].style['color'] = 'rgba(255,255,255,0.7)';
       }
       // label has a badge
       else {
-        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+        label._icon.children[0].style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
       }
     }
   }
@@ -170,12 +170,12 @@ function createLabel(featureLayer, featureSet) {
   function goldenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
-        label._icon.style['color'] = 'rgba(237,178,41,0.8)';
+      if (label._icon.children[0].className.indexOf('featurelabel-icon-text') > -1) {
+        label._icon.children[0].style['color'] = 'rgba(237,178,41,0.8)';
       }
       // label has a badge
       else {
-        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+        label._icon.children[0].style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
       }
     }
   }
@@ -183,12 +183,12 @@ function createLabel(featureLayer, featureSet) {
   function reddenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
-        label._icon.style['color'] = 'rgba(237,27,46,0.5)';
+      if (label._icon.children[0].className.indexOf('featurelabel-icon-text') > -1) {
+        label._icon.children[0].style['color'] = 'rgba(237,27,46,0.5)';
       }
       // label has a badge
       else {
-        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+        label._icon.children[0].style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
       }
     }
   }
@@ -2239,6 +2239,9 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
 
       layer.alias = l;
       layer.name = lcfg.name;
+      if(layers[i] == "themecount"){
+          layer.name = $stateParams.theme || 'Project';
+      }
       if (!name && lcfg.properties && lcfg.properties.title) {
         layer.name = lcfg.properties.title;
       } else if (!layer.name) {
@@ -2249,7 +2252,7 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
           if(lcfg.properties.legend){
               if(typeof lcfg.properties.legend === 'function'){
                     //Build the legend element
-                    layer.activeLegend = lcfg.properties.legend($stateParams.theme);
+                    layer.activeLegend = lcfg.properties.legend($stateParams.theme || 'project');
               }
               else{
                   //If legend is a string, use it directly
@@ -2276,14 +2279,16 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   // $routeParams.layers We just dont have the : in main.js so that
   // part of the path does not go away...
   var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
+  var themeStr = $stateParams.theme;
 
   $rootScope.$broadcast('route-update');
 
   /**
    * Only if the latest route has a different layer string than before.
    */
-  if (layersStr !== window.prevLayersStr) {
+  if (layersStr !== window.prevLayersStr || themeStr !== window.prevTheme) {
     window.prevLayersStr = layersStr;
+    window.prevTheme = themeStr;
     var layers = layersStr.split(',');
     $rootScope.$broadcast('layers-update', layers);
   }
@@ -3571,19 +3576,12 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       },
       "labelProperty": function (properties) {
         if (properties.hasOwnProperty("rfa_count")) {
-          return "<span>" + properties.theme_count + "<sub>" + properties.rfa_count + "</sub></span>";
+          var text = '<div class="absolute featurelabel-icon-RFA"><span>' + properties.rfa_count + '</span></div>';
+          text +=  '<div class="absolute featurelabel-icon-RFA top"><span>' + properties.theme_count + '</span></div>';
+          return text;
         }
         else {
-          return properties.theme_count;
-        }
-      },
-      "map-icon-class": function (properties) {
-        //Return a css class used to style the map icon
-        if (properties.hasOwnProperty("rfa_count")) {
-          return "featurelabel-icon-RFA";
-        }
-        else {
-          return "featurelabel-icon-number";
+          return '<div class="featurelabel-icon-number"><span>' + properties.theme_count + '</span></div>';
         }
       },
       "map-icon-size": function (properties) {
@@ -3597,15 +3595,15 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "legend" : function(theme){
           if (theme.toLowerCase() == 'disaster') {
               //disaster
-              return '<div class="leaflet-marker-icon featurelabel-icon-RFA leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(771px, 384px, 0px); z-index: 384; box-shadow: rgba(255, 255, 255, 0.701961) 0px 0px 0px 6px;"><span>1<sub>2</sub></span></div>';
+              return '<div class="absolute featurelabel-icon-RFA"></div><div class="absolute featurelabel-icon-RFA top"></div>';
           }
           else if(theme.toLowerCase() == 'disaster'){
               //project
-              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;">3</div>';
+              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;"></div>';
           }
           else{
               //project
-              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;">3</div>';
+              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;"></div>';
           }
       }
 

@@ -14,6 +14,9 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
 
       layer.alias = l;
       layer.name = lcfg.name;
+      if(layers[i] == "themecount"){
+          layer.name = $stateParams.theme || 'Project';
+      }
       if (!name && lcfg.properties && lcfg.properties.title) {
         layer.name = lcfg.properties.title;
       } else if (!layer.name) {
@@ -24,7 +27,7 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
           if(lcfg.properties.legend){
               if(typeof lcfg.properties.legend === 'function'){
                     //Build the legend element
-                    layer.activeLegend = lcfg.properties.legend($stateParams.theme);
+                    layer.activeLegend = lcfg.properties.legend($stateParams.theme || 'project');
               }
               else{
                   //If legend is a string, use it directly

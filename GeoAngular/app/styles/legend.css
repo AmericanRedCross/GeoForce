@@ -7,7 +7,27 @@
 }
 
 .legendIcon div, .legendIcon {
-    height: 48px;
-    width: 48px;
-    float: left;
+    height: 25px;
+    width: 25px;
+}
+
+.legendIcon div {
+
+}
+
+.legend-container li{
+    background-color: darkgray;
+}
+
+.legend-container li .featurelabel-icon-number, .legend-container li .featurelabel-icon-RFA {
+    box-shadow: 0px 0px 0px 3px rgba(255,255,255,0.7);
+}
+
+.legend-container li .featurelabel-icon-RFA.top{
+    height: 12px;
+    box-shadow: none;
+}
+
+.legend-container .legendTitle{
+    text-transform: capitalize;
 }

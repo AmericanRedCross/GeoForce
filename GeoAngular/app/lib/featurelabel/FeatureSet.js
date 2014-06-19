@@ -135,7 +135,7 @@ function createLabel(featureLayer, featureSet) {
   console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
 
   var icon = L.divIcon({
-    className: iconClass || ($.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon-text'),
+    className: iconClass || "", //iconClass || ($.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon-text'),
     iconSize: iconSize,
     html: text
   });
@@ -156,12 +156,12 @@ function createLabel(featureLayer, featureSet) {
   function whitenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
-        label._icon.style['color'] = 'rgba(255,255,255,0.7)';
+      if (label._icon.children[0].className.indexOf('featurelabel-icon-text') > -1) {
+        label._icon.children[0].style['color'] = 'rgba(255,255,255,0.7)';
       }
       // label has a badge
       else {
-        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+        label._icon.children[0].style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
       }
     }
   }
@@ -169,12 +169,12 @@ function createLabel(featureLayer, featureSet) {
   function goldenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
-        label._icon.style['color'] = 'rgba(237,178,41,0.8)';
+      if (label._icon.children[0].className.indexOf('featurelabel-icon-text') > -1) {
+        label._icon.children[0].style['color'] = 'rgba(237,178,41,0.8)';
       }
       // label has a badge
       else {
-        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+        label._icon.children[0].style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
       }
     }
   }
@@ -182,12 +182,12 @@ function createLabel(featureLayer, featureSet) {
   function reddenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
-        label._icon.style['color'] = 'rgba(237,27,46,0.5)';
+      if (label._icon.children[0].className.indexOf('featurelabel-icon-text') > -1) {
+        label._icon.children[0].style['color'] = 'rgba(237,27,46,0.5)';
       }
       // label has a badge
       else {
-        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+        label._icon.children[0].style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
       }
     }
   }

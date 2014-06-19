@@ -7,14 +7,16 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   // $routeParams.layers We just dont have the : in main.js so that
   // part of the path does not go away...
   var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
+  var themeStr = $stateParams.theme;
 
   $rootScope.$broadcast('route-update');
 
   /**
    * Only if the latest route has a different layer string than before.
    */
-  if (layersStr !== window.prevLayersStr) {
+  if (layersStr !== window.prevLayersStr || themeStr !== window.prevTheme) {
     window.prevLayersStr = layersStr;
+    window.prevTheme = themeStr;
     var layers = layersStr.split(',');
     $rootScope.$broadcast('layers-update', layers);
   }

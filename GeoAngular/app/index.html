@@ -443,8 +443,8 @@
                         <div class="row scrollable">
                             <ul class="list-group legend-list">
                                 <li class="list-group-item" ng-repeat="layer in layers">
-                                    <span class="legendIcon" ng-bind-html="layer.activeLegend"></span>
-                                    <span>{{layer.name}}</span>
+                                    <div class="legendIcon" ng-bind-html="layer.activeLegend"></div>
+                                    <div class="legendTitle">{{layer.name}}</div>
                                 </li>
                             </ul>
                         </div>
