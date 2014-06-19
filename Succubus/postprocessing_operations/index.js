@@ -799,12 +799,12 @@ operations.AddIndicesForIndicatorTable =
   DROP INDEX IF EXISTS idx_sf_indicator_logframe_element__c; CREATE INDEX idx_sf_indicator_logframe_element__c ON sf_indicator USING btree (logframe_element__c); \
   DROP INDEX IF EXISTS idx_sf_indicator_project__c; CREATE INDEX idx_sf_indicator_project__c ON sf_indicator USING btree (project__c); ";
 
-operations.AddIndicesForIndicatorValueTable =
-  "DROP INDEX IF EXISTS idx_sf_indicator_value_sf_id; CREATE INDEX idx_sf_indicator_value_sf_id ON sf_indicator_value USING btree (sf_id); \
-  DROP INDEX IF EXISTS idx_sf_indicator_value_indicator__c; CREATE INDEX idx_sf_indicator_value_indicator__c ON sf_indicator_value USING btree (indicator__c); ";
-
-operations.AddIndicesForLogframeElementTable =
-  "DROP INDEX IF EXISTS idx_sf_logframe_element_sf_id; CREATE INDEX idx_sf_logframe_element_sf_id ON sf_logframe_element USING btree (sf_id); ";
+//operations.AddIndicesForIndicatorValueTable =
+//  "DROP INDEX IF EXISTS idx_sf_indicator_value_sf_id; CREATE INDEX idx_sf_indicator_value_sf_id ON sf_indicator_value USING btree (sf_id); \
+//  DROP INDEX IF EXISTS idx_sf_indicator_value_indicator__c; CREATE INDEX idx_sf_indicator_value_indicator__c ON sf_indicator_value USING btree (indicator__c); ";
+//
+//operations.AddIndicesForLogframeElementTable =
+//  "DROP INDEX IF EXISTS idx_sf_logframe_element_sf_id; CREATE INDEX idx_sf_logframe_element_sf_id ON sf_logframe_element USING btree (sf_id); ";
 
 //operations.vacuum = "VACUUM ANALYZE;";
 

@@ -23,9 +23,9 @@ operation.IndicatorQuery = "SELECT * " +
   "FROM sf_indicator " +
   "WHERE project__c = {{guid}}; " ;
 
-operation.IndicatorValueQuery = "SELECT * " +
-  "FROM sf_indicator_value " +
-  "WHERE indicator__c = {{guid}}; ";
+//operation.IndicatorValueQuery = "SELECT * " +
+//  "FROM sf_indicator_value " +
+//  "WHERE indicator__c = {{guid}}; ";
 
 //operation.LogframeElementQuery = "SELECT * " +
 //  "FROM sf_logframe_element " +
