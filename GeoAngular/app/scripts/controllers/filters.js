@@ -209,7 +209,6 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $stateParams.filters = $scope.whereClause;
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
-    $scope.$parent.$parent.drawOverlays();
   };
 
 });

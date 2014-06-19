@@ -18,6 +18,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   var layersStr = null;
   var overlayNames = [];
   var theme = null;
+  var filters = null;
 
   function redraw() {
     var lat = parseFloat($stateParams.lat)   || 0;
@@ -48,9 +49,10 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       };
     }
 
-    if (theme != $stateParams.theme) { // null and undefined should be ==
+    if (theme != $stateParams.theme || filters != $stateParams.filters) { // null and undefined should be ==
       resetThemeCount();
       theme = $stateParams.theme;
+      filters = $stateParams.filters;
     }
 
     $scope.center = {
@@ -78,11 +80,12 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     var zoom = c.zoom.toString();
     if (mapMoveEnd) {
       mapMoveEnd = false;
-    } else if (  $stateParams.lat    !== lat
-              || $stateParams.lng    !== lng
-              || $stateParams.zoom   !== zoom
-              || $stateParams.layers !== layersStr
-              || $stateParams.theme  !== theme      ) {
+    } else if (  $stateParams.lat     !== lat
+              || $stateParams.lng     !== lng
+              || $stateParams.zoom    !== zoom
+              || $stateParams.layers  !== layersStr
+              || $stateParams.theme   !== theme
+              || $stateParams.filters !== filters   ) {
 
       console.log('map.js route-update Updating Map...');
       redraw();
@@ -262,6 +265,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     });
   }
 
+  /**
+   * Used privately to rebuild the theme count layer.
+   */
   function resetThemeCount() {
     leafletData.getMap().then(function (map) {
       for (var j = 0, len = overlayNames.length; j < len; j++) {
