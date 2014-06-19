@@ -2281,7 +2281,7 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
 
   var levelStr = $stateParams.level;
-  var zoomStr = $stateParams.zoomStr;
+  var zoomStr = $stateParams.zoom;
 
   $rootScope.$broadcast('route-update');
 
