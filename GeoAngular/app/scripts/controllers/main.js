@@ -8,6 +8,8 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   // part of the path does not go away...
   var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
 
+  var levelStr = $stateParams.level;
+
   $rootScope.$broadcast('route-update');
 
   /**
@@ -17,6 +19,11 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
     window.prevLayersStr = layersStr;
     var layers = layersStr.split(',');
     $rootScope.$broadcast('layers-update', layers);
+  }
+
+  if (levelStr !== null && levelStr !== window.prevLevelStr) {
+    window.prevLevelStr = levelStr;
+    $rootScope.$broadcast('level-update', levelStr);
   }
 
 });

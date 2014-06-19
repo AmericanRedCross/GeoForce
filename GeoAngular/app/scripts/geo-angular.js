@@ -2071,14 +2071,13 @@ module.exports = angular.module('GeoAngular').controller('LandingCtrl', function
 
 module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig, VectorProvider) {
   $scope.params = $stateParams;
-
+  $scope.zoom = $stateParams.zoom;
   $scope.navTab = 'contextual';
 
   debug.LayerConfig = LayerConfig;
-
   debug.setGadmLevel = VectorProvider.setGadmLevel;
 
-  $scope.gadmLevel = 'auto';
+  $scope.gadmLevel = $stateParams.level || 'auto';
 
   $scope.$watch('gadmLevel', function (newValue) {
     $stateParams.level = newValue;
@@ -2086,7 +2085,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     $state.go(state, $stateParams);
   });
 
-  $scope.$on('route-update', function () {
+  $scope.$on('level-update', function () {
     VectorProvider.setGadmLevel($stateParams.level);
   });
 
@@ -2275,6 +2274,8 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   // part of the path does not go away...
   var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
 
+  var levelStr = $stateParams.level;
+
   $rootScope.$broadcast('route-update');
 
   /**
@@ -2284,6 +2285,11 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
     window.prevLayersStr = layersStr;
     var layers = layersStr.split(',');
     $rootScope.$broadcast('layers-update', layers);
+  }
+
+  if (levelStr !== null && levelStr !== window.prevLevelStr) {
+    window.prevLevelStr = levelStr;
+    $rootScope.$broadcast('level-update', levelStr);
   }
 
 });

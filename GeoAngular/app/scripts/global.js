@@ -40,3 +40,4 @@ gists.fetch = function() {
 };
 
 window.prevLayersStr = '';
+widnow.prevLevelStr = '';

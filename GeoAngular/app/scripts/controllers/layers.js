@@ -5,14 +5,13 @@
 
 module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig, VectorProvider) {
   $scope.params = $stateParams;
-
+  $scope.zoom = $stateParams.zoom;
   $scope.navTab = 'contextual';
 
   debug.LayerConfig = LayerConfig;
-
   debug.setGadmLevel = VectorProvider.setGadmLevel;
 
-  $scope.gadmLevel = 'auto';
+  $scope.gadmLevel = $stateParams.level || 'auto';
 
   $scope.$watch('gadmLevel', function (newValue) {
     $stateParams.level = newValue;
@@ -20,7 +19,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     $state.go(state, $stateParams);
   });
 
-  $scope.$on('route-update', function () {
+  $scope.$on('level-update', function () {
     VectorProvider.setGadmLevel($stateParams.level);
   });
 
