@@ -39,7 +39,7 @@ operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 
 
 operation.DisasterQuery =
-"SELECT dis.*, loc.* FROM sf_disaster_location AS loc \
+"SELECT dis.*, loc.disaster__r_id, loc.location__r_admin_0__c, location__r_admin_1__c, location__r_admin_2__c, location__r_admin_3__c, location__r_admin_4__c, location__r_admin_5__c FROM sf_disaster_location AS loc \
 LEFT JOIN sf_disaster as dis ON loc.disaster__r_id = dis.sf_id \
 INNER JOIN sf_aggregated_gadm_disaster_counts ON dis.sf_id = sf_aggregated_gadm_disaster_counts.sf_id \
 AND sf_aggregated_gadm_disaster_counts.guid{{gadm_level}}::text = loc.location__r_gis_geo_id__c \
