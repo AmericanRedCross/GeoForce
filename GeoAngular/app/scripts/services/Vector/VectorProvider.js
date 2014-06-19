@@ -150,10 +150,12 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
      */
     setGadmLevel: function(levelStr) {
       var level = parseInt(levelStr);
-      vector.bboxUrl = vector.bboxUrl.replace(/&gadm_level=\d/,'');
+      vector.bboxUrl = vector.bboxUrl.replace(/&gadm_level=-?\d/,'');
       if (level >= -1 && level <= 5) {
         vector.bboxUrl += '&gadm_level=' + level;
       }
+      console.log('bboxUrl: ' + vector.bboxUrl);
+      fetchFeatureItinerary();
     },
 
 
