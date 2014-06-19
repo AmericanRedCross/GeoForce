@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('LegendCtrl', function($scope, LayerConfig) {
+module.exports = angular.module('GeoAngular').controller('LegendCtrl', function($scope, LayerConfig, $stateParams) {
 
   $scope.$on('layers-update', function (evt, layers) {
     $scope.layers = [];
@@ -18,6 +18,22 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
         layer.name = lcfg.properties.title;
       } else if (!layer.name) {
         layer.name = l;
+      }
+
+      if(lcfg.properties){
+          if(lcfg.properties.legend){
+              if(typeof lcfg.properties.legend === 'function'){
+                    //Build the legend element
+                    layer.activeLegend = lcfg.properties.legend($stateParams.theme);
+              }
+              else{
+                  //If legend is a string, use it directly
+                  layer.activeLegend = lcfg.properties.legend;
+              }
+          }else{
+              //No legend defined.  Use a default.
+
+          }
       }
 
       $scope.layers.push(layer);

@@ -5,3 +5,9 @@
 .legend-list {
     padding:10px;
 }
+
+.legendIcon div, .legendIcon {
+    height: 48px;
+    width: 48px;
+    float: left;
+}
