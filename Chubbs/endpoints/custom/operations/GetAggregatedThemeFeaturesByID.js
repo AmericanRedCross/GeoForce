@@ -26,7 +26,6 @@ var theme_details = {
 
 operation.execute = flow.define(
     function (args, callback) {
-        this.Query = "SELECT sum(count{{gadm_level}}) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
 
         this.args = args;
         this.callback = callback;
@@ -37,10 +36,14 @@ operation.execute = flow.define(
 
         //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
         if (operation.isInputValid(args) === true) {
+
             operation.inputs["ids"] = args.ids;
             operation.inputs["theme"] = args.theme.toLowerCase();
 			operation.inputs["gadm_level"] = args.gadm_level.toLowerCase();
             operation.inputs["filters"] = args.filters;
+
+            this.Query = "SELECT '" +  operation.inputs["theme"] + "' as theme, sum(count{{gadm_level}}) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
+
 
             //need to wrap ids in single quotes
             //Execute the query
@@ -73,7 +76,7 @@ operation.execute = flow.define(
             }
 
 			query = {
-              text: this.Query.split('{{gadm_level}}').join(operation.inputs["gadm_level"]).replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)).replace("{{filters}}", filters)
+              text: this.Query.split('{{gadm_level}}').join(operation.inputs["gadm_level"]).split('{{theme}}').join(operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)).replace("{{filters}}", filters)
             };
             common.executePgQuery(query, this);//Flow to next function when done.
         }
