@@ -13,27 +13,15 @@ module.exports = {};
 
 var operations = {};
 
-
-
-function createProjectView(user) {
-    var str =
-        "CREATE OR REPLACE VIEW vw_theme_project_gadm AS \
-  SELECT  text_search.level, \
-          text_search.stack_guid::character varying as guid, \
-          a.*\
-  FROM sf_project AS a \
-  JOIN text_search ON text_search.stack_guid::character varying::text = a.location__r_gis_geo_id__c; \
-  ALTER TABLE vw_theme_project_gadm \
-  OWNER TO "+user+";";
-
-    return str;
-}
-
-
-
 function addLevelToSFProjectTable() {
     var str = "ALTER TABLE sf_project ADD COLUMN level character varying;";
     str += "UPDATE sf_project SET level = text_search.level FROM text_search WHERE text_search.stack_guid::character varying::text = sf_project.location__r_gis_geo_id__c;";
+    return str;
+}
+
+function addRiskToSFProjectTable() {
+    var str = "ALTER TABLE sf_project ADD COLUMN overall_assessment__c character varying;";
+    str += "WITH risk as (SELECT project__c, CASE WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['critical'] THEN 'Critical' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['high'] THEN 'High' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['medium'] THEN 'Medium' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['low'] THEN 'Low' END as overall_assessment__c FROM sf_project_risk GROUP BY project__C) UPDATE sf_project SET overall_assessment__c = risk.overall_assessment__c FROM risk WHERE risk.project__c = sf_project.sf_id;";
     return str;
 }
 
@@ -48,27 +36,14 @@ function addLevelToSFDisasterTable() {
     return str;
 }
 
-function createDisasterView(user) {
-    var str =
-        "CREATE OR REPLACE VIEW vw_theme_disaster_gadm AS \
-          SELECT text_search.level, \
-          text_search.stack_guid::character varying as guid, \
-          dis.* FROM sf_disaster_location AS loc \
-          LEFT JOIN sf_disaster as dis ON loc.disaster__r_id = dis.sf_id \
-          JOIN text_search ON text_search.stack_guid::character varying::text = loc.location__r_gis_geo_id__c; \
-          ALTER TABLE vw_theme_disaster_gadm \
-          OWNER TO "+user+";";
 
-    return str;
-}
-
-//Drop/Create Theme Views used by the client app
-//operations.createProjectThemeView = createProjectView(pg.user);
-//operations.createDisasterThemeView = createDisasterView(pg.user);
 
 //Add 'level' column to sf_project, sf_disaster tables for fast searches with zoom to capability.
 operations.addLevelToSFProjectTable = addLevelToSFProjectTable();
 operations.addLevelToSFDisasterTable = addLevelToSFDisasterTable();
+
+//Add 'risk' to sf_project
+operations.addRiskToSFProjectTable = addRiskToSFProjectTable();
 
 //Create the aggregated project counts by all gaul levels, with counts rolled up to parents
 operations.createAggregateProjectCountsForGADM =
@@ -110,7 +85,8 @@ sf_project.sector__c, \
     sf_project.name, \
     sf_project.summary__c, \
     sf_project.total_budget__c, \
-    sf_project.sf_id \
+    sf_project.sf_id, \
+    sf_project.overall_assessment__c \
 INTO    sf_aggregated_gadm_project_counts \
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, gadm5, sf_project \
  \
@@ -171,7 +147,8 @@ sf_project.sector__c,  \
     sf_project.name,  \
     sf_project.summary__c,  \
     sf_project.total_budget__c,  \
-    sf_project.sf_id  \
+    sf_project.sf_id,  \
+    sf_project.overall_assessment__c \
   \
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, sf_project  \
 WHERE   gadm0.id_0 = gadm1.id_0  \
@@ -225,7 +202,8 @@ sf_project.sector__c, \
     sf_project.name, \
     sf_project.summary__c, \
     sf_project.total_budget__c, \
-    sf_project.sf_id \
+    sf_project.sf_id, \
+    sf_project.overall_assessment__c \
  \
 FROM    gadm0, gadm1, gadm2, gadm3, sf_project \
 WHERE   gadm0.id_0 = gadm1.id_0 \
@@ -276,7 +254,8 @@ sf_project.sector__c, \
     sf_project.name, \
     sf_project.summary__c, \
     sf_project.total_budget__c, \
-    sf_project.sf_id \
+    sf_project.sf_id, \
+    sf_project.overall_assessment__c \
  \
 FROM  gadm0, gadm1, gadm2, sf_project \
 WHERE gadm0.id_0 = gadm1.id_0 \
@@ -323,7 +302,8 @@ sf_project.sector__c, \
     sf_project.name, \
     sf_project.summary__c, \
     sf_project.total_budget__c, \
-    sf_project.sf_id \
+    sf_project.sf_id, \
+    sf_project.overall_assessment__c \
  \
 FROM  gadm1, gadm0, sf_project \
 WHERE gadm0.id_0 = gadm1.id_0 \
@@ -369,7 +349,8 @@ sf_project.sector__c, \
     sf_project.name, \
     sf_project.summary__c, \
     sf_project.total_budget__c, \
-    sf_project.sf_id \
+    sf_project.sf_id, \
+    sf_project.overall_assessment__c \
  \
 FROM gadm0, sf_project \
 WHERE gadm0.guid::text = sf_project.location__r_gis_geo_id__c \

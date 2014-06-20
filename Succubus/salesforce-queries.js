@@ -192,7 +192,18 @@ module.exports = {
   location: "Select " + metaFields + ", Admin_0__c, Admin_1__c, Admin_2__c, Admin_3__c, Admin_4__c, Admin_5__c, Custom_Name__c, GIS_GEO_ID__c, Internal_Region__c, ISD_Region__c, Latitude__c, Longitude__c, Type__c From Location__c",
 
 
-  indicator: "Select " + indicatorFields + " From Indicator__c Where Is_Standard__c = true"
+    /**
+     * Gets just the risk table. This is used for Project Risk assessment.
+     */
+  projectRisk: "Select " + metaFields + ", Impact__c, Leadership_Comments__c, Likelihood__c, Mitigation__c, Overall_Assessment__c, Project__c, Project_Task__c, Description__c, Risk_Owner__c, Risk_Status__c, Risk_Type__c, Severity__c, Category__c From Risk__c",
+
+   /**
+   * Gets just the project status table. This is used for Project Status assessment.
+   */
+  projectStatus: "Select " + metaFields + ", Budget_Status__c, Budget_Status_Comment__c, Human_Resource_Status__c, Human_Resource_Status_Comment__c, Overall_Status__c, Overall_Status_Comment__c, Evaluation_Date__c, Project__c, QPR__c, Scope_Status__c, Scope_Status_Comment__c, Stakeholder_Status__c, Stakeholder_Status_Comment__c, Timeline_Status__c, Timeline_Status_Comment__c  From Project_Evaluation__c",
+
+
+    indicator: "Select " + indicatorFields + " From Indicator__c Where Is_Standard__c = true"
 //  indicatorValue: "Select " + indicatorValueFields + " From Indicator_Value__c",
 //  logframeElement: "Select " + logframeElementFields + " From Logframe_Element__c"
 

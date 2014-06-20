@@ -2805,6 +2805,8 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   var themeNameHash = $rootScope.themeNameHash = {
     project: 'Projects',
     disaster: 'Disasters',
+    projectRisk: 'Project Risk',
+    projectStatus: 'Project Status',
     none: 'None'
   };
 
@@ -2818,6 +2820,18 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
     $scope.themeName = themeNameHash.disaster;
     ensureThemeCount();
     $scope.setThemeQueryParam('disaster');
+  };
+
+  $scope.projectRisk = function () {
+      $scope.themeName = themeNameHash.projectRisk;
+      ensureThemeCount();
+      $scope.setThemeQueryParam('projectRisk');
+  };
+
+  $scope.projectStatus = function () {
+      $scope.themeName = themeNameHash.projectStatus;
+      ensureThemeCount();
+      $scope.setThemeQueryParam('projectStatus');
   };
 
   $scope.none = function () {

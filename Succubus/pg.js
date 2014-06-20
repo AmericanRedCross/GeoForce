@@ -261,7 +261,7 @@ function createTable(queryTable, rows, fields, cb) {
 		//Make sure the return field matches one of the whitelisted fields from the original SOQL query, otherwise ignore the property
 		if (isValidColumn(fields, field) == true) {
 			//It's ok.  Let it pass
-			sql += field.toLowerCase() + ' ' + table[field] + ', ';
+			sql += '"' + field.toLowerCase() + '" ' + ' ' + table[field] + ', ';
 			lowerList[field.toLowerCase()] = true; //keep a lower case version
 		}
 	}

@@ -18,7 +18,9 @@ operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 //Specific fields we want to pull from the aggregated theme features tables
 var theme_details = {
     project: [],
-    disaster: ["CASE WHEN array_agg(lower(iroc_status__c)) @> ARRAY['active'] THEN 'Active' WHEN array_agg(lower(iroc_status__c)) @> ARRAY['monitoring'] THEN 'Monitoring' WHEN array_agg(lower(iroc_status__c)) @> ARRAY['inactive'] THEN 'Inactive' END as iroc_status__c"]
+    disaster: ["CASE WHEN array_agg(lower(iroc_status__c)) @> ARRAY['active'] THEN 'Active' WHEN array_agg(lower(iroc_status__c)) @> ARRAY['monitoring'] THEN 'Monitoring' WHEN array_agg(lower(iroc_status__c)) @> ARRAY['inactive'] THEN 'Inactive' END as iroc_status__c"],
+    projectRisk: ["CASE WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['critical'] THEN 'Critical' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['high'] THEN 'High' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['medium'] THEN 'Medium' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['low'] THEN 'Low' END as overall_assessment__c"],
+    projectStatus: []
 }
 
 
@@ -54,11 +56,22 @@ operation.execute = flow.define(
                 //If a disaster, include RFA counts from rollup table
                 this.Query = this.Query.replace("{{rfacount}},", "sum(rfacount{{gadm_level}}) as rfa_count,");
                 this.Query = this.Query.replace("{{theme_details}},", theme_details["disaster"].join(",") + ",");
-            }else{
+            }else if(operation.inputs["theme"].toLowerCase() == 'project'){
                 //No RFA counts.
                 this.Query = this.Query.replace("{{rfacount}},", "");
                 this.Query = this.Query.replace("{{theme_details}},", "");
             }
+            else if(operation.inputs["theme"].toLowerCase() == 'projectrisk'){
+                operation.inputs["theme"] = 'project';
+                this.Query = this.Query.replace("{{rfacount}},", "");
+                this.Query = this.Query.replace("{{theme_details}},", theme_details["projectRisk"].length > 0 ? theme_details["projectRisk"].join(",") + "," : "");
+            }
+            else if(operation.inputs["theme"].toLowerCase() == 'projectstatus'){
+                operation.inputs["theme"] = 'project';
+                this.Query = this.Query.replace("{{rfacount}},", "");
+                this.Query = this.Query.replace("{{theme_details}},", theme_details["projectStatus"].length > 0 ? theme_details["projectStatus"].join(",") + "," : "");
+            }
+
 			query = {
               text: this.Query.split('{{gadm_level}}').join(operation.inputs["gadm_level"]).replace('{{theme}}', operation.inputs["theme"]).split("{{ids}}").join(operation.wrapIdsInQuotes(args.ids)).replace("{{filters}}", filters)
             };
