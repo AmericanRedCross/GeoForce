@@ -136,7 +136,7 @@ function createLabel(featureLayer, featureSet) {
   console.log('LABEL: ' + text + ' (' + point.x + ', ' + point.y + ') ' + properties.name);
 
   var icon = L.divIcon({
-    className: iconClass || ($.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon-text'),
+    className: iconClass || "", //iconClass || ($.isNumeric(text) ? 'featurelabel-icon-number' : 'featurelabel-icon-text'),
     iconSize: iconSize,
     html: text
   });
@@ -157,12 +157,12 @@ function createLabel(featureLayer, featureSet) {
   function whitenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
-        label._icon.style['color'] = 'rgba(255,255,255,0.7)';
+      if (label._icon.children[0].className.indexOf('featurelabel-icon-text') > -1) {
+        label._icon.children[0].style['color'] = 'rgba(255,255,255,0.7)';
       }
       // label has a badge
       else {
-        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
+        label._icon.children[0].style['box-shadow'] = '0px 0px 0px 6px rgba(255,255,255,0.7)';
       }
     }
   }
@@ -170,12 +170,12 @@ function createLabel(featureLayer, featureSet) {
   function goldenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
-        label._icon.style['color'] = 'rgba(237,178,41,0.8)';
+      if (label._icon.children[0].className.indexOf('featurelabel-icon-text') > -1) {
+        label._icon.children[0].style['color'] = 'rgba(237,178,41,0.8)';
       }
       // label has a badge
       else {
-        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
+        label._icon.children[0].style['box-shadow'] = '0px 0px 0px 6px rgba(237,178,41,0.8)';
       }
     }
   }
@@ -183,12 +183,12 @@ function createLabel(featureLayer, featureSet) {
   function reddenLabel(label) {
     if (label._icon) {
       // label is text only, no badge
-      if (label._icon.className.indexOf('featurelabel-icon-text') > -1) {
-        label._icon.style['color'] = 'rgba(237,27,46,0.5)';
+      if (label._icon.children[0].className.indexOf('featurelabel-icon-text') > -1) {
+        label._icon.children[0].style['color'] = 'rgba(237,27,46,0.5)';
       }
       // label has a badge
       else {
-        label._icon.style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
+        label._icon.children[0].style['box-shadow'] = '0px 0px 0px 6px rgba(237,27,46,0.5)';
       }
     }
   }
@@ -1526,8 +1526,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   $scope.resizeDetailsPanel = function() {
     var detailsPanelTop = $('#DetailsPanel').offset().top;
-      var height = $('#MapCtrl').height() - 350; //Magic Number
-    $('#DetailsPanel .InnerContainer ').height(height);
+    var height = $('#MapCtrl').height() - 410; //Magic Number
+    $('#DetailsPanel .InnerContainer ').css("max-height",height);
   };
 
 	//Connect the layout onresize end event
@@ -2247,7 +2247,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
  *       on 3/27/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('LegendCtrl', function($scope, LayerConfig) {
+module.exports = angular.module('GeoAngular').controller('LegendCtrl', function($scope, LayerConfig, $stateParams) {
 
   $scope.$on('layers-update', function (evt, layers) {
     $scope.layers = [];
@@ -2258,10 +2258,29 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
 
       layer.alias = l;
       layer.name = lcfg.name;
+      if(layers[i] == "themecount"){
+          layer.name = $stateParams.theme || 'Project';
+      }
       if (!name && lcfg.properties && lcfg.properties.title) {
         layer.name = lcfg.properties.title;
       } else if (!layer.name) {
         layer.name = l;
+      }
+
+      if(lcfg.properties){
+          if(lcfg.properties.legend){
+              if(typeof lcfg.properties.legend === 'function'){
+                    //Build the legend element
+                    layer.activeLegend = lcfg.properties.legend($stateParams.theme || 'project');
+              }
+              else{
+                  //If legend is a string, use it directly
+                  layer.activeLegend = lcfg.properties.legend;
+              }
+          }else{
+              //No legend defined.  Use a default.
+
+          }
       }
 
       $scope.layers.push(layer);
@@ -2279,6 +2298,7 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   // $routeParams.layers We just dont have the : in main.js so that
   // part of the path does not go away...
   var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
+  var themeStr = $stateParams.theme;
 
   var levelStr = $stateParams.level;
   var zoomStr = $stateParams.zoom;
@@ -2288,8 +2308,9 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   /**
    * Only if the latest route has a different layer string than before.
    */
-  if (layersStr !== window.prevLayersStr) {
+  if (layersStr !== window.prevLayersStr || themeStr !== window.prevTheme) {
     window.prevLayersStr = layersStr;
+    window.prevTheme = themeStr;
     var layers = layersStr.split(',');
     $rootScope.$broadcast('layers-update', layers);
   }
@@ -3484,7 +3505,8 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "dash-array": '3',
       "stroke-opacity": 1,
       "fill": "green",
-      "fill-opacity": 0.7
+      "fill-opacity": 0.7,
+        legend: ""
     }
   };
 
@@ -3493,7 +3515,8 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     url: 'data/test/washington.geojson',
     properties: {
       title: 'Washington (State)',
-      fill: "#FFBE00"
+      fill: "#FFBE00",
+        legend: ""
     }
   };
 
@@ -3505,7 +3528,8 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke": "#FF8800",
       "stroke-width": 1,
       "fill": "#FFBE00",
-      "fill-opacity": 0.5
+      "fill-opacity": 0.5,
+        legend: ""
     }
   };
 
@@ -3584,19 +3608,12 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       },
       "labelProperty": function (properties) {
         if (properties.hasOwnProperty("rfa_count")) {
-          return "<span>" + properties.theme_count + "<sub>" + properties.rfa_count + "</sub></span>";
+          var text = '<div class="absolute featurelabel-icon-RFA"><span>' + properties.rfa_count + '</span></div>';
+          text +=  '<div class="absolute featurelabel-icon-RFA top"><span>' + properties.theme_count + '</span></div>';
+          return text;
         }
         else {
-          return properties.theme_count;
-        }
-      },
-      "map-icon-class": function (properties) {
-        //Return a css class used to style the map icon
-        if (properties.hasOwnProperty("rfa_count")) {
-          return "featurelabel-icon-RFA";
-        }
-        else {
-          return "featurelabel-icon-number";
+          return '<div class="featurelabel-icon-number"><span>' + properties.theme_count + '</span></div>';
         }
       },
       "map-icon-size": function (properties) {
@@ -3606,7 +3623,22 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
       "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
-      "defaultTheme": 'project' // The default theme the layer uses. This is used if there is no theme query param.
+      "defaultTheme": 'project', // The default theme the layer uses. This is used if there is no theme query param.
+      "legend" : function(theme){
+          if (theme.toLowerCase() == 'disaster') {
+              //disaster
+              return '<div class="absolute featurelabel-icon-RFA"></div><div class="absolute featurelabel-icon-RFA top"></div>';
+          }
+          else if(theme.toLowerCase() == 'disaster'){
+              //project
+              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;"></div>';
+          }
+          else{
+              //project
+              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;"></div>';
+          }
+      }
+
     }
   };
 
@@ -3621,8 +3653,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "fill-opacity": 0,
       "labelProperty": "name",
       "onSelect": 'showFeatureProperties',
-      "onDeselect": 'closeDetails'
-    }
+      "onDeselect": 'closeDetails',
+      "legend": '<svg class="leaflet-zoom-animated" width="48" height="48"><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="white" stroke-opacity="1" stroke-width="1.3" fill="#555555" fill-opacity="0" class="leaflet-clickable" d="M-1890 -409L-1896 -404L-1899 -404L-1907 -395L-1919 -394L-1921 -404L-1924 -408L-1922 -411L-1899 -421L-1894 -420L-1891 -414L-1888 -413z"></path></g></svg>'
+      }
 
   };
 
@@ -3642,7 +3675,8 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "fill-opacity": 0,
       "labelProperty": function() {
         return Math.floor(Math.random() * (50 - 1 + 1)) + 1;
-      }
+      },
+        legend: ""
     }
 
   };
@@ -3653,22 +3687,34 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
   this.gdacs = {
     name: 'GDACS: Global Disaster Alert and Coordination System',
     type: 'kml',
-    url: 'http://www.gdacs.org/xml/gdacs.kml'
+    url: 'http://www.gdacs.org/xml/gdacs.kml',
+      properties: {
+      legend: ""
+      }
   };
   this.gdacstest = {
     name: 'GDACS Test',
     type: 'kml',
-    url: 'data/test/gdacs.kml'
+    url: 'data/test/gdacs.kml',
+      properties: {
+          legend: ""
+      }
   };
   this.earthquakes = {
     name: 'USGS Earthquakes',
     type: 'kml',
-    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml'
+    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml',
+      properties: {
+          legend: ""
+      }
   };
   this.earthquakestest = {
     name: 'USGS Earthquakes Test',
     type: 'kml',
-    url: 'data/test/usgs-earthquakes.kml'
+    url: 'data/test/usgs-earthquakes.kml',
+      properties: {
+          legend: ""
+      }
   };
 
 
@@ -3678,12 +3724,18 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
   this.ugandafsp = {
     name: 'Uganda Financial Service Providers',
     type: 'csv',
-    url: 'data/test/uganda.csv'
+    url: 'data/test/uganda.csv',
+      properties: {
+          legend: ""
+      }
   };
   this.sampletracks = {
     name: 'Sample GPS Tracks',
     type: 'csv',
-    url: 'data/test/sample-tracks.csv'
+    url: 'data/test/sample-tracks.csv',
+      properties: {
+          legend: ""
+      }
   };
 
 
@@ -3696,7 +3748,10 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     url: 'http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/obs',
     transparent: true,      // default true
     format: 'image/png',    // default 'image/png'
-    layers: 'OBS_MET_TEMP'
+    layers: 'OBS_MET_TEMP',
+      properties: {
+          legend: ""
+      }
   };
 
   // Not working??? works in QGIS. Most layers, however, don't even work in QGIS.
@@ -3705,21 +3760,30 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     type: 'wms',
     url: 'http://lacrmt.sahanafoundation.org:8080/geoserver/wms?LAYERS=lacrmt%3Ainund2&',
     transparent: false,
-    layers: 'lacrmt:sanandreas78'
+    layers: 'lacrmt:sanandreas78',
+      properties: {
+          legend: ""
+      }
   };
 
   this.landcover = {
     name: 'MODIS Landcover 2009',
     type: 'wms',
     url: 'http://ags.servirlabs.net/ArcGIS/services/ReferenceNode/MODIS_Landcover_Type1_2009/MapServer/WMSServer',
-    layers: '0'
+    layers: '0',
+      properties: {
+          legend: ""
+      }
   };
 
   this.growingperiod = {
     name: 'Average Length of Growing Period (days)',
     type: 'wms',
     url: 'http://apps.harvestchoice.org/arcgis/services/MapServices/cell_values_4/MapServer/WMSServer',
-    layers: '15'
+    layers: '15',
+      properties: {
+          legend: ""
+      }
   };
 
 

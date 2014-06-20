@@ -10,6 +10,8 @@
     vertical-align: middle;
     line-height: 43px;
     box-shadow: 0px 0px 0px 6px rgba(255,255,255,0.7);
+    width: 45px;
+    height: 45px;
 }
 
 .featurelabel-icon-text {
@@ -22,14 +24,37 @@
 }
 
 .featurelabel-icon-RFA {
-    background-color: #ed1b2e;
+    background-color: green;
     display: inline-block;
     cursor: pointer;
     color: #ffffff;
-    font-size: 20px;
+    font-size: 17px;
     border-radius: 50%;
     text-align: center;
     vertical-align: middle;
-    line-height: 43px;
     box-shadow: 0px 0px 0px 6px rgba(255,255,255,0.7);
+    width: 45px;
+    height: 45px;
+    padding-top: 20px;
+}
+
+.featurelabel-icon-RFA.top {
+    background-color: #ed1b2e;
+    height: 22px;
+    border-radius: 45px 45px 0 0;
+    padding-top: 0;
+    box-shadow: none;
+}
+
+
+.leaflet-marker-icon{
+    box-shadow: none !important;
+}
+
+.leaflet-div-icon {
+  background: none;
+}
+
+.absolute{
+    position: absolute;
 }
