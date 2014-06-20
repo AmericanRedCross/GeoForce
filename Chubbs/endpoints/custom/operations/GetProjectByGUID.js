@@ -19,9 +19,16 @@ operation.ProjectQuery = "SELECT " + settings.projectDetails.join(" ,") + " " +
   "WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id " +
   "AND guid{{gadm_level}} = {{guids}}; ";
 
-operation.IndicatorQuery = "SELECT * " +
-  "FROM sf_indicator " +
-  "WHERE project__c = {{guid}}; " ;
+//operation.IndicatorQuery = "SELECT * FROM sf_indicator, sf_indicator_value " +
+//  "WHERE sf_indicator.project__c = {{guid}} AND sf_indicator_value.indicator__c = sf_indicator.sf_id; ";
+
+operation.IndicatorQuery = "SELECT sf_indicator.*, " +
+  "val.actual__c, val.collection_period__c, val.effective_date__c, val.overlap__c, val.period__c, val.subjective__c, " +
+  "val.target_percent__c, val.target__c, val.variance__c, val.period_actual_sum__c, val.period_actuals_max__c, " +
+  "val.period_target_max__c, val.period_target_sum__c, val.unique_indicator_value__c, val.isdeleted " +
+  "FROM sf_indicator, sf_indicator_value AS val " +
+  "WHERE sf_indicator.project__c = {{guid}} AND val.indicator__c = sf_indicator.sf_id LIMIT 10;";
+
 
 //operation.IndicatorValueQuery = "SELECT * " +
 //  "FROM sf_indicator_value " +
