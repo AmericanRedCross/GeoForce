@@ -247,7 +247,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
           weight: 1.5
         };
 
-        if (properties.hasOwnProperty("rfa_count")) {
+        if (properties.theme == "disaster") {
           if (properties && properties.iroc_status__c) {
             switch (properties.iroc_status__c.toLowerCase()) {
               case "active":
@@ -264,6 +264,28 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
                 break;
             }
           }
+        }
+        else if (properties.theme == "projectrisk") {
+            if (properties && properties.overall_assessment__c) {
+                switch (properties.overall_assessment__c.toLowerCase()) {
+                    case "critical":
+                        style.fillColor = "red";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "high":
+                        style.fillColor = "orange";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "medium":
+                        style.fillColor = "yellow";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "low":
+                        style.fillColor = "green";
+                        style.fillOpacity = 0.5;
+                        break;
+                }
+            }
 
         }
         return style;

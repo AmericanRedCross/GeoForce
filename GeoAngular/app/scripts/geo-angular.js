@@ -1194,6 +1194,16 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     value.showIndicators = false;
   };
 
+  $scope.showRisks = function (details, value) {
+      details.showRisks = true;
+      value.showRisks = true;
+  };
+
+  $scope.hideRisks = function (details, value) {
+      details.showRisks = false;
+      value.showRisks = false;
+  };
+
   $scope.label = function (key) {
 
     var desc = key;
@@ -1403,6 +1413,16 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
           $scope.details.indicators = $scope.details.indicators.map(function (indicator) {
               return removeUnwantedItems(formatDetails(indicator, "indicator"), "indicator");
           });
+      }
+
+      if ($scope.details.risks) {
+          //Filter/Format
+          //$scope.details.risks =
+
+//
+//          $scope.details.risks.map(function (risk) {
+//              return removeUnwantedItems(formatDetails(risk, "risk"), "risk");
+//          });
       }
 
       $scope.resizeDetailsPanel();
@@ -3599,7 +3619,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
           weight: 1.5
         };
 
-        if (properties.hasOwnProperty("rfa_count")) {
+        if (properties.theme == "disaster") {
           if (properties && properties.iroc_status__c) {
             switch (properties.iroc_status__c.toLowerCase()) {
               case "active":
@@ -3616,6 +3636,28 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
                 break;
             }
           }
+        }
+        else if (properties.theme == "projectrisk") {
+            if (properties && properties.overall_assessment__c) {
+                switch (properties.overall_assessment__c.toLowerCase()) {
+                    case "critical":
+                        style.fillColor = "red";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "high":
+                        style.fillColor = "orange";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "medium":
+                        style.fillColor = "yellow";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "low":
+                        style.fillColor = "green";
+                        style.fillOpacity = 0.5;
+                        break;
+                }
+            }
 
         }
         return style;
