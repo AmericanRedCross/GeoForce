@@ -9,6 +9,10 @@
     padding: 8px;
 }
 
+#exportModal .exportImage{
+    padding: 8px;
+}
+
 #exportModal .checkbox{
     width: 18px;
     height: 18px;
@@ -72,4 +76,8 @@
     text-decoration: underline;
     cursor:pointer;
     margin-left: 20px;
+}
+
+#exportModal .modal-header{
+    border-bottom: 0px;
 }
