@@ -169,7 +169,7 @@
                                         <input class="form-control" type="text" placeholder="Search keywords..." ng-model="storiesSearchText">
 
                                         <label class="checkbox">
-                                            <input type="checkbox" value="all" ng-change="clearSearch()">
+                                            <input type="checkbox" value="all" ng-model="allText" ng-change="clearSearch()">
                                             All
                                         </label>
                                         <label class="checkbox">
@@ -196,7 +196,7 @@
                                         <h4>Extent:</h4>
 
                                         <label class="checkbox">
-                                            <input type="checkbox" value="all" ng-change="clearSearch()">
+                                            <input type="checkbox" value="all" ng-model="allAreas" ng-change="clearSearch()">
                                             All
                                         </label>
                                         <label class="checkbox">
