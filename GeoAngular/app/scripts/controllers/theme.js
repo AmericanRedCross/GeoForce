@@ -9,7 +9,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
     project: 'Projects',
     disaster: 'Disasters',
     projectRisk: 'Project Risk',
-    projectStatus: 'Project Status',
+    projectHealth: 'Project Health',
     none: 'None'
   };
 
@@ -31,10 +31,10 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
       $scope.setThemeQueryParam('projectRisk');
   };
 
-  $scope.projectStatus = function () {
-      $scope.themeName = themeNameHash.projectStatus;
+  $scope.projectHealth = function () {
+      $scope.themeName = themeNameHash.projectHealth;
       ensureThemeCount();
-      $scope.setThemeQueryParam('projectStatus');
+      $scope.setThemeQueryParam('projectHealth');
   };
 
   $scope.none = function () {

@@ -20,7 +20,7 @@ var theme_details = {
     project: [],
     disaster: ["CASE WHEN array_agg(lower(iroc_status__c)) @> ARRAY['active'] THEN 'Active' WHEN array_agg(lower(iroc_status__c)) @> ARRAY['monitoring'] THEN 'Monitoring' WHEN array_agg(lower(iroc_status__c)) @> ARRAY['inactive'] THEN 'Inactive' END as iroc_status__c"],
     projectRisk: ["CASE WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['critical'] THEN 'Critical' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['high'] THEN 'High' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['medium'] THEN 'Medium' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['low'] THEN 'Low' END as overall_assessment__c"],
-    projectStatus: []
+    projectHealth: ["CASE WHEN array_agg(lower(overall_status__c)) @> ARRAY['red'] THEN 'red' WHEN array_agg(lower(overall_status__c)) @> ARRAY['yellow'] THEN 'yellow' WHEN array_agg(lower(overall_status__c)) @> ARRAY['green'] THEN 'green' WHEN array_agg(lower(overall_status__c)) @> ARRAY['white'] THEN 'white' END as overall_status__c"]
 }
 
 
@@ -69,10 +69,10 @@ operation.execute = flow.define(
                 this.Query = this.Query.replace("{{rfacount}},", "");
                 this.Query = this.Query.replace("{{theme_details}},", theme_details["projectRisk"].length > 0 ? theme_details["projectRisk"].join(",") + "," : "");
             }
-            else if(operation.inputs["theme"].toLowerCase() == 'projectstatus'){
+            else if(operation.inputs["theme"].toLowerCase() == 'projecthealth'){
                 operation.inputs["theme"] = 'project';
                 this.Query = this.Query.replace("{{rfacount}},", "");
-                this.Query = this.Query.replace("{{theme_details}},", theme_details["projectStatus"].length > 0 ? theme_details["projectStatus"].join(",") + "," : "");
+                this.Query = this.Query.replace("{{theme_details}},", theme_details["projectHealth"].length > 0 ? theme_details["projectHealth"].join(",") + "," : "");
             }
 
 			query = {

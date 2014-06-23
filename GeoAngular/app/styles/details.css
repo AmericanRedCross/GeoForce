@@ -154,6 +154,8 @@
     -moz-transition: all .5s ease;
     -webkit-transition: all .5s ease;
     -ms-transition: all .5s ease;
+
+    min-height: 200px;
 }
 
 #DetailsPanel .title {

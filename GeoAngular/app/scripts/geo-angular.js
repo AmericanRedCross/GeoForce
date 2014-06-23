@@ -1204,6 +1204,16 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       value.showRisks = false;
   };
 
+  $scope.showStatuses = function (details, value) {
+      details.showStatuses = true;
+      value.showStatuses = true;
+  };
+
+  $scope.hideStatuses = function (details, value) {
+      details.showStatuses = false;
+      value.showStatuses = false;
+  };
+
   $scope.label = function (key) {
 
     var desc = key;
@@ -1417,11 +1427,15 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
       if ($scope.details.risks) {
           //Filter/Format
-          //$scope.details.risks =
-
-//
-//          $scope.details.risks.map(function (risk) {
+//          $scope.details.risks = $scope.details.risks.map(function (risk) {
 //              return removeUnwantedItems(formatDetails(risk, "risk"), "risk");
+//          });
+      }
+
+      if ($scope.details.statuses) {
+          //Filter/Format
+//          $scope.details.statuses = $scope.details.statuses.map(function (status) {
+//              return removeUnwantedItems(formatDetails(status, "status"), "status");
 //          });
       }
 
@@ -2826,7 +2840,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
     project: 'Projects',
     disaster: 'Disasters',
     projectRisk: 'Project Risk',
-    projectStatus: 'Project Status',
+    projectHealth: 'Project Health',
     none: 'None'
   };
 
@@ -2848,10 +2862,10 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
       $scope.setThemeQueryParam('projectRisk');
   };
 
-  $scope.projectStatus = function () {
-      $scope.themeName = themeNameHash.projectStatus;
+  $scope.projectHealth = function () {
+      $scope.themeName = themeNameHash.projectHealth;
       ensureThemeCount();
-      $scope.setThemeQueryParam('projectStatus');
+      $scope.setThemeQueryParam('projectHealth');
   };
 
   $scope.none = function () {
@@ -3658,7 +3672,28 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
                         break;
                 }
             }
-
+        }
+        else if (properties.theme == "projecthealth") {
+            if (properties && properties.overall_status__c) {
+                switch (properties.overall_status__c.toLowerCase()) {
+                    case "red":
+                        style.fillColor = "red";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "yellow":
+                        style.fillColor = "yellow";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "green":
+                        style.fillColor = "green";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "white":
+                        style.fillColor = "white";
+                        style.fillOpacity = 0.5;
+                        break;
+                }
+            }
         }
         return style;
       },

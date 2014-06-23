@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
-    <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="bower_cxomponents/jquery-ui/themes/smoothness/jquery-ui.css">
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -641,12 +641,12 @@
                                 {{title}}
                             </div>
 
-                            <ul ng-show="details.requestsForAssistance || details.indicators || details.risks" class="nav nav-tabs">
+                            <ul ng-show="details.requestsForAssistance || details.indicators || details.risks || details.statuses" class="nav nav-tabs">
                                 <li class="active"><a class="a-nav-tab" ng-click="navTab='details'" data-toggle="tab">Details</a></li>
                                 <li><a class="a-nav-tab" ng-show="details.requestsForAssistance" ng-click="navTab='request'" data-toggle="tab">Requests For Assistance</a></li>
                                 <li><a class="a-nav-tab" ng-show="details.indicators" ng-click="navTab='indicator'" data-toggle="tab">Indicators</a></li>
                                 <li><a class="a-nav-tab" ng-show="details.risks" ng-click="navTab='risk'" data-toggle="tab">Risks</a></li>
-
+                                <li><a class="a-nav-tab" ng-show="details.statuses" ng-click="navTab='status'" data-toggle="tab">Health</a></li>
                             </ul>
 
                             <div class="InnerContainer scrollable">
@@ -673,7 +673,7 @@
                                     <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
                                 </div>
 
-                                <div class="section scrollable" ng-show="details && !(navTab && (navTab==='request' || navTab==='indicator' || navTab==='risk'))">
+                                <div class="section scrollable" ng-show="details && !(navTab && (navTab==='request' || navTab==='indicator' || navTab==='risk' || navTab==='status'))">
 
                                     <ul ng-show="!contextualLayer && moreLess==='More'">
                                         <li ng-repeat="(key, value) in lessDetails">
@@ -683,8 +683,8 @@
                                     </ul>
                                     <ul ng-show="contextualLayer || moreLess==='Less'">
                                         <li ng-repeat="(key, value) in details">
-                                            <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk'" class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
-                                            <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk'" ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-if="!value">Unavailable</i>
+                                            <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'" class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
+                                            <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'" ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-if="!value">Unavailable</i>
                                         </li>
                                     </ul>
 
@@ -750,6 +750,31 @@
 
                                             <div ng-show="value_.showRisks">
                                                 <a ng-click="hideRisks(details, value_)">< Back To Risk List</a>
+                                                <h4>{{value_.name}}</h4>
+                                                <ul>
+                                                    <li ng-repeat="(key2, value2) in value_">
+                                                        <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
+                                                        <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+
+                                <div class="section scrollable" ng-show="details && (navTab && navTab==='status')">
+                                    <p ng-show="details.statuses === 'none'">
+                                        There are currently no <b>health statuses</b> for this project...
+                                    </p>
+                                    <ul>
+                                        <li ng-repeat="(key_, value_) in details.statuses">
+                                            <a ng-show="!details.showStatuses" ng-click="showStatuses(details, value_)"><h4>{{value_.name}}</h4></a>
+
+                                            <div ng-show="value_.showStatuses">
+                                                <a ng-click="hideStatuses(details, value_)">< Back To Health List</a>
                                                 <h4>{{value_.name}}</h4>
                                                 <ul>
                                                     <li ng-repeat="(key2, value2) in value_">

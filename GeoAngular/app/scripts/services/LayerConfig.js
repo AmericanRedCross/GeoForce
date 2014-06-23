@@ -286,7 +286,28 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
                         break;
                 }
             }
-
+        }
+        else if (properties.theme == "projecthealth") {
+            if (properties && properties.overall_status__c) {
+                switch (properties.overall_status__c.toLowerCase()) {
+                    case "red":
+                        style.fillColor = "red";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "yellow":
+                        style.fillColor = "yellow";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "green":
+                        style.fillColor = "green";
+                        style.fillOpacity = 0.5;
+                        break;
+                    case "white":
+                        style.fillColor = "white";
+                        style.fillOpacity = 0.5;
+                        break;
+                }
+            }
         }
         return style;
       },

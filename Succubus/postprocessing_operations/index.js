@@ -25,6 +25,13 @@ function addRiskToSFProjectTable() {
     return str;
 }
 
+function addStatusToSFProjectTable() {
+    //overall_status__c already exists in sf_project table, but is empty.  Let's fill it.
+    //var str = "ALTER TABLE sf_project ADD COLUMN overall_status__c character varying;";
+    var str = "WITH status as (SELECT project__c, CASE WHEN array_agg(lower(overall_status__c)) @> ARRAY['red'] THEN 'red' WHEN array_agg(lower(overall_status__c)) @> ARRAY['yellow'] THEN 'yellow' WHEN array_agg(lower(overall_status__c)) @> ARRAY['green'] THEN 'green' WHEN array_agg(lower(overall_status__c)) @> ARRAY['white'] THEN 'white' END as overall_status__c FROM sf_project_status GROUP BY project__C) UPDATE sf_project SET overall_status__c = status.overall_status__c FROM status WHERE status.project__c = sf_project.sf_id;";
+    return str;
+}
+
 function addLevelToSFDisasterTable() {
     var str = "ALTER TABLE sf_disaster ADD COLUMN level character varying;";
     str += "UPDATE sf_disaster \
@@ -44,6 +51,9 @@ operations.addLevelToSFDisasterTable = addLevelToSFDisasterTable();
 
 //Add 'risk' to sf_project
 operations.addRiskToSFProjectTable = addRiskToSFProjectTable();
+
+//Add 'status' to sf_project
+operations.addStatusToSFProjectTable = addStatusToSFProjectTable();
 
 //Create the aggregated project counts by all gaul levels, with counts rolled up to parents
 operations.createAggregateProjectCountsForGADM =
@@ -86,7 +96,8 @@ sf_project.sector__c, \
     sf_project.summary__c, \
     sf_project.total_budget__c, \
     sf_project.sf_id, \
-    sf_project.overall_assessment__c \
+    sf_project.overall_assessment__c, \
+    sf_project.overall_status__c \
 INTO    sf_aggregated_gadm_project_counts \
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, gadm5, sf_project \
  \
@@ -148,7 +159,8 @@ sf_project.sector__c,  \
     sf_project.summary__c,  \
     sf_project.total_budget__c,  \
     sf_project.sf_id,  \
-    sf_project.overall_assessment__c \
+    sf_project.overall_assessment__c, \
+    sf_project.overall_status__c \
   \
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, sf_project  \
 WHERE   gadm0.id_0 = gadm1.id_0  \
@@ -203,7 +215,8 @@ sf_project.sector__c, \
     sf_project.summary__c, \
     sf_project.total_budget__c, \
     sf_project.sf_id, \
-    sf_project.overall_assessment__c \
+    sf_project.overall_assessment__c, \
+    sf_project.overall_status__c \
  \
 FROM    gadm0, gadm1, gadm2, gadm3, sf_project \
 WHERE   gadm0.id_0 = gadm1.id_0 \
@@ -255,7 +268,8 @@ sf_project.sector__c, \
     sf_project.summary__c, \
     sf_project.total_budget__c, \
     sf_project.sf_id, \
-    sf_project.overall_assessment__c \
+    sf_project.overall_assessment__c, \
+    sf_project.overall_status__c \
  \
 FROM  gadm0, gadm1, gadm2, sf_project \
 WHERE gadm0.id_0 = gadm1.id_0 \
@@ -303,7 +317,8 @@ sf_project.sector__c, \
     sf_project.summary__c, \
     sf_project.total_budget__c, \
     sf_project.sf_id, \
-    sf_project.overall_assessment__c \
+    sf_project.overall_assessment__c, \
+    sf_project.overall_status__c \
  \
 FROM  gadm1, gadm0, sf_project \
 WHERE gadm0.id_0 = gadm1.id_0 \
@@ -350,7 +365,8 @@ sf_project.sector__c, \
     sf_project.summary__c, \
     sf_project.total_budget__c, \
     sf_project.sf_id, \
-    sf_project.overall_assessment__c \
+    sf_project.overall_assessment__c, \
+    sf_project.overall_status__c \
  \
 FROM gadm0, sf_project \
 WHERE gadm0.guid::text = sf_project.location__r_gis_geo_id__c \

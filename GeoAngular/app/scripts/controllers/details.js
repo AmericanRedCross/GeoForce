@@ -43,6 +43,16 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       value.showRisks = false;
   };
 
+  $scope.showStatuses = function (details, value) {
+      details.showStatuses = true;
+      value.showStatuses = true;
+  };
+
+  $scope.hideStatuses = function (details, value) {
+      details.showStatuses = false;
+      value.showStatuses = false;
+  };
+
   $scope.label = function (key) {
 
     var desc = key;
@@ -256,11 +266,15 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
       if ($scope.details.risks) {
           //Filter/Format
-          //$scope.details.risks =
-
-//
-//          $scope.details.risks.map(function (risk) {
+//          $scope.details.risks = $scope.details.risks.map(function (risk) {
 //              return removeUnwantedItems(formatDetails(risk, "risk"), "risk");
+//          });
+      }
+
+      if ($scope.details.statuses) {
+          //Filter/Format
+//          $scope.details.statuses = $scope.details.statuses.map(function (status) {
+//              return removeUnwantedItems(formatDetails(status, "status"), "status");
 //          });
       }
 
