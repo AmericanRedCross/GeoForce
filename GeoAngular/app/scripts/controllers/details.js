@@ -300,7 +300,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
         for(var key in details){
             var blacklisted = blacklistDictionary[key];
-            if(blacklisted && (typeof blacklisted == 'function')){
+            if(blacklisted && (typeof blacklisted === 'function')){
                 //evaluate the function to decide if the key should be shown.
                 blacklisted = blacklisted(details[key]);
             }
@@ -314,49 +314,52 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   }
 
   function formatDetails(details, type) {
-      var formattedDetails = {};
-      var formattingDictionary = config.projectDetailsFormatting;
+    var formattedDetails = {};
+    var formattingDictionary = config.projectDetailsFormatting;
 
-      if (type === 'disaster') {
-          formattingDictionary = config.disasterDetailsFormatting;
+    if (type === 'disaster') {
+      formattingDictionary = config.disasterDetailsFormatting;
+    }
+    else if (type === 'project') {
+      formattingDictionary = config.projectDetailsFormatting;
+    }
+    else if (type === 'RFA') {
+      formattingDictionary = config.RFADetailsFormatting;
+    }
+    else if (type === 'indicator') {
+      formattingDictionary = config.indicatorDetailsFormatting;
+    }
+
+    for (var key in details) {
+      var formatter = formattingDictionary[key];
+      if (formatter) {
+        switch (formatter.split(",")[0]) {
+          case "currency":
+            formattedDetails[key] = $filter('currency')(details[key], (formatter.split(",")[1] || "USD"));
+            break;
+
+          case "number":
+            formattedDetails[key] = $filter('number')(details[key]);
+            break;
+
+          case "date":
+            formattedDetails[key] = $filter('date')(details[key], "yyyy-dd-MM");
+            break;
+          case "rfaName":
+            formattedDetails[key] = $scope.details.location__r_admin_0__c + ' ' + $scope.details.disaster_type__c + ' - ' + details.appeal_source__c;
+            break;
+
+          default:
+            formattedDetails[key] = details[key];
+        }
       }
-      else if(type === 'project') {
-          formattingDictionary = config.projectDetailsFormatting;
+      else {
+        //No formatting
+        formattedDetails[key] = details[key];
       }
-      else if(type === 'RFA'){
-          formattingDictionary = config.RFADetailsFormatting;
-      }
-      else if(type === 'indicator'){
-          formattingDictionary = config.indicatorDetailsFormatting;
-      }
+    }
 
-      for (var key in details) {
-          var formatter = formattingDictionary[key];
-          if (formatter) {
-              switch(formatter.split(",")[0]){
-                  case "currency":
-                      formattedDetails[key] = $filter('currency')(details[key], (formatter.split(",")[1] || "USD"));
-                      break;
-
-                  case "number":
-                      formattedDetails[key] = $filter('number')(details[key]);
-                      break;
-
-                  case "date":
-                      formattedDetails[key] = $filter('date')(details[key], "yyyy-dd-MM");
-                      break;
-
-                  default:
-                      formattedDetails[key] = details[key];
-              }
-          }
-          else{
-              //No formatting
-              formattedDetails[key] = details[key];
-          }
-      }
-
-      return formattedDetails;
+    return formattedDetails;
   }
 
   function lessDetails(details) {

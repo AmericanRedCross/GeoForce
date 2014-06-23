@@ -114,7 +114,8 @@ config.RFADetailsFormatting = {
     start_date__c: "date",
     total_arc_contributions__c: "currency,$",
     requested_amount_foreign_currerncy__c: "currency,CHF ",
-    requested_amount_usd__c: "currency,$"
+    requested_amount_usd__c: "currency,$",
+    name: "rfaName"
 };
 
 
@@ -162,7 +163,6 @@ config.unwantedDisasterDetails = {
     location__r_longitude__c: true,
     location__r_type__c: true,
     missing_as_of__c: true,
-    sf_id: true,
     source_deaths__c: true,
     source_people_affected__c: true,
     source_people_injured__c: true,
@@ -190,7 +190,6 @@ config.unwantedRFADetails = {
     future_contribution__c: true,
     id: true,
     lastmodifieddate: true,
-    sf_id: true,
     subject__c: true,
     target_population__c: true,
     systemmodstamp: true
