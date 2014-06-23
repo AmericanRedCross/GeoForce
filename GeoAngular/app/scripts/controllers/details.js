@@ -207,6 +207,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   $scope.$on('route-update', function () {
     if ($scope.alertUserToClick === false) return;
     var sf_id = $stateParams.sf_id;
+    $scope.theme = $stateParams.theme;
     if (sf_id && typeof sf_id === 'string') {
       var url = config.chubbsPath('services/custom/custom_operation?name=doecostextsearch&format=json&text=') + sf_id;
       $http.get(url).success(function (result, status) {

@@ -107,7 +107,9 @@ nonsensitiveSettings.projectDetails = [
     'sf_project.total_budget__c',
     'sf_project.usg_contract_number__c',
     'sf_project.sf_id',
-    'sf_project.location__r_gis_geo_id__c'
+    'sf_project.location__r_gis_geo_id__c',
+    'sf_project.overall_assessment__c',
+    'sf_project.overall_status__c'
 ];
 
 nonsensitiveSettings.disasterDetails = ["*"];

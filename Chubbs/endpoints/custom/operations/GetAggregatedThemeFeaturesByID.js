@@ -20,7 +20,7 @@ var theme_details = {
     project: [],
     disaster: ["CASE WHEN array_agg(lower(iroc_status__c)) @> ARRAY['active'] THEN 'Active' WHEN array_agg(lower(iroc_status__c)) @> ARRAY['monitoring'] THEN 'Monitoring' WHEN array_agg(lower(iroc_status__c)) @> ARRAY['inactive'] THEN 'Inactive' END as iroc_status__c"],
     projectRisk: ["CASE WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['critical'] THEN 'Critical' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['high'] THEN 'High' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['medium'] THEN 'Medium' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['low'] THEN 'Low' END as overall_assessment__c"],
-    projectHealth: ["CASE WHEN array_agg(lower(overall_status__c)) @> ARRAY['red'] THEN 'red' WHEN array_agg(lower(overall_status__c)) @> ARRAY['yellow'] THEN 'yellow' WHEN array_agg(lower(overall_status__c)) @> ARRAY['green'] THEN 'green' WHEN array_agg(lower(overall_status__c)) @> ARRAY['white'] THEN 'white' END as overall_status__c"]
+    projectHealth: ["CASE WHEN array_agg(lower(overall_status__c)) @> ARRAY['red'] THEN 'Red' WHEN array_agg(lower(overall_status__c)) @> ARRAY['yellow'] THEN 'Yellow' WHEN array_agg(lower(overall_status__c)) @> ARRAY['green'] THEN 'Green' WHEN array_agg(lower(overall_status__c)) @> ARRAY['white'] THEN 'White' END as overall_status__c"]
 }
 
 
@@ -39,7 +39,7 @@ operation.execute = flow.define(
 
             operation.inputs["ids"] = args.ids;
             operation.inputs["theme"] = args.theme.toLowerCase();
-			operation.inputs["gadm_level"] = args.gadm_level.toLowerCase();
+			      operation.inputs["gadm_level"] = args.gadm_level.toLowerCase();
             operation.inputs["filters"] = args.filters;
 
             this.Query = "SELECT '" +  operation.inputs["theme"] + "' as theme, sum(count{{gadm_level}}) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
