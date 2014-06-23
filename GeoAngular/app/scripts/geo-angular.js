@@ -1829,12 +1829,13 @@ module.exports = angular.module('GeoAngular').controller('ExportCtrl', function(
 
         var printPostArgs = {
             //url: 'http://geo.redcross.com/mapfolio/print.htm',
-            url: $scope.routeUrl.href.replace("mapfolio/#", "mapfolio/print.html#").replace("/export", "").replace("localhost:3001", "geo.redcross.org"), //Swap the current url for the print url
+            url: $scope.routeUrl.href.replace("mapfolio/#", "mapfolio/print.html#").replace("/export", "").replace("http://localhost:3001", "https://geo.redcross.org"), //Swap the current url for the print url
             imageformat: self._ImageFormat || 'png',
             format: 'json',
             //codeblock: codeblock,
             viewportheight: mapHeight,
-            viewportwidth: layoutWidth
+            viewportwidth: layoutWidth,
+            delay: 10000 //time to wait in ms
         };
 
 
