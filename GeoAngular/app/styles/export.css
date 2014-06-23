@@ -1,7 +1,12 @@
 #exportModal .redbox{
-    padding: 4px;
+    padding: 4px 7px;
     background-color: #ff0000;
     color: #fff;
+}
+
+#exportModal .permalink{
+    background-color: #d7d3d3;
+    padding: 8px;
 }
 
 #exportModal .checkbox{
@@ -25,6 +30,8 @@
     text-transform: uppercase;
     display: inline-block;
     cursor:pointer;
+    margin-top: 15px;
+    margin-left: 26px;
 }
 
 #exportModal .redbtn .arrow {
@@ -59,4 +66,10 @@
 
 #exportModal #exportWaitingPanel{
     margin-top: 20px;
+}
+
+#exportModal .killOpenButton{
+    text-decoration: underline;
+    cursor:pointer;
+    margin-left: 20px;
 }
