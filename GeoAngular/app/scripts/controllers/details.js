@@ -9,7 +9,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   $scope.salesforceUrl = config.salesforceUrl;
 
-  $http.get('data/sf-object-field-hash.json', {cached: true}).success(function (sfFieldHash) {
+  $http.get('data/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
     $scope.sfFieldHash = sfFieldHash;
   });
 
@@ -34,23 +34,23 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.showRisks = function (details, value) {
-    details.showRisks = true;
-    value.showRisks = true;
+      details.showRisks = true;
+      value.showRisks = true;
   };
 
   $scope.hideRisks = function (details, value) {
-    details.showRisks = false;
-    value.showRisks = false;
+      details.showRisks = false;
+      value.showRisks = false;
   };
 
   $scope.showStatuses = function (details, value) {
-    details.showStatuses = true;
-    value.showStatuses = true;
+      details.showStatuses = true;
+      value.showStatuses = true;
   };
 
   $scope.hideStatuses = function (details, value) {
-    details.showStatuses = false;
-    value.showStatuses = false;
+      details.showStatuses = false;
+      value.showStatuses = false;
   };
 
   $scope.label = function (key) {
@@ -167,9 +167,9 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   //Init selectedFeatureTitle property
-  $scope.title = "Feature Details";
+  $scope.title= "Feature Details";
 
-  $scope.toggleState = function (stateName) {
+  $scope.toggleState = function(stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
     $state.go(state, $stateParams);
   };
@@ -191,9 +191,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (properties.salesforce) { // salesforce theme badge selected
       $scope.contextualLayer = false;
       $scope.groupings = properties.salesforce;
-      $scope.numThemeItems = $.map(properties.salesforce, function (n) {
-        return n
-      }).length;
+      $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
       $scope.showList();
       $scope.openParam('details-panel');
       $scope.createDonuts();
@@ -219,7 +217,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     }
   });
 
-  $scope.createDonuts = function () {
+  $scope.createDonuts = function() {
     // uses jquery to put donut in a div.
     if ($scope.groupings && $scope.groupings.Projects) {
       Donuts.createLabelDonut($scope.sfFieldHash.Project__c.sector__c.picklistValues, $scope.groupings.Projects, '#details-donut');
@@ -237,130 +235,128 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.showDetails = function (item, themeItems, idx) {
-    if (item.sf_id) {
-      $rootScope.setParamWithVal('sf_id', item.sf_id);
-    }
-    if (item.name || item.title) {
-      $scope.title = item.name || item.title;
-    }
-    if (typeof idx === 'number') $scope.activeThemeItemIdx = idx;
-    if (themeItems) $scope.activeThemeItemsList = themeItems;
-    $scope.itemsList = false;
-    $scope.details = removeUnwantedItems(formatDetails(item));
-    if (!$scope.contextualLayer) {
-      $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item)));
-    }
+      if (item.sf_id) {
+          $rootScope.setParamWithVal('sf_id', item.sf_id);
+      }
+      if (item.name || item.title) {
+          $scope.title = item.name || item.title;
+      }
+      if (typeof idx === 'number') $scope.activeThemeItemIdx = idx;
+      if (themeItems) $scope.activeThemeItemsList = themeItems;
+      $scope.itemsList = false;
+      $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+      if (!$scope.contextualLayer) {
+          $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item, $stateParams.theme)), $stateParams.theme);
+      }
 
-    //Filter/Format RFAs and Indicators
-    if ($scope.details.requestsForAssistance) {
-      //Filter/Format
-      $scope.details.requestsForAssistance = $scope.details.requestsForAssistance.map(function (rfa) {
-        return removeUnwantedItems(formatDetails(rfa));
-      });
-    }
+      //Filter/Format RFAs and Indicators
+      if ($scope.details.requestsForAssistance) {
+          //Filter/Format
+          $scope.details.requestsForAssistance = $scope.details.requestsForAssistance.map(function (rfa) {
+              return removeUnwantedItems(formatDetails(rfa, "RFA"), "RFA");
+          });
+      }
 
-    if ($scope.details.indicators) {
-      //Filter/Format
-      $scope.details.indicators = $scope.details.indicators.map(function (indicator) {
-        return removeUnwantedItems(formatDetails(indicator));
-      });
-    }
+      if ($scope.details.indicators) {
+          //Filter/Format
+          $scope.details.indicators = $scope.details.indicators.map(function (indicator) {
+              return removeUnwantedItems(formatDetails(indicator, "indicator"), "indicator");
+          });
+      }
 
-    if ($scope.details.risks) {
-      //Filter/Format
+      if ($scope.details.risks) {
+          //Filter/Format
 //          $scope.details.risks = $scope.details.risks.map(function (risk) {
-//              return removeUnwantedItems(formatDetails(risk));
+//              return removeUnwantedItems(formatDetails(risk, "risk"), "risk");
 //          });
-    }
+      }
 
-    if ($scope.details.statuses) {
-      //Filter/Format
+      if ($scope.details.statuses) {
+          //Filter/Format
 //          $scope.details.statuses = $scope.details.statuses.map(function (status) {
-//              return removeUnwantedItems(formatDetails(status));
+//              return removeUnwantedItems(formatDetails(status, "status"), "status");
 //          });
-    }
+      }
 
-    $scope.resizeDetailsPanel();
+      $scope.resizeDetailsPanel();
   };
 
-  function removeUnwantedItems(details) {
-    var type = $stateParams.theme;
-    var passthroughDetails = {};
-    var blacklistDictionary = config.unwantedProjectDetails;
+  function removeUnwantedItems(details, type){
+      var passthroughDetails = {};
+      var blacklistDictionary = config.unwantedProjectDetails;
 
-    if (type === 'disaster') {
-      blacklistDictionary = config.unwantedDisasterDetails;
-    }
-    else if (type === 'project') {
-      blacklistDictionary = config.unwantedProjectDetails;
-    }
-    else if (type === 'RFA') {
-      blacklistDictionary = config.unwantedRFADetails;
-    }
-    else if (type === 'indicator') {
-      blacklistDictionary = config.unwantedIndicatorDetails;
-    }
-
-    for (var key in details) {
-      var blacklisted = blacklistDictionary[key];
-      if (blacklisted && (typeof blacklisted == 'function')) {
-        //evaluate the function to decide if the key should be shown.
-        blacklisted = blacklisted(details[key]);
+      if (type === 'disaster') {
+          blacklistDictionary = config.unwantedDisasterDetails;
       }
-      if (!blacklisted) {
-        //Allow the item thru if it is not blacklisted
-        passthroughDetails[key] = details[key];
+      else if(type === 'project') {
+          blacklistDictionary = config.unwantedProjectDetails;
       }
-    }
+      else if(type === 'RFA'){
+          blacklistDictionary = config.unwantedRFADetails;
+      }
+      else if(type === 'indicator'){
+          blacklistDictionary = config.unwantedIndicatorDetails;
+      }
 
-    return passthroughDetails;
+        for(var key in details){
+            var blacklisted = blacklistDictionary[key];
+            if(blacklisted && (typeof blacklisted == 'function')){
+                //evaluate the function to decide if the key should be shown.
+                blacklisted = blacklisted(details[key]);
+            }
+            if(!blacklisted){
+                //Allow the item thru if it is not blacklisted
+                passthroughDetails[key] = details[key];
+            }
+        }
+
+      return passthroughDetails;
   }
 
-  function formatDetails(details) {
-    var type = $stateParams.theme;
-    var formattedDetails = {};
-    var formattingDictionary = config.projectDetailsFormatting;
+  function formatDetails(details, type) {
+      var formattedDetails = {};
+      var formattingDictionary = config.projectDetailsFormatting;
 
-    if (type === 'disaster') {
-      formattingDictionary = config.disasterDetailsFormatting;
-    }
-    else if (type === 'project') {
-      formattingDictionary = config.projectDetailsFormatting;
-    }
-    else if (type === 'RFA') {
-      formattingDictionary = config.RFADetailsFormatting;
-    }
-    else if (type === 'indicator') {
-      formattingDictionary = config.indicatorDetailsFormatting;
-    }
-
-    for (var key in details) {
-      var formatter = formattingDictionary[key];
-      if (formatter) {
-        switch (formatter.split(",")[0]) {
-          case "currency":
-            formattedDetails[key] = $filter('currency')(details[key], (formatter.split(",")[1] || "USD"));
-            break;
-
-          case "number":
-            formattedDetails[key] = $filter('number')(details[key]);
-            break;
-
-          case "date":
-            formattedDetails[key] = $filter('date')(details[key], "yyyy-dd-MM");
-            break;
-
-          default:
-            formattedDetails[key] = details[key];
-        }
+      if (type === 'disaster') {
+          formattingDictionary = config.disasterDetailsFormatting;
       }
-      else {
-        //No formatting
-        formattedDetails[key] = details[key];
+      else if(type === 'project') {
+          formattingDictionary = config.projectDetailsFormatting;
       }
-    }
+      else if(type === 'RFA'){
+          formattingDictionary = config.RFADetailsFormatting;
+      }
+      else if(type === 'indicator'){
+          formattingDictionary = config.indicatorDetailsFormatting;
+      }
 
-    return formattedDetails;
+      for (var key in details) {
+          var formatter = formattingDictionary[key];
+          if (formatter) {
+              switch(formatter.split(",")[0]){
+                  case "currency":
+                      formattedDetails[key] = $filter('currency')(details[key], (formatter.split(",")[1] || "USD"));
+                      break;
+
+                  case "number":
+                      formattedDetails[key] = $filter('number')(details[key]);
+                      break;
+
+                  case "date":
+                      formattedDetails[key] = $filter('date')(details[key], "yyyy-dd-MM");
+                      break;
+
+                  default:
+                      formattedDetails[key] = details[key];
+              }
+          }
+          else{
+              //No formatting
+              formattedDetails[key] = details[key];
+          }
+      }
+
+      return formattedDetails;
   }
 
   function lessDetails(details) {
@@ -381,14 +377,14 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     return lessDetails;
   }
 
-  $scope.nextThemeItem = function () {
+  $scope.nextThemeItem = function() {
     var len = $scope.activeThemeItemsList.length;
     if (++$scope.activeThemeItemIdx >= len) $scope.activeThemeItemIdx = 0;
     var item = $scope.activeThemeItemsList[$scope.activeThemeItemIdx];
     $scope.showDetails(item);
   };
 
-  $scope.prevThemeItem = function () {
+  $scope.prevThemeItem = function() {
     var len = $scope.activeThemeItemsList.length;
     if (--$scope.activeThemeItemIdx < 0) $scope.activeThemeItemIdx = len - 1;
     var item = $scope.activeThemeItemsList[$scope.activeThemeItemIdx];
@@ -401,21 +397,21 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     $scope.details = false;
   };
 
-  $scope.resizeDetailsPanel = function () {
+  $scope.resizeDetailsPanel = function() {
     var detailsPanelTop = $('#DetailsPanel').offset().top;
     var height = $('#MapCtrl').height() - 410; //Magic Number
-    $('#DetailsPanel .InnerContainer ').css("max-height", height);
+    $('#DetailsPanel .InnerContainer ').css("max-height",height);
   };
 
-  //Connect the layout onresize end event
-  window.layout.panes.center.bind("layoutpaneonresize_end", $scope.resizeDetailsPanel);
+	//Connect the layout onresize end event
+	window.layout.panes.center.bind("layoutpaneonresize_end", $scope.resizeDetailsPanel);
 
-  //For Init.
-  $scope.resizeDetailsPanel();
+	//For Init.
+	$scope.resizeDetailsPanel();
 
   $scope.save = function (data, name) {
     var json = JSON.stringify(data, null, 2);
-    var blob = new Blob([json], {type: 'text/plain'});
+    var blob = new Blob([json], {type:'text/plain'});
     var downloadLink = document.createElement("a");
     var url = (window.webkitURL != null ? window.webkitURL : window.URL);
     downloadLink.href = url.createObjectURL(blob);
