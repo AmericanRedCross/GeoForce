@@ -26,13 +26,21 @@
                     <div class="form-group">
                         <span class="redbox">2</span>
                         <label for="routeUrl">EXPORT AN IMAGE</label>
-                        <div>What element(s) would you like to include in the exported image?</div>
+                        <div style="display:none;">What element(s) would you like to include in the exported image?</div>
 
 
                         <div id="exportOptionsPanel">
                             <div id="exportLayoutContainer" class="exportOptionsContainer clearfix">
                                 <div class="exportGroupTitle"></div>
-                                <div class="exportOptionsGroup">
+                                <div class="btn-group" style="display: none;">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                        Layout <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>Default</li>
+                                    </ul>
+                                </div>
+                                <div class="exportOptionsGroup" style="display: none;">
                                     <table>
                                         <tr>
                                             <td>
@@ -72,7 +80,6 @@
                                         </tr>
                                     </table>
                                 </div>
-
                                 <div id="exportOptionsContainer" class="exportOptionsContainer clearfix" style="display:none;">
                                     <div class="exportOptionsGroup">
                                         <div class="exportGroupTitle">Image format:</div>
@@ -87,7 +94,7 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
+                       </div>
 
                         <div id="exportWaitingPanel" style="display: none;">
                             <div class="knightRiderLoader" style="display: none;"></div>
