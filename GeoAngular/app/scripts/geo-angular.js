@@ -1838,7 +1838,7 @@ module.exports = angular.module('GeoAngular').controller('ExportCtrl', function(
             //codeblock: codeblock,
             viewportheight: mapHeight,
             viewportwidth: layoutWidth,
-            delay: 10000 //time to wait in ms
+            delay: 5000 //time to wait in ms
         };
 
 
