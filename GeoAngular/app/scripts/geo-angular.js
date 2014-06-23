@@ -1739,14 +1739,105 @@ module.exports = angular.module('GeoAngular').controller('ExportCtrl', function(
 
     self._exportImage = function () {
 
+        var titleHTML = "Title";
+
+        //var legendsHTML = $('<div>').append($("#LayerListWrapper").clone()).html().replace(/\"/g, '\\"');
+
+
+        var layoutWidth = $("body").width();
+        var mapHeight = $("#MapCtrl").height();
+        var mapWidth = $("#MapCtrl").width();
+
+        var codeblock = "";
+        //Adjust body width
+        codeblock += '$("body").width(' + (mapWidth + 20) + ');';
+
+        //Label selected country
+        //codeblock += '$("#activeCountry").html( "' + _FSP.MapBuilder.SelectedCountry + '");';
+
+        //Depending on what's in the layoutElements array, grab dom nodes
+        //var _showNone = true; //flag to detect if user chose nothing
+
+//        for (var key in self._LayoutElements) {
+//            if (self._LayoutElements.hasOwnProperty(key)) {
+//                //If user has selected even 1 element, then set _showNone to false; (because we are going to show something)
+//                if (self._LayoutElements[key] === true) {
+//                    _showNone = false;
+//                }
+//                switch (key) {
+//                    case "map":
+//                        if (self._LayoutElements[key] === true) {
+//                            //grab the map div
+//                            var mapHTML = $('<div>').append($(".leaflet-map-pane").clone()).html().replace(/\"/g, '\\"');
+//                            if (mapHTML.indexOf('-webkit-transform') === -1) {
+//                                mapHTML = mapHTML.replace(/-ms-transform/g, 'transform').replace(/transform/g, '-webkit-transform');
+//                            }
+//                            codeblock += '$("#MapCtrl").height(' + mapHeight + ');';
+//                            codeblock += '$("#MapCtrl").replaceWith("' + mapHTML + '");';
+//                            //Adjust Map wrapper
+//                            codeblock += '$("#upperMapWrapper").width(' + (mapWidth) + ');';
+//                            codeblock += '$("#upperMapWrapper").height(' + (mapHeight) + ');';
+//                        }
+//                        else {
+//                            //hide map div
+//                            codeblock += '$("#upperMapWrapper").hide();';
+//                        }
+//                        break;
+//
+//                    case "legend":
+//                        if (self._LayoutElements[key] === true) {
+////                            var legendsHTML = $('<div>').append($("#LayerListWrapper").clone()).html().replace(/\"/g, '\\"');
+////                            codeblock += "$('#legends').append('" + legendsHTML + "');";
+////
+////                            //Adjust Title of CICOs
+////                            codeblock += "$('#legends').prepend($('#parentCICO'));";
+////                            codeblock += "$('#legends').prepend($('#LayerListWrapper header'));";
+////
+////
+////                            //Move panelTitle to grpCICO.  1st thing.
+////                            codeblock += "$('#grpCICO').prepend($('.panelTitle'));";
+//                        }
+//                        else {
+//                            //if both map and legend are excluded, hide the wrapper with border
+//                            if (self._LayoutElements["map"] != true) {
+//                                codeblock += '$("#upperMapWrapper").css({"display": "none"});';
+//                            }
+//                        }
+//                        break;
+//
+//                    case "optionalthemedetails":
+//                        if (self._LayoutElements[key] === true) {
+//                            //#DetailsPanel .title.ng-binding
+//
+//                            var COHTML = $('<div>').append($("#DetailsPanel .InnerContainer.scrollable").clone().addClass("on")).html().replace(/\"/g, '\\"').replace(/<!--(.*?)-->/gm, "");
+//                            codeblock += "$('#uxThemeDetails').append('" + COHTML + "');";
+//                        }
+//                        break;
+//                }
+//            }
+//        }
+
+//        if (_showNone == true) {
+//            //Don't do anything, cause user hasn't selected anything.
+//            $("#exportMessage").html("Please select 1 or more elements to export.");
+//            return;
+//        }
+//        else {
+//            $("#exportMessage").html("");
+//        }
+
         //show loader
         self._showWaitingPanel();
+
+        //formatting
+        //codeblock = codeblock.replace(/(\r\n|\n|\r)/gm, "");  //remove line breaks
 
         var printPostArgs = {
             //url: 'http://geo.redcross.com/mapfolio/print.htm',
             url: $scope.routeUrl.href.replace("mapfolio/#", "mapfolio/print.html#").replace("mapfolio/index.html#", "mapfolio/print.html#").replace("/export", "").replace("http://localhost:3001", "https://geo.redcross.org"), //Swap the current url for the print url
             imageformat: self._ImageFormat || 'png',
             format: 'json',
+            //codeblock: codeblock,
             viewportheight: mapHeight,
             viewportwidth: layoutWidth,
             delay: 5000 //time to wait in ms
