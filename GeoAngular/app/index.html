@@ -169,7 +169,7 @@
                                         <input class="form-control" type="text" placeholder="Search keywords..." ng-model="storiesSearchText">
 
                                         <label class="checkbox">
-                                            <input type="checkbox" value="all">
+                                            <input type="checkbox" value="all" ng-change="clearSearch()">
                                             All
                                         </label>
                                         <label class="checkbox">
@@ -196,27 +196,27 @@
                                         <h4>Extent:</h4>
 
                                         <label class="checkbox">
-                                            <input type="checkbox" value="all">
+                                            <input type="checkbox" value="all" ng-change="clearSearch()">
                                             All
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="africa">
+                                            <input type="checkbox" value="africa" ng-model="africa" ng-change="filterByCheckbox('Africa')">
                                             Africa
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="amee">
+                                            <input type="checkbox" value="amee" ng-model="amee" ng-change="filterByCheckbox('AMEE')">
                                             AMEE
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="global">
+                                            <input type="checkbox" value="global" ng-model="global" ng-change="filterByCheckbox('Global')">
                                             Global
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="lac">
+                                            <input type="checkbox" value="lac" ng-model="lac" ng-change="filterByCheckbox('LAC')">
                                             LAC
                                         </label>
                                         <label class="checkbox">
-                                            <input type="checkbox" value="usa">
+                                            <input type="checkbox" value="usa" ng-model="usa" ng-change="filterByCheckbox('USA')">
                                             USA
                                         </label>
 

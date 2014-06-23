@@ -35,14 +35,14 @@ module.exports = angular.module('GeoAngular').service('StoriesConfig', function 
     name: 'Typhoon Haiyan Response',
     date: '2013-10-12',
     thumbnail: 'images/stories/haiyan.png',
-    keywords: 'Typhoon, Disaster Response, Haiyan, Disaster'
+    keywords: 'Typhoon, Disaster Response, Haiyan, Disaster, AMEE'
   };
   this.ebola = {
     url: '/mapfolio/index.html#/map@15.072124,-3.460693,6(ortho,themecount,gdacs)?theme=disaster',
     name: 'Ebola Outbreak Resopnse',
     date: '2014-15-5',
     thumbnail: 'images/stories/ebola.png',
-    keywords: 'Ebola, Disaster Response, Guinea, Disease, Mali'
+    keywords: 'Ebola, Disaster Response, Guinea, Disease, Mali, Africa'
 
 
   };

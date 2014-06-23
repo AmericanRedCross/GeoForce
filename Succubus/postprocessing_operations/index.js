@@ -28,7 +28,7 @@ function addRiskToSFProjectTable() {
 function addStatusToSFProjectTable() {
     //overall_status__c already exists in sf_project table, but is empty.  Let's fill it.
     //var str = "ALTER TABLE sf_project ADD COLUMN overall_status__c character varying;";
-    var str = "WITH status as (SELECT project__c, CASE WHEN array_agg(lower(overall_status__c)) @> ARRAY['red'] THEN 'red' WHEN array_agg(lower(overall_status__c)) @> ARRAY['yellow'] THEN 'yellow' WHEN array_agg(lower(overall_status__c)) @> ARRAY['green'] THEN 'green' WHEN array_agg(lower(overall_status__c)) @> ARRAY['white'] THEN 'white' END as overall_status__c FROM sf_project_status GROUP BY project__C) UPDATE sf_project SET overall_status__c = status.overall_status__c FROM status WHERE status.project__c = sf_project.sf_id;";
+    var str = "WITH status as (SELECT project__c, CASE WHEN array_agg(lower(overall_status__c)) @> ARRAY['red'] THEN 'Red' WHEN array_agg(lower(overall_status__c)) @> ARRAY['yellow'] THEN 'Yellow' WHEN array_agg(lower(overall_status__c)) @> ARRAY['green'] THEN 'Green' WHEN array_agg(lower(overall_status__c)) @> ARRAY['white'] THEN 'White' END as overall_status__c FROM sf_project_status GROUP BY project__C) UPDATE sf_project SET overall_status__c = status.overall_status__c FROM status WHERE status.project__c = sf_project.sf_id;";
     return str;
 }
 

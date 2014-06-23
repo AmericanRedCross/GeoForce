@@ -51,6 +51,7 @@ div.breadcrumbs-container {
 #DetailsWrapper .InnerContainer{
     height: auto !important;
     border: 0px;
+    max-height: none !important;
 }
 
 #DetailsWrapper .InnerContainer .btn-group {
