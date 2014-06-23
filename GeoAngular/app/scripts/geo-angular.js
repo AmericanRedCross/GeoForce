@@ -2771,6 +2771,7 @@ module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function
   //Get Stories from config file and load them.
   $scope.storiesConfig = StoriesConfig;
   $scope.stories = [];
+  $scope.storiesSearchArray = [];
   $scope.storiesSearchText = "";
 
     for (var storiesKey in StoriesConfig) {
@@ -2785,14 +2786,20 @@ module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function
 
   $scope.filterByCheckbox = function(value){
       //Take the term passed in and add or remove it from the keywords textbox.
-      if($scope.storiesSearchText.indexOf(value) == -1){
+      if($scope.storiesSearchArray.indexOf(value) == -1){
           //Add it
-          $scope.storiesSearchText += ", " + value;
+          $scope.storiesSearchArray.push(value);
       }
       else{
           //Remove it
-          $scope.storiesSearchText.replace(", " + value, "").replace(value, "");
+          $scope.storiesSearchArray.splice($scope.storiesSearchArray.indexOf(value), 1);
       }
+    $scope.storiesSearchText = $scope.storiesSearchArray.join(",")
+  }
+
+  $scope.clearSearch = function(){
+    $scope.storiesSearchArray = [];
+    $scope.storiesSearchText = "";
   }
 
   $scope.selectedStoriesFilter = function(customers) {
@@ -3948,14 +3955,14 @@ module.exports = angular.module('GeoAngular').service('StoriesConfig', function 
     name: 'Typhoon Haiyan Response',
     date: '2013-10-12',
     thumbnail: 'images/stories/haiyan.png',
-    keywords: 'Typhoon, Disaster Response, Haiyan, Disaster'
+    keywords: 'Typhoon, Disaster Response, Haiyan, Disaster, AMEE'
   };
   this.ebola = {
     url: '/mapfolio/index.html#/map@15.072124,-3.460693,6(ortho,themecount,gdacs)?theme=disaster',
     name: 'Ebola Outbreak Resopnse',
     date: '2014-15-5',
     thumbnail: 'images/stories/ebola.png',
-    keywords: 'Ebola, Disaster Response, Guinea, Disease, Mali'
+    keywords: 'Ebola, Disaster Response, Guinea, Disease, Mali, Africa'
 
 
   };
