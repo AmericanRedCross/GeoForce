@@ -187,7 +187,6 @@
 
 .details-li {
     width: 215px;
-    display: inline-block;
     cursor: pointer;
 }
 
@@ -218,3 +217,25 @@
     margin-left: auto;
 }
 
+#DetailsPanel .label-white {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+}
+
+#DetailsPanel .label-red {
+    background-color: red;
+}
+
+#DetailsPanel .label-yellow {
+    background-color: yellow;
+    color: black;
+}
+
+#DetailsPanel .label-orange {
+    background-color: orange;
+}
+
+#DetailsPanel .label-green {
+    background-color: green;
+}
