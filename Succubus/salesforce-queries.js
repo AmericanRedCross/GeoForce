@@ -203,8 +203,8 @@ module.exports = {
   projectStatus: "Select " + metaFields + ", Budget_Status__c, Budget_Status_Comment__c, Human_Resource_Status__c, Human_Resource_Status_Comment__c, Overall_Status__c, Overall_Status_Comment__c, Evaluation_Date__c, Project__c, QPR__c, Scope_Status__c, Scope_Status_Comment__c, Stakeholder_Status__c, Stakeholder_Status_Comment__c, Timeline_Status__c, Timeline_Status_Comment__c  From Project_Evaluation__c",
 
 
-    indicator: "Select " + indicatorFields + " From Indicator__c Where Is_Standard__c = true"
-//  indicatorValue: "Select " + indicatorValueFields + " From Indicator_Value__c",
+  indicator: "Select " + indicatorFields + " From Indicator__c",
+  indicatorValue: "Select " + indicatorValueFields + " From Indicator_Value__c"
 //  logframeElement: "Select " + logframeElementFields + " From Logframe_Element__c"
 
 };

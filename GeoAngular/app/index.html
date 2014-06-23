@@ -719,7 +719,7 @@
 
                                 <div class="section scrollable" ng-show="details && (navTab && navTab==='indicator')">
                                     <p ng-show="details.indicators === 'none'">
-                                        There are currently no <b>standard indicators</b> for this project...
+                                        There are currently <b>no indicators</b> for this project...
                                     </p>
                                     <ul>
                                         <li ng-repeat="(key_, value_) in details.indicators">
@@ -738,11 +738,14 @@
 
                                         </li>
                                     </ul>
+                                    <div class="btn-group" ng-show="!contextualLayer">
+                                        <a href="{{salesforceUrl}}/{{details.sf_id}}" target="_blank" class="btn btn-default btn-sm" >View in ECOS</a>
+                                    </div>
                                 </div>
 
                                 <div class="section scrollable" ng-show="details && (navTab && navTab==='risk')">
                                     <p ng-show="details.risks === 'none'">
-                                        There are currently no <b>risks</b> for this project...
+                                        There are currently <b>no risks</b> for this project...
                                     </p>
                                     <ul>
                                         <li ng-repeat="(key_, value_) in details.risks">

@@ -779,7 +779,7 @@ set nameARC = 'USA', \
     geomarc = (select geom from ARC_REGIONS_DISSOLVED where gid = 3) \
 where name0 = 'United States';";
 
-operations.AddIndicesForProjecTable =
+operations.AddIndicesForProjectTable =
     "DROP INDEX IF EXISTS idx_sf_project_sector__c; CREATE INDEX idx_sf_project_sector__c ON sf_project USING btree (sector__c); \
     DROP INDEX IF EXISTS idx_sf_project_status__c; CREATE INDEX idx_sf_project_status__c ON sf_project USING btree (status__c); \
     DROP INDEX IF EXISTS idx_sf_project_stage_name__c; CREATE INDEX idx_sf_project_stage_name__c ON sf_project USING btree (stage_name__c); \
@@ -796,10 +796,10 @@ operations.AddIndicesForIndicatorTable =
   DROP INDEX IF EXISTS idx_sf_indicator_logframe_element__c; CREATE INDEX idx_sf_indicator_logframe_element__c ON sf_indicator USING btree (logframe_element__c); \
   DROP INDEX IF EXISTS idx_sf_indicator_project__c; CREATE INDEX idx_sf_indicator_project__c ON sf_indicator USING btree (project__c); ";
 
-//operations.AddIndicesForIndicatorValueTable =
-//  "DROP INDEX IF EXISTS idx_sf_indicator_value_sf_id; CREATE INDEX idx_sf_indicator_value_sf_id ON sf_indicator_value USING btree (sf_id); \
-//  DROP INDEX IF EXISTS idx_sf_indicator_value_indicator__c; CREATE INDEX idx_sf_indicator_value_indicator__c ON sf_indicator_value USING btree (indicator__c); ";
-//
+operations.AddIndicesForIndicatorValueTable =
+  "DROP INDEX IF EXISTS idx_sf_indicator_value_sf_id; CREATE INDEX idx_sf_indicator_value_sf_id ON sf_indicator_value USING btree (sf_id); \
+  DROP INDEX IF EXISTS idx_sf_indicator_value_indicator__c; CREATE INDEX idx_sf_indicator_value_indicator__c ON sf_indicator_value USING btree (indicator__c); ";
+
 //operations.AddIndicesForLogframeElementTable =
 //  "DROP INDEX IF EXISTS idx_sf_logframe_element_sf_id; CREATE INDEX idx_sf_logframe_element_sf_id ON sf_logframe_element USING btree (sf_id); ";
 
