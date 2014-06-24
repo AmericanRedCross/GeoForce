@@ -73,8 +73,6 @@
 }
 
 #exportModal .killOpenButton{
-    text-decoration: underline;
-    cursor:pointer;
     margin-left: 20px;
 }
 
