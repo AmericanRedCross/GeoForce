@@ -16,10 +16,10 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
    */
   vector.bboxUrl = LayerConfig.bbox.bboxurl;
 
-  var Resource = require('./resource');
-  var GeoJSON = require('./geojson');
-  var BBoxGeoJSON = require('./bboxgeojson');
-  var KML = require('./kml');
+  var Resource = require('./Resource');
+  var GeoJSON = require('./GeoJSON');
+  var BBoxGeoJSON = require('./BBoxGeoJSON');
+  var KML = require('./KML');
   var CSV = require('./csv');
 
 
