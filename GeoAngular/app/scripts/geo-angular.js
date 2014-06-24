@@ -2836,7 +2836,7 @@ module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function
   $scope.stories = [];
   $scope.storiesSearchArray = [];
   $scope.storiesSearchText = "";
-  $scope.storiesExtentArray = [];
+  $scope.storiesExtentArray = []; //currently not used, but should be to allow Extent to perform 'AND' logic with the keywords.
 
     for (var storiesKey in StoriesConfig) {
 
@@ -2909,8 +2909,6 @@ angular.module('GeoAngular')
             });
         });
 
-
-      //.concat($scope.storiesExtentArray)
 
       }else{
         return stories;
