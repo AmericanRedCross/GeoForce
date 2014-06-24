@@ -71,7 +71,26 @@
     color: #A0A0A0;
 }
 
+.side-view a {
+    cursor: pointer;
+    font-size: 12px;
+    font-family: oswaldregular;
+    text-transform: uppercase;
+    color: #9E9E9E;
+}
 
-.side-view .btn:focus {
+.side-view a:hover {
+    color: #d2322d;
+}
+
+.side-view li.active > a {
+    color: #EA2035;
+}
+
+.side-view li.active > a:hover {
+    color: #d2322d;
+}
+
+.side-view btn:focus{
     outline: 5px auto #EA2035;
 }

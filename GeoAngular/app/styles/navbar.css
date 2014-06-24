@@ -19,6 +19,7 @@
     background: url(../images/navbar_stripes.png) repeat-y;
     overflow: visible;
     z-index: 1 !important;
+    box-shadow: 1px 0 5px #777;
 }
 
 .NavButtonGroup, .NavFlyoutGroup{
