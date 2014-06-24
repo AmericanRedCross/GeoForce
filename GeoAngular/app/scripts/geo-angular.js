@@ -4487,6 +4487,9 @@ KML.prototype.fetch = function (cb) {
     var xml = $.parseXML(data);
     self._geojson = toGeoJSON.kml(xml);
     if (typeof self._config.properties === 'object') {
+      if (typeof self._geojson.properties === 'undefined') {
+        self._geojson.properties = {};
+      }
       angular.extend(self._geojson.properties, self._config.properties);
       self._geojson.properties.srcType = 'kml';
     }
