@@ -61,3 +61,12 @@
     border-color: #F2F2F2;
     border: none;
 }
+
+.side-view .tab-content {
+    padding: 10px 26px;
+    background-color: white;
+}
+
+.side-view .disabled-radio-label {
+    color: #A0A0A0;
+}

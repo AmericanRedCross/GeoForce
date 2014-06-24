@@ -281,31 +281,71 @@
                             </ul>
 
                             <!-- Tab panes -->
-                            <div class="tab-content filters-content scrollable">
+                            <div class="tab-content scrollable">
                                 <div ng-class="{active: navTab==='contextual'}" class="tab-pane">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Administrative Levels</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default" ng-model="gadmLevel" btn-radio="'auto'">Auto</button>
-                                                <button type="button" class="btn btn-default" ng-model="gadmLevel" btn-radio="'-1'"  >ARC</button>
-                                                <button type="button" class="btn btn-default" ng-model="gadmLevel" btn-radio="'0'"   >0</button>
-                                                <button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 6" btn-radio="'1'">1</button>
-                                                <button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 8" btn-radio="'2'">2</button>
-                                                <button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 9" btn-radio="'3'">3</button>
-                                                <button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 11" btn-radio="'4'">4</button>
-                                                <button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 13" btn-radio="'5'">5</button>
-                                            </div>
-                                            <span class="help-block">Choosing a specific administrative level sets all
-                                                of the labels and features on the map to a
-                                                specific administrative level. <b>Auto</b> automatically sets an
-                                                appropriate level based on what is on the map. <b>ARC</b> shows the
-                                                American Red Cross regions.
-                                            </span>
-                                        </div>
+
+                                    <h4>Administrative boundary levels:</h4>
+
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" ng-model="gadmLevel" value="auto">
+                                            Automatic
+                                        </label>
                                     </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" ng-model="gadmLevel" value="-1">
+                                            ARC - American Red Cross Regions
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" ng-model="gadmLevel" value="0">
+                                            0. Countries
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label ng-class="{'disabled-radio-label': zoom < 6}">
+                                            <input type="radio" ng-model="gadmLevel" ng-disabled="zoom < 6" value="1">
+                                            1. State / Province
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label ng-class="{'disabled-radio-label': zoom < 8}">
+                                            <input type="radio" ng-model="gadmLevel" ng-disabled="zoom < 8" value="2">
+                                            2. County
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label ng-class="{'disabled-radio-label': zoom < 9}">
+                                            <input type="radio" ng-model="gadmLevel" ng-disabled="zoom < 9" value="3">
+                                            3. Level 3
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label ng-class="{'disabled-radio-label': zoom < 11}">
+                                            <input type="radio" ng-model="gadmLevel" ng-disabled="zoom < 11" value="4">
+                                            4. Level 4
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label ng-class="{'disabled-radio-label': zoom < 13}">
+                                            <input type="radio" ng-model="gadmLevel" ng-disabled="zoom < 13" value="5">
+                                            5. Level 5
+                                        </label>
+                                    </div>
+
+                                    <!--<div class="btn-group">-->
+                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" btn-radio="'auto'">Auto</button>-->
+                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" btn-radio="'-1'"  >ARC</button>-->
+                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" btn-radio="'0'"   >0</button>-->
+                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 6" btn-radio="'1'">1</button>-->
+                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 8" btn-radio="'2'">2</button>-->
+                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 9" btn-radio="'3'">3</button>-->
+                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 11" btn-radio="'4'">4</button>-->
+                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 13" btn-radio="'5'">5</button>-->
+                                    <!--</div>-->
+
                                     <div class="panel panel-default" ng-repeat="(panelName, panel) in layersPanels">
                                         <div class="panel-heading">
                                             <h3 class="panel-title">{{panelName}}</h3>
@@ -359,7 +399,7 @@
                             </ul>
 
                             <!-- Tab panes -->
-                            <div class="tab-content filters-content scrollable">
+                            <div class="tab-content scrollable">
                                 <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
