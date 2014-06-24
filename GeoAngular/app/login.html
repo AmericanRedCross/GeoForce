@@ -47,13 +47,12 @@
 
                     <div class="windowEffects" ng-class="{grayout: isParam('zoom-extent')}"></div> <!-- Use this window to gray out the map -->
 
-                    <leaflet class="blur" width="100%" height="100%" center="{lat: 14.2643, lng: -23.2031, zoom: 3}" defaults="{ dragging: false, scrollWheelZoom: false, zoomControl: false, doubleClickZoom:false}"></leaflet>
+                    <leaflet class="blur" width="100%" height="100%" center="{lat: 14.2643, lng: -23.2031, zoom: 3}" defaults="{ dragging: false, scrollWheelZoom: false, zoomControl: false, doubleClickZoom:false}" tiles="{url: 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',name: 'Humanitarian OpenStreetMap',type: 'basemap'}"></leaflet>
 
                     <div>
                         <div id="ARCCircle">
                             <div class="AppTitle">MapFolio</div>
-                            <div class="Description">Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi
-                                welsh onion daikon amaranth tatsoi tomatillo melon azuki bean.</div>
+                            <div class="Description">Mapfolio aggregates data pulled nightly from ECOS and makes it available to explore in a mapping interface.</div>
                             <a href="salesforcelogin" class="btn btn-default">Login<div class="arrow"></div></a>
                         </div>
                     </div>
@@ -72,6 +71,9 @@
 //
 //       ga('create', 'UA-XXXXX-X');
 //       ga('send', 'pageview');
+    </script>
+    <script>
+        var debug = {};
     </script>
 
     <!--[if lt IE 9]>
@@ -112,7 +114,7 @@
     <script src="lib/jquery.layout-latest.min.js"></script>
     <script src="lib/ui-bootstrap-no-dropdown-tpls-0.11.0.js"></script>
     <script src="lib/jquery.csv-0.71.min.js"></script>
-    <script src="scripts/global.js"></script>
+    <!--<script src="scripts/global.js"></script>-->
     <script src="scripts/config.js"></script>
     <script src="scripts/geo-angular.js"></script>
 

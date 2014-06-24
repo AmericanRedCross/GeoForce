@@ -152,7 +152,9 @@
                     </div>
                     <div class="row">
                         <div class="col-md-offset-4 col-md-4">
-                            {{stories.length}} Stories
+                            {{filteredStories.length}}
+                            <span ng-show="filteredStories.length > 1 || filteredStories.length == 0">Stories</span>
+                            <span ng-show="filteredStories.length ==  1">Story</span>
                         </div>
                     </div>
                     <div class="row scrollable">
@@ -168,10 +170,10 @@
 
                                         <input class="form-control" type="text" placeholder="Search keywords..." ng-model="storiesSearchText">
 
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="all" ng-model="allText" ng-change="clearSearch()">
-                                            All
-                                        </label>
+                                        <!--<label class="checkbox">-->
+                                            <!--<input type="checkbox" value="all" ng-model="allText" ng-change="clearSearch()">-->
+                                            <!--All-->
+                                        <!--</label>-->
                                         <label class="checkbox">
                                             <input type="checkbox" value="disasterpreparedness" ng-model="disasterpreparedness" ng-change="filterByCheckbox('Disaster Preparedness')">
                                             Disaster Preparedness
@@ -195,10 +197,10 @@
                                     <fieldset>
                                         <h4>Extent:</h4>
 
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="all" ng-model="allAreas" ng-change="clearSearch()">
-                                            All
-                                        </label>
+                                        <!--<label class="checkbox">-->
+                                            <!--<input type="checkbox" value="all" ng-model="allAreas" ng-change="clearSearch()">-->
+                                            <!--All-->
+                                        <!--</label>-->
                                         <label class="checkbox">
                                             <input type="checkbox" value="africa" ng-model="africa" ng-change="filterByCheckbox('Africa')">
                                             Africa
@@ -230,7 +232,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="row">
-                            <div class="col-md-6" ng-repeat="story in stories | filter:storiesSearchText">
+                            <div class="col-md-6" ng-repeat="story in filteredStories = (stories | searchStoriesFilter:this)">
                                 <a href="{{story.url}}" class="thumbnail">
                                     <div class="image">
                                         <img ng-src="{{story.thumbnail}}" alt="...">

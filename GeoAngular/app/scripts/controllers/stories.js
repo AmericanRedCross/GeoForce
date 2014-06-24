@@ -11,6 +11,7 @@ module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function
   $scope.stories = [];
   $scope.storiesSearchArray = [];
   $scope.storiesSearchText = "";
+  $scope.storiesExtentArray = []; //currently not used, but should be to allow Extent to perform 'AND' logic with the keywords.
 
     for (var storiesKey in StoriesConfig) {
 
@@ -22,59 +23,71 @@ module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function
        $scope.stories.push(StoriesConfig[storiesKey]);
     }
 
-  $scope.filterByCheckbox = function(value){
-      //Take the term passed in and add or remove it from the keywords textbox.
-      if($scope.storiesSearchArray.indexOf(value) == -1){
-          //Add it
-          $scope.storiesSearchArray.push(value);
-      }
-      else{
-          //Remove it
-          $scope.storiesSearchArray.splice($scope.storiesSearchArray.indexOf(value), 1);
-      }
-    $scope.storiesSearchText = $scope.storiesSearchArray.join(",")
+  $scope.filterByCheckbox = function(value) {
+    //Take the term passed in and add or remove it from the keywords textbox.
+    if ($scope.storiesSearchArray.indexOf(value) == -1) {
+      //Add it
+      $scope.storiesSearchArray.push(value);
+    }
+    else {
+      //Remove it
+      $scope.storiesSearchArray.splice($scope.storiesSearchArray.indexOf(value), 1);
+    }
   }
 
-  $scope.clearSearch = function(){
+  $scope.filterExtentByCheckbox = function(value) {
+    //Take the term passed in and add or remove it from the keywords textbox.
+    if ($scope.storiesExtentArray.indexOf(value) == -1) {
+      //Add it
+      $scope.storiesExtentArray.push(value);
+    }
+    else {
+      //Remove it
+      $scope.storiesExtentArray.splice($scope.storiesExtentArray.indexOf(value), 1);
+    }
+  }
+
+  $scope.clearSearch = function() {
     $scope.storiesSearchArray = [];
     $scope.storiesSearchText = "";
+    $scope.storiesExtentArray = [];
   }
-
-  $scope.selectedStoriesFilter = function(customers) {
-        var i, len;
-
-        // get customers that have been checked
-        var checkedCustomers = $filter('filter')(customers, {checked: true});
-
-        // Add in a check to see if any customers were selected. If none, return
-        // them all without filters
-        if(checkedCustomers.length == 0) {
-            return customers;
-        }
-
-        // get all the unique cities that come from these checked customers
-        var cities = {};
-        for(i = 0, len = checkedCustomers.length; i < len; ++i) {
-            // if this checked customers cities isn't already in the cities object
-            // add it
-            if(!cities.hasOwnProperty(checkedCustomers[i].city)) {
-                cities[checkedCustomers[i].city] = true;
-            }
-        }
-
-        // Now that we have the cities that come from the checked customers, we can
-        //get all customers from those cities and return them
-        var ret = [];
-        for(i = 0, len = customers.length; i < len; ++i) {
-            // If this customer's city exists in the cities object, add it to the
-            // return array
-            if(cities[customers[i].city]) {
-                ret.push(customers[i]);
-            }
-        }
-
-        // we have our result!
-        return ret;
-    };
-
 });
+
+
+angular.module('GeoAngular')
+  .filter('searchStoriesFilter', function () {
+    return function (stories, $scope) {
+      var outStories = [];
+      if (stories) {
+        //loop thru stories and filter based on search text/checkboxes.
+        //comma separated items should be broken up and searched for separately using 'OR' logic.
+
+        var keywords = [];
+        if($scope.storiesSearchText.length > 0){
+          keywords = $scope.storiesSearchText.split(",").concat($scope.storiesSearchArray);
+        }
+        else{
+          keywords = $scope.storiesSearchArray;
+        }
+        if(keywords.length == 0){
+          return stories;
+        }
+
+        stories.forEach(function(story){
+            keywords.forEach(function(keyword){
+                if(keyword.length > 0 && story.keywords.toLowerCase().indexOf($.trim(keyword.toLowerCase())) > -1) {
+                  if (outStories.indexOf(story) == -1) {
+                    outStories.push(story);
+                  }
+                }
+            });
+        });
+
+
+      }else{
+        return stories;
+      }
+      return outStories;
+    };
+  });
