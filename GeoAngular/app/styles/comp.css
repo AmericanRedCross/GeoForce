@@ -57,7 +57,6 @@ html, body {
     top: 0;
     right: 0;
     z-index: 2002;
-    min-width: 865px;
 }
 
 #MapUpperRightToolbarWrapper > div {
@@ -65,7 +64,7 @@ html, body {
     background-color: #43484a;
     color: #fff;
     text-transform: uppercase;
-    padding: 7px 40px;
+    padding: 7px 25px;
     font-size: 14px;
     font-family: oswaldregular;
     cursor: pointer;
@@ -85,6 +84,10 @@ html, body {
 
 #MapUpperRightToolbarWrapper div.light {
     background-color: #666666;
+}
+
+#MapUpperRightToolbarWrapper div.light.export {
+    padding-left: 10px;
 }
 
 #MapUpperRightToolbarWrapper .search {
@@ -108,6 +111,10 @@ html, body {
     z-index: 2001;
 }
 
+#ThemeSelectorMenu .navbar-brand{
+    font-size: 16px;
+}
+
 #ThemeSelectorMenu .dropdown-toggle {
     display: block;
     padding: 3px 20px;
@@ -120,13 +127,15 @@ html, body {
 
 #ThemeSelectorMenu .dropdown-menu {
     padding: 0;
+    min-width: 120px;
 }
 
 #ThemeSelectorMenu .dropdown-menu > li, #ThemeSelectorMenu .dropdown-toggle {
     text-transform: uppercase;
-    padding: 10px 20px;
-    font-size: 20px;
+    padding: 10px 0px;
+    font-size: 16px;
     color: #3f3f3f;
+    padding-top: 17px;
 }
 
 #ThemeSelectorMenu .dropdown-menu > li:hover, #ThemeSelectorMenu .dropdown-menu > li > a:focus, #ThemeSelectorMenu .dropdown-toggle {
@@ -137,7 +146,7 @@ html, body {
 
 #ThemeSelectorMenu .dropdown-menu > li {
     border: 1px solid #d3d3d3;
-    min-width: 172px;
+    min-width: 120px;
     -webkit-transform: translateY(50%) rotateX(90deg);
     -webkit-transition: all .1s ease;
     background-color: #fff;
@@ -166,7 +175,7 @@ html, body {
 }
 
 #ThemeSelectorMenu .dropdown-toggle {
-    min-width: 172px;
+    min-width: 120px;
     text-align: center;
 }
 

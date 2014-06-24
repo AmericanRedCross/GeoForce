@@ -70,3 +70,8 @@
 .side-view .disabled-radio-label {
     color: #A0A0A0;
 }
+
+
+.side-view .btn:focus {
+    outline: 5px auto #EA2035;
+}

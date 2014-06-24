@@ -1,6 +1,5 @@
 /* Breadcrumbs */
 div.breadcrumbs-container {
-    min-width: 500px;
     -webkit-transition: all .5s ease;
     -ms-transition: all .5s ease;
     -moz-transition: all .5s ease;
@@ -9,12 +8,20 @@ div.breadcrumbs-container {
 }
 
 div.breadcrumbs-container div {
-    float: left;
-    padding: 0 10px;
+     float: left;
+     padding: 0 10px;
+ }
+
+div.breadcrumbs-container div.stack {
+    padding-left: 0px;
 }
 
 div.breadcrumbs-container .bc:hover{
     text-decoration: underline;
+}
+
+#MapUpperRightToolbarWrapper .btn:focus {
+    outline: 5px auto #EA2035;
 }
 
 /* End Breadcrumbs */

@@ -145,6 +145,10 @@
     right: 0px;
 }
 
+#DetailsWrapper .btn:focus{
+    outline: 5px auto #EA2035;
+}
+
 #DetailsWrapper .InnerContainer {
     background-color: #fff;
     padding: 10px;
