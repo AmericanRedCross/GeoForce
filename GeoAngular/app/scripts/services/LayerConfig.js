@@ -491,6 +491,73 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       }
   };
 
+  /**
+   * XYZ
+   */
+  this.clouds = {
+    name: 'Cloud Cover',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/clouds_cls/{z}/{x}/{y}.png',
+    opacity: 0.5 // optional. opacity is 0.5 if not specified
+  };
+
+  this.precipitation = {
+    name: 'Precipitation',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png',
+    opacity: 0.5
+  };
+
+  this.precipitationclassic = {
+    name: 'Precipitation (Classic)',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/precipitation_cls/{z}/{x}/{y}.png',
+    opacity: 0.4
+  };
+
+  this.rain = {
+    name: 'Rain',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/rain/{z}/{x}/{y}.png'
+  };
+
+  this.rainclassic = {
+    name: 'Rain (Classic)',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/rain_cls/{z}/{x}/{y}.png'
+  };
+
+  this.pressure = {
+    name: 'Pressure',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/pressure/{z}/{x}/{y}.png'
+  };
+
+  this.pressurecontour = {
+    name: 'Pressure Contour',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/pressure_cntr/{z}/{x}/{y}.png',
+    opacity: 0.9
+  };
+
+  this.temperature = {
+    name: 'Temperature',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png'
+  };
+
+  this.wind = {
+    name: 'Wind',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/wind/{z}/{x}/{y}.png'
+  };
+
+  this.snow = {
+    name: 'Snow',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/snow/{z}/{x}/{y}.png'
+  };
+
 
   /**
    * Other (Vector Provider attempts to figure out the vector type)
