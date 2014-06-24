@@ -91,6 +91,6 @@
     color: #d2322d;
 }
 
-.side-view btn:focus{
+.side-view .btn:focus{
     outline: 5px auto #EA2035;
 }
