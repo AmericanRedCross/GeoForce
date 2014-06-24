@@ -1000,7 +1000,7 @@ require('./controllers/search');
 require('./controllers/export');
 
 
-},{"./controllers/basemaps":6,"./controllers/breadcrumbs":7,"./controllers/details":8,"./controllers/export":9,"./controllers/filters":10,"./controllers/info":11,"./controllers/layers":12,"./controllers/legend":13,"./controllers/main":14,"./controllers/map":15,"./controllers/navbar":16,"./controllers/search":17,"./controllers/side-view":18,"./controllers/stories":19,"./controllers/theme":20,"./controllers/upload":21,"./controllers/zoom-extent":22,"./services/Donuts":23,"./services/LayerConfig":24,"./services/StoriesConfig":25,"./services/Vector/VectorProvider":26}],6:[function(require,module,exports){
+},{"./controllers/basemaps":6,"./controllers/breadcrumbs":7,"./controllers/details":8,"./controllers/export":9,"./controllers/filters":10,"./controllers/info":11,"./controllers/layers":12,"./controllers/legend":13,"./controllers/main":14,"./controllers/map":15,"./controllers/navbar":16,"./controllers/search":17,"./controllers/side-view":18,"./controllers/stories":19,"./controllers/theme":20,"./controllers/upload":21,"./controllers/zoom-extent":22,"./services/Donuts":23,"./services/LayerConfig":24,"./services/StoriesConfig":25,"./services/Vector/VectorProvider":30}],6:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 3/28/14.
@@ -3630,7 +3630,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke-opacity": 1,
       "fill": "green",
       "fill-opacity": 0.7,
-        legend: ""
+      legend: ""
     }
   };
 
@@ -3640,7 +3640,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     properties: {
       title: 'Washington (State)',
       fill: "#FFBE00",
-        legend: ""
+      legend: ""
     }
   };
 
@@ -3653,7 +3653,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke-width": 1,
       "fill": "#FFBE00",
       "fill-opacity": 0.5,
-        legend: ""
+      legend: ""
     }
   };
 
@@ -3822,7 +3822,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "onSelect": 'showFeatureProperties',
       "onDeselect": 'closeDetails',
       "legend": '<svg class="leaflet-zoom-animated" width="48" height="48"><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="white" stroke-opacity="1" stroke-width="1.3" fill="#555555" fill-opacity="0" class="leaflet-clickable" d="M-1890 -409L-1896 -404L-1899 -404L-1907 -395L-1919 -394L-1921 -404L-1924 -408L-1922 -411L-1899 -421L-1894 -420L-1891 -414L-1888 -413z"></path></g></svg>'
-      }
+    }
 
   };
 
@@ -3840,7 +3840,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke-opacity": 1,
       "fill": "green",
       "fill-opacity": 0,
-      "labelProperty": function() {
+      "labelProperty": function () {
         return Math.floor(Math.random() * (50 - 1 + 1)) + 1;
       }
     }
@@ -3854,33 +3854,33 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     name: 'GDACS: Global Disaster Alert and Coordination System',
     type: 'kml',
     url: 'http://www.gdacs.org/xml/gdacs.kml',
-      properties: {
-      legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
   this.gdacstest = {
     name: 'GDACS Test',
     type: 'kml',
     url: 'data/test/gdacs.kml',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
   this.earthquakes = {
     name: 'USGS Earthquakes',
     type: 'kml',
     url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
   this.earthquakestest = {
     name: 'USGS Earthquakes Test',
     type: 'kml',
     url: 'data/test/usgs-earthquakes.kml',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
 
 
@@ -3891,17 +3891,17 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     name: 'Uganda Financial Service Providers',
     type: 'csv',
     url: 'data/test/uganda.csv',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
   this.sampletracks = {
     name: 'Sample GPS Tracks',
     type: 'csv',
     url: 'data/test/sample-tracks.csv',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
 
 
@@ -3915,9 +3915,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     transparent: true,      // default true
     format: 'image/png',    // default 'image/png'
     layers: 'OBS_MET_TEMP',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ""
+    }
   };
 
   // Not working??? works in QGIS. Most layers, however, don't even work in QGIS.
@@ -3927,9 +3927,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     url: 'http://lacrmt.sahanafoundation.org:8080/geoserver/wms?LAYERS=lacrmt%3Ainund2&',
     transparent: false,
     layers: 'lacrmt:sanandreas78',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ""
+    }
   };
 
   this.landcover = {
@@ -3937,9 +3937,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     type: 'wms',
     url: 'http://ags.servirlabs.net/ArcGIS/services/ReferenceNode/MODIS_Landcover_Type1_2009/MapServer/WMSServer',
     layers: '0',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ""
+    }
   };
 
   this.growingperiod = {
@@ -3947,9 +3947,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     type: 'wms',
     url: 'http://apps.harvestchoice.org/arcgis/services/MapServices/cell_values_4/MapServer/WMSServer',
     layers: '15',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ""
+    }
   };
 
   /**
@@ -4032,7 +4032,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
    * @param name
    * @returns {*}
    */
-  this.find = function(name) {
+  this.find = function (name) {
     var val = this[name] || this[name.toLowerCase()];
     if (typeof val !== 'undefined' && val !== null) {
       return val;
@@ -4118,221 +4118,6 @@ module.exports = angular.module('GeoAngular').service('StoriesConfig', function 
 });
 
 },{}],26:[function(require,module,exports){
-/**
- * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
- *       on 3/19/14.
- */
-
-module.exports = angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $location, $http, LayerConfig) {
-
-  var vector = require('./vector');
-  vector.setInjectors($rootScope, $location, $http, LayerConfig);
-
-
-  /**
-   * make the default BBoxURL able to be overridden if specified by the LayerConfig Object.
-   * @param config
-   * @constructor
-   */
-  vector.bboxUrl = LayerConfig.bbox.bboxurl;
-
-  var Resource = require('./resource');
-  var GeoJSON = require('./geojson');
-  var BBoxGeoJSON = require('./bboxgeojson');
-  var KML = require('./kml');
-  var CSV = require('./csv');
-
-
-  /**
-   * This is used by the factory to dynamically state the type (class)
-   * that it wants to instantiate.
-   *
-   * @type {{geojson: GeoJSON, bboxgeojson: BBoxGeoJSON, kml: KML}}
-   */
-  var types = {
-    geojson: GeoJSON,
-    bboxgeojson: BBoxGeoJSON,
-    kml: KML,
-    csv: CSV
-  };
-
-
-
-  /**
-   * Fetches the feature itinerary based on the current bbox.
-   *
-   * The feature itinerary is a set of features with some properties
-   * such as guid and name. The geometry for each of these features
-   * has not yet been requested. This is done by _getFeatures.
-   */
-  function fetchFeatureItinerary() {
-    var thisUrl = vector.bboxUrl.replace(':bbox', vector.bbox);
-    var proxyPath = config.proxyPath(thisUrl);
-    $http.get(thisUrl, {cache: true}).success(function (featItinerary, status) {
-      processFeatureItinerary(featItinerary);
-    }).error(function() {
-      $http.get(proxyPath, {cache: true}).success(function (featItinerary, status) {
-        processFeatureItinerary(featItinerary);
-      }).error(function() {
-        console.error("Unable to fetchFeatureItinerary: " + thisUrl);
-      });
-    });
-  }
-
-  function processFeatureItinerary(featItinerary) {
-    console.log("FEATURE ITINERARY:");
-    for (var j = 0, len = featItinerary.length; j < len; j++) {
-      var feat = featItinerary[j];
-      if ( feat.iscenter ) {
-        vector.centerLevel = feat.level || 0;
-      }
-    }
-    console.log(['featItinerary',featItinerary]);
-
-    // if there are no features for the current bounding box
-    if (!featItinerary || featItinerary.length === 0) {
-      return;
-    }
-
-    /**
-     * Center feature logic for breadcrumbs.
-     */
-    for (var i=0, len=featItinerary.length; i < len; ++i) {
-      var f = featItinerary[i];
-      if (f.iscenter == true) {
-        $rootScope.$broadcast('center-feature', f);
-      }
-    }
-
-    /**
-     * BBoxGeoJSON logic
-     */
-    for(var r = 0, len = vector.bboxResources.length; r < len; ++r) {
-      vector.bboxResources[r].processFeatureItinerary(featItinerary);
-    }
-
-  }
-
-
-  return {
-    /**
-     * You can explicitly name the type of resource. If not,
-     * we will figure it out for you...
-     *
-     * @param resourceName
-     * @param type
-     */
-    createResource: function (resourceName, type) {
-      var config = LayerConfig.find(resourceName);
-      if (config === null) {
-        console.error('VectorProvider: Invalid Resource Configuration Name. Check LayerConfig File...');
-        return null;
-      }
-      if (type || config.type) {
-        // if the resource is just a string, then it should be a url
-        return new types[(type || config.type).toLowerCase()](config);
-      } else {
-        if (config.slice(config.length - 3).toLowerCase() === 'kml') {
-          return new KML(config);
-        }
-        else if (config.slice(config.length - 3).toLowerCase() === 'csv') {
-          return new CSV(config);
-        }
-        // NH TODO Check a bit more into if this resource is valid GeoJSON
-        return new GeoJSON(config);
-      }
-    },
-
-    /**
-     * When the bounding box of the map changes, VectorProvider needs
-     * to be notified of the current bounding box so it can fetch the
-     * latest vector data for the bbox of the map viewport.
-     *
-     * The bbox must be WGS84.
-     *
-     * @param bboxStr "south,west,north,east" === "minX,minY,maxX,maxY"
-     */
-    updateBBox: function(bboxStr) {
-      vector.bbox = bboxStr;
-
-      console.log('VectorProvider bbox: ' + vector.bbox);
-      fetchFeatureItinerary();
-
-    },
-
-
-    /**
-     * Provides the ability to override the gadm level being shown by BBoxGeoJSON
-     * features on the map. You may specify -1 to 5. No args or anything else
-     * switches back on smart gadm (automatically choosing the level based on bbox).
-     *
-     * @param level
-     */
-    setGadmLevel: function(levelStr) {
-      var level = parseInt(levelStr);
-      vector.bboxUrl = vector.bboxUrl.replace(/&gadm_level=-?\d/,'');
-      if (level >= -1 && level <= 5) {
-        vector.bboxUrl += '&gadm_level=' + level;
-      }
-      console.log('bboxUrl: ' + vector.bboxUrl);
-      fetchFeatureItinerary();
-    },
-
-
-    /**
-     * Returns a feature based on guid and level. You may merge in a set of properties into the
-     * called back object if desired (optional).
-     *
-     * @param guid
-     */
-    fetchFeature: function(guid, level, propsToMerge, cb) {
-      var url = LayerConfig.bbox.featurl.replace(':level', level).replace(':ids', guid);
-      var proxyPath = config.proxyPath(url);
-
-      $http.get(url, {cache: true}).success(function (geojson, status) {
-        merge(geojson);
-      }).error(function(err) {
-        $http.get(proxyPath).success(function (geojson, status) {
-          merge(geojson);
-        }).error(function (err) {
-          console.error('Unable to fetchFeature: ' + guid);
-        });
-      });
-
-      function merge(geojson) {
-        /**
-         * Deal with bad stuff.
-         */
-        if (geojson.error) {
-          console.error('Unable to fetch feature: ' + geojson.error);
-          return;
-        }
-
-        if (!geojson.features || geojson.features.length < 1) {
-          return;
-        }
-
-        // we only are actually asking for 1 feature
-        var feat = geojson.features[0];
-
-        // putting existing properties into geojson feature
-        if (propsToMerge) {
-          for (var key in propsToMerge) {
-            feat.properties[key] = propsToMerge[key];
-          }
-        }
-
-        cb(feat);
-      }
-
-    }
-  };
-
-
-});
-
-
-},{"./bboxgeojson":27,"./csv":28,"./geojson":29,"./kml":30,"./resource":31,"./vector":32}],27:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -4602,7 +4387,449 @@ BBoxGeoJSON.prototype._removeInactiveLayers = function(self) {
   }
 };
 
-},{"../../../lib/featurelabel/FeatureSet":1,"./resource":31,"./vector":32}],28:[function(require,module,exports){
+},{"../../../lib/featurelabel/FeatureSet":1,"./resource":32,"./vector":33}],27:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 6/3/14.
+ */
+
+var Resource = require('./resource');
+var $rootScope = require('./vector').$rootScope;
+
+module.exports = GeoJSON;
+
+/**
+ * This is a basic GeoJSON VectorProvider.
+ * @param config
+ * @constructor
+ */
+function GeoJSON(config) {
+  Resource.call(this, config);
+  this._geojson = null;
+}
+
+GeoJSON.prototype = Object.create(Resource.prototype);
+GeoJSON.prototype.constructor = GeoJSON;
+
+GeoJSON.prototype.fetch = function (cb) {
+  if (this._geojson && typeof cb === 'function') {
+    cb(this._geojson);
+    return;
+  }
+  var self = this;
+  Resource.prototype.fetch.call(this, function(data) {
+    self._geojson = data;
+    if (typeof self._config.properties === 'object') {
+      if ( data.type === 'FeatureCollection') {
+        var feats = data.features;
+        for (var i = 0, len = feats.length; i < len; ++i) {
+          var feat = feats[i];
+          if (!feat.properties) feat.properties = {};
+          angular.extend(feat.properties, self._config.properties);
+        }
+      } else { // a feature or a geometry type
+        if (!data.properties) data.properties = {};
+        angular.extend(data.properties, self._config.properties);
+      }
+    }
+
+    if (typeof cb === 'function') cb(self._geojson);
+  });
+};
+
+GeoJSON.prototype.getLayer = function() {
+  if (this._geojsonLayer) return this._geojsonLayer;
+  var layer =  Resource.prototype.getLayer.call(this);
+  this.fetch(function(geojson){
+    layer.addData(geojson);
+    layer.eachLayer(function (l) {
+      l.on('click', function () {
+        $rootScope.$broadcast('details', l);
+      });
+    });
+  });
+  return layer;
+};
+
+},{"./resource":32,"./vector":33}],28:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 6/3/14.
+ */
+
+var Resource = require('./resource');
+var $rootScope = require('./vector').$rootScope;
+var toGeoJSON = require('./vector').toGeoJSON;
+var $ = require('./vector').$;
+
+module.exports = KML;
+
+/**
+ * A KML Resource fetches KML and parses it with togeojson.js
+ * Note that togeojson.js has bugs and does not accurately parse
+ * some of the KML sources we have tested with. This library has
+ * been modified with my hotfixes.
+ *
+ * @param config
+ * @constructor
+ */
+function KML(config) {
+  Resource.call(this, config);
+  this._geojson = null;
+}
+
+KML.prototype = Object.create(Resource.prototype);
+KML.prototype.constructor = KML;
+
+KML.prototype.fetch = function (cb) {
+  var self = this;
+  Resource.prototype.fetch.call(this, function(data) {
+    var xml = $.parseXML(data);
+    self._geojson = toGeoJSON.kml(xml);
+    if (typeof self._config.properties === 'object') {
+      angular.extend(self._geojson.properties, self._config.properties);
+      self._geojson.properties.srcType = 'kml';
+    }
+    if (typeof cb === 'function') cb(self._geojson, self);
+  });
+};
+
+KML.prototype.getLayer = function () {
+  if (this._geojsonLayer) return this._geojsonLayer;
+  var layer =  Resource.prototype.getLayer.call(this);
+  this.fetch(function(geojson){
+    layer.addData(geojson);
+    layer.eachLayer(function (l) {
+      l.on('click', function () {
+        $rootScope.$broadcast('details', l);
+      });
+    });
+  });
+  return layer;
+};
+
+KML.prototype.eachLayer = function (cb) {
+  this._eachLayerCallback = cb;
+  this.fetch(function(geojson, self){
+    var layers = self._geojsonLayer._layers;
+    for (var key in layers) {
+      var layer = layers[key];
+      cb(layer);
+    }
+  });
+};
+
+},{"./resource":32,"./vector":33}],29:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 6/3/14.
+ */
+
+var resources = require('./vector').resources;
+var $http = require('./vector').$http;
+
+module.exports = Resource;
+
+/**
+ * All VectorProvider resources are children of this class.
+ * @param config
+ * @constructor
+ */
+function Resource(config) {
+  resources.push(this);
+  this._config = config;
+  this._url = null;
+  if (typeof config === 'object') {
+    this._url = config.url;
+  } else {
+    this._url = config;
+  }
+
+  this._eachLayerCallback = null;
+  this._geojsonLayer = null;
+}
+
+
+/**
+ * Fetches data from the given url of a resource.
+ * Subclasses then handle the callback accordingly.
+ *
+ * Needs to also try to get a resource via the Chubbs
+ * proxy.
+ *
+ * @param cb
+ */
+Resource.prototype.fetch = function(cb) {
+  var proxyPath = config.proxyPath(this._url);
+  $http.get(this._url, {cache: true}).success(function (data, status) {
+    cb(data);
+  }).error(function() {
+    // trying proxy
+    $http.get(proxyPath, {cache: true}).success(function (data, status) {
+      cb(data);
+    }).error(function() {
+      console.error("Unable to fetch from: " + proxyPath);
+    });
+  });
+
+};
+
+
+/**
+ * Returns the Leaflet GeoJSON Layer associated with the
+ * Resource or creates a new one.
+ *
+ * @returns {null|*}
+ */
+Resource.prototype.getLayer = function () {
+  if (typeof this._geojsonLayer !== 'undefined' && this._geojsonLayer !== null) {
+    return this._geojsonLayer;
+  }
+
+  this._geojsonLayer = L.geoJson(this._geojson || null, {
+    style: function(feature) {
+      if (typeof feature.properties.styleFn === 'function') {
+        return feature.properties.styleFn(feature.properties);
+      }
+      return L.mapbox.simplestyle.style(feature);
+    },
+    pointToLayer: function(feature, latlon) {
+      if (!feature.properties) feature.properties = {};
+      if (feature.properties.scale) {
+        return L.circleMarker(latlon, {
+          fillColor: feature.properties.color || '#FF0000',
+          radius: 20 * feature.properties.scale
+        });
+      }
+      return L.mapbox.marker.style(feature, latlon);
+    }
+  }).eachLayer(this._eachLayerCallback);
+
+
+  return this._geojsonLayer;
+};
+
+Resource.prototype.eachLayer = function (cb) {
+  this._eachLayerCallback = cb;
+  this._geojsonLayer.eachLayer(cb);
+};
+
+},{"./vector":33}],30:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 3/19/14.
+ */
+
+module.exports = angular.module('GeoAngular').factory('VectorProvider', function ($rootScope, $location, $http, LayerConfig) {
+
+  var vector = require('./vector');
+  vector.setInjectors($rootScope, $location, $http, LayerConfig);
+
+
+  /**
+   * make the default BBoxURL able to be overridden if specified by the LayerConfig Object.
+   * @param config
+   * @constructor
+   */
+  vector.bboxUrl = LayerConfig.bbox.bboxurl;
+
+  var Resource = require('./Resource');
+  var GeoJSON = require('./GeoJSON');
+  var BBoxGeoJSON = require('./BBoxGeoJSON');
+  var KML = require('./KML');
+  var CSV = require('./csv');
+
+
+  /**
+   * This is used by the factory to dynamically state the type (class)
+   * that it wants to instantiate.
+   *
+   * @type {{geojson: GeoJSON, bboxgeojson: BBoxGeoJSON, kml: KML}}
+   */
+  var types = {
+    geojson: GeoJSON,
+    bboxgeojson: BBoxGeoJSON,
+    kml: KML,
+    csv: CSV
+  };
+
+
+
+  /**
+   * Fetches the feature itinerary based on the current bbox.
+   *
+   * The feature itinerary is a set of features with some properties
+   * such as guid and name. The geometry for each of these features
+   * has not yet been requested. This is done by _getFeatures.
+   */
+  function fetchFeatureItinerary() {
+    var thisUrl = vector.bboxUrl.replace(':bbox', vector.bbox);
+    var proxyPath = config.proxyPath(thisUrl);
+    $http.get(thisUrl, {cache: true}).success(function (featItinerary, status) {
+      processFeatureItinerary(featItinerary);
+    }).error(function() {
+      $http.get(proxyPath, {cache: true}).success(function (featItinerary, status) {
+        processFeatureItinerary(featItinerary);
+      }).error(function() {
+        console.error("Unable to fetchFeatureItinerary: " + thisUrl);
+      });
+    });
+  }
+
+  function processFeatureItinerary(featItinerary) {
+    console.log("FEATURE ITINERARY:");
+    for (var j = 0, len = featItinerary.length; j < len; j++) {
+      var feat = featItinerary[j];
+      if ( feat.iscenter ) {
+        vector.centerLevel = feat.level || 0;
+      }
+    }
+    console.log(['featItinerary',featItinerary]);
+
+    // if there are no features for the current bounding box
+    if (!featItinerary || featItinerary.length === 0) {
+      return;
+    }
+
+    /**
+     * Center feature logic for breadcrumbs.
+     */
+    for (var i=0, len=featItinerary.length; i < len; ++i) {
+      var f = featItinerary[i];
+      if (f.iscenter == true) {
+        $rootScope.$broadcast('center-feature', f);
+      }
+    }
+
+    /**
+     * BBoxGeoJSON logic
+     */
+    for(var r = 0, len = vector.bboxResources.length; r < len; ++r) {
+      vector.bboxResources[r].processFeatureItinerary(featItinerary);
+    }
+
+  }
+
+
+  return {
+    /**
+     * You can explicitly name the type of resource. If not,
+     * we will figure it out for you...
+     *
+     * @param resourceName
+     * @param type
+     */
+    createResource: function (resourceName, type) {
+      var config = LayerConfig.find(resourceName);
+      if (config === null) {
+        console.error('VectorProvider: Invalid Resource Configuration Name. Check LayerConfig File...');
+        return null;
+      }
+      if (type || config.type) {
+        // if the resource is just a string, then it should be a url
+        return new types[(type || config.type).toLowerCase()](config);
+      } else {
+        if (config.slice(config.length - 3).toLowerCase() === 'kml') {
+          return new KML(config);
+        }
+        else if (config.slice(config.length - 3).toLowerCase() === 'csv') {
+          return new CSV(config);
+        }
+        // NH TODO Check a bit more into if this resource is valid GeoJSON
+        return new GeoJSON(config);
+      }
+    },
+
+    /**
+     * When the bounding box of the map changes, VectorProvider needs
+     * to be notified of the current bounding box so it can fetch the
+     * latest vector data for the bbox of the map viewport.
+     *
+     * The bbox must be WGS84.
+     *
+     * @param bboxStr "south,west,north,east" === "minX,minY,maxX,maxY"
+     */
+    updateBBox: function(bboxStr) {
+      vector.bbox = bboxStr;
+
+      console.log('VectorProvider bbox: ' + vector.bbox);
+      fetchFeatureItinerary();
+
+    },
+
+
+    /**
+     * Provides the ability to override the gadm level being shown by BBoxGeoJSON
+     * features on the map. You may specify -1 to 5. No args or anything else
+     * switches back on smart gadm (automatically choosing the level based on bbox).
+     *
+     * @param level
+     */
+    setGadmLevel: function(levelStr) {
+      var level = parseInt(levelStr);
+      vector.bboxUrl = vector.bboxUrl.replace(/&gadm_level=-?\d/,'');
+      if (level >= -1 && level <= 5) {
+        vector.bboxUrl += '&gadm_level=' + level;
+      }
+      console.log('bboxUrl: ' + vector.bboxUrl);
+      fetchFeatureItinerary();
+    },
+
+
+    /**
+     * Returns a feature based on guid and level. You may merge in a set of properties into the
+     * called back object if desired (optional).
+     *
+     * @param guid
+     */
+    fetchFeature: function(guid, level, propsToMerge, cb) {
+      var url = LayerConfig.bbox.featurl.replace(':level', level).replace(':ids', guid);
+      var proxyPath = config.proxyPath(url);
+
+      $http.get(url, {cache: true}).success(function (geojson, status) {
+        merge(geojson);
+      }).error(function(err) {
+        $http.get(proxyPath).success(function (geojson, status) {
+          merge(geojson);
+        }).error(function (err) {
+          console.error('Unable to fetchFeature: ' + guid);
+        });
+      });
+
+      function merge(geojson) {
+        /**
+         * Deal with bad stuff.
+         */
+        if (geojson.error) {
+          console.error('Unable to fetch feature: ' + geojson.error);
+          return;
+        }
+
+        if (!geojson.features || geojson.features.length < 1) {
+          return;
+        }
+
+        // we only are actually asking for 1 feature
+        var feat = geojson.features[0];
+
+        // putting existing properties into geojson feature
+        if (propsToMerge) {
+          for (var key in propsToMerge) {
+            feat.properties[key] = propsToMerge[key];
+          }
+        }
+
+        cb(feat);
+      }
+
+    }
+  };
+
+
+});
+
+
+},{"./BBoxGeoJSON":26,"./GeoJSON":27,"./KML":28,"./Resource":29,"./csv":31,"./vector":33}],31:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 6/3/14.
@@ -4906,234 +5133,9 @@ CSV.prototype.Base64 = {
 
 };
 
-},{"./resource":31,"./vector":32}],29:[function(require,module,exports){
-/**
- * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
- *       on 6/3/14.
- */
-
-var Resource = require('./resource');
-var $rootScope = require('./vector').$rootScope;
-
-module.exports = GeoJSON;
-
-/**
- * This is a basic GeoJSON VectorProvider.
- * @param config
- * @constructor
- */
-function GeoJSON(config) {
-  Resource.call(this, config);
-  this._geojson = null;
-}
-
-GeoJSON.prototype = Object.create(Resource.prototype);
-GeoJSON.prototype.constructor = GeoJSON;
-
-GeoJSON.prototype.fetch = function (cb) {
-  if (this._geojson && typeof cb === 'function') {
-    cb(this._geojson);
-    return;
-  }
-  var self = this;
-  Resource.prototype.fetch.call(this, function(data) {
-    self._geojson = data;
-    if (typeof self._config.properties === 'object') {
-      if ( data.type === 'FeatureCollection') {
-        var feats = data.features;
-        for (var i = 0, len = feats.length; i < len; ++i) {
-          var feat = feats[i];
-          if (!feat.properties) feat.properties = {};
-          angular.extend(feat.properties, self._config.properties);
-        }
-      } else { // a feature or a geometry type
-        if (!data.properties) data.properties = {};
-        angular.extend(data.properties, self._config.properties);
-      }
-    }
-
-    if (typeof cb === 'function') cb(self._geojson);
-  });
-};
-
-GeoJSON.prototype.getLayer = function() {
-  if (this._geojsonLayer) return this._geojsonLayer;
-  var layer =  Resource.prototype.getLayer.call(this);
-  this.fetch(function(geojson){
-    layer.addData(geojson);
-    layer.eachLayer(function (l) {
-      l.on('click', function () {
-        $rootScope.$broadcast('details', l);
-      });
-    });
-  });
-  return layer;
-};
-
-},{"./resource":31,"./vector":32}],30:[function(require,module,exports){
-/**
- * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
- *       on 6/3/14.
- */
-
-var Resource = require('./resource');
-var $rootScope = require('./vector').$rootScope;
-var toGeoJSON = require('./vector').toGeoJSON;
-var $ = require('./vector').$;
-
-module.exports = KML;
-
-/**
- * A KML Resource fetches KML and parses it with togeojson.js
- * Note that togeojson.js has bugs and does not accurately parse
- * some of the KML sources we have tested with. This library has
- * been modified with my hotfixes.
- *
- * @param config
- * @constructor
- */
-function KML(config) {
-  Resource.call(this, config);
-  this._geojson = null;
-}
-
-KML.prototype = Object.create(Resource.prototype);
-KML.prototype.constructor = KML;
-
-KML.prototype.fetch = function (cb) {
-  var self = this;
-  Resource.prototype.fetch.call(this, function(data) {
-    var xml = $.parseXML(data);
-    self._geojson = toGeoJSON.kml(xml);
-    if (typeof self._config.properties === 'object') {
-      angular.extend(self._geojson.properties, self._config.properties);
-      self._geojson.properties.srcType = 'kml';
-    }
-    if (typeof cb === 'function') cb(self._geojson, self);
-  });
-};
-
-KML.prototype.getLayer = function () {
-  if (this._geojsonLayer) return this._geojsonLayer;
-  var layer =  Resource.prototype.getLayer.call(this);
-  this.fetch(function(geojson){
-    layer.addData(geojson);
-    layer.eachLayer(function (l) {
-      l.on('click', function () {
-        $rootScope.$broadcast('details', l);
-      });
-    });
-  });
-  return layer;
-};
-
-KML.prototype.eachLayer = function (cb) {
-  this._eachLayerCallback = cb;
-  this.fetch(function(geojson, self){
-    var layers = self._geojsonLayer._layers;
-    for (var key in layers) {
-      var layer = layers[key];
-      cb(layer);
-    }
-  });
-};
-
-},{"./resource":31,"./vector":32}],31:[function(require,module,exports){
-/**
- * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
- *       on 6/3/14.
- */
-
-var resources = require('./vector').resources;
-var $http = require('./vector').$http;
-
-module.exports = Resource;
-
-/**
- * All VectorProvider resources are children of this class.
- * @param config
- * @constructor
- */
-function Resource(config) {
-  resources.push(this);
-  this._config = config;
-  this._url = null;
-  if (typeof config === 'object') {
-    this._url = config.url;
-  } else {
-    this._url = config;
-  }
-
-  this._eachLayerCallback = null;
-  this._geojsonLayer = null;
-}
-
-
-/**
- * Fetches data from the given url of a resource.
- * Subclasses then handle the callback accordingly.
- *
- * Needs to also try to get a resource via the Chubbs
- * proxy.
- *
- * @param cb
- */
-Resource.prototype.fetch = function(cb) {
-  var proxyPath = config.proxyPath(this._url);
-  $http.get(this._url, {cache: true}).success(function (data, status) {
-    cb(data);
-  }).error(function() {
-    // trying proxy
-    $http.get(proxyPath, {cache: true}).success(function (data, status) {
-      cb(data);
-    }).error(function() {
-      console.error("Unable to fetch from: " + proxyPath);
-    });
-  });
-
-};
-
-
-/**
- * Returns the Leaflet GeoJSON Layer associated with the
- * Resource or creates a new one.
- *
- * @returns {null|*}
- */
-Resource.prototype.getLayer = function () {
-  if (typeof this._geojsonLayer !== 'undefined' && this._geojsonLayer !== null) {
-    return this._geojsonLayer;
-  }
-
-  this._geojsonLayer = L.geoJson(this._geojson || null, {
-    style: function(feature) {
-      if (typeof feature.properties.styleFn === 'function') {
-        return feature.properties.styleFn(feature.properties);
-      }
-      return L.mapbox.simplestyle.style(feature);
-    },
-    pointToLayer: function(feature, latlon) {
-      if (!feature.properties) feature.properties = {};
-      if (feature.properties.scale) {
-        return L.circleMarker(latlon, {
-          fillColor: feature.properties.color || '#FF0000',
-          radius: 20 * feature.properties.scale
-        });
-      }
-      return L.mapbox.marker.style(feature, latlon);
-    }
-  }).eachLayer(this._eachLayerCallback);
-
-
-  return this._geojsonLayer;
-};
-
-Resource.prototype.eachLayer = function (cb) {
-  this._eachLayerCallback = cb;
-  this._geojsonLayer.eachLayer(cb);
-};
-
-},{"./vector":32}],32:[function(require,module,exports){
+},{"./resource":32,"./vector":33}],32:[function(require,module,exports){
+module.exports=require(29)
+},{"./vector":33}],33:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.

@@ -168,7 +168,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke-opacity": 1,
       "fill": "green",
       "fill-opacity": 0.7,
-        legend: ""
+      legend: ""
     }
   };
 
@@ -178,7 +178,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     properties: {
       title: 'Washington (State)',
       fill: "#FFBE00",
-        legend: ""
+      legend: ""
     }
   };
 
@@ -191,7 +191,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke-width": 1,
       "fill": "#FFBE00",
       "fill-opacity": 0.5,
-        legend: ""
+      legend: ""
     }
   };
 
@@ -360,7 +360,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "onSelect": 'showFeatureProperties',
       "onDeselect": 'closeDetails',
       "legend": '<svg class="leaflet-zoom-animated" width="48" height="48"><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="white" stroke-opacity="1" stroke-width="1.3" fill="#555555" fill-opacity="0" class="leaflet-clickable" d="M-1890 -409L-1896 -404L-1899 -404L-1907 -395L-1919 -394L-1921 -404L-1924 -408L-1922 -411L-1899 -421L-1894 -420L-1891 -414L-1888 -413z"></path></g></svg>'
-      }
+    }
 
   };
 
@@ -378,7 +378,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "stroke-opacity": 1,
       "fill": "green",
       "fill-opacity": 0,
-      "labelProperty": function() {
+      "labelProperty": function () {
         return Math.floor(Math.random() * (50 - 1 + 1)) + 1;
       }
     }
@@ -392,33 +392,33 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     name: 'GDACS: Global Disaster Alert and Coordination System',
     type: 'kml',
     url: 'http://www.gdacs.org/xml/gdacs.kml',
-      properties: {
-      legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
   this.gdacstest = {
     name: 'GDACS Test',
     type: 'kml',
     url: 'data/test/gdacs.kml',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
   this.earthquakes = {
     name: 'USGS Earthquakes',
     type: 'kml',
     url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
   this.earthquakestest = {
     name: 'USGS Earthquakes Test',
     type: 'kml',
     url: 'data/test/usgs-earthquakes.kml',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
 
 
@@ -429,17 +429,17 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     name: 'Uganda Financial Service Providers',
     type: 'csv',
     url: 'data/test/uganda.csv',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
   this.sampletracks = {
     name: 'Sample GPS Tracks',
     type: 'csv',
     url: 'data/test/sample-tracks.csv',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ''
+    }
   };
 
 
@@ -453,9 +453,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     transparent: true,      // default true
     format: 'image/png',    // default 'image/png'
     layers: 'OBS_MET_TEMP',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ""
+    }
   };
 
   // Not working??? works in QGIS. Most layers, however, don't even work in QGIS.
@@ -465,9 +465,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     url: 'http://lacrmt.sahanafoundation.org:8080/geoserver/wms?LAYERS=lacrmt%3Ainund2&',
     transparent: false,
     layers: 'lacrmt:sanandreas78',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ""
+    }
   };
 
   this.landcover = {
@@ -475,9 +475,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     type: 'wms',
     url: 'http://ags.servirlabs.net/ArcGIS/services/ReferenceNode/MODIS_Landcover_Type1_2009/MapServer/WMSServer',
     layers: '0',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ""
+    }
   };
 
   this.growingperiod = {
@@ -485,9 +485,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     type: 'wms',
     url: 'http://apps.harvestchoice.org/arcgis/services/MapServices/cell_values_4/MapServer/WMSServer',
     layers: '15',
-      properties: {
-          legend: ""
-      }
+    properties: {
+      legend: ""
+    }
   };
 
   /**
@@ -570,7 +570,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
    * @param name
    * @returns {*}
    */
-  this.find = function(name) {
+  this.find = function (name) {
     var val = this[name] || this[name.toLowerCase()];
     if (typeof val !== 'undefined' && val !== null) {
       return val;
