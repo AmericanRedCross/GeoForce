@@ -1565,9 +1565,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   $scope.resizeDetailsPanel = function() {
     var detailsPanelTop = $('#DetailsPanel').offset().top;
     var height = $('#MapCtrl').height() - 410; //Magic Number
-    if($state.current.name == 'main'){
-      $('#DetailsPanel .InnerContainer ').css("max-height",height);
-    }
+    $('#DetailsPanel .InnerContainer ').css("max-height",height);
   };
 
 	//Connect the layout onresize end event
