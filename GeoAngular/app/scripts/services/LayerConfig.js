@@ -266,55 +266,55 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
           }
         }
         else if (properties.theme == "projectrisk") {
-            if (properties && properties.overall_assessment__c) {
-                switch (properties.overall_assessment__c.toLowerCase()) {
-                    case "critical":
-                        style.fillColor = "red";
-                        style.fillOpacity = 0.5;
-                        break;
-                    case "high":
-                        style.fillColor = "orange";
-                        style.fillOpacity = 0.5;
-                        break;
-                    case "medium":
-                        style.fillColor = "yellow";
-                        style.fillOpacity = 0.5;
-                        break;
-                    case "low":
-                        style.fillColor = "green";
-                        style.fillOpacity = 0.5;
-                        break;
-                }
+          if (properties && properties.overall_assessment__c) {
+            switch (properties.overall_assessment__c.toLowerCase()) {
+              case "critical":
+                style.fillColor = "red";
+                style.fillOpacity = 0.5;
+                break;
+              case "high":
+                style.fillColor = "orange";
+                style.fillOpacity = 0.5;
+                break;
+              case "medium":
+                style.fillColor = "yellow";
+                style.fillOpacity = 0.5;
+                break;
+              case "low":
+                style.fillColor = "green";
+                style.fillOpacity = 0.5;
+                break;
             }
+          }
         }
         else if (properties.theme == "projecthealth") {
-            if (properties && properties.overall_status__c) {
-                switch (properties.overall_status__c.toLowerCase()) {
-                    case "red":
-                        style.fillColor = "red";
-                        style.fillOpacity = 0.5;
-                        break;
-                    case "yellow":
-                        style.fillColor = "yellow";
-                        style.fillOpacity = 0.5;
-                        break;
-                    case "green":
-                        style.fillColor = "green";
-                        style.fillOpacity = 0.5;
-                        break;
-                    case "white":
-                        style.fillColor = "white";
-                        style.fillOpacity = 0.5;
-                        break;
-                }
+          if (properties && properties.overall_status__c) {
+            switch (properties.overall_status__c.toLowerCase()) {
+              case "red":
+                style.fillColor = "red";
+                style.fillOpacity = 0.5;
+                break;
+              case "yellow":
+                style.fillColor = "yellow";
+                style.fillOpacity = 0.5;
+                break;
+              case "green":
+                style.fillColor = "green";
+                style.fillOpacity = 0.5;
+                break;
+              case "white":
+                style.fillColor = "white";
+                style.fillOpacity = 0.5;
+                break;
             }
+          }
         }
         return style;
       },
       "labelProperty": function (properties) {
         if (properties.hasOwnProperty("rfa_count")) {
           var text = '<div class="absolute featurelabel-icon-RFA"><span>' + properties.rfa_count + '</span></div>';
-          text +=  '<div class="absolute featurelabel-icon-RFA top"><span>' + properties.theme_count + '</span></div>';
+          text += '<div class="absolute featurelabel-icon-RFA top"><span>' + properties.theme_count + '</span></div>';
           return text;
         }
         else {
@@ -329,19 +329,19 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
       "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
       "defaultTheme": 'project', // The default theme the layer uses. This is used if there is no theme query param.
-      "legend" : function(theme){
-          if (theme.toLowerCase() == 'disaster') {
-              //disaster
-              return '<div class="absolute featurelabel-icon-RFA"></div><div class="absolute featurelabel-icon-RFA top"></div>';
-          }
-          else if(theme.toLowerCase() == 'disaster'){
-              //project
-              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;"></div>';
-          }
-          else{
-              //project
-              return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;"></div>';
-          }
+      "legend": function (theme) {
+        if (theme.toLowerCase() == 'disaster') {
+          //disaster
+          return '<div class="absolute featurelabel-icon-RFA"></div><div class="absolute featurelabel-icon-RFA top"></div>';
+        }
+        else if (theme.toLowerCase() == 'disaster') {
+          //project
+          return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;"></div>';
+        }
+        else {
+          //project
+          return '<div class="leaflet-marker-icon featurelabel-icon-number leaflet-zoom-animated leaflet-clickable" tabindex="0" style="margin-left: -22.5px; margin-top: -22.5px; width: 45px; height: 45px; -webkit-transform: translate3d(1587px, 564px, 0px); z-index: 564; box-shadow: rgba(237, 178, 41, 0.8) 0px 0px 0px 6px;"></div>';
+        }
       }
 
     }
@@ -380,8 +380,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       "fill-opacity": 0,
       "labelProperty": function() {
         return Math.floor(Math.random() * (50 - 1 + 1)) + 1;
-      },
-        legend: ""
+      }
     }
 
   };
