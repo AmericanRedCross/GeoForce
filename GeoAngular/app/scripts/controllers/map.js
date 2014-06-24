@@ -242,6 +242,30 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
           });
         }
 
+        /**
+         * Tiles that are an overlay. OSM / Google / Mapnik tend to make tiles in this format.
+         */
+        else if (typeof LayerConfig[overlayName] === 'object'
+                          && LayerConfig[overlayName].type.toLowerCase() === 'xyz') {
+
+          var cfg = LayerConfig[overlayName];
+          var layer = L.tileLayer(cfg.url, {
+            opacity: cfg.opacity || 0.5
+          });
+        }
+
+        /**
+         * TMS flips the y. GeoServer often serves this.
+         */
+        else if (typeof LayerConfig[overlayName] === 'object'
+                          && LayerConfig[overlayName].type.toLowerCase() === 'tms') {
+          var cfg = LayerConfig[overlayName];
+          var layer = L.tileLayer(cfg.url, {
+            opacity: cfg.opacity || 0.5,
+            tms: true
+          });
+        }
+
         // if its not wms, its a vector layer
         else {
           var vecRes = VectorProvider.createResource(overlayName);

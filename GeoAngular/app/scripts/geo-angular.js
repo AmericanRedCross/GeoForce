@@ -2611,6 +2611,30 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
           });
         }
 
+        /**
+         * Tiles that are an overlay. OSM / Google / Mapnik tend to make tiles in this format.
+         */
+        else if (typeof LayerConfig[overlayName] === 'object'
+                          && LayerConfig[overlayName].type.toLowerCase() === 'xyz') {
+
+          var cfg = LayerConfig[overlayName];
+          var layer = L.tileLayer(cfg.url, {
+            opacity: cfg.opacity || 0.5
+          });
+        }
+
+        /**
+         * TMS flips the y. GeoServer often serves this.
+         */
+        else if (typeof LayerConfig[overlayName] === 'object'
+                          && LayerConfig[overlayName].type.toLowerCase() === 'tms') {
+          var cfg = LayerConfig[overlayName];
+          var layer = L.tileLayer(cfg.url, {
+            opacity: cfg.opacity || 0.5,
+            tms: true
+          });
+        }
+
         // if its not wms, its a vector layer
         else {
           var vecRes = VectorProvider.createResource(overlayName);
@@ -3887,6 +3911,73 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       properties: {
           legend: ""
       }
+  };
+
+  /**
+   * XYZ
+   */
+  this.clouds = {
+    name: 'Cloud Cover',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/clouds_cls/{z}/{x}/{y}.png',
+    opacity: 0.5 // optional. opacity is 0.5 if not specified
+  };
+
+  this.precipitation = {
+    name: 'Precipitation',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png',
+    opacity: 0.5
+  };
+
+  this.precipitationclassic = {
+    name: 'Precipitation (Classic)',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/precipitation_cls/{z}/{x}/{y}.png',
+    opacity: 0.4
+  };
+
+  this.rain = {
+    name: 'Rain',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/rain/{z}/{x}/{y}.png'
+  };
+
+  this.rainclassic = {
+    name: 'Rain (Classic)',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/rain_cls/{z}/{x}/{y}.png'
+  };
+
+  this.pressure = {
+    name: 'Pressure',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/pressure/{z}/{x}/{y}.png'
+  };
+
+  this.pressurecontour = {
+    name: 'Pressure Contour',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/pressure_cntr/{z}/{x}/{y}.png',
+    opacity: 0.9
+  };
+
+  this.temperature = {
+    name: 'Temperature',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png'
+  };
+
+  this.wind = {
+    name: 'Wind',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/wind/{z}/{x}/{y}.png'
+  };
+
+  this.snow = {
+    name: 'Snow',
+    type: 'xyz',
+    url: 'http://{s}.tile.openweathermap.org/map/snow/{z}/{x}/{y}.png'
   };
 
 
