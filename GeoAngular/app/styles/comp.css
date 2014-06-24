@@ -135,7 +135,7 @@ html, body {
     padding: 10px 0px;
     font-size: 16px;
     color: #3f3f3f;
-    padding-top: 17px;
+    padding-top: 13px;
 }
 
 #ThemeSelectorMenu .dropdown-menu > li:hover, #ThemeSelectorMenu .dropdown-menu > li > a:focus, #ThemeSelectorMenu .dropdown-toggle {
