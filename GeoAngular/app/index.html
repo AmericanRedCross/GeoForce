@@ -152,7 +152,9 @@
                     </div>
                     <div class="row">
                         <div class="col-md-offset-4 col-md-4">
-                            {{stories.length}} Stories
+                            {{filteredStories.length}}
+                            <span ng-show="filteredStories.length > 1 || filteredStories.length == 0">Stories</span>
+                            <span ng-show="filteredStories.length ==  1">Story</span>
                         </div>
                     </div>
                     <div class="row scrollable">
@@ -230,7 +232,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="row">
-                            <div class="col-md-6" ng-repeat="story in stories | filter:storiesSearchText">
+                            <div class="col-md-6" ng-repeat="story in filteredStories = (stories | searchStoriesFilter:this)">
                                 <a href="{{story.url}}" class="thumbnail">
                                     <div class="image">
                                         <img ng-src="{{story.thumbnail}}" alt="...">
