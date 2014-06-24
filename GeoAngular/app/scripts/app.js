@@ -96,10 +96,9 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
 
 GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider
-    .when('/landing', '/map@35.029996,-89.340820,4(redcross,themecount)/landing')
     .when('/default', '/map@0,0,2(satellite,themecount)')
     .when('/phl', '/map@11.759815,121.893311,6(redcross,phl)')
-    .otherwise(localStorage.getItem('defaultRoute') || '/map@0,0,2(satellite,themecount)/landing');
+    .otherwise(localStorage.getItem('defaultRoute') || '/map@0,0,2(satellite,themecount)');
 
   $stateProvider
     .state('main', {
@@ -112,19 +111,6 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
         'theme': {
           templateUrl: 'views/theme.html',
           controller: 'ThemeCtrl'
-        }
-      }
-    })
-    .state('landing', {
-      url: '/map@:lat,:lng,:zoom(*layers)/landing?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id&level',
-      views: {
-        'details': {
-          template: ' ',
-          controller: 'MainCtrl'
-        },
-        'landing': {
-          templateUrl: 'views/landing.html',
-          controller: 'LandingCtrl'
         }
       }
     })
@@ -195,7 +181,6 @@ require('./services/LayerConfig');
 require('./services/StoriesConfig');
 require('./services/Vector/VectorProvider');
 require('./services/Donuts');
-require('./controllers/landing');
 require('./controllers/main');
 require('./controllers/map');
 require('./controllers/details');

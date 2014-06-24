@@ -3794,5 +3794,657 @@
       "inlineHelpText": null,
       "picklistValues": []
     }
+  },
+  "Risk__c": {
+    "id": {
+      "label": "Record ID",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "isdeleted": {
+      "label": "Deleted",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "name": {
+      "label": "Risk Name",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "createddate": {
+      "label": "Created Date",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "createdbyid": {
+      "label": "Created By ID",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "lastmodifieddate": {
+      "label": "Last Modified Date",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "lastmodifiedbyid": {
+      "label": "Last Modified By ID",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "systemmodstamp": {
+      "label": "System Modstamp",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "project__c": {
+      "label": "Project",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "project_task__c": {
+      "label": "Project Task",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "category__c": {
+      "label": "Strategy",
+      "inlineHelpText": "Please review the guidance for an explanation of these.",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Accept",
+          "validFor": null,
+          "value": "Accept"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Avoid",
+          "validFor": null,
+          "value": "Avoid"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Mitigate",
+          "validFor": null,
+          "value": "Mitigate"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Transfer",
+          "validFor": null,
+          "value": "Transfer"
+        }
+      ]
+    },
+    "description__c": {
+      "label": "Risk Description",
+      "inlineHelpText": "Enter a concise description of the risk.",
+      "picklistValues": []
+    },
+    "impact__c": {
+      "label": "Impact",
+      "inlineHelpText": "1 = Low Impact, 5 = High Impact \r\nUsing a scale of 1 through 5, select the potential impact of the risk should it occur PRIOR TO ANY MITIGATING ACTION. See the Assessment Definitions below for more guidance.",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "1",
+          "validFor": null,
+          "value": "1"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "2",
+          "validFor": null,
+          "value": "2"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "3",
+          "validFor": null,
+          "value": "3"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "4",
+          "validFor": null,
+          "value": "4"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "5",
+          "validFor": null,
+          "value": "5"
+        }
+      ]
+    },
+    "likelihood__c": {
+      "label": "Likelihood",
+      "inlineHelpText": "1= Not likely, 5=Very Likely \r\nUsing a scale of 1 through 5, select the degree to which the risk is likely to happen PRIOR TO ANY MITIGATING ACTION. See the Assessment Definitions below for more guidance.",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "1",
+          "validFor": null,
+          "value": "1"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "2",
+          "validFor": null,
+          "value": "2"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "3",
+          "validFor": null,
+          "value": "3"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "4",
+          "validFor": null,
+          "value": "4"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "5",
+          "validFor": null,
+          "value": "5"
+        }
+      ]
+    },
+    "mitigation__c": {
+      "label": "Mitigation explanation",
+      "inlineHelpText": "Enter a brief explanation of the selected strategy.",
+      "picklistValues": []
+    },
+    "risk_type__c": {
+      "label": "Risk Type",
+      "inlineHelpText": "Select the type of risk that the entry represents. Select as many types as are relevant using the definitions for risk type provided below. Many risks are inter-related and may be a result of each other (e.g. a security risk that limits access to an area",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Organizational Risk (SME)",
+          "validFor": null,
+          "value": "Organizational Risk (SME)"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Project Risk",
+          "validFor": null,
+          "value": "Project Risk"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Grant Compliance",
+          "validFor": null,
+          "value": "Grant Compliance"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Programmatic",
+          "validFor": null,
+          "value": "Programmatic"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Financial",
+          "validFor": null,
+          "value": "Financial"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Security",
+          "validFor": null,
+          "value": "Security"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Legal",
+          "validFor": null,
+          "value": "Legal"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Reputational",
+          "validFor": null,
+          "value": "Reputational"
+        }
+      ]
+    },
+    "leadership_comments__c": {
+      "label": "Leadership Comments",
+      "inlineHelpText": "Comments from Leadership team",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Requires further discussion with LT",
+          "validFor": null,
+          "value": "Requires further discussion with LT"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Continue to report but does not require further discussion",
+          "validFor": null,
+          "value": "Continue to report but does not require further discussion"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Continue monitoring but remove from LT report",
+          "validFor": null,
+          "value": "Continue monitoring but remove from LT report"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Resolution approved; cease monitoring",
+          "validFor": null,
+          "value": "Resolution approved; cease monitoring"
+        },
+        {
+          "active": true,
+          "defaultValue": true,
+          "label": "None",
+          "validFor": null,
+          "value": "None"
+        }
+      ]
+    },
+    "notes_from_functional_leads__c": {
+      "label": "Notes from Functional Leads",
+      "inlineHelpText": "Functional Leads should use this field to add comments about the risk during their review.",
+      "picklistValues": []
+    },
+    "severity__c": {
+      "label": "Severity",
+      "inlineHelpText": "Is the value of Likelihood * Impact and gives you the overall assessment",
+      "picklistValues": []
+    },
+    "overall_assessment__c": {
+      "label": "Overall Assessment",
+      "inlineHelpText": "This provides you a way to assess the overall risk you have logged. Choose one of the options.\nBased on the matrix in the guidance document and the rating you selected for likelihood and impact, designate an overall assessment of the risk.",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": true,
+          "label": "Low",
+          "validFor": null,
+          "value": "Low"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Medium",
+          "validFor": null,
+          "value": "Medium"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "High",
+          "validFor": null,
+          "value": "High"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Critical",
+          "validFor": null,
+          "value": "Critical"
+        }
+      ]
+    },
+    "risk_owner__c": {
+      "label": "Risk Owner",
+      "inlineHelpText": "Indicates who owns the risk / person responsible for monitoring the risk and possibly mitigating it.",
+      "picklistValues": []
+    },
+    "risk_status__c": {
+      "label": "Risk Status",
+      "inlineHelpText": "Known-the existence of the risk is known to the project team. “Known” is the default status of risks when they are added to ProjectFuture.\nAnalyzed: an analysis (or more) has been done to understand the nature of the risk (characteristics, causes, effect",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": true,
+          "label": "Known",
+          "validFor": null,
+          "value": "Known"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Analyzed",
+          "validFor": null,
+          "value": "Analyzed"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Response Known",
+          "validFor": null,
+          "value": "Response Known"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Response Selected",
+          "validFor": null,
+          "value": "Response Selected"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Response Implemented",
+          "validFor": null,
+          "value": "Response Implemented"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Issue (Risk has occurred)",
+          "validFor": null,
+          "value": "Issue (Risk has occurred)"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Closed",
+          "validFor": null,
+          "value": "Closed"
+        }
+      ]
+    }
+  },
+  "Project_Evaluation__c": {
+    "id": {
+      "label": "Record ID",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "isdeleted": {
+      "label": "Deleted",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "name": {
+      "label": "Program/Project Performance Status Name",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "recordtypeid": {
+      "label": "Record Type ID",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "createddate": {
+      "label": "Created Date",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "createdbyid": {
+      "label": "Created By ID",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "lastmodifieddate": {
+      "label": "Last Modified Date",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "lastmodifiedbyid": {
+      "label": "Last Modified By ID",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "systemmodstamp": {
+      "label": "System Modstamp",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "project__c": {
+      "label": "Program/Project",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "budget_status_comment__c": {
+      "label": "Budget Status Comment",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "budget_status__c": {
+      "label": "Budget Status",
+      "inlineHelpText": "The relationship between budget and actual expenditure. Actual is defined as invoices paid.",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "White",
+          "validFor": null,
+          "value": "White"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Green",
+          "validFor": null,
+          "value": "Green"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Yellow",
+          "validFor": null,
+          "value": "Yellow"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Red",
+          "validFor": null,
+          "value": "Red"
+        }
+      ]
+    },
+    "evaluation_date__c": {
+      "label": "Performance Status Date",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "human_resource_status_comment__c": {
+      "label": "Human Resource Status Comment",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "human_resource_status__c": {
+      "label": "Human Resource Status",
+      "inlineHelpText": "Key project team members and/or functions are defined and available.",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "White",
+          "validFor": null,
+          "value": "White"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Green",
+          "validFor": null,
+          "value": "Green"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Yellow",
+          "validFor": null,
+          "value": "Yellow"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Red",
+          "validFor": null,
+          "value": "Red"
+        }
+      ]
+    },
+    "overall_status_comment__c": {
+      "label": "Overall Status Comment",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "overall_status__c": {
+      "label": "Overall Status",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "qpr__c": {
+      "label": "QPR",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "scope_status_comment__c": {
+      "label": "Scope Status Comment",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "scope_status__c": {
+      "label": "Scope Status",
+      "inlineHelpText": "The status of key performance indicators (KPIs). This is subjective and criteria for scope must be identified at project start.",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "White",
+          "validFor": null,
+          "value": "White"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Green",
+          "validFor": null,
+          "value": "Green"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Yellow",
+          "validFor": null,
+          "value": "Yellow"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Red",
+          "validFor": null,
+          "value": "Red"
+        }
+      ]
+    },
+    "stakeholder_status_comment__c": {
+      "label": "Stakeholder Status Comment",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "stakeholder_status__c": {
+      "label": "Stakeholder Status",
+      "inlineHelpText": "Stakeholders as identified in the project charter or contract agreements as critical to the project’s success. Use of RACI will help identify stakeholders.",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "White",
+          "validFor": null,
+          "value": "White"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Green",
+          "validFor": null,
+          "value": "Green"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Yellow",
+          "validFor": null,
+          "value": "Yellow"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Red",
+          "validFor": null,
+          "value": "Red"
+        }
+      ]
+    },
+    "timeline_status_comment__c": {
+      "label": "Timeline Status Comment",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "timeline_status__c": {
+      "label": "Timeline Status",
+      "inlineHelpText": "The relationship between the planned and actual project dates within the given timeframe. Dates within timeframe may be the key milestones or critical path dates. Projects must establish an initial timeline at the project start.",
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "White",
+          "validFor": null,
+          "value": "White"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Green",
+          "validFor": null,
+          "value": "Green"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Yellow",
+          "validFor": null,
+          "value": "Yellow"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Red",
+          "validFor": null,
+          "value": "Red"
+        }
+      ]
+    }
   }
 }

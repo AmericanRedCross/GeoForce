@@ -27,7 +27,10 @@ var tables = {
   Location__c: null,
   Indicator__c: null,
   Indicator_Value__c: null,
-  Logframe_Element__c: null
+  Logframe_Element__c: null,
+  Risk__c: null,
+  Project_Evaluation__c: null
+
 };
 
 
