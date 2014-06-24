@@ -312,10 +312,28 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
         return style;
       },
       "labelProperty": function (properties) {
-        if (properties.hasOwnProperty("rfa_count")) {
-          var text = '<div class="absolute featurelabel-icon-RFA"><span>' + properties.rfa_count + '</span></div>';
-          text += '<div class="absolute featurelabel-icon-RFA top"><span>' + properties.theme_count + '</span></div>';
-          return text;
+        if (properties.theme == "disaster") {
+          var color = "";
+          var labelColor = "";
+          if (properties && properties.iroc_status__c) {
+            switch (properties.iroc_status__c.toLowerCase()) {
+              case "active":
+                color = "#cc0033";
+                labelColor = "#fff";
+                break;
+              case "monitoring":
+                color = "#e1bb25";
+                labelColor = "#fff";
+                break;
+              case "inactive":
+                color = "#bdbdbd";
+                labelColor = "#000";
+                break;
+            }
+          }
+
+
+          return '<div class="featurelabel-icon-number"' + (color ? ' style="background-color: ' + color + ';color: ' + labelColor + '"' : '') + '><span>' + properties.theme_count + '</span></div>';
         }
         else {
           return '<div class="featurelabel-icon-number"><span>' + properties.theme_count + '</span></div>';

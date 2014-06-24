@@ -1,0 +1,11 @@
+—Setting up cron to run succubus nightly
+
+crontab -e
+—opens chooser for editor.
+2
+
+At the bottom, enter:
+01 01 * * * node ~/Geoforce/Succubus/index.js
+
+This specifies at 1:01 AM every day, run node and point to succubus’ index.js
+
