@@ -1245,25 +1245,59 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       return key;
     }
 
-    // project
-    if ($scope.sfFieldHash.Project__c[key]) {
-      desc = $scope.sfFieldHash.Project__c[key].label || key;
+    if ($stateParams.theme === 'project') {
+      // project
+      if ($scope.sfFieldHash.Project__c[key]) {
+        desc = $scope.sfFieldHash.Project__c[key].label || key;
+      }
+
+      if ($scope.sfFieldHash.Location__c[key]) {
+        desc = $scope.sfFieldHash.Location__c[key].label || key;
+      }
+
+      if ($scope.sfFieldHash.Indicator__c[key]) {
+        desc = $scope.sfFieldHash.Indicator__c[key].label || key;
+      }
+
+      if ($scope.sfFieldHash.Indicator_Value__c[key]) {
+        desc = $scope.sfFieldHash.Indicator_Value__c[key].label || key;
+      }
+
+      if ($scope.sfFieldHash.Logframe_Element__c[key]) {
+        desc = $scope.sfFieldHash.Logframe_Element__c[key].label || key;
+      }
     }
 
-    if ($scope.sfFieldHash.Location__c[key]) {
-      desc = $scope.sfFieldHash.Location__c[key].label || key;
+
+    if ($stateParams.theme === 'projectRisk') {
+      // project
+      if ($scope.sfFieldHash.Project__c[key]) {
+        desc = $scope.sfFieldHash.Project__c[key].label || key;
+      }
+
+      if ($scope.sfFieldHash.Location__c[key]) {
+        desc = $scope.sfFieldHash.Location__c[key].label || key;
+      }
+
+      if ($scope.sfFieldHash.Risk__c[key]) {
+        desc = $scope.sfFieldHash.Risk__c[key].label || key;
+      }
     }
 
-    if ($scope.sfFieldHash.Indicator__c[key]) {
-      desc = $scope.sfFieldHash.Indicator__c[key].label || key;
-    }
 
-    if ($scope.sfFieldHash.Indicator_Value__c[key]) {
-      desc = $scope.sfFieldHash.Indicator_Value__c[key].label || key;
-    }
+    if ($stateParams.theme === 'projectHealth') {
+      // project
+      if ($scope.sfFieldHash.Project__c[key]) {
+        desc = $scope.sfFieldHash.Project__c[key].label || key;
+      }
 
-    if ($scope.sfFieldHash.Logframe_Element__c[key]) {
-      desc = $scope.sfFieldHash.Logframe_Element__c[key].label || key;
+      if ($scope.sfFieldHash.Location__c[key]) {
+        desc = $scope.sfFieldHash.Location__c[key].label || key;
+      }
+
+      if ($scope.sfFieldHash.Project_Evaluation__c[key]) {
+        desc = $scope.sfFieldHash.Project_Evaluation__c[key].label || key;
+      }
     }
 
     return desc;
@@ -1302,25 +1336,55 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       return 'FieldName: ' + key;
     }
 
-    // project
-    if ($scope.sfFieldHash.Project__c[key]) {
-      desc = $scope.sfFieldHash.Project__c[key].inlineHelpText || '';
+    if ($stateParams.theme === 'project') {
+      // project
+      if ($scope.sfFieldHash.Project__c[key]) {
+        desc = $scope.sfFieldHash.Project__c[key].inlineHelpText || '';
+      }
+
+      if ($scope.sfFieldHash.Location__c[key]) {
+        desc = $scope.sfFieldHash.Location__c[key].inlineHelpText || '';
+      }
+
+      if ($scope.sfFieldHash.Indicator__c[key]) {
+        desc = $scope.sfFieldHash.Indicator__c[key].inlineHelpText || '';
+      }
+
+      if ($scope.sfFieldHash.Indicator_Value__c[key]) {
+        desc = $scope.sfFieldHash.Indicator_Value__c[key].inlineHelpText || '';
+      }
+
+      if ($scope.sfFieldHash.Logframe_Element__c[key]) {
+        desc = $scope.sfFieldHash.Logframe_Element__c[key].inlineHelpText || '';
+      }
     }
 
-    if ($scope.sfFieldHash.Location__c[key]) {
-      desc = $scope.sfFieldHash.Location__c[key].inlineHelpText || '';
+    if ($stateParams.theme === 'projectRisk') {
+      if ($scope.sfFieldHash.Project__c[key]) {
+        desc = $scope.sfFieldHash.Project__c[key].inlineHelpText || '';
+      }
+
+      if ($scope.sfFieldHash.Location__c[key]) {
+        desc = $scope.sfFieldHash.Location__c[key].inlineHelpText || '';
+      }
+
+      if ($scope.sfFieldHash.Risk__c[key]) {
+        desc = $scope.sfFieldHash.Risk__c[key].inlineHelpText || '';
+      }
     }
 
-    if ($scope.sfFieldHash.Indicator__c[key]) {
-      desc = $scope.sfFieldHash.Indicator__c[key].inlineHelpText || '';
-    }
+    if ($stateParams.theme === 'projectHealth') {
+      if ($scope.sfFieldHash.Project__c[key]) {
+        desc = $scope.sfFieldHash.Project__c[key].inlineHelpText || '';
+      }
 
-    if ($scope.sfFieldHash.Indicator_Value__c[key]) {
-      desc = $scope.sfFieldHash.Indicator_Value__c[key].inlineHelpText || '';
-    }
+      if ($scope.sfFieldHash.Location__c[key]) {
+        desc = $scope.sfFieldHash.Location__c[key].inlineHelpText || '';
+      }
 
-    if ($scope.sfFieldHash.Logframe_Element__c[key]) {
-      desc = $scope.sfFieldHash.Logframe_Element__c[key].inlineHelpText || '';
+      if ($scope.sfFieldHash.Project_Evaluation__c[key]) {
+        desc = $scope.sfFieldHash.Project_Evaluation__c[key].inlineHelpText || '';
+      }
     }
 
     return desc + ' FieldName: ' + key;
