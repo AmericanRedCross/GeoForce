@@ -46,7 +46,7 @@
                 <div id="MapCtrl" class="ui-layout-center" style="height:100%;width:100%;">
 
                     <div class="windowEffects" ng-class="{grayout: isParam('zoom-extent')}"></div> <!-- Use this window to gray out the map -->
-
+                    <div style="height:100%;width: 100%;background-color: rgba(0,0,0,.77);position: absolute;z-index: 1;"></div>
                     <leaflet class="blur" width="100%" height="100%" center="{lat: 14.2643, lng: -23.2031, zoom: 3}" defaults="{ dragging: false, scrollWheelZoom: false, zoomControl: false, doubleClickZoom:false}" tiles="{url: 'http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',name: 'Humanitarian OpenStreetMap',type: 'basemap'}"></leaflet>
 
                     <div>
