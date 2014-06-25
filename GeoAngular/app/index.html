@@ -391,10 +391,14 @@
                             <!-- Tab panes -->
                             <div class="tab-content scrollable">
                                 <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
-                                    <label ng-repeat="sector in sectors" class="checkbox">
-                                        <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
-                                        <i class="icon-{{sector.name.split(' ').join('')}}"></i> {{sector.name}}
-                                    </label>
+                                    <div ng-repeat="sector in sectors">
+                                        <label class="checkbox" style="color: {{sector.color}};">
+                                            <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
+                                            <i class="icon-{{sector.name.split(' ').join('')}}"></i> <span class="sector-name">{{sector.name}}</span>
+                                        </label>
+                                        <hr/>
+                                    </div>
+                                    <br/>
                                 </div>
                                 <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
 

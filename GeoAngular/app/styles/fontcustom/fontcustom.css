@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.eot");
-  src: url("./fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.woff") format("woff"),
-       url("./fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.ttf") format("truetype"),
-       url("./fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.svg#fontcustom") format("svg");
+  src: url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.eot");
+  src: url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.woff") format("woff"),
+       url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.ttf") format("truetype"),
+       url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.svg#fontcustom") format("svg");
+    src: url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.svg#fontcustom") format("svg");
   }
 }
 
@@ -44,14 +44,21 @@
 .icon-9_arrow_left:before,
 .icon-ARCCapacity:before,
 .icon-DisasterRiskReduction:before,
+.icon-FinancialAssistance:before,
 .icon-GDPC:before,
 .icon-Health:before,
+.icon-IHL:before,
 .icon-Livelihoods:before,
 .icon-Measles:before,
+.icon-NFI:before,
 .icon-OrganizationalDevelopment:before,
+.icon-People:before,
 .icon-RFL:before,
+.icon-Readiness-ARC:before,
+.icon-Recovery:before,
 .icon-Relief:before,
 .icon-Shelter:before,
+.icon-UnderfundedDisasters:before,
 .icon-WatSan:before {
   display: inline-block;
   font-family: "fontcustom";
@@ -88,12 +95,19 @@
 .icon-9_arrow_left:before { content: "\f11d"; }
 .icon-ARCCapacity:before { content: "\f125"; }
 .icon-DisasterRiskReduction:before { content: "\f126"; }
+.icon-FinancialAssistance:before { content: "\f12f"; }
 .icon-GDPC:before { content: "\f127"; }
 .icon-Health:before { content: "\f124"; }
+.icon-IHL:before { content: "\f135"; }
 .icon-Livelihoods:before { content: "\f128"; }
 .icon-Measles:before { content: "\f129"; }
+.icon-NFI:before { content: "\f133"; }
 .icon-OrganizationalDevelopment:before { content: "\f12a"; }
+.icon-People:before { content: "\f130"; }
 .icon-RFL:before { content: "\f12b"; }
+.icon-Readiness-ARC:before { content: "\f131"; }
+.icon-Recovery:before { content: "\f132"; }
 .icon-Relief:before { content: "\f12c"; }
 .icon-Shelter:before { content: "\f12d"; }
+.icon-UnderfundedDisasters:before { content: "\f134"; }
 .icon-WatSan:before { content: "\f12e"; }

@@ -2,75 +2,93 @@
   "sectors": [
     {
       "name": "Health",
-      "checked": false
+      "checked": false,
+      "color": "#1f77b4"
     },
     {
       "name": "WatSan",
-      "checked": false
+      "checked": false,
+      "color": "#aec7e8"
     },
     {
       "name": "Shelter",
-      "checked": false
+      "checked": false,
+      "color": "#ff7f0e"
     },
     {
       "name": "Livelihoods",
-      "checked": false
+      "checked": false,
+      "color": "#ffbb78"
     },
     {
       "name": "Organizational Development",
-      "checked": false
+      "checked": false,
+      "color": "#2ca02c"
     },
     {
       "name": "Measles",
-      "checked": false
+      "checked": false,
+      "color": "#98df8a"
     },
     {
       "name": "IHL",
-      "checked": false
+      "checked": false,
+      "color": "#d62728"
     },
     {
       "name": "GDPC",
-      "checked": false
+      "checked": false,
+      "color": "#ff9896"
     },
     {
       "name": "Disaster Risk Reduction",
-      "checked": false
+      "checked": false,
+      "color": "#9467bd"
     },
     {
       "name": "RFL",
-      "checked": false
+      "checked": false,
+      "color": "#c5b0d5"
     },
     {
       "name": "People",
-      "checked": false
+      "checked": false,
+      "color": "#8c564b"
     },
     {
       "name": "NFI",
-      "checked": false
+      "checked": false,
+      "color": "#c49c94"
     },
     {
       "name": "Relief",
-      "checked": false
+      "checked": false,
+      "color": "#e377c2"
     },
     {
       "name": "Financial Assistance",
-      "checked": false
+      "checked": false,
+      "color": "#f7b6d2"
     },
     {
       "name": "Underfunded Disasters",
-      "checked": false
+      "checked": false,
+      "color": "#7f7f7f"
     },
     {
       "name": "Readiness - ARC",
-      "checked": false
+      "checked": false,
+      "color": "#c7c7c7"
     },
     {
       "name": "Recovery",
-      "checked": false
+      "checked": false,
+      "color": "#bcbd22"
     },
     {
       "name": "ARC Capacity",
-      "checked": false
+      "checked": false,
+      "color": "#dbdb8d"
     }
   ],
   "status": [

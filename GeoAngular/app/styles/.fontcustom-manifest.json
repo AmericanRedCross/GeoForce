@@ -1,13 +1,13 @@
 {
   "checksum": {
-    "previous": "3c9418fa4f59ec85c32179d982cdb7f170435c4c3d1bedf236d332f9a089f354",
-    "current": "3c9418fa4f59ec85c32179d982cdb7f170435c4c3d1bedf236d332f9a089f354"
+    "previous": "b1fe93f4444186af6fb5838283d9444b1cbdd31e2c096487137092aee56cb092",
+    "current": "b1fe93f4444186af6fb5838283d9444b1cbdd31e2c096487137092aee56cb092"
   },
   "fonts": [
-    "fontcustom/fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.ttf",
-    "fontcustom/fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.svg",
-    "fontcustom/fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.woff",
-    "fontcustom/fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.eot"
+    "fontcustom/fontcustom_b1fe93f4444186af6fb5838283d9444b.ttf",
+    "fontcustom/fontcustom_b1fe93f4444186af6fb5838283d9444b.svg",
+    "fontcustom/fontcustom_b1fe93f4444186af6fb5838283d9444b.woff",
+    "fontcustom/fontcustom_b1fe93f4444186af6fb5838283d9444b.eot"
   ],
   "glyphs": {
     "10_arrow_right": {
@@ -94,6 +94,10 @@
       "codepoint": 61734,
       "source": "svg/DisasterRiskReduction.svg"
     },
+    "FinancialAssistance": {
+      "codepoint": 61743,
+      "source": "svg/FinancialAssistance.svg"
+    },
     "GDPC": {
       "codepoint": 61735,
       "source": "svg/GDPC.svg"
@@ -101,6 +105,10 @@
     "Health": {
       "codepoint": 61732,
       "source": "svg/Health.svg"
+    },
+    "IHL": {
+      "codepoint": 61749,
+      "source": "svg/IHL.svg"
     },
     "Livelihoods": {
       "codepoint": 61736,
@@ -110,13 +118,29 @@
       "codepoint": 61737,
       "source": "svg/Measles.svg"
     },
+    "NFI": {
+      "codepoint": 61747,
+      "source": "svg/NFI.svg"
+    },
     "OrganizationalDevelopment": {
       "codepoint": 61738,
       "source": "svg/OrganizationalDevelopment.svg"
     },
+    "People": {
+      "codepoint": 61744,
+      "source": "svg/People.svg"
+    },
     "RFL": {
       "codepoint": 61739,
       "source": "svg/RFL.svg"
+    },
+    "Readiness-ARC": {
+      "codepoint": 61745,
+      "source": "svg/Readiness-ARC.svg"
+    },
+    "Recovery": {
+      "codepoint": 61746,
+      "source": "svg/Recovery.svg"
     },
     "Relief": {
       "codepoint": 61740,
@@ -125,6 +149,10 @@
     "Shelter": {
       "codepoint": 61741,
       "source": "svg/Shelter.svg"
+    },
+    "UnderfundedDisasters": {
+      "codepoint": 61748,
+      "source": "svg/UnderfundedDisasters.svg"
     },
     "WatSan": {
       "codepoint": 61742,

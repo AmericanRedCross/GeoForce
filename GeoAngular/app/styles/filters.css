@@ -9,3 +9,27 @@
 .panel-heading {
     cursor: pointer;
 }
+
+#sectors-filter i {
+    font-size: 24px;
+    padding-left: 5px;
+}
+
+#sectors-filter input {
+    margin-top: 15px;
+}
+
+#sectors-filter hr {
+    border-top: 1px solid #D1D1D1;
+    margin: 0;
+}
+
+#sectors-filter .sector-name {
+    line-height: 10px;
+    padding-left: 8px;
+}
+
+#sectors-filter label {
+    font-weight: bold;
+    font-size: 15px;
+}
