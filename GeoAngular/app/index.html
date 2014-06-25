@@ -373,8 +373,8 @@
                     <div ng-controller="FiltersCtrl" ng-class="{on: isParam('filters-panel')}" class="navpanel container filters-container">
                         <div class="row">
                             <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters-panel')"><span class="glyphicon glyphicon-chevron-left"></span></button>
-                            <div class="col-md-8 side-view-title-wrapper">
-                                <div class="title">Project Filters</div> <div class="description"></div>
+                            <div class="col-md-10 side-view-title-wrapper">
+                                <div class="title">Project Filters</div> <a class="description" href="#">Clear All Filters</a>
                             </div>
                         </div>
                         <div class="row">
@@ -391,14 +391,10 @@
                             <!-- Tab panes -->
                             <div class="tab-content scrollable">
                                 <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <label ng-repeat="sector in sectors" class="checkbox">
-                                                <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
-                                                {{sector.name}}
-                                            </label>
-                                        </div>
-                                    </div>
+                                    <label ng-repeat="sector in sectors" class="checkbox">
+                                        <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
+                                        {{sector.name}}
+                                    </label>
                                 </div>
                                 <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
 
@@ -427,14 +423,10 @@
 
                                 </div>
                                 <div ng-class="{active: navTab==='status'}" class="tab-pane" id="status-filter">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <label ng-repeat="stat in status" class="checkbox">
-                                                <input type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
-                                                {{stat.name}}
-                                            </label>
-                                        </div>
-                                    </div>
+                                    <label ng-repeat="stat in status" class="checkbox">
+                                        <input type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
+                                        {{stat.name}}
+                                    </label>
                                 </div>
                                 <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
                                     <div class="panel panel-default">
