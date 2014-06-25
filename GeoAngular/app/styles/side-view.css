@@ -71,19 +71,16 @@
     color: #A0A0A0;
 }
 
-.side-view a {
+.side-view .nav-tabs a {
     cursor: pointer;
     color: #EA2035;
-}
-
-.side-view .nav-tabs a {
     font-size: 12px;
     font-family: oswaldregular;
     text-transform: uppercase;
     color: #9E9E9E;
 }
 
-.side-view a:hover {
+.side-view .nav-tabs a:hover {
     color: #d2322d;
 }
 

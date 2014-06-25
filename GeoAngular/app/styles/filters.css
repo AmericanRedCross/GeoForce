@@ -33,3 +33,8 @@
     font-weight: bold;
     font-size: 15px;
 }
+
+.filters-container .clear-all {
+    padding-left: 11px;
+    line-height: 27px;
+}
