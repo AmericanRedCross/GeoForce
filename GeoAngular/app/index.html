@@ -335,43 +335,33 @@
                                         </label>
                                     </div>
 
-                                    <!--<div class="btn-group">-->
-                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" btn-radio="'auto'">Auto</button>-->
-                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" btn-radio="'-1'"  >ARC</button>-->
-                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" btn-radio="'0'"   >0</button>-->
-                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 6" btn-radio="'1'">1</button>-->
-                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 8" btn-radio="'2'">2</button>-->
-                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 9" btn-radio="'3'">3</button>-->
-                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 11" btn-radio="'4'">4</button>-->
-                                        <!--<button type="button" class="btn btn-default" ng-model="gadmLevel" ng-disabled="zoom < 13" btn-radio="'5'">5</button>-->
-                                    <!--</div>-->
+                                    <br/>
 
-                                    <div class="panel panel-default" ng-repeat="(panelName, panel) in layersPanels">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">{{panelName}}</h3>
-                                        </div>
-                                        <div class="panel-body">
-
-                                            <label class="checkbox" ng-repeat="(layerKey, layer) in panel">
-                                                <input type="checkbox" ng-model="layer.active" ng-change="toggleMapLayer(layerKey, layer)">
-                                                {{layer.name || layer.properties.title || layerKey}}
-                                            </label>
-
-                                        </div>
+                                    <div ng-repeat="(panelName, panel) in layersPanels">
+                                        <h4>{{panelName}}</h4>
+                                        <label class="checkbox" ng-repeat="(layerKey, layer) in panel">
+                                            <input type="checkbox" ng-model="layer.active" ng-change="toggleMapLayer(layerKey, layer)">
+                                            {{layer.name || layer.properties.title || layerKey}}
+                                        </label>
                                     </div>
                                     <br/>
                                 </div>
                                 <div ng-class="{active: navTab==='uploaded'}" class="tab-pane">
-
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-
-                                            <label class="checkbox" ng-repeat="gist in gists">
-                                                <input type="checkbox" ng-model="gist.active" ng-change="toggleMapLayer(gist.url, gist)">
-                                                {{gist.name}} (<a href="{{gist.htmlUrl}}" target="_blank">View on Github</a>)
-                                            </label>
-
-                                        </div>
+                                    <div ng-show="numGists===0">
+                                        <br/>
+                                        <p>
+                                            This is a list of spatial data layers you have uploaded to Github.
+                                        </p>
+                                        <p>
+                                            You haven't uploaded any data yet. Click on the <a ui-sref="upload(params)">Upload Data</a> button on the top right menu for more information.
+                                        </p>
+                                    </div>
+                                    <div ng-show="numGists>0">
+                                        <h4>Layers hosted on Github:</h4>
+                                        <label class="checkbox" ng-repeat="gist in gists">
+                                            <input type="checkbox" ng-model="gist.active" ng-change="toggleMapLayer(gist.url, gist)">
+                                            {{gist.name}} (<a href="{{gist.htmlUrl}}" target="_blank">View on Github</a>)
+                                        </label>
                                     </div>
                                 </div>
                             </div>
