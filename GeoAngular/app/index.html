@@ -393,7 +393,7 @@
                                 <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
                                     <label ng-repeat="sector in sectors" class="checkbox">
                                         <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
-                                        {{sector.name}}
+                                        <i class="icon-{{sector.name.split(' ').join('')}}"></i> {{sector.name}}
                                     </label>
                                 </div>
                                 <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">

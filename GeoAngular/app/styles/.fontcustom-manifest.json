@@ -1,13 +1,13 @@
 {
   "checksum": {
-    "previous": "7db0738c13ed4aa47933e2e4d2fc2b5485d0e21dc020c8084bff0804570ed97c",
-    "current": "7db0738c13ed4aa47933e2e4d2fc2b5485d0e21dc020c8084bff0804570ed97c"
+    "previous": "3c9418fa4f59ec85c32179d982cdb7f170435c4c3d1bedf236d332f9a089f354",
+    "current": "3c9418fa4f59ec85c32179d982cdb7f170435c4c3d1bedf236d332f9a089f354"
   },
   "fonts": [
-    "fontcustom/fontcustom_7db0738c13ed4aa47933e2e4d2fc2b54.ttf",
-    "fontcustom/fontcustom_7db0738c13ed4aa47933e2e4d2fc2b54.svg",
-    "fontcustom/fontcustom_7db0738c13ed4aa47933e2e4d2fc2b54.woff",
-    "fontcustom/fontcustom_7db0738c13ed4aa47933e2e4d2fc2b54.eot"
+    "fontcustom/fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.ttf",
+    "fontcustom/fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.svg",
+    "fontcustom/fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.woff",
+    "fontcustom/fontcustom_3c9418fa4f59ec85c32179d982cdb7f1.eot"
   ],
   "glyphs": {
     "10_arrow_right": {
@@ -38,57 +38,13 @@
       "codepoint": 61728,
       "source": "svg/16_contextual_layers.svg"
     },
-    "17_ARCCapacity": {
-      "codepoint": 61703,
-      "source": "svg/17_ARCCapacity.svg"
-    },
-    "18_DisasterRiskReduc": {
-      "codepoint": 61704,
-      "source": "svg/18_DisasterRiskReduc.svg"
-    },
-    "19_relief": {
-      "codepoint": 61705,
-      "source": "svg/19_relief.svg"
-    },
     "1_info": {
       "codepoint": 61706,
       "source": "svg/1_info.svg"
     },
-    "20_GDHP": {
-      "codepoint": 61707,
-      "source": "svg/20_GDHP.svg"
-    },
-    "21_Health": {
-      "codepoint": 61708,
-      "source": "svg/21_Health.svg"
-    },
-    "22_Shelter": {
-      "codepoint": 61709,
-      "source": "svg/22_Shelter.svg"
-    },
-    "23_waterSan": {
-      "codepoint": 61730,
-      "source": "svg/23_waterSan.svg"
-    },
-    "24_measles": {
-      "codepoint": 61711,
-      "source": "svg/24_measles.svg"
-    },
-    "25_livelihood": {
-      "codepoint": 61712,
-      "source": "svg/25_livelihood.svg"
-    },
     "26_HIVAides": {
       "codepoint": 61713,
       "source": "svg/26_HIVAides.svg"
-    },
-    "27_OrgDev": {
-      "codepoint": 61714,
-      "source": "svg/27_OrgDev.svg"
-    },
-    "28_RestoreFam": {
-      "codepoint": 61715,
-      "source": "svg/28_RestoreFam.svg"
     },
     "29_export": {
       "codepoint": 61716,
@@ -129,6 +85,50 @@
     "9_arrow_left": {
       "codepoint": 61725,
       "source": "svg/9_arrow_left.svg"
+    },
+    "ARCCapacity": {
+      "codepoint": 61733,
+      "source": "svg/ARCCapacity.svg"
+    },
+    "DisasterRiskReduction": {
+      "codepoint": 61734,
+      "source": "svg/DisasterRiskReduction.svg"
+    },
+    "GDPC": {
+      "codepoint": 61735,
+      "source": "svg/GDPC.svg"
+    },
+    "Health": {
+      "codepoint": 61732,
+      "source": "svg/Health.svg"
+    },
+    "Livelihoods": {
+      "codepoint": 61736,
+      "source": "svg/Livelihoods.svg"
+    },
+    "Measles": {
+      "codepoint": 61737,
+      "source": "svg/Measles.svg"
+    },
+    "OrganizationalDevelopment": {
+      "codepoint": 61738,
+      "source": "svg/OrganizationalDevelopment.svg"
+    },
+    "RFL": {
+      "codepoint": 61739,
+      "source": "svg/RFL.svg"
+    },
+    "Relief": {
+      "codepoint": 61740,
+      "source": "svg/Relief.svg"
+    },
+    "Shelter": {
+      "codepoint": 61741,
+      "source": "svg/Shelter.svg"
+    },
+    "WatSan": {
+      "codepoint": 61742,
+      "source": "svg/WatSan.svg"
     }
   },
   "options": {
