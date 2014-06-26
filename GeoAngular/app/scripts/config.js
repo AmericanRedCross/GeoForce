@@ -30,7 +30,6 @@ config.projectDetailsShortList = {
   sector__c: true,
   start_date__c: true,
   target_beneficiaries_direct__c: true,
-  timeline_status__c: true,
   total_budget__c: true
 };
 
