@@ -2011,6 +2011,15 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
+  $scope.clearSectorsFilter = function () {
+    var sectors = $scope.sectors;
+    for (var i = 0, len = sectors.length; i < len; ++i) {
+      sectors[i].checked = false;
+    }
+    $scope.sectorClause = null;
+    $scope.composeWhereClause();
+  };
+
   $scope.statusFilter = function () {
     var status = $scope.status;
     $scope.statusClause = null;
@@ -2029,7 +2038,11 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
-  debug.dateFilter = $scope.dateFilter = function () {
+  $scope.clearStatusFilter = function () {
+
+  };
+
+  $scope.dateFilter = function () {
     $scope.dateClause = null;
     var _first = true;
     var first = function () {
@@ -2064,6 +2077,10 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
     }
     $scope.composeWhereClause();
+  };
+
+  $scope.clearDateFilter = function () {
+
   };
 
   /**
@@ -2107,6 +2124,10 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       $scope.budgetClause = 'total_budget__c<=' + max;
     }
     $scope.composeWhereClause()
+  };
+
+  $scope.clearBudgetFilter = function () {
+
   };
 
   $scope.composeWhereClause = function () {

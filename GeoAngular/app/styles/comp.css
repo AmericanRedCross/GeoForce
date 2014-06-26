@@ -5,6 +5,10 @@ html, body {
     min-width:960px;
 }
 
+a {
+    cursor: pointer;
+}
+
 #AppContainer {
     height: 100%;
     width: 100%;

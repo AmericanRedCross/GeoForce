@@ -391,6 +391,7 @@
                             <!-- Tab panes -->
                             <div class="tab-content scrollable">
                                 <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
+                                    <a ng-click="clearSectorsFilter()">Clear All Sector Filters</a>
                                     <div ng-repeat="sector in sectors">
                                         <label class="checkbox" style="color: {{sector.color}};">
                                             <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
@@ -401,7 +402,7 @@
                                     <br/>
                                 </div>
                                 <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
-
+                                    <a ng-click="clearDateFilter()">Clear All Date Filters</a>
                                     <div class="panel panel-default" ng-repeat="filter in dateFilters">
                                         <div class="panel-heading">
                                             <h3 class="panel-title">{{filter.name}}</h3>
@@ -427,12 +428,14 @@
 
                                 </div>
                                 <div ng-class="{active: navTab==='status'}" class="tab-pane" id="status-filter">
+                                    <a ng-click="clearStatusFilter()">Clear All Status Filters</a>
                                     <label ng-repeat="stat in status" class="checkbox">
                                         <input type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
                                         {{stat.name}}
                                     </label>
                                 </div>
                                 <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
+                                    <a ng-click="clearBudgetFilter()">Clear Budget Filter</a>
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h3 class="panel-title">Total Budget</h3>
