@@ -696,7 +696,7 @@
                                     <ul ng-show="!contextualLayer && moreLess==='More'">
                                         <li ng-repeat="(key, value) in lessDetails">
                                             <div class="details-info" >
-                                                <a tooltip="{{tooltip(key)}}" tooltip-trigger="click"><i class="icon-1_info"></i></a>
+                                                <a tooltip="{{tooltip(key)}}"><i class="icon-1_info"></i></a>
                                             </div>
                                             <div class="details-body">
                                                 {{label(key)}}: <span ng-bind-html="value" class="details-value"></span><i class="unavailable" ng-if="!value">Unavailable</i>
@@ -705,8 +705,12 @@
                                     </ul>
                                     <ul ng-show="contextualLayer || moreLess==='Less'">
                                         <li ng-repeat="(key, value) in details">
-                                            <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'" class="details-key" ><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a></div>
-                                            <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'" ng-bind-html="value" class="details-value"></div><i class="unavailable" ng-if="!value">Unavailable</i>
+                                            <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'" class="details-info" >
+                                                <a tooltip="{{tooltip(key)}}"><i class="icon-1_info"></i></a>
+                                            </div>
+                                            <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'" class="details-body">
+                                                {{label(key)}}: <span ng-bind-html="value" class="details-value"></span><i class="unavailable" ng-if="!value">Unavailable</i>
+                                            </div>
                                         </li>
                                     </ul>
 
