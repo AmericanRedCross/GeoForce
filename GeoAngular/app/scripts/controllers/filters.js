@@ -39,7 +39,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     console.error("Unable to fetch Total Budget Min, Mean, Max");
   });
 
-  debug.dateFilters = $scope.dateFilters = [
+  $scope.dateFilters = [
     {
       name: 'Start Date',
       radio: 'on',
@@ -162,7 +162,33 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   };
 
   $scope.clearDateFilter = function () {
-
+    $scope.dateFilters = [
+      {
+        name: 'Start Date',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      },{
+        name: 'End Date',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      },{
+        name: 'Create Date',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      },{
+        name: 'Last Modified',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      }
+    ];
     $scope.dateClause = null;
     $scope.composeWhereClause();
   };
