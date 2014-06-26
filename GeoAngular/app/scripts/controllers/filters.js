@@ -268,4 +268,11 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $state.go(state, $stateParams);
   };
 
+  $scope.clearAllFilters = function () {
+    $scope.clearSectorsFilter();
+    $scope.clearStatusFilter();
+    $scope.clearDateFilter();
+    $scope.clearBudgetFilter();
+  };
+
 });
