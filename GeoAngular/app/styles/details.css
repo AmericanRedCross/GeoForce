@@ -1,7 +1,7 @@
 #DetailsWrapper {
     position: absolute;
     right: -300px;
-    top: 165px;
+    top: 135px;
     -moz-transition: all .5s ease .3s; /* This is the animation TO THE RIGHT for the details wrapper */
     -webkit-transition: all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
     -ms-transition: all .5s ease .3s; /* This is the animation TO THE RIGHT for the details */
@@ -118,9 +118,8 @@
 
 #DetailsPanel {
     float: left;
-    padding: 10px;
-    padding-top: 25px;
-    background-color: #efefef;
+    padding: 12px 10px 10px;
+    background-color: #F2F2F2;
     width: 300px;
     margin-top: -88px;
     border: 1px solid #d3d3d3;
@@ -152,7 +151,9 @@
 #DetailsWrapper .InnerContainer {
     background-color: #fff;
     padding: 10px;
-    border: 1px solid #d3d3d3;
+    /*border-left: 1px solid #dddddd;*/
+    /*border-right: 1px solid #dddddd;*/
+    /*border-bottom: 1px solid #dddddd;*/
 
     transition: all .5s ease;
     -moz-transition: all .5s ease;
@@ -164,9 +165,7 @@
 
 #DetailsPanel .title {
     margin: 5px 0;
-    font-size: 19px;
-    text-transform: uppercase;
-    font-family: oswaldregular;
+    font-size: 17px;
 }
 
 #DetailsPanel .InnerContainer .heading {
@@ -196,6 +195,26 @@
 
 #DetailsPanel a {
     cursor:pointer;
+}
+
+#DetailsPanel .nav-tabs a {
+    cursor: pointer;
+    font-size: 12px;
+    font-family: oswaldregular;
+    text-transform: uppercase;
+    color: #9E9E9E;
+}
+
+#DetailsPanel .nav-tabs a:hover {
+    color: #d2322d;
+}
+
+#DetailsPanel li.active > a {
+    color: #EA2035;
+}
+
+#DetailsPanel li.active > a:hover {
+    color: #d2322d;
 }
 
 .tooltip-inner {
