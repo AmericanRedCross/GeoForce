@@ -157,6 +157,15 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
    * https://github.com/mapbox/simplestyle-spec/tree/master/1.1.0
    *
    */
+  this.usgsearthquake = {
+    type: 'geojson',
+    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson',
+    properties: {
+      'title': 'USGS Realtime Earthquakes Feed (Week)'
+
+    }
+  };
+
   this.phl = {
     type: 'geojson',
     url: 'data/test/phl.geojson',
