@@ -640,7 +640,7 @@
                 <!-- Right Hand Details Panel -->
                 <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: isParam('details-panel')}">
                     <div id="DetailsButtonWrapper">
-                        <div id="DetailsNub" class="btn btn-lg icon-11_infobox" ng-click="toggleParam('details-panel')">
+                        <div id="DetailsNub" class="btn btn-lg btn-red icon-11_infobox" ng-click="toggleParam('details-panel')">
                         </div>
                         <div id="PreviousItem" class="icon-9_arrow_left" ng-class="{flipOpen: (isParam('details-panel') && details && numThemeItems > 1)}" ng-click="prevThemeItem()">
                         </div>
@@ -649,7 +649,7 @@
                     </div>
                     <div id="DetailsPanel">
                         <div class="container auto">
-                            <button class="side-view-close btn btn-lg btn-danger" ng-click="closeParam('details-panel')"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                            <button class="side-view-close btn btn-lg btn-red btn-danger" ng-click="closeParam('details-panel')"><span class="glyphicon glyphicon-chevron-right"></span></button>
                             <span ng-show="details && feature.properties.salesforce">
                                 <a ng-click="showList()" class="back-link">< Back to List</a> ({{activeThemeItemIdx+1}} of {{activeThemeItemsList.length}})
                             </span>
@@ -688,7 +688,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON</button>
+                                    <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download GeoJSON</button>
                                 </div>
 
                                 <div class="section scrollable" ng-show="details && !(navTab && (navTab==='request' || navTab==='indicator' || navTab==='risk' || navTab==='status'))">
@@ -714,10 +714,7 @@
                                         </li>
                                     </ul>
 
-                                    <div class="btn-group" ng-show="!contextualLayer">
-                                        <button type="button" class="btn btn-default btn-sm" ng-click="toggleMoreLess()">Show {{moreLess}} Details</button>
-                                        <a href="{{salesforceUrl}}/{{details.sf_id}}" target="_blank" class="btn btn-default btn-sm" >View in ECOS</a>
-                                    </div>
+
                                 </div>
 
                                 <div class="section scrollable" ng-show="details && (navTab && navTab==='request')">
@@ -726,18 +723,22 @@
                                     </p>
                                     <ul>
                                         <li ng-repeat="(key, value) in details.requestsForAssistance">
-                                            <a ng-show="!details.showRfa" ng-click="showRfa(details, value)"><h4>{{value.name}}</h4></a>
+                                            <a ng-show="!details.showRfa" ng-click="showRfa(details, value)">{{value.name}}</a>
 
                                             <div ng-show="value.showRfa">
                                                 <a ng-click="hideRfa(details, value)">< Back to RFA List</a>
                                                 <h4>{{value.name}}</h4>
                                                 <ul>
                                                     <li ng-repeat="(key2, value2) in value">
-                                                        <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
-                                                        <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                        <div class="details-info">
+                                                            <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
+                                                        </div>
+                                                        <div class="details-body">
+                                                            {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                        </div>
                                                     </li>
                                                 </ul>
-                                                <a href="{{salesforceUrl}}/{{value.sf_id}}" target="_blank" class="btn btn-default btn-sm" >View in ECOS</a>
+                                                <a href="{{salesforceUrl}}/{{value.sf_id}}" target="_blank" class="btn btn-default btn-sm" >View RFA in ECOS</a>
                                             </div>
 
                                         </li>
@@ -750,24 +751,25 @@
                                     </p>
                                     <ul>
                                         <li ng-repeat="(key_, value_) in details.indicators">
-                                            <a ng-show="!details.showIndicators" ng-click="showIndicators(details, value_)"><h4>{{value_.name}}</h4></a>
+                                            <a ng-show="!details.showIndicators" ng-click="showIndicators(details, value_)">{{value_.name}}</a>
 
                                             <div ng-show="value_.showIndicators">
                                                 <a ng-click="hideIndicators(details, value_)">< Back To Indicators List</a>
                                                 <h4>{{value_.name}}</h4>
                                                 <ul>
                                                     <li ng-repeat="(key2, value2) in value_">
-                                                        <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
-                                                        <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                        <div class="details-info">
+                                                            <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
+                                                        </div>
+                                                        <div class="details-body">
+                                                            {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                        </div>
                                                     </li>
                                                 </ul>
                                             </div>
 
                                         </li>
                                     </ul>
-                                    <div class="btn-group" ng-show="!contextualLayer">
-                                        <a href="{{salesforceUrl}}/{{details.sf_id}}" target="_blank" class="btn btn-default btn-sm" >View in ECOS</a>
-                                    </div>
                                 </div>
 
                                 <div class="section scrollable" ng-show="details && (navTab && navTab==='risk')">
@@ -776,15 +778,19 @@
                                     </p>
                                     <ul>
                                         <li ng-repeat="(key_, value_) in details.risks">
-                                            <a ng-show="!details.showRisks" ng-click="showRisks(details, value_)"><h4>{{value_.name}}</h4></a>
+                                            <a ng-show="!details.showRisks" ng-click="showRisks(details, value_)">{{value_.name}}</a>
 
                                             <div ng-show="value_.showRisks">
                                                 <a ng-click="hideRisks(details, value_)">< Back To Risk List</a>
                                                 <h4>{{value_.name}}</h4>
                                                 <ul>
                                                     <li ng-repeat="(key2, value2) in value_">
-                                                        <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
-                                                        <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                        <div class="details-info">
+                                                            <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
+                                                        </div>
+                                                        <div class="details-body">
+                                                            {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                        </div>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -792,8 +798,6 @@
                                         </li>
                                     </ul>
                                 </div>
-
-
 
                                 <div class="section scrollable" ng-show="details && (navTab && navTab==='status')">
                                     <p ng-show="details.statuses === 'none'">
@@ -801,15 +805,19 @@
                                     </p>
                                     <ul>
                                         <li ng-repeat="(key_, value_) in details.statuses">
-                                            <a ng-show="!details.showStatuses" ng-click="showStatuses(details, value_)"><h4>{{value_.name}}</h4></a>
+                                            <a ng-show="!details.showStatuses" ng-click="showStatuses(details, value_)">{{value_.name}}</a>
 
                                             <div ng-show="value_.showStatuses">
                                                 <a ng-click="hideStatuses(details, value_)">< Back To Health List</a>
                                                 <h4>{{value_.name}}</h4>
                                                 <ul>
                                                     <li ng-repeat="(key2, value2) in value_">
-                                                        <div class="details-key" ><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a></div>
-                                                        <div ng-bind-html="value2" class="details-value"></div><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                        <div class="details-info">
+                                                            <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
+                                                        </div>
+                                                        <div class="details-body">
+                                                            {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i class="unavailable" ng-show="!value2">Unavailable</i>
+                                                        </div>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -818,6 +826,11 @@
                                     </ul>
                                 </div>
 
+                            </div>
+
+                            <div class="details-bottom-buttons pull-right" ng-show="!contextualLayer && !itemsList">
+                                <button type="button" class="btn btn-default btn-xs" ng-click="toggleMoreLess()">Show {{moreLess}} Details</button>
+                                <a href="{{salesforceUrl}}/{{details.sf_id}}" target="_blank" class="btn btn-default btn-xs" >View in ECOS</a>
                             </div>
 
                             <div ui-view="details"></div>

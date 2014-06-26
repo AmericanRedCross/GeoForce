@@ -144,13 +144,13 @@
     right: 0px;
 }
 
-#DetailsWrapper .btn:focus{
+#DetailsWrapper .btn-red:focus {
     outline: 5px auto #EA2035;
 }
 
 #DetailsWrapper .InnerContainer {
     background-color: #fff;
-    padding: 2px 10px 10px 10px;
+    padding: 4px 10px 10px 10px;
     /*border-left: 1px solid #dddddd;*/
     /*border-right: 1px solid #dddddd;*/
     /*border-bottom: 1px solid #dddddd;*/
@@ -161,11 +161,13 @@
     -ms-transition: all .5s ease;
 
     min-height: 400px;
+    font-size: 13px;
+    line-height: 1.6;
 }
 
 #DetailsPanel .title {
     margin: 5px 0;
-    font-size: 17px;
+    font-size: 15px;
 }
 
 #DetailsPanel .InnerContainer .heading {
@@ -276,4 +278,8 @@
 
 #DetailsPanel .details-value {
     font-weight: bold;
+}
+
+#DetailsPanel .details-bottom-buttons {
+    margin-top: 5px;
 }
