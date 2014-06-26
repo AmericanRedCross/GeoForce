@@ -714,12 +714,11 @@
                                         </li>
                                     </ul>
 
-
                                 </div>
 
                                 <div class="section scrollable" ng-show="details && (navTab && navTab==='request')">
                                     <p ng-show="details.requestsForAssistance === 'none'">
-                                        There are currently no requests for assistance for this disaster...
+                                        There are currently <b>no requests for assistance</b> for this disaster...
                                     </p>
                                     <ul>
                                         <li ng-repeat="(key, value) in details.requestsForAssistance">
@@ -749,7 +748,7 @@
                                     <p ng-show="details.indicators === 'none'">
                                         There are currently <b>no indicators</b> for this project...
                                     </p>
-                                    <ul>
+                                    <ul ng-show="details.indicators !== 'none'">
                                         <li ng-repeat="(key_, value_) in details.indicators">
                                             <a ng-show="!details.showIndicators" ng-click="showIndicators(details, value_)">{{value_.name}}</a>
 
@@ -776,7 +775,7 @@
                                     <p ng-show="details.risks === 'none'">
                                         There are currently <b>no risks</b> for this project...
                                     </p>
-                                    <ul>
+                                    <ul ng-show="details.risks !== 'none'">
                                         <li ng-repeat="(key_, value_) in details.risks">
                                             <a ng-show="!details.showRisks" ng-click="showRisks(details, value_)">{{value_.name}}</a>
 
@@ -803,7 +802,7 @@
                                     <p ng-show="details.statuses === 'none'">
                                         There are currently no <b>health statuses</b> for this project...
                                     </p>
-                                    <ul>
+                                    <ul ng-show="details.statuses !== 'none'">
                                         <li ng-repeat="(key_, value_) in details.statuses">
                                             <a ng-show="!details.showStatuses" ng-click="showStatuses(details, value_)">{{value_.name}}</a>
 
