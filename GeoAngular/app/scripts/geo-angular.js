@@ -3896,7 +3896,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
         //Return an array of 2 items. size of map icon
         return [45, 45];
       },
-      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
+      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
       "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
       "defaultTheme": 'project', // The default theme the layer uses. This is used if there is no theme query param.
@@ -4284,7 +4284,7 @@ BBoxGeoJSON.prototype._getFeatures = function (featObj) {
   var self = this;
   var theme = $rootScope.$stateParams.theme || self._defaultTheme;
   var filters = 'null';
-  if (theme === 'project' && $rootScope.$stateParams.filters) {
+  if ($rootScope.$stateParams.filters) {
     filters = $rootScope.$stateParams.filters;
   }
   var url = this._url.replace(':theme', theme)
@@ -4427,7 +4427,17 @@ BBoxGeoJSON.prototype.fetchFeatureDetails = function(featureLayer) {
   if (typeof properties.level === 'undefined' || properties.level === null) {
     console.error('we need a level.');
   }
-  detailsUrl = detailsUrl.replace(':theme', theme).replace(':guids', properties.guid).replace(':level', properties.level);
+
+  var filters = 'null';
+  if ($rootScope.$stateParams.filters) {
+    filters = $rootScope.$stateParams.filters;
+  }
+
+  detailsUrl = detailsUrl.replace(':theme', theme)
+    .replace(':guids', properties.guid)
+    .replace(':level', properties.level)
+    .replace(':filters', filters);
+
   $http.get(detailsUrl, {cache: true}).success(function (details) {
 
     featureLayer.feature.properties.salesforce = {};
