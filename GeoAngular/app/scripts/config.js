@@ -22,17 +22,15 @@ config.salesforceUrl = "https://na14.salesforce.com";
  *
  * @type {{}}
  */
-config.projectDetailsShortList = {
-  end_date__c: true,
-  business_unit__c: true,
-  name: true,
-  status__c: true,
-  sector__c: true,
-  start_date__c: true,
-  target_beneficiaries_direct__c: true,
-  total_budget__c: true
-};
-
+config.projectDetailsShortList = [
+  'business_unit__c',
+  'sector__c',
+  'start_date__c',
+  'end_date__c',
+  'status__c',
+  'target_beneficiaries_direct__c',
+  'total_budget__c'
+];
 
 /**
  * These are the details initially shown for disasters.
@@ -40,13 +38,13 @@ config.projectDetailsShortList = {
  *
  * @type {{}}
  */
-config.disasterDetailsShortList = {
-  name: true,
-  date__c: true,
-  category__c: true,
-  people_affected__c: true,
-  total_arc_contributions__c: true
-};
+config.disasterDetailsShortList = [
+  'name',
+  'date__c',
+  'category__c',
+  'people_affected__c',
+  'total_arc_contributions__c'
+];
 
 
 /**

@@ -431,18 +431,23 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   }
 
   function lessDetails(details) {
-    var lessDetails = {};
+    var lessDetails = [];
     if ($stateParams.theme === 'disaster') {
-      for (var key in details) {
-        if (config.disasterDetailsShortList[key]) {
-          lessDetails[key] = details[key];
-        }
+      for (var i = 0, len = config.disasterDetailsShortList.length; i < len; i++) {
+        var key = config.disasterDetailsShortList[i];
+        lessDetails.push({
+          key: key,
+          value: details[key]
+        });
       }
     } else {
-      for (var key in details) {
-        if (config.projectDetailsShortList[key]) {
-          lessDetails[key] = details[key];
-        }
+      var projectDetailsShortList = config.projectDetailsShortList;
+      for (var i = 0, len = projectDetailsShortList.length; i < len; i++) {
+        var key = projectDetailsShortList[i];
+        lessDetails.push({
+          key: key,
+          value: details[key]
+        });
       }
     }
     return lessDetails;

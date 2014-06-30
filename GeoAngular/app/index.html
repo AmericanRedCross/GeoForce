@@ -697,12 +697,12 @@
                                 <div class="section scrollable" ng-show="details && !(navTab && (navTab==='request' || navTab==='indicator' || navTab==='risk' || navTab==='status'))">
 
                                     <ul ng-show="!contextualLayer && moreLess==='More'">
-                                        <li ng-repeat="(key, value) in lessDetails">
+                                        <li ng-repeat="detail in lessDetails">
                                             <div class="details-info" >
-                                                <a tooltip="{{tooltip(key)}}"><i class="icon-1_info"></i></a>
+                                                <a tooltip="{{tooltip(detail.key)}}"><i class="icon-1_info"></i></a>
                                             </div>
                                             <div class="details-body">
-                                                {{label(key)}}: <span ng-bind-html="value" class="details-value"></span><i class="unavailable" ng-if="!value">Unavailable</i>
+                                                {{label(detail.key)}}: <span ng-bind-html="detail.value" class="details-value"></span><i class="unavailable" ng-if="!detail.value">Unavailable</i>
                                             </div>
                                         </li>
                                     </ul>
