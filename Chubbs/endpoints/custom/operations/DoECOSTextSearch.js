@@ -32,9 +32,9 @@ function buildQueryClause(searchFields, tableName, tableAlias){
         sql += " ILIKE '%{{text}}%';";
     }
     if(tableName == 'sf_project'){
-       sql = sql.replace(" * ", " 'Project' as theme_type, " + settings.projectDetails.join(" ,") + ",level "); //Replace * with whitelist
+       sql = sql.replace(" * ", " 'Project' as theme_type, sf_project.* "); //Replace * with whitelist
     }else if(tableName == 'sf_disaster'){
-        sql = sql.replace(" * ", " 'Disaster' as theme_type, " + settings.disasterDetails.join(" ,") + ",level "); //Replace * with whitelist
+        sql = sql.replace(" * ", " 'Disaster' as theme_type, sf_project.* "); //Replace * with whitelist
     }
     return sql;
 }
