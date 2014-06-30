@@ -13,11 +13,12 @@ operation.outputImage = false;
 
 operation.inputs["guids"] = {}; //comma separated list of guids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
+operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
 operation.ProjectQuery = "SELECT sf_project.* " +
   "FROM sf_aggregated_gadm_project_counts, sf_project " +
   "WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id " +
-  "AND guid{{gadm_level}} = {{guids}}; ";
+  "AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
 
 operation.RiskQuery = "SELECT * " +
   "FROM sf_project_risk " +
@@ -37,14 +38,21 @@ operation.execute = flow.define(
       //prepare bbox string as WKT
       operation.inputs["guids"] = args.guids;
       operation.inputs["gadm_level"] = args.gadm_level;
+      operation.inputs["filters"] = args.filters;
+
+      var filters = '';
 
       if (operation.inputs["gadm_level"] == -1) {
         operation.inputs["gadm_level"] = "arc";
       }
+      if(operation.inputs["filters"] && operation.inputs["filters"] !== 'null'){
+        var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g,'%').replace(/%27/g,"'");
+        filters = " AND (" + inputFilters + ")";
+      }
 
       //need to wrap ids in single quotes
       //Execute the query
-      var projectQuery = { text: operation.ProjectQuery.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])).replace("{{gadm_level}}", operation.inputs["gadm_level"]) };
+      var projectQuery = { text: operation.ProjectQuery.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])).replace("{{gadm_level}}", operation.inputs["gadm_level"]).replace("{{filters}}", filters)};
       common.executePgQuery(projectQuery, this); //Flow to next function when done.
     }
     else {
