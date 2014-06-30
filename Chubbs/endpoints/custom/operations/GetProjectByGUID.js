@@ -15,7 +15,7 @@ operation.inputs["guids"] = {}; //comma separated list of guids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
-operation.ProjectQuery = "SELECT " + settings.projectDetails.join(" ,") + " " +
+operation.ProjectQuery = "SELECT sf_project.* " +
   "FROM sf_aggregated_gadm_project_counts, sf_project " +
   "WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id " +
   "AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
@@ -138,5 +138,16 @@ operation.wrapIdsInQuotes = function (ids) {
     return "'" + item + "'";
   });
 };
+
+operation.fullyQualifyFilter = function(filterString){
+   var Ors = filterString.split(' OR ');
+
+
+  Ors.forEach(function(item){
+
+  });
+
+
+}
 
 module.exports = operation;
