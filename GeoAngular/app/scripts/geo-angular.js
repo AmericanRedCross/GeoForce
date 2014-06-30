@@ -1449,82 +1449,82 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.showDetails = function (item, themeItems, idx) {
-      if (item.sf_id) {
-          $rootScope.setParamWithVal('sf_id', item.sf_id);
-      }
-      if (item.name || item.title) {
-          $scope.title = item.name || item.title;
-      }
-      if (typeof idx === 'number') $scope.activeThemeItemIdx = idx;
-      if (themeItems) $scope.activeThemeItemsList = themeItems;
-      $scope.itemsList = false;
-      $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
-      if (!$scope.contextualLayer) {
-          $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item, $stateParams.theme)), $stateParams.theme);
-      }
+    if (item.sf_id) {
+      $rootScope.setParamWithVal('sf_id', item.sf_id);
+    }
+    if (item.name || item.title) {
+      $scope.title = item.name || item.title;
+    }
+    if (typeof idx === 'number') $scope.activeThemeItemIdx = idx;
+    if (themeItems) $scope.activeThemeItemsList = themeItems;
+    $scope.itemsList = false;
+    $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+    if (!$scope.contextualLayer) {
+      $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item, $stateParams.theme)), $stateParams.theme);
+    }
 
-      //Filter/Format RFAs and Indicators
-      if ($scope.details.requestsForAssistance) {
-          //Filter/Format
-          $scope.details.requestsForAssistance = $scope.details.requestsForAssistance.map(function (rfa) {
-              return removeUnwantedItems(formatDetails(rfa, "RFA"), "RFA");
-          });
-      }
+    //Filter/Format RFAs and Indicators
+    if ($scope.details.requestsForAssistance) {
+      //Filter/Format
+      $scope.details.requestsForAssistance = $scope.details.requestsForAssistance.map(function (rfa) {
+        return removeUnwantedItems(formatDetails(rfa, "RFA"), "RFA");
+      });
+    }
 
-      if ($scope.details.indicators) {
-          //Filter/Format
-          $scope.details.indicators = $scope.details.indicators.map(function (indicator) {
-              return removeUnwantedItems(formatDetails(indicator, "indicator"), "indicator");
-          });
-      }
+    if ($scope.details.indicators) {
+      //Filter/Format
+      $scope.details.indicators = $scope.details.indicators.map(function (indicator) {
+        return removeUnwantedItems(formatDetails(indicator, "indicator"), "indicator");
+      });
+    }
 
-      if ($scope.details.risks) {
-          //Filter/Format
+    if ($scope.details.risks) {
+      //Filter/Format
 //          $scope.details.risks = $scope.details.risks.map(function (risk) {
 //              return removeUnwantedItems(formatDetails(risk, "risk"), "risk");
 //          });
-      }
+    }
 
-      if ($scope.details.statuses) {
-          //Filter/Format
+    if ($scope.details.statuses) {
+      //Filter/Format
 //          $scope.details.statuses = $scope.details.statuses.map(function (status) {
 //              return removeUnwantedItems(formatDetails(status, "status"), "status");
 //          });
-      }
+    }
 
-      $scope.resizeDetailsPanel();
+    $scope.resizeDetailsPanel();
   };
 
-  function removeUnwantedItems(details, type){
-      var passthroughDetails = {};
-      var blacklistDictionary = config.unwantedProjectDetails;
+  function removeUnwantedItems(details, type) {
+    var passthroughDetails = {};
+    var blacklistDictionary = config.unwantedProjectDetails;
 
-      if (type === 'disaster') {
-          blacklistDictionary = config.unwantedDisasterDetails;
-      }
-      else if(type === 'project') {
-          blacklistDictionary = config.unwantedProjectDetails;
-      }
-      else if(type === 'RFA'){
-          blacklistDictionary = config.unwantedRFADetails;
-      }
-      else if(type === 'indicator'){
-          blacklistDictionary = config.unwantedIndicatorDetails;
-      }
+    if (type === 'disaster') {
+      blacklistDictionary = config.unwantedDisasterDetails;
+    }
+    else if (type === 'project') {
+      blacklistDictionary = config.unwantedProjectDetails;
+    }
+    else if (type === 'RFA') {
+      blacklistDictionary = config.unwantedRFADetails;
+    }
+    else if (type === 'indicator') {
+      blacklistDictionary = config.unwantedIndicatorDetails;
+    }
 
-        for(var key in details){
-            var blacklisted = blacklistDictionary[key];
-            if(blacklisted && (typeof blacklisted === 'function')){
-                //evaluate the function to decide if the key should be shown.
-                blacklisted = blacklisted(details[key]);
-            }
-            if(!blacklisted){
-                //Allow the item thru if it is not blacklisted
-                passthroughDetails[key] = details[key];
-            }
-        }
+    for (var key in details) {
+      var blacklisted = blacklistDictionary[key];
+      if (blacklisted && (typeof blacklisted === 'function')) {
+        //evaluate the function to decide if the key should be shown.
+        blacklisted = blacklisted(details[key]);
+      }
+      if (!blacklisted) {
+        //Allow the item thru if it is not blacklisted
+        passthroughDetails[key] = details[key];
+      }
+    }
 
-      return passthroughDetails;
+    return passthroughDetails;
   }
 
   function formatDetails(details, type) {
@@ -1577,18 +1577,23 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   }
 
   function lessDetails(details) {
-    var lessDetails = {};
+    var lessDetails = [];
     if ($stateParams.theme === 'disaster') {
-      for (var key in details) {
-        if (config.disasterDetailsShortList[key]) {
-          lessDetails[key] = details[key];
-        }
+      for (var i = 0, len = config.disasterDetailsShortList.length; i < len; i++) {
+        var key = config.disasterDetailsShortList[i];
+        lessDetails.push({
+          key: key,
+          value: details[key]
+        });
       }
     } else {
-      for (var key in details) {
-        if (config.projectDetailsShortList[key]) {
-          lessDetails[key] = details[key];
-        }
+      var projectDetailsShortList = config.projectDetailsShortList;
+      for (var i = 0, len = projectDetailsShortList.length; i < len; i++) {
+        var key = projectDetailsShortList[i];
+        lessDetails.push({
+          key: key,
+          value: details[key]
+        });
       }
     }
     return lessDetails;
