@@ -132,7 +132,57 @@ config.indicatorDetailsFormatting = {
  * @type {{}}
  */
 config.unwantedProjectDetails = {
-
+  allow_project_creation__c: true,
+  ap_codes__c: true,
+  budget_status__c: true,
+  disaster__r_id: true,
+  external_title__c: true,
+  human_resource_status__c: true,
+  id: true,
+  inactive_ap_codes__c: true,
+  is_ofac__c: true,
+  is_test_data__c: true,
+  is_usg_funded__c: true,
+  isd_region__c: true,
+  systemmodstamp: true,
+  national_society_contractors__c: true,
+  external_title__c: true,
+  human_resource_status__c: true,
+  inactive_ap_codes__c: true,
+  phase__c: true,
+  proposal_approved_on__c: true,
+  proposal_submitted_on__c: true,
+  scope_status__c: true,
+  status_as_of__c: true,
+  type__c:true,
+  locations__c: true,
+  location__r_custom_name__c: true,
+  location__r_gis_geo_id__c: true,
+  location__r_internal_region__c: true,
+  location__r_isd_region__c: true,
+  location__r_latitude__c: true,
+  location__r_longitude__c: true,
+  location__r_type__c: true,
+  level: true,
+  overall_assessment__c: true,
+  location__r_admin_0__c: function (item) {
+    return (item ? false : true);
+  }, //If item is something, then return false to show it.  Return true to hide it.
+  location__r_admin_1__c: function (item) {
+    return (item ? false : true);
+  },
+  location__r_admin_2__c: function (item) {
+    return (item ? false : true);
+  },
+  location__r_admin_3__c: function (item) {
+    return (item ? false : true);
+  },
+  location__r_admin_4__c: function (item) {
+    return (item ? false : true);
+  },
+  location__r_admin_5__c: function (item) {
+    return (item ? false : true);
+  }
 };
 
 
