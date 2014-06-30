@@ -71,7 +71,7 @@
     color: #A0A0A0;
 }
 
-.side-view a {
+.side-view .nav-tabs a {
     cursor: pointer;
     font-size: 12px;
     font-family: oswaldregular;
@@ -79,7 +79,7 @@
     color: #9E9E9E;
 }
 
-.side-view a:hover {
+.side-view .nav-tabs a:hover {
     color: #d2322d;
 }
 
@@ -93,4 +93,8 @@
 
 .side-view .btn:focus{
     outline: 5px auto #EA2035;
+}
+
+.side-view label {
+    font-weight: normal;
 }

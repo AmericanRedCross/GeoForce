@@ -1418,9 +1418,9 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   });
 
   $scope.$on('route-update', function () {
-    if ($scope.alertUserToClick === false) return;
     var sf_id = $stateParams.sf_id;
     $scope.theme = $stateParams.theme;
+    if ($scope.alertUserToClick === false) return;
     if (sf_id && typeof sf_id === 'string') {
       var url = config.chubbsPath('services/custom/custom_operation?name=doecostextsearch&format=json&text=') + sf_id;
       $http.get(url).success(function (result, status) {
@@ -1962,7 +1962,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     console.error("Unable to fetch Total Budget Min, Mean, Max");
   });
 
-  debug.dateFilters = $scope.dateFilters = [
+  $scope.dateFilters = [
     {
       name: 'Start Date',
       radio: 'on',
@@ -2011,6 +2011,15 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
+  $scope.clearSectorsFilter = function () {
+    var sectors = $scope.sectors;
+    for (var i = 0, len = sectors.length; i < len; ++i) {
+      sectors[i].checked = false;
+    }
+    $scope.sectorClause = null;
+    $scope.composeWhereClause();
+  };
+
   $scope.statusFilter = function () {
     var status = $scope.status;
     $scope.statusClause = null;
@@ -2029,7 +2038,16 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
-  debug.dateFilter = $scope.dateFilter = function () {
+  $scope.clearStatusFilter = function () {
+    var status = $scope.status;
+    for (var i = 0, len = status.length; i < len; ++i) {
+      status[i].checked = false;
+    }
+    $scope.statusClause = null;
+    $scope.composeWhereClause();
+  };
+
+  $scope.dateFilter = function () {
     $scope.dateClause = null;
     var _first = true;
     var first = function () {
@@ -2063,6 +2081,38 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       }
 
     }
+    $scope.composeWhereClause();
+  };
+
+  $scope.clearDateFilter = function () {
+    $scope.dateFilters = [
+      {
+        name: 'Start Date',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      },{
+        name: 'End Date',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      },{
+        name: 'Create Date',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      },{
+        name: 'Last Modified',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      }
+    ];
+    $scope.dateClause = null;
     $scope.composeWhereClause();
   };
 
@@ -2106,7 +2156,14 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     } else if (max !== $scope.budget.max) { // only max changed
       $scope.budgetClause = 'total_budget__c<=' + max;
     }
-    $scope.composeWhereClause()
+    $scope.composeWhereClause();
+  };
+
+  $scope.clearBudgetFilter = function () {
+    $scope.budget.slider[0] = $scope.budget.min;
+    $scope.budget.slider[1] = $scope.budget.max;
+    $scope.budgetClause = null;
+    $scope.composeWhereClause();
   };
 
   $scope.composeWhereClause = function () {
@@ -2132,6 +2189,13 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $stateParams.filters = $scope.whereClause;
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
+  };
+
+  $scope.clearAllFilters = function () {
+    $scope.clearSectorsFilter();
+    $scope.clearStatusFilter();
+    $scope.clearDateFilter();
+    $scope.clearBudgetFilter();
   };
 
 });
@@ -2178,12 +2242,12 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   });
 
   $scope.layersPanels = {
-    'Boundaries': {},
-    'GeoJSON': {},
-    'KML': {},
-    'CSV': {},
-    'WMS': {},
-    'Other': {}
+//    'Boundaries': {},
+//    'GeoJSON': {},
+//    'KML': {},
+//    'CSV': {},
+//    'WMS': {},
+    'Contextual layers:': {}
   };
 
 
@@ -2201,29 +2265,27 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     /**
      * Put layers in their respective categories.
      */
-    if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'bboxgeojson') {
-      $scope.layersPanels.Boundaries[layerKey] = LayerConfig[layerKey];
-    }
+//    if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'bboxgeojson') {
+//      $scope.layersPanels.Boundaries[layerKey] = LayerConfig[layerKey];
+//    }
+//
+//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'geojson') {
+//      $scope.layersPanels.GeoJSON[layerKey] = LayerConfig[layerKey];
+//    }
+//
+//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'kml') {
+//      $scope.layersPanels.KML[layerKey] = LayerConfig[layerKey];
+//    }
+//
+//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'csv') {
+//      $scope.layersPanels.CSV[layerKey] = LayerConfig[layerKey];
+//    }
+//
+//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'wms') {
+//      $scope.layersPanels.WMS[layerKey] = LayerConfig[layerKey];
+//    }
 
-    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'geojson') {
-      $scope.layersPanels.GeoJSON[layerKey] = LayerConfig[layerKey];
-    }
-
-    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'kml') {
-      $scope.layersPanels.KML[layerKey] = LayerConfig[layerKey];
-    }
-
-    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'csv') {
-      $scope.layersPanels.CSV[layerKey] = LayerConfig[layerKey];
-    }
-
-    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'wms') {
-      $scope.layersPanels.WMS[layerKey] = LayerConfig[layerKey];
-    }
-
-    else {
-      $scope.layersPanels.Other[layerKey] = keyToObj(layerKey);
-    }
+    $scope.layersPanels['Contextual layers:'][layerKey] = keyToObj(layerKey);
 
   }
 
@@ -2317,6 +2379,11 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
   $scope.listGists = function () {
     $scope.gists = gists.fetch();
+    if ($scope.gists) {
+      $scope.numGists = Object.keys($scope.gists).length;
+    } else {
+      $scope.numGists = 0;
+    }
   };
   $scope.listGists();
   debug.gistsLayersPanel = $scope.gists;
@@ -3634,6 +3701,15 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
    * https://github.com/mapbox/simplestyle-spec/tree/master/1.1.0
    *
    */
+  this.usgsearthquake = {
+    type: 'geojson',
+    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson',
+    properties: {
+      'title': 'USGS Realtime Earthquakes Feed (Week)'
+
+    }
+  };
+
   this.phl = {
     type: 'geojson',
     url: 'data/test/phl.geojson',
@@ -3820,7 +3896,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
         //Return an array of 2 items. size of map icon
         return [45, 45];
       },
-      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
+      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
       "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
       "defaultTheme": 'project', // The default theme the layer uses. This is used if there is no theme query param.
@@ -4208,7 +4284,7 @@ BBoxGeoJSON.prototype._getFeatures = function (featObj) {
   var self = this;
   var theme = $rootScope.$stateParams.theme || self._defaultTheme;
   var filters = 'null';
-  if (theme === 'project' && $rootScope.$stateParams.filters) {
+  if ($rootScope.$stateParams.filters) {
     filters = $rootScope.$stateParams.filters;
   }
   var url = this._url.replace(':theme', theme)
@@ -4351,7 +4427,17 @@ BBoxGeoJSON.prototype.fetchFeatureDetails = function(featureLayer) {
   if (typeof properties.level === 'undefined' || properties.level === null) {
     console.error('we need a level.');
   }
-  detailsUrl = detailsUrl.replace(':theme', theme).replace(':guids', properties.guid).replace(':level', properties.level);
+
+  var filters = 'null';
+  if ($rootScope.$stateParams.filters) {
+    filters = $rootScope.$stateParams.filters;
+  }
+
+  detailsUrl = detailsUrl.replace(':theme', theme)
+    .replace(':guids', properties.guid)
+    .replace(':level', properties.level)
+    .replace(':filters', filters);
+
   $http.get(detailsUrl, {cache: true}).success(function (details) {
 
     featureLayer.feature.properties.salesforce = {};

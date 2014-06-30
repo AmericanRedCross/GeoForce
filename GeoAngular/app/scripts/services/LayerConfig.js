@@ -157,6 +157,15 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
    * https://github.com/mapbox/simplestyle-spec/tree/master/1.1.0
    *
    */
+  this.usgsearthquake = {
+    type: 'geojson',
+    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson',
+    properties: {
+      'title': 'USGS Realtime Earthquakes Feed (Week)'
+
+    }
+  };
+
   this.phl = {
     type: 'geojson',
     url: 'data/test/phl.geojson',
@@ -343,7 +352,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
         //Return an array of 2 items. size of map icon
         return [45, 45];
       },
-      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level'),
+      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
       "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
       "defaultTheme": 'project', // The default theme the layer uses. This is used if there is no theme query param.

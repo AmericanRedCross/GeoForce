@@ -39,7 +39,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     console.error("Unable to fetch Total Budget Min, Mean, Max");
   });
 
-  debug.dateFilters = $scope.dateFilters = [
+  $scope.dateFilters = [
     {
       name: 'Start Date',
       radio: 'on',
@@ -88,6 +88,15 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
+  $scope.clearSectorsFilter = function () {
+    var sectors = $scope.sectors;
+    for (var i = 0, len = sectors.length; i < len; ++i) {
+      sectors[i].checked = false;
+    }
+    $scope.sectorClause = null;
+    $scope.composeWhereClause();
+  };
+
   $scope.statusFilter = function () {
     var status = $scope.status;
     $scope.statusClause = null;
@@ -106,7 +115,16 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
-  debug.dateFilter = $scope.dateFilter = function () {
+  $scope.clearStatusFilter = function () {
+    var status = $scope.status;
+    for (var i = 0, len = status.length; i < len; ++i) {
+      status[i].checked = false;
+    }
+    $scope.statusClause = null;
+    $scope.composeWhereClause();
+  };
+
+  $scope.dateFilter = function () {
     $scope.dateClause = null;
     var _first = true;
     var first = function () {
@@ -140,6 +158,38 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       }
 
     }
+    $scope.composeWhereClause();
+  };
+
+  $scope.clearDateFilter = function () {
+    $scope.dateFilters = [
+      {
+        name: 'Start Date',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      },{
+        name: 'End Date',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      },{
+        name: 'Create Date',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      },{
+        name: 'Last Modified',
+        radio: 'on',
+        empty: true,
+        opened: false,
+        date: null
+      }
+    ];
+    $scope.dateClause = null;
     $scope.composeWhereClause();
   };
 
@@ -183,7 +233,14 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     } else if (max !== $scope.budget.max) { // only max changed
       $scope.budgetClause = 'total_budget__c<=' + max;
     }
-    $scope.composeWhereClause()
+    $scope.composeWhereClause();
+  };
+
+  $scope.clearBudgetFilter = function () {
+    $scope.budget.slider[0] = $scope.budget.min;
+    $scope.budget.slider[1] = $scope.budget.max;
+    $scope.budgetClause = null;
+    $scope.composeWhereClause();
   };
 
   $scope.composeWhereClause = function () {
@@ -209,6 +266,13 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $stateParams.filters = $scope.whereClause;
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
+  };
+
+  $scope.clearAllFilters = function () {
+    $scope.clearSectorsFilter();
+    $scope.clearStatusFilter();
+    $scope.clearDateFilter();
+    $scope.clearBudgetFilter();
   };
 
 });

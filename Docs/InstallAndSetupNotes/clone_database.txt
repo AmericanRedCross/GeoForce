@@ -1,11 +1,15 @@
-—Setting up cron to run succubus nightly
+--How to clone a PostGresDB without doing a dump
 
-crontab -e
-—opens chooser for editor.
-2
+--First, Kill connections to DB to clone:
+SELECT pg_terminate_backend(pg_stat_activity.pid)
+FROM pg_stat_activity
+WHERE pg_stat_activity.datname = 'redcross_exp'
+  AND pid <> pg_backend_pid();
 
-At the bottom, enter:
-01 01 * * * node ~/Geoforce/Succubus/index.js
+ --Then in PGAdmin, create new DB.
+ --Name the new DB.
+ --Then, under definition tab, choose from the template dropdown the DB you wish to clone.
 
-This specifies at 1:01 AM every day, run node and point to succubus’ index.js
+ --Hit OK.
 
+ --That's it.

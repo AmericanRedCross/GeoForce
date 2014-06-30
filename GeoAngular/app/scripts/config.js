@@ -24,13 +24,12 @@ config.salesforceUrl = "https://na14.salesforce.com";
  */
 config.projectDetailsShortList = {
   end_date__c: true,
-  isd_region__c: true,
+  business_unit__c: true,
   name: true,
   status__c: true,
   sector__c: true,
   start_date__c: true,
   target_beneficiaries_direct__c: true,
-  timeline_status__c: true,
   total_budget__c: true
 };
 

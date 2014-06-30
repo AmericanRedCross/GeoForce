@@ -5,7 +5,9 @@ crontab -e
 2
 
 At the bottom, enter:
-01 01 * * * node ~/Geoforce/Succubus/index.js
+01 01 * * * cd ~/GeoForce_prod/Succubus && nodejs index.js
 
 This specifies at 1:01 AM every day, run node and point to succubus’ index.js
 
+Note that although it saves this to a temporary directory,
+the changes are indeed made with the cron system service.
