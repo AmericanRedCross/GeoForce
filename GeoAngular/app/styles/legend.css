@@ -7,8 +7,7 @@
 }
 
 .legendIcon div, .legendIcon {
-    height: 25px;
-    width: 25px;
+
 }
 
 .legendIcon div {
@@ -16,7 +15,7 @@
 }
 
 .legend-container li{
-    background-color: darkgray;
+    
 }
 
 .legend-container li .featurelabel-icon-number, .legend-container li .featurelabel-icon-RFA {
