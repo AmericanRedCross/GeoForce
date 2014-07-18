@@ -3889,8 +3889,6 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
                 break;
             }
           }
-
-
           return '<div class="featurelabel-icon-number"' + (color ? ' style="background-color: ' + color + ';color: ' + labelColor + '"' : '') + '><span>' + properties.theme_count + '</span></div>';
         }
         else {
@@ -3899,12 +3897,120 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       },
       "map-icon-size": function (properties) {
         //Return an array of 2 items. size of map icon
-        return [45, 45];
+        return [35,35];
       },
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
       "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
       "defaultTheme": 'project', // The default theme the layer uses. This is used if there is no theme query param.
+      "legend": function (theme) {
+        if (theme.toLowerCase() == 'disaster') {
+          //disaster
+          return '<img src="images/legend_disaster.png" alt="disaster legend" />';
+        }
+        else if (theme.toLowerCase() == 'projecthealth') {
+          //project
+          return '<img src="images/legend_projecthealth.png" alt="project health legend" />';
+        }
+        else if(theme.toLowerCase() == 'projectrisk') {
+          return '<img src="images/legend_projectrisk.png" alt="project risk legend" />';
+        }
+        else if (theme.toLowerCase() == 'project') {
+          return '<img src="images/legend_project.png" alt="project legend" />';
+        }
+      }
+
+    }
+  };
+
+  this.theme = {
+    name: 'Theme (badge off)',
+    type: 'bboxgeojson',
+    url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=:theme&gadm_level=:level&ids=:ids&filters=:filters"),
+    properties: {
+      "styleFn": function (properties) {
+        var style = {
+          color: 'white',
+          opacity: 1,
+          fillOpacity: 0.07,
+          weight: 1.5
+        };
+
+        if (properties.theme == "disaster") {
+          if (properties && properties.iroc_status__c) {
+            switch (properties.iroc_status__c.toLowerCase()) {
+              case "active":
+                style.fillColor = "#cc0033";
+                style.fillOpacity = 0.5;
+                break;
+              case "monitoring":
+                style.fillColor = "#cc9900";
+                style.fillOpacity = 0.5;
+                break;
+              case "inactive":
+                style.fillColor = "white";
+                style.fillOpacity = 0.0;
+                break;
+            }
+          }
+        }
+        else if (properties.theme == "projectrisk") {
+          if (properties && properties.overall_assessment__c) {
+            switch (properties.overall_assessment__c.toLowerCase()) {
+              case "critical":
+                style.fillColor = "red";
+                style.fillOpacity = 0.5;
+                break;
+              case "high":
+                style.fillColor = "orange";
+                style.fillOpacity = 0.5;
+                break;
+              case "medium":
+                style.fillColor = "yellow";
+                style.fillOpacity = 0.5;
+                break;
+              case "low":
+                style.fillColor = "green";
+                style.fillOpacity = 0.5;
+                break;
+            }
+          }
+        }
+        else if (properties.theme == "projecthealth") {
+          if (properties && properties.overall_status__c) {
+            switch (properties.overall_status__c.toLowerCase()) {
+              case "red":
+                style.fillColor = "red";
+                style.fillOpacity = 0.5;
+                break;
+              case "yellow":
+                style.fillColor = "yellow";
+                style.fillOpacity = 0.5;
+                break;
+              case "green":
+                style.fillColor = "green";
+                style.fillOpacity = 0.5;
+                break;
+              case "white":
+                style.fillColor = "white";
+                style.fillOpacity = 0.5;
+                break;
+            }
+          }
+        }
+        return style;
+      },
+      "map-icon-size": function (properties) {
+        //Return an array of 2 items. size of map icon
+        return [35,35];
+      },
+      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters'),
+      "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
+      "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
+      "defaultTheme": 'project', // The default theme the layer uses. This is used if there is no theme query param.
+      "labelProperty": function() {
+        return '<div class="featurelabel-icon-number" style="display:none;"></div>';
+      },
       "legend": function (theme) {
         if (theme.toLowerCase() == 'disaster') {
           //disaster
@@ -4261,7 +4367,9 @@ function BBoxGeoJSON(config) {
   this._features = {};
   this._featureLayersByLevel = {};
   this._allFeatureLayers = {};
-  this._featureSet = new FeatureSet();
+  if (config.properties && config.properties.labelProperty) {
+    this._featureSet = new FeatureSet();
+  }
   this._defaultTheme = config.defaultTheme || 'project';
 
   if (config.detailsUrl) {
@@ -4374,10 +4482,10 @@ function processFeatures(self, featObj, geojson) {
  * @param featLayer
  */
 function addLayer(self, featLayer) {
-
-  self._featureSet.addFeature(featLayer, self._geojsonLayer);
+  if (self._featureSet) {
+    self._featureSet.addFeature(featLayer, self._geojsonLayer);
+  }
   self._geojsonLayer.addLayer(featLayer);
-//    self._featureSet.addFeature(featLayer, self._geojsonLayer);
 
   var props = featLayer.feature.properties;
   var level = props.level;
