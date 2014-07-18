@@ -123,7 +123,7 @@ function createLabel(featureLayer, featureSet) {
   }
 
   //Determine map icon size
-  var iconSize = [45,45];
+  var iconSize = [35,35];
   if (properties["map-icon-size"]) {
       if (typeof properties["map-icon-size"] === 'function') {
           iconSize = properties["map-icon-size"](properties);
