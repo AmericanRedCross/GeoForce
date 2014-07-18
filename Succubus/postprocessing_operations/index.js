@@ -97,7 +97,8 @@ sf_project.sector__c, \
     sf_project.total_budget__c, \
     sf_project.sf_id, \
     sf_project.overall_assessment__c, \
-    sf_project.overall_status__c \
+    sf_project.overall_status__c, \
+    sf_project.phase__c \
 INTO    sf_aggregated_gadm_project_counts \
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, gadm5, sf_project \
  \
@@ -160,8 +161,8 @@ sf_project.sector__c,  \
     sf_project.total_budget__c,  \
     sf_project.sf_id,  \
     sf_project.overall_assessment__c, \
-    sf_project.overall_status__c \
-  \
+    sf_project.overall_status__c, \
+    sf_project.phase__c \
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, sf_project  \
 WHERE   gadm0.id_0 = gadm1.id_0  \
 AND   gadm2.id_0 = gadm1.id_0  \
@@ -216,8 +217,8 @@ sf_project.sector__c, \
     sf_project.total_budget__c, \
     sf_project.sf_id, \
     sf_project.overall_assessment__c, \
-    sf_project.overall_status__c \
- \
+    sf_project.overall_status__c, \
+    sf_project.phase__c \
 FROM    gadm0, gadm1, gadm2, gadm3, sf_project \
 WHERE   gadm0.id_0 = gadm1.id_0 \
 AND   gadm2.id_0 = gadm1.id_0 \
@@ -269,8 +270,8 @@ sf_project.sector__c, \
     sf_project.total_budget__c, \
     sf_project.sf_id, \
     sf_project.overall_assessment__c, \
-    sf_project.overall_status__c \
- \
+    sf_project.overall_status__c, \
+    sf_project.phase__c \
 FROM  gadm0, gadm1, gadm2, sf_project \
 WHERE gadm0.id_0 = gadm1.id_0 \
 AND gadm1.id_1 = gadm2.id_1 \
@@ -318,8 +319,8 @@ sf_project.sector__c, \
     sf_project.total_budget__c, \
     sf_project.sf_id, \
     sf_project.overall_assessment__c, \
-    sf_project.overall_status__c \
- \
+    sf_project.overall_status__c, \
+    sf_project.phase__c \
 FROM  gadm1, gadm0, sf_project \
 WHERE gadm0.id_0 = gadm1.id_0 \
 AND gadm1.guid::text = sf_project.location__r_gis_geo_id__c); \
@@ -366,8 +367,8 @@ sf_project.sector__c, \
     sf_project.total_budget__c, \
     sf_project.sf_id, \
     sf_project.overall_assessment__c, \
-    sf_project.overall_status__c \
- \
+    sf_project.overall_status__c, \
+    sf_project.phase__c \
 FROM gadm0, sf_project \
 WHERE gadm0.guid::text = sf_project.location__r_gis_geo_id__c \
 AND location__r_gis_geo_id__c IS NOT NULL ); \

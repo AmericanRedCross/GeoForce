@@ -60,14 +60,6 @@ settings.application.geoJsonOutputFolder = "/public/geojson/output/";
 settings.application.publichost = ""; //myhost.com //Keep this empty if you want to use the default host
 settings.application.publicport = "80";
 
-//MongoDB Authentication
-settings.mongodb = {};
-settings.mongodb.db = "mongodb://localhost/authentication";
-
-//Facebook App ID
-settings.facebook = {};
-settings.facebook.appid = "12345";
-settings.facebook.secret = "secret";
 
 //The lowest administrative level for each datasource
 settings.dsLevels = {};

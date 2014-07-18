@@ -44,6 +44,11 @@ operation.execute = flow.define(
 
             this.Query = "SELECT '" +  operation.inputs["theme"] + "' as theme, sum(count{{gadm_level}}) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
 
+          //If theme is project, projectRisk, or projectHealth, add to the filters where phase is 1 - 5, which equates to Active projects.
+          //In SalesForce, the phase__c column is text and has delimited values in the cells.  So, we'll do a 'like' operator instead of =
+
+          var activeProjectWhereClause = " AND (phase__c LIKE '%1%' OR phase__c LIKE '%2%' OR phase__c LIKE '%3%' OR phase__c LIKE '%4%' OR phase__c LIKE '%5%')";
+
 
             //need to wrap ids in single quotes
             //Execute the query
@@ -54,6 +59,17 @@ operation.execute = flow.define(
             if(operation.inputs["filters"] && operation.inputs["filters"] !== 'null'){
               var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g,'%').replace(/%27/g,"'");
               filters = " AND (" + inputFilters + ")";
+
+              //Add where clause to only show active projects
+              if(operation.inputs["theme"].toLowerCase() == 'project' || operation.inputs["theme"].toLowerCase() == 'projectrisk' || operation.inputs["theme"].toLowerCase() == 'projecthealth') {
+                filters += activeProjectWhereClause;
+              }
+            }
+            else{
+              //Add where clause to only show active projects
+              if(operation.inputs["theme"].toLowerCase() == 'project' || operation.inputs["theme"].toLowerCase() == 'projectrisk' || operation.inputs["theme"].toLowerCase() == 'projecthealth') {
+                filters = activeProjectWhereClause;
+              }
             }
             if(operation.inputs["theme"].toLowerCase() == 'disaster'){
                 //If a disaster, include RFA counts from rollup table

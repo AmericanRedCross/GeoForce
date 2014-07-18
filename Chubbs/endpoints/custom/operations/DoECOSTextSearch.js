@@ -29,17 +29,16 @@ function buildQueryClause(searchFields, tableName, tableAlias){
     if(searchFields && searchFields.length > 0) {
         sql += "SELECT * from " + tableName + " WHERE ";
         sql += searchFields.join(" ILIKE '%{{text}}%' OR ");
-        sql += " ILIKE '%{{text}}%';";
+        sql += " ILIKE '%{{text}}%' ";
     }
     if(tableName == 'sf_project'){
        sql = sql.replace(" * ", " 'Project' as theme_type, sf_project.* "); //Replace * with whitelist
+       sql += " AND (phase__c LIKE '%1%' OR phase__c LIKE '%2%' OR phase__c LIKE '%3%' OR phase__c LIKE '%4%' OR phase__c LIKE '%5%')";
     }else if(tableName == 'sf_disaster'){
-        sql = sql.replace(" * ", " 'Disaster' as theme_type, sf_project.* "); //Replace * with whitelist
+        sql = sql.replace(" * ", " 'Disaster' as theme_type, sf_disaster.* "); //Replace * with whitelist
     }
     return sql;
 }
-
-getSQLQueries(); //Build the query objects
 
 operation.execute = flow.define(
     function (args, callback) {
@@ -49,6 +48,8 @@ operation.execute = flow.define(
 
         //Generate UniqueID for this Task
         operation.id = shortid.generate();
+
+        getSQLQueries(); //Build the query objects
 
         //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
         if (operation.isInputValid(args) === true) {
