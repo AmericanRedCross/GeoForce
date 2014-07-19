@@ -284,6 +284,12 @@
                             <div class="tab-content scrollable">
                                 <div ng-class="{active: navTab==='contextual'}" class="tab-pane">
 
+                                    <h4>Theme layer:</h4>
+                                    <label class="checkbox">
+                                        <input type="checkbox" ng-model="themecountLayer.active" ng-change="setBadges(themecountLayer.active)">
+                                        Theme Count Badges
+                                    </label>
+
                                     <h4>Administrative boundary levels:</h4>
 
                                     <div class="radio">
@@ -334,8 +340,6 @@
                                             5. Level 5
                                         </label>
                                     </div>
-
-                                    <br/>
 
                                     <div ng-repeat="(panelName, panel) in layersPanels">
                                         <h4>{{panelName}}</h4>

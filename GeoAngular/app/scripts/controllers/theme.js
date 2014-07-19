@@ -40,14 +40,14 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
     var layersArr = $.grep($stateParams.layers.split(','), function(routeLayer){
-      return routeLayer !== 'themecount';
+      return routeLayer !== 'themecount' && routeLayer !== 'theme';
     });
     $stateParams.layers = layersArr.join(',');
     $scope.setThemeQueryParam('none');
   };
 
   function ensureThemeCount() {
-    if ($stateParams.layers.indexOf('themecount') === -1) {
+    if ($stateParams.layers.indexOf('themecount') === -1 && $stateParams.layers.indexOf('theme') === -1) {
       $stateParams.layers += ',themecount';
     }
   }

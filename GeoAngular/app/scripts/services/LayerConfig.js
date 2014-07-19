@@ -375,7 +375,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
   };
 
   this.theme = {
-    name: 'Theme (badge off)',
+    name: 'Theme (Badge Off)',
     type: 'bboxgeojson',
     url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=:theme&gadm_level=:level&ids=:ids&filters=:filters"),
     properties: {

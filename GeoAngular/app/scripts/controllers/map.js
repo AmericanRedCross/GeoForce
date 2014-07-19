@@ -296,7 +296,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     leafletData.getMap().then(function (map) {
       for (var j = 0, len = overlayNames.length; j < len; j++) {
         var nme = overlayNames[j];
-        if (nme === 'themecount') {
+        if (nme === 'themecount' || nme === 'theme') {
           var oldLyr = overlays[j];
           oldLyr.destroyResource();
           map.removeLayer(oldLyr);

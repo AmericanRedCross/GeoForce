@@ -2230,6 +2230,20 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
   $scope.gadmLevel = $stateParams.level || 'auto';
 
+  $scope.themeLayer = LayerConfig.theme;
+  $scope.themecountLayer = LayerConfig.themecount;
+
+  $scope.setBadges = function(bool) {
+    if (bool) {
+      $scope.themeLayer.active = false;
+    } else {
+      $scope.themeLayer.active = true;
+    }
+    $scope.toggleMapLayer('themecount', $scope.themecountLayer);
+    $scope.toggleMapLayer('theme', $scope.themeLayer);
+
+  };
+
   $scope.$watch('gadmLevel', function (newValue) {
     $stateParams.level = newValue;
     var state = $state.current.name || 'main';
@@ -2412,7 +2426,7 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
 
       layer.alias = l;
       layer.name = lcfg.name;
-      if(layers[i] == "themecount"){
+      if(l === 'themecount' || l === 'theme'){
           layer.name = $stateParams.theme || 'Project';
       }
       if (!name && lcfg.properties && lcfg.properties.title) {
@@ -2780,7 +2794,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     leafletData.getMap().then(function (map) {
       for (var j = 0, len = overlayNames.length; j < len; j++) {
         var nme = overlayNames[j];
-        if (nme === 'themecount') {
+        if (nme === 'themecount' || nme === 'theme') {
           var oldLyr = overlays[j];
           oldLyr.destroyResource();
           map.removeLayer(oldLyr);
@@ -3034,14 +3048,14 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
     var layersArr = $.grep($stateParams.layers.split(','), function(routeLayer){
-      return routeLayer !== 'themecount';
+      return routeLayer !== 'themecount' && routeLayer !== 'theme';
     });
     $stateParams.layers = layersArr.join(',');
     $scope.setThemeQueryParam('none');
   };
 
   function ensureThemeCount() {
-    if ($stateParams.layers.indexOf('themecount') === -1) {
+    if ($stateParams.layers.indexOf('themecount') === -1 && $stateParams.layers.indexOf('theme') === -1) {
       $stateParams.layers += ',themecount';
     }
   }
@@ -3924,7 +3938,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
   };
 
   this.theme = {
-    name: 'Theme (badge off)',
+    name: 'Theme (Badge Off)',
     type: 'bboxgeojson',
     url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=:theme&gadm_level=:level&ids=:ids&filters=:filters"),
     properties: {
