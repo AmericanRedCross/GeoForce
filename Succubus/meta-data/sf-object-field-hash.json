@@ -180,6 +180,13 @@
         {
           "active": true,
           "defaultValue": false,
+          "label": "GIS",
+          "validFor": null,
+          "value": "GIS"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
           "label": "Global Disaster Preparedness Center",
           "validFor": null,
           "value": "Global Disaster Preparedness Center"
@@ -1827,6 +1834,13 @@
       "label": "Data migration Status",
       "inlineHelpText": "This field provides information to users on the progress of the migration of their projects to ECOS.\r\nFor additional questions, contact Nick Reese.",
       "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Project Plans Being Finalized",
+          "validFor": null,
+          "value": "Project Plans Being Finalized"
+        },
         {
           "active": true,
           "defaultValue": false,

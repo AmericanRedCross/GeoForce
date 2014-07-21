@@ -383,7 +383,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
@@ -1369,6 +1369,13 @@
             "label": "Development, International Campaign",
             "validFor": null,
             "value": "Development, International Campaign"
+          },
+          {
+            "active": true,
+            "defaultValue": false,
+            "label": "GIS",
+            "validFor": null,
+            "value": "GIS"
           },
           {
             "active": true,
@@ -4759,6 +4766,13 @@
           {
             "active": true,
             "defaultValue": false,
+            "label": "Project Plans Being Finalized",
+            "validFor": null,
+            "value": "Project Plans Being Finalized"
+          },
+          {
+            "active": true,
+            "defaultValue": false,
             "label": "Core Documentation Not Received",
             "validFor": null,
             "value": "Core Documentation Not Received"
@@ -5106,7 +5120,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
@@ -7228,7 +7242,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
@@ -7850,7 +7864,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
@@ -8565,7 +8579,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
@@ -10349,7 +10363,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
@@ -12097,7 +12111,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
@@ -14353,7 +14367,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
@@ -15740,7 +15754,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
@@ -17412,7 +17426,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
@@ -18857,7 +18871,7 @@
         "childSObject": "TopicAssignment",
         "deprecatedAndHidden": false,
         "field": "EntityId",
-        "relationshipName": null,
+        "relationshipName": "TopicAssignments",
         "restrictedDelete": false
       }
     ],
