@@ -9,7 +9,7 @@ nonsensitiveSettings.application = {};
 nonsensitiveSettings.tilestream = {};
 
 //application port settings
-nonsensitiveSettings.application.port = 3001;
+nonsensitiveSettings.application.port = 3000;
 nonsensitiveSettings.application.ip = "localhost";
 
 //Enable Security?
