@@ -334,24 +334,35 @@ sudo forever --minUptime 500ms --spinSleepTime 500ms start app.js
 ```
 
 
-## Cheat sheet
-``` Configure nginx
-from --http://stackoverflow.com/questions/5009324/node-js-nginx-and-now
+# Setup NGINX with Simple .htpasswd Authentication
 
---create a file in /etc/nginx/sites-available/geoforce
+If you would like to set up a production server with SSL rather than this simple mode of authentication, 
+instead follow `Docs/InstallAndSetupNotes/nginx_ssl_setup.txt`.
 
-sudo pico /etc/nginx/sites-available/geoforce
-then enter:
+[How To Set Up HTTP Authentication With Nginx On Ubuntu 12.10](https://www.digitalocean.com/community/articles/how-to-set-up-http-authentication-with-nginx-on-ubuntu-12-10)
 
-# the IP(s) on which your node server is running. I chose port 3000.
+sudo apt-get install apache2-utils
+
+cd ~/GeoForce/GeoAngular/app
+sudo htpasswd -c .htpasswd redcross
+(will prompt for password)
+
+From [http://stackoverflow.com/questions/5009324/node-js-nginx-and-now](http://stackoverflow.com/questions/5009324/node-js-nginx-and-now).
+
+Create a text file in `/etc/nginx/sites-available/geoforce`
+
+In that file, enter:
+
+```
+# the IP(s) on which your node server is running. I chose port 3001.
 upstream app_geoforce {
-    server 127.0.0.1:3000;
+    server 127.0.0.1:3001;
 }
 
-# the nginx server instance
 server {
     listen 0.0.0.0:80;
-    server_name 54.201.181.57 geoforce;
+    # the domain name or ip of the server this is on
+    server_name 54.201.181.57;
     access_log /var/log/nginx/geoforce.log;
 
     # pass the request to the node.js server with the correct headers and much more can be added, see nginx config options
@@ -366,40 +377,33 @@ server {
       proxy_pass http://app_geoforce;
       proxy_redirect off;
     }
- }
+}
+```
 
---Next, enable the site defined above
+Next, enable the site defined above
+
+```
 cd /etc/nginx/sites-enabled/
 sudo ln -s /etc/nginx/sites-available/geoforce geoforce
+```
 
 
---restart nginx
-sudo /etc/init.d/nginx restart
+Restart nginx
 
-### Set up simple authentication with nginx (https://www.digitalocean.com/community/articles/how-to-set-up-http-authentication-with-nginx-on-ubuntu-12-10)
-sudo apt-get install apache2-utils
-
-cd ~/GeoForce/GeoAngular/app
-sudo htpasswd -c .htpasswd redcross
-(will prompt for password)
+```
+sudo service nginx restart
+```
 
 
 ```
+
+# Donate some blood (and eat some pancakes).
+
+
+## Further notes...
 
 ### Restart PostgreSQL
 
 ```
-sudo /etc/init.d/postgresql restart
-```
-
-### Config File for Setting Postgres Connection Settings
-
-```
-/usr/local/pgsql/data/data/pg_hba.conf
-```
-
-or
-
-```
-/etc/postgresql/9.3/main/pg_hba.conf
+sudo service postgresql restart
 ```
