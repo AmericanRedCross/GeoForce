@@ -189,17 +189,26 @@ git clone https://github.com/AmericanRedCross/GeoForce.git
 ```
 sudo chmod -R a+rwx /usr/local/lib/node_modules/
 cd GeoAngular
-npm install -g grunt-cli
-npm install
+sudo npm install -g grunt-cli
+sudo npm install
 cd ../Succubus
-npm install
+sudo npm install
 cd ../Chubbs
-npm install
+sudo npm install
 ```
 
 ### 3. Fill in proper settings for Chubbs in settings.js (Chubbs/settings.js)
 
+If you are on a production server, change these to: 
+
+```js
+process.env.NODE_ENV = 'production';
+settings.enableSecurity = true;
 ```
+
+If you have enabled security, make sure you have `geo.cer` and `geo.pfx` in the Chubbs directory. These are your SSL security certificates.
+
+```js
 //Settings.js is not part of the repository.  However, it should be deployed with the application and contain deployment-specific settings.
 //There is a settings.js.example file that should match the structure and properties of this file that IS checked in to the repo.
 var settings = {};
@@ -260,25 +269,44 @@ module.exports = settings;
 ### 4. Fill in proper settings for Succubus (Succubus/settings.js)
 
 ```js
-﻿module.exports = {
+module.exports = {
 
-    // PostGIS Database Connection
-    pg: {
-        server: 'localhost',
-        port: '5432',
-        database: 'rc',
-        user: 'rc',
-        password: 'rc',
-        escapeStr: 'nh9'
-    },
+  // PostGIS Database Connection
+  pg: {
+    server: '<database-url>',
+    port: '5432',
+    database: 'redcross_prod',
+    user: 'postgres',
+    password: '<password>',
+    escapeStr: 'anystr'
+  },
 
-    // Salesforce Credentials
-    salesforce: {
-        loginUrl: 'https://cs18.salesforce.com',
-        user: '***',
-        password: '***',
-        token: '***'
-    }
+//  pg: {
+//    server: 'localhost',
+//    port: '5432',
+//    database: 'redcross_dev',
+//    user: 'postgres',
+//    password: '',
+//    escapeStr: 'anystr'
+//  },
+
+  // Salesforce Credentials
+
+  // Production Salesforce Instance
+//  salesforce: {
+//    loginUrl: 'https://na14.salesforce.com',
+//    user: 'gis@redcross.org',
+//    password: '<password>',
+//    token: '<long-string-token>'
+//  }
+
+  // UAT (Development) Salesforce Instance
+  salesforce: {
+    loginUrl: 'https://cs18.salesforce.com',
+    user: 'gis@salesforce.com.uat',
+    password: '<password>',
+    token: '<long-string-token>'
+  }
 
 };
 ```

@@ -34,11 +34,6 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.methodOverride());
 
-//Configure HTTPS
-var SSLoptions = {
-    pfx: fs.readFileSync(settings.ssl.pfx),
-    passphrase: settings.ssl.password
-};
 
 var passport = require('./endpoints/authentication').passport();
 
@@ -48,6 +43,14 @@ var authenticationFunctions = [];
 
 //Load up passport for security, if it's around, and if the settings ask for it
 if (passport && settings.enableSecurity && settings.enableSecurity === true) {
+
+  if (process.env.NODE_ENV.toLowerCase() == "production") {
+    //Configure HTTPS
+    var SSLoptions = {
+      pfx: fs.readFileSync(settings.ssl.pfx),
+      passphrase: settings.ssl.password
+    };
+  }
 
 	app.use(express.session({
 	    secret : settings.expressSessionSecret
