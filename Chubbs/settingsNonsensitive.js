@@ -6,14 +6,6 @@ nonsensitiveSettings.pg = {};
 nonsensitiveSettings.application = {};
 nonsensitiveSettings.tilestream = {};
 
-//application port settings
-nonsensitiveSettings.application.port = 3001;
-nonsensitiveSettings.application.ip = "localhost";
-
-//Enable Security?
-nonsensitiveSettings.enableSecurity = false;
-
-
 nonsensitiveSettings.tilestream.host = "54.212.254.185";
 nonsensitiveSettings.tilestream.path = "/api/Tileset";
 nonsensitiveSettings.tilestream.port = "8888";
