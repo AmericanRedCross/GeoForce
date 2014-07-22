@@ -124,32 +124,21 @@ var requestForAssistanceFields =
 "Total_ARC_Contributions__c";
 
 
-var indicatorFieldsObj = metaData.Indicator__c.fields;
-var indicatorFields = '';
-for (var i = 0, len = indicatorFieldsObj.length; i < len - 1; i++) {
-  var obj = indicatorFieldsObj[i];
-  var fieldName = obj.name;
-  indicatorFields += fieldName + ', ';
+function createFieldsString(fieldsArr) {
+  var str = '';
+  for (var i = 0, len = fieldsArr.length; i < len - 1; i++) {
+    var obj = fieldsArr[i];
+    var fieldName = obj.name;
+    str += fieldName + ', ';
+  }
+  str += fieldsArr[i].name;
+  return str;
 }
-indicatorFields += indicatorFieldsObj[i].name;
 
-var indicatorValueFieldsObj = metaData.Indicator_Value__c.fields;
-var indicatorValueFields = '';
-for (var j = 0, len = indicatorValueFieldsObj.length; j < len - 1; j++) {
-  var obj = indicatorValueFieldsObj[j];
-  var fieldName = obj.name;
-  indicatorValueFields += fieldName + ', ';
-}
-indicatorValueFields += indicatorValueFieldsObj[j].name;
-
-var logframeElementFieldsObj = metaData.Logframe_Element__c.fields;
-var logframeElementFields = '';
-for (var k = 0, len = logframeElementFieldsObj.length; k < len - 1; k++) {
-  var obj = logframeElementFieldsObj[k];
-  var fieldName = obj.name;
-  logframeElementFields += fieldName + ', ';
-}
-logframeElementFields += logframeElementFieldsObj[k].name;
+var indicatorFields = createFieldsString(metaData.Indicator__c.fields);
+var indicatorValueFields = createFieldsString(metaData.Indicator_Value__c.fields);
+var logframeElementFields = createFieldsString(metaData.Logframe_Element__c.fields);
+var projectLocationFields = createFieldsString(metaData.Project_Location__c.fields);
 
 
 module.exports = {
@@ -204,7 +193,8 @@ module.exports = {
 
 
   indicator: "Select " + indicatorFields + " From Indicator__c",
-  indicatorValue: "Select " + indicatorValueFields + " From Indicator_Value__c"
-//  logframeElement: "Select " + logframeElementFields + " From Logframe_Element__c"
+  indicatorValue: "Select " + indicatorValueFields + " From Indicator_Value__c",
+//  logframeElement: "Select " + logframeElementFields + " From Logframe_Element__c",
+  projectLocation: "Select " + projectLocationFields + " From Project_Location__c"
 
 };
