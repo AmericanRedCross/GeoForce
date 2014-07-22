@@ -2,8 +2,6 @@
 //passwords and sensitive settings are in settings.js
 var nonsensitiveSettings = {};
 
-process.env.NODE_ENV = 'development'; //Change to 'production' or 'test' depending on deployment.
-
 nonsensitiveSettings.pg = {};
 nonsensitiveSettings.application = {};
 nonsensitiveSettings.tilestream = {};

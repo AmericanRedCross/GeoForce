@@ -189,13 +189,11 @@ git clone https://github.com/AmericanRedCross/GeoForce.git
 ```
 cd GeoAngular
 sudo npm install -g grunt-cli
-npm install
-cd ..
-cd Succubus
-npm install
-cd ..
-cd Chubbs
-npm install
+sudo npm install
+cd ../Succubus
+sudo npm install
+cd ../Chubbs
+sudo npm install
 ```
 
 ### 3. Fill in proper settings for Chubbs in settings.js (Chubbs/settings.js)
