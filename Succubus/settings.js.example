@@ -5,22 +5,41 @@
 
 module.exports = {
 
-    // PostGIS Database Connection
-    pg: {
-        server: 'localhost',
-        port: '5432',
-        database: 'redcross-localdev',
-        user: 'postgres',
-        password: '',
-        escapeStr: 'nh9'
-    },
+  // PostGIS Database Connection
+  pg: {
+    server: '<database-url>',
+    port: '5432',
+    database: 'redcross_prod',
+    user: 'postgres',
+    password: '<password>',
+    escapeStr: 'anystr'
+  },
 
-    // Salesforce Credentials
-    salesforce: {
-        loginUrl: 'https://cs18.salesforce.com',
-        user: '***',
-        password: '***',
-        token: '***'
-    }
+//  pg: {
+//    server: 'localhost',
+//    port: '5432',
+//    database: 'redcross_dev',
+//    user: 'postgres',
+//    password: '',
+//    escapeStr: 'anystr'
+//  },
+
+  // Salesforce Credentials
+
+  // Production Salesforce Instance
+//  salesforce: {
+//    loginUrl: 'https://na14.salesforce.com',
+//    user: 'gis@redcross.org',
+//    password: '<password>',
+//    token: '<long-string-token>'
+//  }
+
+  // UAT (Development) Salesforce Instance
+  salesforce: {
+    loginUrl: 'https://cs18.salesforce.com',
+    user: 'gis@salesforce.com.uat',
+    password: '<password>',
+    token: '<long-string-token>'
+  }
 
 };
