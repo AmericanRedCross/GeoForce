@@ -315,7 +315,7 @@ node app.js
 ```
 sudo forever list
 sudo forever stop 0
-sudo forever start app.js
+sudo forever --minUptime 500ms --spinSleepTime 500ms start app.js
 ```
 
 

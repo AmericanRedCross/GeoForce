@@ -13,6 +13,20 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
   $scope.gadmLevel = $stateParams.level || 'auto';
 
+  $scope.themeLayer = LayerConfig.theme;
+  $scope.themecountLayer = LayerConfig.themecount;
+
+  $scope.setBadges = function(bool) {
+    if (bool) {
+      $scope.themeLayer.active = false;
+    } else {
+      $scope.themeLayer.active = true;
+    }
+    $scope.toggleMapLayer('themecount', $scope.themecountLayer);
+    $scope.toggleMapLayer('theme', $scope.themeLayer);
+
+  };
+
   $scope.$watch('gadmLevel', function (newValue) {
     $stateParams.level = newValue;
     var state = $state.current.name || 'main';

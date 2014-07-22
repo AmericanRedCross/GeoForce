@@ -127,6 +127,7 @@
 
 #DetailsPanel > .container {
     padding: 0;
+    position: relative;
 }
 
 .auto {
@@ -140,8 +141,8 @@
     font-size: 13px;
     line-height: 1;
     position: absolute;
-    top: -88px;
-    right: 0px;
+    top: -15px;
+    right: -11px;
 }
 
 #DetailsWrapper .btn-red:focus {
@@ -160,7 +161,7 @@
     -webkit-transition: all .5s ease;
     -ms-transition: all .5s ease;
 
-    min-height: 400px;
+    min-height: 150px;
     font-size: 13px;
     line-height: 1.6;
 }

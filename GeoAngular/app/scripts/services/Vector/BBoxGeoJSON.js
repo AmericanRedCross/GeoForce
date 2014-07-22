@@ -24,7 +24,9 @@ function BBoxGeoJSON(config) {
   this._features = {};
   this._featureLayersByLevel = {};
   this._allFeatureLayers = {};
-  this._featureSet = new FeatureSet();
+  if (config.properties && config.properties.labelProperty) {
+    this._featureSet = new FeatureSet();
+  }
   this._defaultTheme = config.defaultTheme || 'project';
 
   if (config.detailsUrl) {
@@ -137,10 +139,10 @@ function processFeatures(self, featObj, geojson) {
  * @param featLayer
  */
 function addLayer(self, featLayer) {
-
-  self._featureSet.addFeature(featLayer, self._geojsonLayer);
+  if (self._featureSet) {
+    self._featureSet.addFeature(featLayer, self._geojsonLayer);
+  }
   self._geojsonLayer.addLayer(featLayer);
-//    self._featureSet.addFeature(featLayer, self._geojsonLayer);
 
   var props = featLayer.feature.properties;
   var level = props.level;

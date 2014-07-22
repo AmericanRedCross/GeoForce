@@ -1414,7 +1414,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       $scope.showDetails(properties);
       $scope.openParam('details-panel');
     }
-
+    $scope.resizeDetailsPanel();
   });
 
   $scope.$on('route-update', function () {
@@ -1446,6 +1446,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     } else {
       $scope.moreLess = 'More';
     }
+    //Resize;
+    $scope.resizeDetailsPanel();
   };
 
   $scope.showDetails = function (item, themeItems, idx) {
@@ -1620,9 +1622,18 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.resizeDetailsPanel = function() {
-    var detailsPanelTop = $('#DetailsPanel').offset().top;
-    var height = $('#MapCtrl').height() - 300; //Magic Number
-    $('#DetailsPanel .InnerContainer ').css("max-height",height);
+    var height = $('#MapCtrl').height() - 200; //Magic Number
+
+    //height is the value that the entire details panel should never exceed.
+    //Within the panel itself, the inner container needs to adjust its height based on the contents of the panel.
+    //Sometimes, there are tabs, and sometimes the project/disaster description can be quite long.
+    //In these cases, then innerContainer should shrink to fit within the max-height of the outer panel (height)
+
+    //Find the top of the innerContainer, and subtract from the max height of the panel.  That's what the max-height of the inner panel should be
+    var innerTop = $('#DetailsPanel .InnerContainer').position().top;
+    var bottomHeight = $(".details-bottom-buttons.pull-right").height();
+
+    $('#DetailsPanel .InnerContainer ').css("max-height", height - innerTop - bottomHeight);
   };
 
 	//Connect the layout onresize end event
@@ -2230,6 +2241,20 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
   $scope.gadmLevel = $stateParams.level || 'auto';
 
+  $scope.themeLayer = LayerConfig.theme;
+  $scope.themecountLayer = LayerConfig.themecount;
+
+  $scope.setBadges = function(bool) {
+    if (bool) {
+      $scope.themeLayer.active = false;
+    } else {
+      $scope.themeLayer.active = true;
+    }
+    $scope.toggleMapLayer('themecount', $scope.themecountLayer);
+    $scope.toggleMapLayer('theme', $scope.themeLayer);
+
+  };
+
   $scope.$watch('gadmLevel', function (newValue) {
     $stateParams.level = newValue;
     var state = $state.current.name || 'main';
@@ -2412,7 +2437,7 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
 
       layer.alias = l;
       layer.name = lcfg.name;
-      if(layers[i] == "themecount"){
+      if(l === 'themecount' || l === 'theme'){
           layer.name = $stateParams.theme || 'Project';
       }
       if (!name && lcfg.properties && lcfg.properties.title) {
@@ -2780,7 +2805,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     leafletData.getMap().then(function (map) {
       for (var j = 0, len = overlayNames.length; j < len; j++) {
         var nme = overlayNames[j];
-        if (nme === 'themecount') {
+        if (nme === 'themecount' || nme === 'theme') {
           var oldLyr = overlays[j];
           oldLyr.destroyResource();
           map.removeLayer(oldLyr);
@@ -3034,14 +3059,14 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
     var layersArr = $.grep($stateParams.layers.split(','), function(routeLayer){
-      return routeLayer !== 'themecount';
+      return routeLayer !== 'themecount' && routeLayer !== 'theme';
     });
     $stateParams.layers = layersArr.join(',');
     $scope.setThemeQueryParam('none');
   };
 
   function ensureThemeCount() {
-    if ($stateParams.layers.indexOf('themecount') === -1) {
+    if ($stateParams.layers.indexOf('themecount') === -1 && $stateParams.layers.indexOf('theme') === -1) {
       $stateParams.layers += ',themecount';
     }
   }
@@ -3320,11 +3345,20 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
         }
         else {
 
+          var reportingProperties = visualizationDictionary[reportingValue];
+
+          if (!reportingProperties) {
+            reportingProperties = {
+              color: '#240201',
+              alias: reportingValue || 'Unknown'
+            }
+          }
+
           // if this is the first time we see this id, create an object property and start the counter
           data[reportingValue] = {
             'count': 1,
-            'color': visualizationDictionary[reportingValue].color,
-            'alias': visualizationDictionary[reportingValue].label
+            'color': reportingProperties.color,
+            'alias': reportingProperties.label
           };
         }
 
@@ -3495,7 +3529,8 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
     options.unassignedColor = options.unassignedColor || '#CCCCCC';
     options.unassignedLabel = options.unassignedLabel || 'Not Assigned';
 
-    var defaultPalette = d3.scale.category20().range();
+    var defaultPalette = ["#009400", "#FFC93A", "#FF3849", "#171CE8", "#05FFD9", "#EC8E2F", "#6ED444", "#9556EF", "#2175DE", "#E23B5D", "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5", "#009400", "#FFC93A", "#FF3849", "#171CE8", "#05FFD9", "#EC8E2F", "#6ED444", "#9556EF", "#2175DE", "#E23B5D", "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
+
     var dictionary = {};
 
     for(var i = 0; i < categoryEntities.length; i++) {
@@ -3889,8 +3924,6 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
                 break;
             }
           }
-
-
           return '<div class="featurelabel-icon-number"' + (color ? ' style="background-color: ' + color + ';color: ' + labelColor + '"' : '') + '><span>' + properties.theme_count + '</span></div>';
         }
         else {
@@ -3899,12 +3932,120 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       },
       "map-icon-size": function (properties) {
         //Return an array of 2 items. size of map icon
-        return [45, 45];
+        return [35,35];
       },
       "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters'),
       "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
       "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
       "defaultTheme": 'project', // The default theme the layer uses. This is used if there is no theme query param.
+      "legend": function (theme) {
+        if (theme.toLowerCase() == 'disaster') {
+          //disaster
+          return '<img src="images/legend_disaster.png" alt="disaster legend" />';
+        }
+        else if (theme.toLowerCase() == 'projecthealth') {
+          //project
+          return '<img src="images/legend_projecthealth.png" alt="project health legend" />';
+        }
+        else if(theme.toLowerCase() == 'projectrisk') {
+          return '<img src="images/legend_projectrisk.png" alt="project risk legend" />';
+        }
+        else if (theme.toLowerCase() == 'project') {
+          return '<img src="images/legend_project.png" alt="project legend" />';
+        }
+      }
+
+    }
+  };
+
+  this.theme = {
+    name: 'Theme (Badge Off)',
+    type: 'bboxgeojson',
+    url: config.chubbsPath("services/custom/custom_operation?name=getaggregatedthemefeaturesbyid&format=geojson&theme=:theme&gadm_level=:level&ids=:ids&filters=:filters"),
+    properties: {
+      "styleFn": function (properties) {
+        var style = {
+          color: 'white',
+          opacity: 1,
+          fillOpacity: 0.07,
+          weight: 1.5
+        };
+
+        if (properties.theme == "disaster") {
+          if (properties && properties.iroc_status__c) {
+            switch (properties.iroc_status__c.toLowerCase()) {
+              case "active":
+                style.fillColor = "#cc0033";
+                style.fillOpacity = 0.5;
+                break;
+              case "monitoring":
+                style.fillColor = "#cc9900";
+                style.fillOpacity = 0.5;
+                break;
+              case "inactive":
+                style.fillColor = "white";
+                style.fillOpacity = 0.0;
+                break;
+            }
+          }
+        }
+        else if (properties.theme == "projectrisk") {
+          if (properties && properties.overall_assessment__c) {
+            switch (properties.overall_assessment__c.toLowerCase()) {
+              case "critical":
+                style.fillColor = "red";
+                style.fillOpacity = 0.5;
+                break;
+              case "high":
+                style.fillColor = "orange";
+                style.fillOpacity = 0.5;
+                break;
+              case "medium":
+                style.fillColor = "yellow";
+                style.fillOpacity = 0.5;
+                break;
+              case "low":
+                style.fillColor = "green";
+                style.fillOpacity = 0.5;
+                break;
+            }
+          }
+        }
+        else if (properties.theme == "projecthealth") {
+          if (properties && properties.overall_status__c) {
+            switch (properties.overall_status__c.toLowerCase()) {
+              case "red":
+                style.fillColor = "red";
+                style.fillOpacity = 0.5;
+                break;
+              case "yellow":
+                style.fillColor = "yellow";
+                style.fillOpacity = 0.5;
+                break;
+              case "green":
+                style.fillColor = "green";
+                style.fillOpacity = 0.5;
+                break;
+              case "white":
+                style.fillColor = "white";
+                style.fillOpacity = 0.5;
+                break;
+            }
+          }
+        }
+        return style;
+      },
+      "map-icon-size": function (properties) {
+        //Return an array of 2 items. size of map icon
+        return [35,35];
+      },
+      "detailsUrl": config.chubbsPath('services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters'),
+      "onSelect": 'fetchFeatureDetails', // the BBoxGeoJSON method to call on select. (toggled on)
+      "onDeselect": 'closeDetails', // featurelabel evaluates this string when a feature is toggled off
+      "defaultTheme": 'project', // The default theme the layer uses. This is used if there is no theme query param.
+      "labelProperty": function() {
+        return '<div class="featurelabel-icon-number" style="display:none;"></div>';
+      },
       "legend": function (theme) {
         if (theme.toLowerCase() == 'disaster') {
           //disaster
@@ -4261,7 +4402,9 @@ function BBoxGeoJSON(config) {
   this._features = {};
   this._featureLayersByLevel = {};
   this._allFeatureLayers = {};
-  this._featureSet = new FeatureSet();
+  if (config.properties && config.properties.labelProperty) {
+    this._featureSet = new FeatureSet();
+  }
   this._defaultTheme = config.defaultTheme || 'project';
 
   if (config.detailsUrl) {
@@ -4374,10 +4517,10 @@ function processFeatures(self, featObj, geojson) {
  * @param featLayer
  */
 function addLayer(self, featLayer) {
-
-  self._featureSet.addFeature(featLayer, self._geojsonLayer);
+  if (self._featureSet) {
+    self._featureSet.addFeature(featLayer, self._geojsonLayer);
+  }
   self._geojsonLayer.addLayer(featLayer);
-//    self._featureSet.addFeature(featLayer, self._geojsonLayer);
 
   var props = featLayer.feature.properties;
   var level = props.level;
