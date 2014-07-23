@@ -8,12 +8,12 @@ module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', func
   /**
    * Fixes Chrome Magnifying Glass Issue #206
    */
-  setTimeout(function() {
-    var toolbar = $('#MapUpperRightToolbarWrapper');
-    while ( toolbar.height() > 40 ) {
-      toolbar.width( toolbar.width() + 1 );
-    }
-  }, 1000);
+//  setTimeout(function() {
+//    var toolbar = $('#MapUpperRightToolbarWrapper');
+//    while ( toolbar.height() > 40 ) {
+//      toolbar.width( toolbar.width() + 1 );
+//    }
+//  }, 1000);
 
 
 	//var fullStackURL = config.chubbsPath('services/getAdminStack?format=json&adminlevel=:adminlevel&stackid=:guid&datasource=gadm');
