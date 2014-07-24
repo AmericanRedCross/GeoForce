@@ -1,13 +1,20 @@
 from --http://stackoverflow.com/questions/5009324/node-js-nginx-and-now
 
+To create the crt and rsa files, we followed the following instructions:
+http://melp.nl/2012/07/using-a-pfx-to-install-an-ssl-certificate/
+
 --create a file in /etc/nginx/sites-available/redcross
 
 sudo pico /etc/nginx/sites-available/redcross
 —Then add this text, update redcross names to be yours
 
-# the IP(s) on which your node server is running. I chose port 3000.
+
+
+
+
+# the IP(s) on which your node server is running. I chose port 3001.
 upstream app_geoforce {
-    server 127.0.0.1:3000;
+    server 127.0.0.1:3001;
 }
 
 #Point http requests to https
@@ -44,6 +51,10 @@ server {
       proxy_redirect off;
     }
  }
+
+
+
+
 
 --Then enable the site defined above
 cd /etc/nginx/sites-enabled/ 
