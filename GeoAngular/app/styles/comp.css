@@ -78,6 +78,9 @@ a {
 #MapUpperRightToolbarWrapper .btn{
     border-radius: 0px;
     border: 0px;
+    background-color: #EA2035;
+    padding: 11px;
+    font-size: 11px;
 }
 
 #MapUpperRightToolbarWrapper button{
