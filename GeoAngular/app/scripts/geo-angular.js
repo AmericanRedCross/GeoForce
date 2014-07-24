@@ -1050,6 +1050,17 @@ module.exports = angular.module('GeoAngular').controller('BasemapsCtrl', functio
 
 module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $rootScope, $state, $stateParams, $http, VectorProvider) {
 
+  /**
+   * Fixes Chrome Magnifying Glass Issue #206
+   */
+//  setTimeout(function() {
+//    var toolbar = $('#MapUpperRightToolbarWrapper');
+//    while ( toolbar.height() > 40 ) {
+//      toolbar.width( toolbar.width() + 1 );
+//    }
+//  }, 1000);
+
+
 	//var fullStackURL = config.chubbsPath('services/getAdminStack?format=json&adminlevel=:adminlevel&stackid=:guid&datasource=gadm');
 	var fullStackURL = config.chubbsPath('services/custom/custom_operation?name=GetBreadCrumbsWithThemeCountsByID&format=json&gadm_level=:adminlevel&ids=:guid&datasource=gadm&theme=projects');
 
@@ -1466,28 +1477,28 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     }
 
     //Filter/Format RFAs and Indicators
-    if ($scope.details.requestsForAssistance) {
+    if ($scope.details.requestsForAssistance && typeof $scope.details.requestsForAssistance === 'array') {
       //Filter/Format
       $scope.details.requestsForAssistance = $scope.details.requestsForAssistance.map(function (rfa) {
         return removeUnwantedItems(formatDetails(rfa, "RFA"), "RFA");
       });
     }
 
-    if ($scope.details.indicators) {
+    if ($scope.details.indicators && typeof $scope.details.indicators === 'array') {
       //Filter/Format
       $scope.details.indicators = $scope.details.indicators.map(function (indicator) {
         return removeUnwantedItems(formatDetails(indicator, "indicator"), "indicator");
       });
     }
 
-    if ($scope.details.risks) {
+    if ($scope.details.risks && typeof $scope.details.risks === 'array') {
       //Filter/Format
 //          $scope.details.risks = $scope.details.risks.map(function (risk) {
 //              return removeUnwantedItems(formatDetails(risk, "risk"), "risk");
 //          });
     }
 
-    if ($scope.details.statuses) {
+    if ($scope.details.statuses && typeof $scope.details.statuses === 'array') {
       //Filter/Format
 //          $scope.details.statuses = $scope.details.statuses.map(function (status) {
 //              return removeUnwantedItems(formatDetails(status, "status"), "status");

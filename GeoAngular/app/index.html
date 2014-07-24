@@ -589,9 +589,7 @@
                         Upload Data
                     </div>
                     <div class="light export" ui-sref="export(params)">Export</div>
-                    <div class="search" ng-click="toggleParam('search-panel')">
-                        <img src="images/search.png" />
-                    </div>
+                    <div class="search icon-12_search" ng-click="toggleParam('search-panel')"></div>
                 </div>
 
                 <!-- Region / Country Selector Panel -->
@@ -758,14 +756,14 @@
                                         There are currently <b>no indicators</b> for this project...
                                     </p>
                                     <ul ng-show="details.indicators !== 'none'">
-                                        <li ng-repeat="(key_, value_) in details.indicators">
-                                            <a ng-show="!details.showIndicators" ng-click="showIndicators(details, value_)">{{value_.name}}</a>
+                                        <li ng-repeat="(_key, _value) in details.indicators">
+                                            <a ng-show="!details.showIndicators" ng-click="showIndicators(details, _value)">{{_value.name}}</a>
 
-                                            <div ng-show="value_.showIndicators">
-                                                <a ng-click="hideIndicators(details, value_)">< Back To Indicators List</a>
-                                                <h4>{{value_.name}}</h4>
+                                            <div ng-show="_value.showIndicators">
+                                                <a ng-click="hideIndicators(details, _value)">< Back To Indicators List</a>
+                                                <h4>{{_value.name}}</h4>
                                                 <ul>
-                                                    <li ng-repeat="(key2, value2) in value_">
+                                                    <li ng-repeat="(key2, value2) in _value">
                                                         <div class="details-info">
                                                             <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
                                                         </div>
