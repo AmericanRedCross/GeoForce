@@ -1144,7 +1144,6 @@ module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', func
       var gjl = L.geoJson(feat.geometry);
       $scope.$parent.zoomToBounds(gjl.getBounds());
     });
-
   };
 
   $scope.zoomToWorld = function () {

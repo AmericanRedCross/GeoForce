@@ -28,7 +28,9 @@
     "request": "2.37.0",
     "shortid": "2.0.1",
     "topojson": "1.6.15",
-    "underscore": "1.6.0"
+    "underscore": "1.6.0",
+    "tilelive": "5.1.2",
+    "mbtiles": "0.4.3"
   },
   "optionalDependencies": {
     "mapnik": "1.4.10",

@@ -1318,14 +1318,14 @@ exports.app = function(passport) {
 exports.findSpatialTables = function(app, callback) {
 		var spatialTables = {};
 
-		var query = {
-			text : "select * from geometry_columns",
-			values : []
-		};
+  var query = {
+    text: "select * from geometry_columns where f_table_catalog = $1 and f_table_schema = 'public'",
+    values: [settings.pg.database]
+  };
 
 		//TODO - add options to specify schema and database.  Right now it will read all
 		common.executePgQuery(query, function(err, result) {
-			if (err) {
+      if (err) {
 				//Report error and exit.
 				console.log("Error in reading spatial tables from DB.  Can't load dynamic tile endopints. Message is: " + err.text);
 			} else {
@@ -1338,7 +1338,7 @@ exports.findSpatialTables = function(app, callback) {
 						srid : item.srid
 					};
 					//spatialTables.push(spTable);
-					spatialTables[item.f_table_name] = spTable;
+					spatialTables[item.f_table_name + "_" + item.f_geometry_column] = spTable;
 					//Keep a copy in tables for later.
 				});
 			}

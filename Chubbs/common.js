@@ -240,6 +240,20 @@ common.isValidSQL = function (item) {
     //TODO - add validation code.
 }
 
+common.getArguments = function (req) {
+  var args;
+
+  //Grab POST or QueryString args depending on type
+  if (req.method.toLowerCase() == "post") {
+    //If a post, then arguments will be members of the this.req.body property
+    args = req.body;
+  } else if (req.method.toLowerCase() == "get") {
+    //If request is a get, then args will be members of the this.req.query property
+    args = req.query;
+  }
+  return args;
+}
+
 
 //Take a tile bounds (along with a z) and create a bounding box for PostGIS queries.
 //Tile bounds coordinates, zlevel, xmin, xmax, ymin, ymax example: 8, 44, 48, 28, 30
@@ -305,6 +319,11 @@ common.formatters.geoJSONFormatter = function (rows, geom_fields_array, geom_ext
                 //remove the geometry property from the row object so we're just left with non-spatial properties
                 delete row[item];
             });
+        }
+
+        //handle centroids
+        if (row.centroid) {
+          row.centroid = row.centroid.replace("POINT(", "").replace(")", "").split(" "); //split WKT into a coordinate array [x,y]
         }
 
         feature.properties = row;
