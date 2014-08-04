@@ -19,7 +19,7 @@ operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 var theme_details = {
     project: [],
     disaster: ["CASE WHEN array_agg(lower(iroc_status__c)) @> ARRAY['active'] THEN 'Active' WHEN array_agg(lower(iroc_status__c)) @> ARRAY['monitoring'] THEN 'Monitoring' WHEN array_agg(lower(iroc_status__c)) @> ARRAY['inactive'] THEN 'Inactive' END as iroc_status__c"],
-    projectRisk: ["CASE WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['critical'] THEN 'Critical' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['high'] THEN 'High' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['medium'] THEN 'Medium' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['low'] THEN 'Low' END as overall_assessment__c"],
+    projectRisk: ["CASE WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['critical'] THEN 'Critical' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['high'] THEN 'High' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['medium'] THEN 'Medium' WHEN array_agg(lower(overall_assessment__c)) @> ARRAY['low'] THEN 'Low' END as overall_assessment__c" ],
     projectHealth: ["CASE WHEN array_agg(lower(overall_status__c)) @> ARRAY['red'] THEN 'Red' WHEN array_agg(lower(overall_status__c)) @> ARRAY['yellow'] THEN 'Yellow' WHEN array_agg(lower(overall_status__c)) @> ARRAY['green'] THEN 'Green' WHEN array_agg(lower(overall_status__c)) @> ARRAY['white'] THEN 'White' END as overall_status__c"]
 }
 

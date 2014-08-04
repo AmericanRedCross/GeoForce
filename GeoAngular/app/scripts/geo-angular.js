@@ -1050,6 +1050,17 @@ module.exports = angular.module('GeoAngular').controller('BasemapsCtrl', functio
 
 module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $rootScope, $state, $stateParams, $http, VectorProvider) {
 
+  /**
+   * Fixes Chrome Magnifying Glass Issue #206
+   */
+//  setTimeout(function() {
+//    var toolbar = $('#MapUpperRightToolbarWrapper');
+//    while ( toolbar.height() > 40 ) {
+//      toolbar.width( toolbar.width() + 1 );
+//    }
+//  }, 1000);
+
+
 	//var fullStackURL = config.chubbsPath('services/getAdminStack?format=json&adminlevel=:adminlevel&stackid=:guid&datasource=gadm');
 	var fullStackURL = config.chubbsPath('services/custom/custom_operation?name=GetBreadCrumbsWithThemeCountsByID&format=json&gadm_level=:adminlevel&ids=:guid&datasource=gadm&theme=projects');
 
@@ -1414,7 +1425,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       $scope.showDetails(properties);
       $scope.openParam('details-panel');
     }
-
+    $scope.resizeDetailsPanel();
   });
 
   $scope.$on('route-update', function () {
@@ -1446,6 +1457,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     } else {
       $scope.moreLess = 'More';
     }
+    //Resize;
+    $scope.resizeDetailsPanel();
   };
 
   $scope.showDetails = function (item, themeItems, idx) {
@@ -1464,28 +1477,28 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     }
 
     //Filter/Format RFAs and Indicators
-    if ($scope.details.requestsForAssistance) {
+    if ($scope.details.requestsForAssistance && typeof $scope.details.requestsForAssistance === 'array') {
       //Filter/Format
       $scope.details.requestsForAssistance = $scope.details.requestsForAssistance.map(function (rfa) {
         return removeUnwantedItems(formatDetails(rfa, "RFA"), "RFA");
       });
     }
 
-    if ($scope.details.indicators) {
+    if ($scope.details.indicators && typeof $scope.details.indicators === 'array') {
       //Filter/Format
       $scope.details.indicators = $scope.details.indicators.map(function (indicator) {
         return removeUnwantedItems(formatDetails(indicator, "indicator"), "indicator");
       });
     }
 
-    if ($scope.details.risks) {
+    if ($scope.details.risks && typeof $scope.details.risks === 'array') {
       //Filter/Format
 //          $scope.details.risks = $scope.details.risks.map(function (risk) {
 //              return removeUnwantedItems(formatDetails(risk, "risk"), "risk");
 //          });
     }
 
-    if ($scope.details.statuses) {
+    if ($scope.details.statuses && typeof $scope.details.statuses === 'array') {
       //Filter/Format
 //          $scope.details.statuses = $scope.details.statuses.map(function (status) {
 //              return removeUnwantedItems(formatDetails(status, "status"), "status");
@@ -1620,9 +1633,18 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.resizeDetailsPanel = function() {
-    var detailsPanelTop = $('#DetailsPanel').offset().top;
-    var height = $('#MapCtrl').height() - 300; //Magic Number
-    $('#DetailsPanel .InnerContainer ').css("max-height",height);
+    var height = $('#MapCtrl').height() - 200; //Magic Number
+
+    //height is the value that the entire details panel should never exceed.
+    //Within the panel itself, the inner container needs to adjust its height based on the contents of the panel.
+    //Sometimes, there are tabs, and sometimes the project/disaster description can be quite long.
+    //In these cases, then innerContainer should shrink to fit within the max-height of the outer panel (height)
+
+    //Find the top of the innerContainer, and subtract from the max height of the panel.  That's what the max-height of the inner panel should be
+    var innerTop = $('#DetailsPanel .InnerContainer').position().top;
+    var bottomHeight = $(".details-bottom-buttons.pull-right").height();
+
+    $('#DetailsPanel .InnerContainer ').css("max-height", height - innerTop - bottomHeight);
   };
 
 	//Connect the layout onresize end event
@@ -3334,11 +3356,20 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
         }
         else {
 
+          var reportingProperties = visualizationDictionary[reportingValue];
+
+          if (!reportingProperties) {
+            reportingProperties = {
+              color: '#240201',
+              alias: reportingValue || 'Unknown'
+            }
+          }
+
           // if this is the first time we see this id, create an object property and start the counter
           data[reportingValue] = {
             'count': 1,
-            'color': visualizationDictionary[reportingValue].color,
-            'alias': visualizationDictionary[reportingValue].label
+            'color': reportingProperties.color,
+            'alias': reportingProperties.label
           };
         }
 
@@ -3509,7 +3540,8 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
     options.unassignedColor = options.unassignedColor || '#CCCCCC';
     options.unassignedLabel = options.unassignedLabel || 'Not Assigned';
 
-    var defaultPalette = d3.scale.category20().range();
+    var defaultPalette = ["#009400", "#FFC93A", "#FF3849", "#171CE8", "#05FFD9", "#EC8E2F", "#6ED444", "#9556EF", "#2175DE", "#E23B5D", "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5", "#009400", "#FFC93A", "#FF3849", "#171CE8", "#05FFD9", "#EC8E2F", "#6ED444", "#9556EF", "#2175DE", "#E23B5D", "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
+
     var dictionary = {};
 
     for(var i = 0; i < categoryEntities.length; i++) {

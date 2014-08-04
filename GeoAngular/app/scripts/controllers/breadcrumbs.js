@@ -5,6 +5,17 @@
 
 module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', function($scope, $rootScope, $state, $stateParams, $http, VectorProvider) {
 
+  /**
+   * Fixes Chrome Magnifying Glass Issue #206
+   */
+//  setTimeout(function() {
+//    var toolbar = $('#MapUpperRightToolbarWrapper');
+//    while ( toolbar.height() > 40 ) {
+//      toolbar.width( toolbar.width() + 1 );
+//    }
+//  }, 1000);
+
+
 	//var fullStackURL = config.chubbsPath('services/getAdminStack?format=json&adminlevel=:adminlevel&stackid=:guid&datasource=gadm');
 	var fullStackURL = config.chubbsPath('services/custom/custom_operation?name=GetBreadCrumbsWithThemeCountsByID&format=json&gadm_level=:adminlevel&ids=:guid&datasource=gadm&theme=projects');
 

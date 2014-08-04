@@ -3,110 +3,112 @@
     {
       "name": "Beneficiary Engmt & Accountability",
       "checked": false,
-      "color": "#1f77b4"
+      "color": "#009400"
     },
     {
       "name": "Disaster Risk Reduction",
       "checked": false,
-      "color": "#aec7e8"
+      "color": "#FFC93A"
     },
     {
       "name": "GIS & Information Management",
       "checked": false,
-      "color": "#ff7f0e"
+      "color": "#FF3849"
     },
     {
       "name": "Health",
       "checked": false,
-      "color": "#ffbb78"
+      "color": "#171CE8"
     },
     {
       "name": "Human Resources",
       "checked": false,
-      "color": "#2ca02c"
+      "color": "#05FFD9"
     },
     {
       "name": "International Humanitarian Law",
       "checked": false,
-      "color": "#98df8a"
+      "color": "#EC8E2F"
     },
     {
       "name": "Knowledge Management",
       "checked": false,
-      "color": "#d62728"
+      "color": "#6ED444"
     },
     {
       "name": "Livelihoods",
       "checked": false,
-      "color": "#ff9896"
+      "color": "#9556EF"
     },
     {
       "name": "Non-Food Items (Relief Supplies)",
       "checked": false,
-      "color": "#9467bd"
+      "color": "#2175DE"
     },
     {
       "name": "Organizational Development",
       "checked": false,
-      "color": "#c5b0d5"
+      "color": "#E23B5D"
     },
     {
       "name": "Partnerships, Network, and Dialogue",
       "checked": false,
-      "color": "#8c564b"
+      "color": "#1f77b4"
     },
     {
       "name": "Project Management",
       "checked": false,
-      "color": "#c49c94"
+      "color": "#aec7e8"
     },
     {
       "name": "Recovery",
       "checked": false,
-      "color": "#e377c2"
+      "color": "#ff7f0e"
     },
     {
       "name": "Research",
       "checked": false,
-      "color": "#f7b6d2"
+      "color": "#ffbb78"
     },
     {
       "name": "Response Readiness",
       "checked": false,
-      "color": "#7f7f7f"
+      "color": "#2ca02c"
     },
     {
       "name": "Restoring Family Links",
       "checked": false,
-      "color": "#c7c7c7"
+      "color": "#98df8a"
     },
     {
       "name": "Shelter and Settlements",
       "checked": false,
-      "color": "#bcbd22"
+      "color": "#d62728"
     },
     {
       "name": "Systems and Processes",
       "checked": false,
-      "color": "#dbdb8d"
+      "color": "#ff9896"
     },
     {
       "name": "TBD",
       "checked": false,
-      "color": "#17becf"
+      "color": "#9467bd"
     },
     {
       "name": "Technical Assistance",
       "checked": false,
-      "color": "#9edae5"
+      "color": "#c5b0d5"
     },
     {
       "name": "Technology",
-      "checked": false
+      "checked": false,
+      "color": "#8c564b"
     },
     {
       "name": "Water and Sanitation",
-      "checked": false
+      "checked": false,
+      "color": "#c49c94"
     }
   ],
   "status": [

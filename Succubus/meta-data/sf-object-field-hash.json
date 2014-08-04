@@ -126,7 +126,7 @@
     },
     "business_unit__c": {
       "label": "Business Unit",
-      "inlineHelpText": "Please choose the most specific business unit.  Only choose values such as \"IRP\" or \"IPEA\" if it affects that entire unit.",
+      "inlineHelpText": null,
       "picklistValues": [
         {
           "active": true,
@@ -514,7 +514,7 @@
         },
         {
           "active": true,
-          "defaultValue": true,
+          "defaultValue": false,
           "label": "TBD",
           "validFor": null,
           "value": "TBD"
@@ -1004,9 +1004,9 @@
         {
           "active": true,
           "defaultValue": false,
-          "label": "(ORGANITATIONAL DEVELOPMENT)",
+          "label": "(ORGANIZATIONAL DEVELOPMENT)",
           "validFor": null,
-          "value": "(ORGANITATIONAL DEVELOPMENT)"
+          "value": "(ORGANIZATIONAL DEVELOPMENT)"
         },
         {
           "active": true,
@@ -1832,28 +1832,21 @@
     },
     "data_migration_status__c": {
       "label": "Data migration Status",
-      "inlineHelpText": "This field provides information to users on the progress of the migration of their projects to ECOS.\r\nFor additional questions, contact Nick Reese.",
+      "inlineHelpText": "This field provides information to users on the progress of the migration of their projects to ECOS. \r\nFor additional questions, contact Nick Reese.",
       "picklistValues": [
         {
           "active": true,
           "defaultValue": false,
-          "label": "Project Plans Being Finalized",
+          "label": "Core Documentation Not Received.",
           "validFor": null,
-          "value": "Project Plans Being Finalized"
+          "value": "Core Documentation Not Received."
         },
         {
           "active": true,
           "defaultValue": false,
-          "label": "Core Documentation Not Received",
+          "label": "Core Documentation Received - Pending Entry",
           "validFor": null,
-          "value": "Core Documentation Not Received"
-        },
-        {
-          "active": true,
-          "defaultValue": false,
-          "label": "Core Documentation Received – Pending Entry",
-          "validFor": null,
-          "value": "Core Documentation Received – Pending Entry"
+          "value": "Core Documentation Received - Pending Entry"
         },
         {
           "active": true,
@@ -1873,7 +1866,7 @@
     },
     "data_migration_status_notes__c": {
       "label": "Data migration Status Notes",
-      "inlineHelpText": "These are notes for the project/program staff from the Data migration unit. For additional questions, contact Nick Reese.",
+      "inlineHelpText": "These are notes for the project/program staff from the Data migration unit. \r\nFor additional questions, contact Nick Reese.",
       "picklistValues": []
     }
   },
@@ -2617,6 +2610,11 @@
       "label": "Country(Admin_0)",
       "inlineHelpText": null,
       "picklistValues": []
+    },
+    "related_to_project__c": {
+      "label": "Related To Project",
+      "inlineHelpText": null,
+      "picklistValues": []
     }
   },
   "Request_For_Assistance__c": {
@@ -2882,16 +2880,6 @@
       "inlineHelpText": null,
       "picklistValues": []
     },
-    "total_arc_contributions__c": {
-      "label": "Total ARC Cash Contribution on RFA",
-      "inlineHelpText": "This field represents total ARC contributions provided for this request.",
-      "picklistValues": []
-    },
-    "latest_checklist__c": {
-      "label": "Latest Checklist",
-      "inlineHelpText": null,
-      "picklistValues": []
-    },
     "arc_response_date__c": {
       "label": "ARC Response Date",
       "inlineHelpText": null,
@@ -2909,6 +2897,11 @@
     },
     "beneficiaries_reached_individuals__c": {
       "label": "Beneficiaries Reached Individuals",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "total_arc_cash_contribution_on_rfa__c": {
+      "label": "Total ARC Cash Contribution on RFA",
       "inlineHelpText": null,
       "picklistValues": []
     }
@@ -3001,11 +2994,6 @@
     },
     "location__r_internal_region__c": {
       "label": "Internal Region",
-      "inlineHelpText": null,
-      "picklistValues": []
-    },
-    "location__r_name__c": {
-      "label": "Name",
       "inlineHelpText": null,
       "picklistValues": []
     },
@@ -3106,11 +3094,6 @@
     },
     "location__r_admin_5__c": {
       "label": "Admin 5",
-      "inlineHelpText": null,
-      "picklistValues": []
-    },
-    "location__r_country_iso_code__c": {
-      "label": "Country ISO Code",
       "inlineHelpText": null,
       "picklistValues": []
     },
@@ -3728,6 +3711,26 @@
       "label": "Other Data Collection",
       "inlineHelpText": null,
       "picklistValues": []
+    },
+    "required_for_donor_external_audiences__c": {
+      "label": "Required for Donor/External audience",
+      "inlineHelpText": null,
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Donor",
+          "validFor": null,
+          "value": "Donor"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Other",
+          "validFor": null,
+          "value": "Other"
+        }
+      ]
     }
   },
   "Indicator_Value__c": {
@@ -4089,6 +4092,26 @@
       "label": "Framework_Type",
       "inlineHelpText": null,
       "picklistValues": []
+    },
+    "required_for_donor_external_audiences__c": {
+      "label": "Required for Donor/External audience",
+      "inlineHelpText": null,
+      "picklistValues": [
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Donor",
+          "validFor": null,
+          "value": "Donor"
+        },
+        {
+          "active": true,
+          "defaultValue": false,
+          "label": "Other",
+          "validFor": null,
+          "value": "Other"
+        }
+      ]
     }
   },
   "Risk__c": {
@@ -4488,7 +4511,7 @@
       "picklistValues": []
     },
     "name": {
-      "label": "Program/Project Performance Status Name",
+      "label": "Performance Status",
       "inlineHelpText": null,
       "picklistValues": []
     },

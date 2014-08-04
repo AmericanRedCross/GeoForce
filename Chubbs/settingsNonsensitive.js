@@ -2,19 +2,9 @@
 //passwords and sensitive settings are in settings.js
 var nonsensitiveSettings = {};
 
-process.env.NODE_ENV = 'development'; //Change to 'production' or 'test' depending on deployment.
-
 nonsensitiveSettings.pg = {};
 nonsensitiveSettings.application = {};
 nonsensitiveSettings.tilestream = {};
-
-//application port settings
-nonsensitiveSettings.application.port = 3000;
-nonsensitiveSettings.application.ip = "localhost";
-
-//Enable Security?
-nonsensitiveSettings.enableSecurity = false;
-
 
 nonsensitiveSettings.tilestream.host = "54.212.254.185";
 nonsensitiveSettings.tilestream.path = "/api/Tileset";

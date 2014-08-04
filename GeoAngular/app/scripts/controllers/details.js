@@ -268,7 +268,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       $scope.showDetails(properties);
       $scope.openParam('details-panel');
     }
-
+    $scope.resizeDetailsPanel();
   });
 
   $scope.$on('route-update', function () {
@@ -300,6 +300,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     } else {
       $scope.moreLess = 'More';
     }
+    //Resize;
+    $scope.resizeDetailsPanel();
   };
 
   $scope.showDetails = function (item, themeItems, idx) {
@@ -318,28 +320,28 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     }
 
     //Filter/Format RFAs and Indicators
-    if ($scope.details.requestsForAssistance) {
+    if ($scope.details.requestsForAssistance && typeof $scope.details.requestsForAssistance === 'array') {
       //Filter/Format
       $scope.details.requestsForAssistance = $scope.details.requestsForAssistance.map(function (rfa) {
         return removeUnwantedItems(formatDetails(rfa, "RFA"), "RFA");
       });
     }
 
-    if ($scope.details.indicators) {
+    if ($scope.details.indicators && typeof $scope.details.indicators === 'array') {
       //Filter/Format
       $scope.details.indicators = $scope.details.indicators.map(function (indicator) {
         return removeUnwantedItems(formatDetails(indicator, "indicator"), "indicator");
       });
     }
 
-    if ($scope.details.risks) {
+    if ($scope.details.risks && typeof $scope.details.risks === 'array') {
       //Filter/Format
 //          $scope.details.risks = $scope.details.risks.map(function (risk) {
 //              return removeUnwantedItems(formatDetails(risk, "risk"), "risk");
 //          });
     }
 
-    if ($scope.details.statuses) {
+    if ($scope.details.statuses && typeof $scope.details.statuses === 'array') {
       //Filter/Format
 //          $scope.details.statuses = $scope.details.statuses.map(function (status) {
 //              return removeUnwantedItems(formatDetails(status, "status"), "status");
@@ -474,9 +476,18 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.resizeDetailsPanel = function() {
-    var detailsPanelTop = $('#DetailsPanel').offset().top;
-    var height = $('#MapCtrl').height() - 300; //Magic Number
-    $('#DetailsPanel .InnerContainer ').css("max-height",height);
+    var height = $('#MapCtrl').height() - 200; //Magic Number
+
+    //height is the value that the entire details panel should never exceed.
+    //Within the panel itself, the inner container needs to adjust its height based on the contents of the panel.
+    //Sometimes, there are tabs, and sometimes the project/disaster description can be quite long.
+    //In these cases, then innerContainer should shrink to fit within the max-height of the outer panel (height)
+
+    //Find the top of the innerContainer, and subtract from the max height of the panel.  That's what the max-height of the inner panel should be
+    var innerTop = $('#DetailsPanel .InnerContainer').position().top;
+    var bottomHeight = $(".details-bottom-buttons.pull-right").height();
+
+    $('#DetailsPanel .InnerContainer ').css("max-height", height - innerTop - bottomHeight);
   };
 
 	//Connect the layout onresize end event

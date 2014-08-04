@@ -187,85 +187,81 @@ git clone https://github.com/AmericanRedCross/GeoForce.git
 ### 2. Install NodeJS Package Dependencies
 
 ```
+sudo chmod -R a+rwx /usr/local/lib/node_modules/
 cd GeoAngular
 sudo npm install -g grunt-cli
-npm install
-cd ..
-cd Succubus
-npm install
-cd ..
-cd Chubbs
-npm install
+sudo npm install
+cd ../Succubus
+sudo npm install
+cd ../Chubbs
+sudo npm install
 ```
 
 ### 3. Fill in proper settings for Chubbs in settings.js (Chubbs/settings.js)
 
-```
-﻿//Settings.js is not part of the repository.  However, it should be deployed with the application and contain deployment-specific settings.
-//there is a settings.js.example file that should match the structure and properties of this file that IS checked in to the repo.
-var settings = {}
+If you are on a production server, change these to: 
 
-settings.pg = {};
-settings.application = {};
-settings.tilestream = {};
+```js
+process.env.NODE_ENV = 'production';
+settings.enableSecurity = true;
+```
+
+If you have enabled security, make sure you have `geo.cer` and `geo.pfx` in the Chubbs directory. These are your SSL security certificates.
+
+```js
+//Settings.js is not part of the repository.  However, it should be deployed with the application and contain deployment-specific settings.
+//There is a settings.js.example file that should match the structure and properties of this file that IS checked in to the repo.
+var settings = {};
+var settingsNonsensitive = require("./settingsNonsensitive.js");
+
+//Bring in the non sensitive stuff.
+settings = settingsNonsensitive;
+
+//Change to 'production' or 'test' depending on deployment.
+process.env.NODE_ENV = 'development';
 
 //application port settings
-settings.application.port = 3000;
+settings.application.port = 3001;
 settings.application.ip = "localhost";
 
+//Enable Security?
+settings.enableSecurity = false;
+
+//SSL Settings
+settings.ssl = {};
+settings.ssl.pfx = 'geo.pfx';
+settings.ssl.password = '<password>';
+
+//Express Session Secret
+settings.expressSessionSecret = "specialsecret";
+
 //Settings for postgres DB
-settings.pg.username = 'rc';
-settings.pg.password = 'rc';
-settings.pg.server = 'localhost';
+settings.pg.username = 'postgres';
+settings.pg.password = '<password>';
+settings.pg.server = '<database-url>';
 settings.pg.port = '5432';
-settings.pg.database = 'rc';
-settings.pg.featureLimit = 1000; //how many features to return by default
+settings.pg.database = 'redcross_prod';
 
-settings.tilestream.host = 'tiles.fspmaps.com'
-settings.tilestream.path = "/api/Tileset";
-settings.tilestream.port = "8888";
+//how many features to return by default - dont worry about this for RedCross
+settings.pg.featureLimit = 1000;
 
-//Should the API display postgres views?
-settings.displayViews = true;
+//PROD SalesForce OAUTH settings
+settings.salesforce = {};
+settings.salesforce.ConsumerKey = "<long-garbled-string>"; //clientID
+settings.salesforce.ClientSecret = "<just-positive-integers>";
+settings.salesforce.Scope = ["id", "profile"];
+settings.salesforce.CallbackURL = "https://geo.redcross.org/oauth2/callback";
+settings.salesforce.authorizationURL = 'https://na14.salesforce.com/services/oauth2/authorize';
+settings.salesforce.tokenURL = 'https://na14.salesforce.com/services/oauth2/token';
 
-//Should the API display postgres tables?
-settings.displayTables = true;
-
-//Should the API hide any postgres tables or views?
-settings.pg.noFlyList = ["att_0"];
-
-//The list of formats to be returned by the Table Query REST endpoint.  If ogr2ogr is installed, .shp will be added automatically.
-settings.application.formatList =[ 'html', 'GeoJSON', 'esriJSON'];
-
-//Where to write out TopoJSON files?
-settings.application.topoJsonOutputFolder = "/public/topojson/output/";
-
-//Where to write out GeoJSON files?
-settings.application.geoJsonOutputFolder = "/public/geojson/output/";
-
-//Optional.  If you're using port forwarding or URL rewriting, but need to display full URLs to your assets, this will stand in for the host.
-// settings.application.publichost = "myhost.com"; //Keep this empty if you want to use the default host
-// settings.application.publicport = "80";
-
-//The lowest administrative level for each datasource
-settings.dsLevels = {};
-settings.dsLevels["gadm"] = 5;
-settings.dsLevels["gaul"] = 2;
-settings.dsLevels["naturalearth"] = 1;
-settings.dsLevels["local"] = 2;
-
-//Columns by level and datasource
-settings.dsColumns = {};
-
-//Used to define how to query DB for admin stack
-//Columns aliased to be consistent between data sources.
-//GADM
-settings.dsColumns["gadm0"] = { geometry: "ST_AsGeoJSON(geom_simplify_high) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, ST_AsText(ST_Centroid(geom)) as centroid, 0 as level" };
-settings.dsColumns["gadm1"] = { geometry: "ST_AsGeoJSON(geom_simplify_high) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, ST_AsText(ST_Centroid(geom)) as centrosid, 1 as level" };
-settings.dsColumns["gadm2"] = { geometry: "ST_AsGeoJSON(geom_simplify_high) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, ST_AsText(ST_Centroid(geom)) as centroid, 2 as level" };
-settings.dsColumns["gadm3"] = { geometry: "ST_AsGeoJSON(geom_simplify_high) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, ST_AsText(ST_Centroid(geom)) as centroid, 3 as level" };
-settings.dsColumns["gadm4"] = { geometry: "ST_AsGeoJSON(geom_simplify_high) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, id_4 as adm4_code, name_4 as adm4_name, ST_AsText(ST_Centroid(geom)) as centroid, 4 as level" };
-settings.dsColumns["gadm5"] = { geometry: "ST_AsGeoJSON(geom_simplify_high) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, id_4 as adm4_code, name_4 as adm4_name, id_5 as adm5_code, name_5 as adm5_name, ST_AsText(ST_Centroid(geom)) as centroid, 5 as level" };
+//Dev SalesForce OAUTH
+//settings.salesforce = {};
+//settings.salesforce.ConsumerKey = "<long-garbled-string>"; //clientID
+//settings.salesforce.ClientSecret = "<just-positive-integers>;
+//settings.salesforce.Scope = ["id", "profile"];
+//settings.salesforce.CallbackURL = "https://geo.redcross.org/oauth2/callback";
+//settings.salesforce.authorizationURL = 'https://cs19.salesforce.com/services/oauth2/authorize';
+//settings.salesforce.tokenURL = 'https://cs19.salesforce.com/services/oauth2/token';
 
 module.exports = settings;
 ```
@@ -273,25 +269,44 @@ module.exports = settings;
 ### 4. Fill in proper settings for Succubus (Succubus/settings.js)
 
 ```js
-﻿module.exports = {
+module.exports = {
 
-    // PostGIS Database Connection
-    pg: {
-        server: 'localhost',
-        port: '5432',
-        database: 'rc',
-        user: 'rc',
-        password: 'rc',
-        escapeStr: 'nh9'
-    },
+  // PostGIS Database Connection
+  pg: {
+    server: '<database-url>',
+    port: '5432',
+    database: 'redcross_prod',
+    user: 'postgres',
+    password: '<password>',
+    escapeStr: 'anystr'
+  },
 
-    // Salesforce Credentials
-    salesforce: {
-        loginUrl: 'https://cs18.salesforce.com',
-        user: '***',
-        password: '***',
-        token: '***'
-    }
+//  pg: {
+//    server: 'localhost',
+//    port: '5432',
+//    database: 'redcross_dev',
+//    user: 'postgres',
+//    password: '',
+//    escapeStr: 'anystr'
+//  },
+
+  // Salesforce Credentials
+
+  // Production Salesforce Instance
+//  salesforce: {
+//    loginUrl: 'https://na14.salesforce.com',
+//    user: 'gis@redcross.org',
+//    password: '<password>',
+//    token: '<long-string-token>'
+//  }
+
+  // UAT (Development) Salesforce Instance
+  salesforce: {
+    loginUrl: 'https://cs18.salesforce.com',
+    user: 'gis@salesforce.com.uat',
+    password: '<password>',
+    token: '<long-string-token>'
+  }
 
 };
 ```
@@ -315,28 +330,39 @@ node app.js
 ```
 sudo forever list
 sudo forever stop 0
-sudo forever start app.js
+sudo forever --minUptime 500ms --spinSleepTime 500ms start app.js
 ```
 
 
-## Cheat sheet
-``` Configure nginx
-from --http://stackoverflow.com/questions/5009324/node-js-nginx-and-now
+# Setup NGINX with Simple .htpasswd Authentication
 
---create a file in /etc/nginx/sites-available/geoforce
+If you would like to set up a production server with SSL rather than this simple mode of authentication, 
+instead follow `Docs/InstallAndSetupNotes/nginx_ssl_setup.txt`.
 
-sudo pico /etc/nginx/sites-available/geoforce
-then enter:
+[How To Set Up HTTP Authentication With Nginx On Ubuntu 12.10](https://www.digitalocean.com/community/articles/how-to-set-up-http-authentication-with-nginx-on-ubuntu-12-10)
 
-# the IP(s) on which your node server is running. I chose port 3000.
+sudo apt-get install apache2-utils
+
+cd ~/GeoForce/GeoAngular/app
+sudo htpasswd -c .htpasswd redcross
+(will prompt for password)
+
+From [http://stackoverflow.com/questions/5009324/node-js-nginx-and-now](http://stackoverflow.com/questions/5009324/node-js-nginx-and-now).
+
+Create a text file in `/etc/nginx/sites-available/geoforce`
+
+In that file, enter:
+
+```
+# the IP(s) on which your node server is running. I chose port 3001.
 upstream app_geoforce {
-    server 127.0.0.1:3000;
+    server 127.0.0.1:3001;
 }
 
-# the nginx server instance
 server {
     listen 0.0.0.0:80;
-    server_name 54.201.181.57 geoforce;
+    # the domain name or ip of the server this is on
+    server_name 54.201.181.57;
     access_log /var/log/nginx/geoforce.log;
 
     # pass the request to the node.js server with the correct headers and much more can be added, see nginx config options
@@ -351,40 +377,33 @@ server {
       proxy_pass http://app_geoforce;
       proxy_redirect off;
     }
- }
+}
+```
 
---Next, enable the site defined above
+Next, enable the site defined above
+
+```
 cd /etc/nginx/sites-enabled/
 sudo ln -s /etc/nginx/sites-available/geoforce geoforce
+```
 
 
---restart nginx
-sudo /etc/init.d/nginx restart
+Restart nginx
 
-### Set up simple authentication with nginx (https://www.digitalocean.com/community/articles/how-to-set-up-http-authentication-with-nginx-on-ubuntu-12-10)
-sudo apt-get install apache2-utils
-
-cd ~/GeoForce/GeoAngular/app
-sudo htpasswd -c .htpasswd redcross
-(will prompt for password)
+```
+sudo service nginx restart
+```
 
 
 ```
+
+# Donate some blood (and eat some pancakes).
+
+
+## Further notes...
 
 ### Restart PostgreSQL
 
 ```
-sudo /etc/init.d/postgresql restart
-```
-
-### Config File for Setting Postgres Connection Settings
-
-```
-/usr/local/pgsql/data/data/pg_hba.conf
-```
-
-or
-
-```
-/etc/postgresql/9.3/main/pg_hba.conf
+sudo service postgresql restart
 ```
