@@ -142,15 +142,14 @@ try {
 if (datablaster)
 	app.use(datablaster.app(passport));
 
-if (process.env.NODE_ENV.toLowerCase() == "production") {
+
+if(process.env.NODE_ENV.toLowerCase() == "production"){
   //Configure HTTPS
   var SSLoptions = {
     pfx: fs.readFileSync(settings.ssl.pfx),
     passphrase: settings.ssl.password
   };
-}
 
-if(process.env.NODE_ENV.toLowerCase() == "production"){
     //Create web server (https)
     https.createServer(SSLoptions, app).listen(app.get('port'), app.get('ipaddr'), function() {
         var startMessage = "Express server listening (HTTPS)";
