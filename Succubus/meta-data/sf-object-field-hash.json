@@ -3894,6 +3894,16 @@
       "label": "Unique Indicator Value",
       "inlineHelpText": null,
       "picklistValues": []
+    },
+    "actual_comment__c": {
+      "label": "Actual Comment",
+      "inlineHelpText": null,
+      "picklistValues": []
+    },
+    "target_comment__c": {
+      "label": "Target Comment",
+      "inlineHelpText": null,
+      "picklistValues": []
     }
   },
   "Logframe_Element__c": {
