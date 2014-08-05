@@ -112,8 +112,8 @@ function createFieldsString(fieldsArr) {
 
 var indicatorFields = createFieldsString(metaData.Indicator__c.fields);
 var indicatorValueFields = createFieldsString(metaData.Indicator_Value__c.fields);
-var logframeElementFields = createFieldsString(metaData.Logframe_Element__c.fields);
-var projectLocationFields = createFieldsString(metaData.Project_Location__c.fields);
+//var logframeElementFields = createFieldsString(metaData.Logframe_Element__c.fields);
+//var projectLocationFields = createFieldsString(metaData.Project_Location__c.fields);
 var requestForAssistanceFields = createFieldsString(metaData.Request_For_Assistance__c.fields);
 
 
@@ -169,8 +169,7 @@ module.exports = {
 
 
   indicator: "Select " + indicatorFields + " From Indicator__c",
-  indicatorValue: "Select " + indicatorValueFields + " From Indicator_Value__c",
+  indicatorValue: "Select " + indicatorValueFields + " From Indicator_Value__c"
 //  logframeElement: "Select " + logframeElementFields + " From Logframe_Element__c",
-  projectLocation: "Select " + projectLocationFields + " From Project_Location__c"
 
 };

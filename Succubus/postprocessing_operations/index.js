@@ -56,10 +56,13 @@ operations.addRiskToSFProjectTable = addRiskToSFProjectTable();
 //Add 'status' to sf_project
 operations.addStatusToSFProjectTable = addStatusToSFProjectTable();
 
-//Create the aggregated project counts by all gaul levels, with counts rolled up to parents
+//Create the aggregated project counts by all gadm levels, with counts rolled up to parents
 operations.createAggregateProjectCountsForGADM = fs.readFileSync('./sql/createAggregatedProjectCountsForGADM.sql', 'utf8');
 
-//Create the aggregated project counts by all gaul levels, with counts rolled up to parents
+// Doing this again for the many-to-many projects relationship.
+operations.createAggregateProjectCountsMany = fs.readFileSync('./sql/createAggregatedProjectCountsMany.sql', 'utf8');
+
+//Create the aggregated project counts by all gadm levels, with counts rolled up to parents
 operations.createAggregateDisasterCountsForGADM = fs.readFileSync('./sql/createAggregatedDisasterCountsForGADM.sql', 'utf8');
 
 operations.AddIndicesForProjectTable =
