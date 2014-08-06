@@ -44,7 +44,7 @@ operation.execute = flow.define(
       operation.inputs["gadm_level"] = args.gadm_level.toLowerCase();
       operation.inputs["filters"] = args.filters;
 
-      if (settings.projectsManyToMany) {
+      if (settings.projectsManyToMany && operation.inputs["theme"] === 'project') {
         this.Query = "SELECT '" + operation.inputs["theme"] + "' as theme, sum(count{{gadm_level}}) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts_many WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
       } else {
         this.Query = "SELECT '" + operation.inputs["theme"] + "' as theme, sum(count{{gadm_level}}) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid, ST_ASGeoJSON(geom{{gadm_level}}) as geom FROM sf_aggregated_gadm_{{theme}}_counts WHERE guid{{gadm_level}} IN ({{ids}}) {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
