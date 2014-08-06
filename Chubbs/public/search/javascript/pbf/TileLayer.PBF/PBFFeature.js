@@ -16,12 +16,14 @@ function PBFFeature(pbfLayer, vtf, ctx, id, style) {
 
   this.id = id;
 
+  this.layerLink = this.pbfSource.layerLink;
+  this.toggleEnabled = true;
+  this.selected = false;
+
   // how much we divide the coordinate from the vector tile
   this.divisor = vtf.extent / ctx.tileSize;
   this.extent = vtf.extent;
   this.tileSize = ctx.tileSize;
-
-  this.isSelected = false;
 
   //An object to store the paths and contexts for this feature
   this.tiles = {};
@@ -36,25 +38,32 @@ function PBFFeature(pbfLayer, vtf, ctx, id, style) {
   //Add to the collection
   this.addTileFeature(vtf, ctx);
 
-  if (typeof style.label === 'function') {
-    this.featureLabel = this.pbfSource.label.createFeature(this);
+  if (typeof style.dynamicLabel === 'function') {
+    this.featureLabel = this.pbfSource.dynamicLabel.createFeature(this);
   }
 }
 
 PBFFeature.prototype.draw = function(vtf, ctx) {
-  //vtf.coordinates = vtf.loadGeometry();
+  if (this.selected) {
+    var style = this.style.selected || this.style;
+  } else {
+    var style = this.style;
+  }
 
   switch (vtf.type) {
     case 1: //Point
-      this._drawPoint(ctx, vtf.coordinates, this.style);
+      this._drawPoint(ctx, vtf.coordinates, style);
+      if (typeof this.style.staticLabel === 'function') {
+        this._drawStaticLabel(ctx, vtf.coordinates, style);
+      }
       break;
 
     case 2: //LineString
-      this._drawLineString(ctx, vtf.coordinates, this.style);
+      this._drawLineString(ctx, vtf.coordinates, style);
       break;
 
     case 3: //Polygon
-      this._drawPolygon(ctx, vtf.coordinates, this.style);
+      this._drawPolygon(ctx, vtf.coordinates, style);
       break;
 
     default:
@@ -151,6 +160,32 @@ PBFFeature.prototype.setStyle = function(style) {
   this._eventHandlers["styleChanged"](this.tiles);
 };
 
+PBFFeature.prototype.toggle = function() {
+  if (this.selected) {
+    this.deselect();
+  } else {
+    this.select();
+  }
+};
+
+PBFFeature.prototype.select = function() {
+  this.selected = true;
+  this._eventHandlers["styleChanged"](this.tiles);
+  var linkedFeature = this.linkedFeature();
+  if (linkedFeature.staticLabel && !linkedFeature.staticLabel.selected) {
+    linkedFeature.staticLabel.select();
+  }
+};
+
+PBFFeature.prototype.deselect = function() {
+  this.selected = false;
+  this._eventHandlers["styleChanged"](this.tiles);
+  var linkedFeature = this.linkedFeature();
+  if (linkedFeature.staticLabel && linkedFeature.staticLabel.selected) {
+    linkedFeature.staticLabel.deselect();
+  }
+};
+
 PBFFeature.prototype.on = function(eventType, callback) {
   this._eventHandlers[eventType] = callback;
 };
@@ -170,6 +205,37 @@ PBFFeature.prototype._drawPoint = function(ctx, coordsArray, style) {
   g.fill();
   g.restore();
   part.paths.push([p]);
+};
+
+PBFFeature.prototype._drawStaticLabel = function(ctx, coordsArray, style) {
+  if (!style) return;
+
+  var vecPt = this._tilePoint(coordsArray[0][0]);
+
+  // We're making a standard Leaflet Marker for this label.
+  var p = this._project(vecPt, ctx.tile.x, ctx.tile.y, this.extent, this.tileSize); //vectile pt to merc pt
+  var mercPt = L.point(p.x, p.y); // make into leaflet obj
+  var latLng = this.map.unproject(mercPt); // merc pt to latlng
+
+  this.staticLabel = new StaticLabel(this, ctx, latLng, style);
+};
+
+/**
+ * Projects a vector tile point to the Spherical Mercator pixel space for a given zoom level.
+ *
+ * @param vecPt
+ * @param tileX
+ * @param tileY
+ * @param extent
+ * @param tileSize
+ */
+PBFFeature.prototype._project = function(vecPt, tileX, tileY, extent, tileSize) {
+  var xOffset = tileX * tileSize;
+  var yOffset = tileY * tileSize;
+  return {
+    x: Math.floor(vecPt.x + xOffset),
+    y: Math.floor(vecPt.y + yOffset)
+  };
 };
 
 PBFFeature.prototype._drawLineString = function(ctx, coordsArray, style) {
@@ -255,6 +321,11 @@ PBFFeature.prototype._tilePoint = function(coords) {
   return new L.Point(coords.x / this.divisor, coords.y / this.divisor);
 };
 
+PBFFeature.prototype.linkedFeature = function() {
+  var linkedLayer = this.pbfLayer.linkedLayer();
+  var linkedFeature = linkedLayer.features[this.id];
+  return linkedFeature;
+};
 
 function isClockwise(p){
   var sum = 0;

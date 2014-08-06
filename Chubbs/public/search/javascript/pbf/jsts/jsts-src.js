@@ -5944,7 +5944,7 @@ jsts.geomgraph.EdgeIntersection.prototype.toString = function() {
   /**
    * Create a new "split edge" with the section of points between
    * (and including) the two intersections.
-   * The label for the new edge is the same as the label for the parent edge.
+   * The dynamicLabel for the new edge is the same as the dynamicLabel for the parent edge.
    */
   jsts.geomgraph.EdgeIntersectionList.prototype.createSplitEdge = function(ei0,  ei1)  {
     var npts = ei1.segmentIndex - ei0.segmentIndex + 2;
@@ -5966,7 +5966,7 @@ jsts.geomgraph.EdgeIntersection.prototype.toString = function() {
       pts[ipt++] = this.edge.pts[i];
     }
     if (useIntPt1) pts[ipt] = ei1.coord;
-    return new jsts.geomgraph.Edge(pts, new jsts.geomgraph.Label(this.edge.label));
+    return new jsts.geomgraph.Edge(pts, new jsts.geomgraph.Label(this.edge.dynamicLabel));
   };
 
 })();
@@ -6300,7 +6300,7 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
     this.copyNodesAndLabels(0);
     this.copyNodesAndLabels(1);
 
-    // complete the labelling for any nodes which only have a label for a single
+    // complete the labelling for any nodes which only have a dynamicLabel for a single
     // geometry
     this.labelIsolatedNodes();
 
@@ -6411,9 +6411,9 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
 
 
   /**
-   * Copy all nodes from an arg geometry into this graph. The node label in the
-   * arg geometry overrides any previously computed label for that argIndex.
-   * (E.g. a node may be an intersection node with a computed label of BOUNDARY,
+   * Copy all nodes from an arg geometry into this graph. The node dynamicLabel in the
+   * arg geometry overrides any previously computed dynamicLabel for that argIndex.
+   * (E.g. a node may be an intersection node with a computed dynamicLabel of BOUNDARY,
    * but in the original arg Geometry it is actually in the interior due to the
    * Boundary Determination Rule)
    *
@@ -6431,8 +6431,8 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
 
   /**
    * Insert nodes for all intersections on the edges of a Geometry. Label the
-   * created nodes the same as the edge label if they do not already have a
-   * label. This allows nodes created by either self-intersections or mutual
+   * created nodes the same as the edge dynamicLabel if they do not already have a
+   * dynamicLabel. This allows nodes created by either self-intersections or mutual
    * intersections to be labelled. Endpoint nodes will already be labelled from
    * when they were inserted.
    *
@@ -6458,8 +6458,8 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
 
 
   /**
-   * For all intersections on the edges of a Geometry, label the corresponding
-   * node IF it doesn't already have a label. This allows nodes created by
+   * For all intersections on the edges of a Geometry, dynamicLabel the corresponding
+   * node IF it doesn't already have a dynamicLabel. This allows nodes created by
    * either self-intersections or mutual intersections to be labelled. Endpoint
    * nodes will already be labelled from when they were inserted.
    *
@@ -6593,9 +6593,9 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
     for (var ni = this.nodes.iterator(); ni.hasNext();) {
       var n = ni.next();
       var label = n.getLabel();
-      // isolated nodes should always have at least one geometry in their label
+      // isolated nodes should always have at least one geometry in their dynamicLabel
       Assert
-          .isTrue(label.getGeometryCount() > 0, 'node with empty label found');
+          .isTrue(label.getGeometryCount() > 0, 'node with empty dynamicLabel found');
       if (n.isIsolated()) {
         if (label.isNull(0))
           this.labelIsolatedNode(n, 0);
@@ -6684,7 +6684,7 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
    * @constructor
    */
   jsts.geomgraph.GraphComponent = function(label) {
-    this.label = label;
+    this.dynamicLabel = label;
   };
 
 
@@ -6692,7 +6692,7 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
    * @type {Label}
    * @protected
    */
-  jsts.geomgraph.GraphComponent.prototype.label = null;
+  jsts.geomgraph.GraphComponent.prototype.dynamicLabel = null;
 
 
   /**
@@ -6726,7 +6726,7 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
   jsts.geomgraph.GraphComponent.prototype._isVisited = false;
 
   jsts.geomgraph.GraphComponent.prototype.getLabel = function() {
-    return this.label;
+    return this.dynamicLabel;
   };
   jsts.geomgraph.GraphComponent.prototype.setLabel = function(label) {
     if (arguments.length === 2) {
@@ -6734,7 +6734,7 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
       return;
     }
 
-    this.label = label;
+    this.dynamicLabel = label;
   };
 
 
@@ -6821,7 +6821,7 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
 
   /**
    * An isolated component is one that does not intersect or touch any other
-   * component. This is the case if the label has valid locations for only a
+   * component. This is the case if the dynamicLabel has valid locations for only a
    * single Geometry.
    *
    * @return true if this component is isolated.
@@ -6839,7 +6839,7 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
    *          im
    */
   jsts.geomgraph.GraphComponent.prototype.updateIM = function(im) {
-    Assert.isTrue(this.label.getGeometryCount() >= 2, 'found partial label');
+    Assert.isTrue(this.dynamicLabel.getGeometryCount() >= 2, 'found partial dynamicLabel');
     this.computeIM(im);
   };
 
@@ -6871,7 +6871,7 @@ jsts.geom.Location.toLocationSymbol = function(locationValue) {
 jsts.geomgraph.Node = function(coord, edges) {
   this.coord = coord;
   this.edges = edges;
-  this.label = new jsts.geomgraph.Label(0, jsts.geom.Location.NONE);
+  this.dynamicLabel = new jsts.geomgraph.Label(0, jsts.geom.Location.NONE);
 };
 
 jsts.geomgraph.Node.prototype = new jsts.geomgraph.GraphComponent();
@@ -6884,26 +6884,26 @@ jsts.geomgraph.Node.prototype.coord = null;
 jsts.geomgraph.Node.prototype.edges = null;
 
 jsts.geomgraph.Node.prototype.isIsolated = function() {
-  return (this.label.getGeometryCount() == 1);
+  return (this.dynamicLabel.getGeometryCount() == 1);
 };
 
 jsts.geomgraph.Node.prototype.setLabel2 = function(argIndex, onLocation) {
-  if (this.label === null) {
-    this.label = new jsts.geomgraph.Label(argIndex, onLocation);
+  if (this.dynamicLabel === null) {
+    this.dynamicLabel = new jsts.geomgraph.Label(argIndex, onLocation);
   } else
-    this.label.setLocation(argIndex, onLocation);
+    this.dynamicLabel.setLocation(argIndex, onLocation);
 };
 
 
 /**
- * Updates the label of a node to BOUNDARY, obeying the mod-2
+ * Updates the dynamicLabel of a node to BOUNDARY, obeying the mod-2
  * boundaryDetermination rule.
  */
 jsts.geomgraph.Node.prototype.setLabelBoundary = function(argIndex) {
   // determine the current location for the point (if any)
   var loc = jsts.geom.Location.NONE;
-  if (this.label !== null)
-    loc = this.label.getLocation(argIndex);
+  if (this.dynamicLabel !== null)
+    loc = this.dynamicLabel.getLocation(argIndex);
   // flip the loc
   var newLoc;
   switch (loc) {
@@ -6917,7 +6917,7 @@ jsts.geomgraph.Node.prototype.setLabelBoundary = function(argIndex) {
     newLoc = jsts.geom.Location.BOUNDARY;
     break;
   }
-  this.label.setLocation(argIndex, newLoc);
+  this.dynamicLabel.setLocation(argIndex, newLoc);
 };
 
 
@@ -8907,19 +8907,19 @@ jsts.operation.polygonize.PolygonizeEdge.prototype.getLine = function() {
 
   PolygonizeDirectedEdge.prototype.edgeRing = null;
   PolygonizeDirectedEdge.prototype.next = null;
-  PolygonizeDirectedEdge.prototype.label = -1;
+  PolygonizeDirectedEdge.prototype.dynamicLabel = -1;
 
   /**
    * Returns the identifier attached to this directed edge.
    */
   PolygonizeDirectedEdge.prototype.getLabel = function() {
-    return this.label;
+    return this.dynamicLabel;
   };
   /**
    * Attaches an identifier to this directed edge.
    */
   PolygonizeDirectedEdge.prototype.setLabel = function(label) {
-    this.label = label;
+    this.dynamicLabel = label;
   };
 
   /**
@@ -9513,7 +9513,7 @@ jsts.operation.polygonize.PolygonizeEdge.prototype.getLine = function() {
     // by deleteCutEdges()
     this.computeNextCWEdges();
     // clear labels of all edges in graph
-    PolygonizeGraph.label(this.dirEdges, -1);
+    PolygonizeGraph.dynamicLabel(this.dirEdges, -1);
     var maximalRings = PolygonizeGraph.findLabeledEdgeRings(this.dirEdges);
     this.convertMaximalToMinimalEdgeRings(maximalRings);
 
@@ -9543,7 +9543,7 @@ jsts.operation.polygonize.PolygonizeEdge.prototype.getLine = function() {
    */
   PolygonizeGraph.findLabeledEdgeRings = function(dirEdges) {
     var edgeRingStarts = new ArrayList();
-    // label the edge rings formed
+    // dynamicLabel the edge rings formed
     var currLabel = 1;
     for (var i = dirEdges.iterator(); i.hasNext();) {
       var de = i.next();
@@ -9555,7 +9555,7 @@ jsts.operation.polygonize.PolygonizeEdge.prototype.getLine = function() {
       edgeRingStarts.add(de);
       var edges = PolygonizeGraph.findDirEdgesInRing(de);
 
-      PolygonizeGraph.label(edges, currLabel);
+      PolygonizeGraph.dynamicLabel(edges, currLabel);
       currLabel++;
     }
     return edgeRingStarts;
@@ -9568,11 +9568,11 @@ jsts.operation.polygonize.PolygonizeEdge.prototype.getLine = function() {
    */
   PolygonizeGraph.prototype.deleteCutEdges = function() {
     this.computeNextCWEdges();
-    // label the current set of edgerings
+    // dynamicLabel the current set of edgerings
     PolygonizeGraph.findLabeledEdgeRings(this.dirEdges);
 
     /**
-     * Cut Edges are edges where both dirEdges have the same label. Delete them,
+     * Cut Edges are edges where both dirEdges have the same dynamicLabel. Delete them,
      * and record them
      */
     var cutLines = new ArrayList();
@@ -9598,7 +9598,7 @@ jsts.operation.polygonize.PolygonizeEdge.prototype.getLine = function() {
   /**
    * @private
    */
-  PolygonizeGraph.label = function(dirEdges, label) {
+  PolygonizeGraph.dynamicLabel = function(dirEdges, label) {
     for (var i = dirEdges.iterator(); i.hasNext();) {
       var de = i.next();
       de.setLabel(label);
@@ -9635,7 +9635,7 @@ jsts.operation.polygonize.PolygonizeEdge.prototype.getLine = function() {
 
   /**
    * Computes the next edge pointers going CCW around the given node, for the
-   * given edgering label. This algorithm has the effect of converting maximal
+   * given edgering dynamicLabel. This algorithm has the effect of converting maximal
    * edgerings into minimal edgerings
    *
    * @private
@@ -10498,7 +10498,7 @@ jsts.geomgraph.TopologyLocation.prototype.allPositionsEqual = function(loc) {
  *          gl
  */
 jsts.geomgraph.TopologyLocation.prototype.merge = function(gl) {
-  // if the src is an Area label & and the dest is not, increase the dest to be
+  // if the src is an Area dynamicLabel & and the dest is not, increase the dest to be
   // an Area
   if (gl.location.length > this.location.length) {
     var newLoc = [];
@@ -10533,9 +10533,9 @@ jsts.geomgraph.TopologyLocation.prototype.merge = function(gl) {
  * sufficient for algorithms for binary operations.
  * <P>
  * Topology graphs support the concept of labeling nodes and edges in the graph.
- * The label of a node or edge specifies its topological relationship to one or
+ * The dynamicLabel of a node or edge specifies its topological relationship to one or
  * more geometries. (In fact, since JTS operations have only two arguments
- * labels are required for only two geometries). A label for a node or edge has
+ * labels are required for only two geometries). A dynamicLabel for a node or edge has
  * one or two elements, depending on whether the node or edge occurs in one or
  * both of the input <code>Geometry</code>s. Elements contain attributes
  * which categorize the topological location of the node or edge relative to the
@@ -10590,10 +10590,10 @@ jsts.geomgraph.Label = function() {
 
 
 /**
- * converts a Label to a Line label (that is, one with no side Locations)
+ * converts a Label to a Line dynamicLabel (that is, one with no side Locations)
  *
- * @param {label}
- *          label
+ * @param {dynamicLabel}
+ *          dynamicLabel
  * @return {Label}
  */
 jsts.geomgraph.Label.toLineLabel = function(label) {
@@ -10711,8 +10711,8 @@ jsts.geomgraph.Label.prototype.setAllLocationsIfNull2 = function(location) {
 
 
 /**
- * Merge this label with another one. Merging updates any null attributes of
- * this label with the attributes from lbl
+ * Merge this dynamicLabel with another one. Merging updates any null attributes of
+ * this dynamicLabel with the attributes from lbl
  *
  * @param {Label}
  *          lbl
@@ -10855,7 +10855,7 @@ jsts.geomgraph.EdgeRing = function(start, geometryFactory) {
   this.edges = [];
   this.pts = [];
   this.holes = [];
-  this.label = new jsts.geomgraph.Label(jsts.geom.Location.NONE);
+  this.dynamicLabel = new jsts.geomgraph.Label(jsts.geom.Location.NONE);
 
   this.geometryFactory = geometryFactory;
 
@@ -10872,7 +10872,7 @@ jsts.geomgraph.EdgeRing.prototype.maxNodeDegree = -1;
 jsts.geomgraph.EdgeRing.prototype.edges = null; // the DirectedEdges making up
                                                 // this EdgeRing
 jsts.geomgraph.EdgeRing.prototype.pts = null;
-jsts.geomgraph.EdgeRing.prototype.label = null; // label stores the locations of
+jsts.geomgraph.EdgeRing.prototype.dynamicLabel = null; // dynamicLabel stores the locations of
                                                 // each geometry on the face
                                                 // surrounded by this ring
 jsts.geomgraph.EdgeRing.prototype.ring = null; // the ring created for this
@@ -10887,7 +10887,7 @@ jsts.geomgraph.EdgeRing.prototype.holes = null; // a list of EdgeRings which are
 jsts.geomgraph.EdgeRing.prototype.geometryFactory = null;
 
 jsts.geomgraph.EdgeRing.prototype.isIsolated = function() {
-  return (this.label.getGeometryCount() == 1);
+  return (this.dynamicLabel.getGeometryCount() == 1);
 };
 jsts.geomgraph.EdgeRing.prototype.isHole = function() {
   return this._isHole;
@@ -10898,7 +10898,7 @@ jsts.geomgraph.EdgeRing.prototype.getCoordinate = function(i) {
 };
 jsts.geomgraph.EdgeRing.prototype.getLinearRing = function() { return this.ring; };
 jsts.geomgraph.EdgeRing.prototype.getLabel = function() {
-  return this.label;
+  return this.dynamicLabel;
 };
 jsts.geomgraph.EdgeRing.prototype.isShell = function() {
   return this.shell === null;
@@ -11010,20 +11010,20 @@ jsts.geomgraph.EdgeRing.prototype.mergeLabel = function(deLabel) {
   this.mergeLabel2(deLabel, 1);
 };
 /**
- * Merge the RHS label from a DirectedEdge into the label for this EdgeRing. The
- * DirectedEdge label may be null. This is acceptable - it results from a node
+ * Merge the RHS dynamicLabel from a DirectedEdge into the dynamicLabel for this EdgeRing. The
+ * DirectedEdge dynamicLabel may be null. This is acceptable - it results from a node
  * which is NOT an intersection node between the Geometries (e.g. the end node
- * of a LinearRing). In this case the DirectedEdge label does not contribute any
+ * of a LinearRing). In this case the DirectedEdge dynamicLabel does not contribute any
  * information to the overall labelling, and is simply skipped.
  */
 jsts.geomgraph.EdgeRing.prototype.mergeLabel2 = function(deLabel, geomIndex) {
   var loc = deLabel.getLocation(geomIndex, jsts.geomgraph.Position.RIGHT);
-  // no information to be had from this label
+  // no information to be had from this dynamicLabel
   if (loc == jsts.geom.Location.NONE)
     return;
   // if there is no current RHS value, set it
-  if (this.label.getLocation(geomIndex) === jsts.geom.Location.NONE) {
-    this.label.setLocation(geomIndex, loc);
+  if (this.dynamicLabel.getLocation(geomIndex) === jsts.geom.Location.NONE) {
+    this.dynamicLabel.setLocation(geomIndex, loc);
     return;
   }
 };
@@ -19013,7 +19013,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.containsPoint = function(p) {
   /**
    * Insert an edge from one of the noded input graphs. Checks edges that are
    * inserted to see if an identical edge already exists. If so, the edge is not
-   * inserted, but its label is merged with the existing edge.
+   * inserted, but its dynamicLabel is merged with the existing edge.
    *
    * @protected
    */
@@ -19022,13 +19022,13 @@ jsts.operation.overlay.PolygonBuilder.prototype.containsPoint = function(p) {
     // fast lookup
     var existingEdge = this.edgeList.findEqualEdge(e);
 
-    // If an identical edge already exists, simply update its label
+    // If an identical edge already exists, simply update its dynamicLabel
     if (existingEdge !== null) {
       var existingLabel = existingEdge.getLabel();
 
       var labelToMerge = e.getLabel();
       // check if new edge is in reverse direction to existing edge
-      // if so, must flip the label before merging it
+      // if so, must flip the dynamicLabel before merging it
       if (!existingEdge.isPointwiseEqual(e)) {
         labelToMerge = new Label(e.getLabel());
         labelToMerge.flip();
@@ -19057,7 +19057,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.containsPoint = function(p) {
    * Update the labels for edges according to their depths. For each edge, the
    * depths are first normalized. Then, if the depths for the edge are equal,
    * this edge must have collapsed into a line edge. If the depths are not
-   * equal, update the label with the locations corresponding to the depths
+   * equal, update the dynamicLabel with the locations corresponding to the depths
    * (i.e. a depth of 0 corresponds to a Location of EXTERIOR, a depth of 1
    * corresponds to INTERIOR)
    *
@@ -19087,7 +19087,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.containsPoint = function(p) {
             } else {
               /**
                * This edge may be the result of a dimensional collapse, but it
-               * still has different locations on both sides. The label of the
+               * still has different locations on both sides. The dynamicLabel of the
                * edge must be updated to reflect the resultant side locations
                * indicated by the depth values.
                */
@@ -19123,9 +19123,9 @@ jsts.operation.overlay.PolygonBuilder.prototype.containsPoint = function(p) {
     this.edgeList.addAll(newEdges);
   }
   /**
-   * Copy all nodes from an arg geometry into this graph. The node label in the
-   * arg geometry overrides any previously computed label for that argIndex.
-   * (E.g. a node may be an intersection node with a previously computed label
+   * Copy all nodes from an arg geometry into this graph. The node dynamicLabel in the
+   * arg geometry overrides any previously computed dynamicLabel for that argIndex.
+   * (E.g. a node may be an intersection node with a previously computed dynamicLabel
    * of BOUNDARY, but in the original arg Geometry it is actually in the
    * interior due to the Boundary Determination Rule)
    *
@@ -19175,7 +19175,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.containsPoint = function(p) {
    */
   jsts.operation.overlay.OverlayOp.prototype.updateNodeLabelling = function() {
     // update the labels for nodes
-    // The label for a node is updated from the edges incident on it
+    // The dynamicLabel for a node is updated from the edges incident on it
     // (Note that a node may have already been labelled
     // because it is a point in one of the input geometries)
     for (var nodeit = this.graph.getNodes().iterator(); nodeit.hasNext();) {
@@ -19233,7 +19233,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.containsPoint = function(p) {
   };
 
   /**
-   * Find all edges whose label indicates that they are in the result area(s),
+   * Find all edges whose dynamicLabel indicates that they are in the result area(s),
    * according to the operation being performed. Since we want polygon shells to
    * be oriented CW, choose dirEdges with the interior of the result on the RHS.
    * Mark them as being in the result. Interior Area edges are the result of
@@ -19245,7 +19245,7 @@ jsts.operation.overlay.PolygonBuilder.prototype.containsPoint = function(p) {
       opCode) {
     for (var it = this.graph.getEdgeEnds().iterator(); it.hasNext();) {
       var de = it.next();
-      // mark all dirEdges with the appropriate label
+      // mark all dirEdges with the appropriate dynamicLabel
       var label = de.getLabel();
       if (label.isArea() &&
           !de.isInteriorAreaEdge() &&
@@ -22490,7 +22490,7 @@ jsts.geomgraph.EdgeEndStar.prototype.computeLabelling = function(geomGraph) {
   /**
    * If there are edges that still have null labels for a geometry this must be
    * because there are no area edges for that geometry incident on this node. In
-   * this case, to label the edge for that geometry we must test whether the
+   * this case, to dynamicLabel the edge for that geometry we must test whether the
    * edge is in the interior of the geometry. To do this it suffices to
    * determine whether the node for the edge is in the interior of an area. If
    * so, the edge has location INTERIOR for the geometry. In all other cases
@@ -22515,8 +22515,8 @@ jsts.geomgraph.EdgeEndStar.prototype.computeLabelling = function(geomGraph) {
    * MD 8/11/01 - NOT TRUE! The collapsed edges may in fact be in the interior
    * of the Geometry, which means the other edges should be labelled INTERIOR
    * for this Geometry. Not sure how solve this... Possibly labelling needs to
-   * be split into several phases: area label propagation, symLabel merging,
-   * then finally null label resolution.
+   * be split into several phases: area dynamicLabel propagation, symLabel merging,
+   * then finally null dynamicLabel resolution.
    */
   var hasDimensionalCollapseEdge = [false, false];
   for (var it = this.iterator(); it.hasNext();) {
@@ -22552,7 +22552,7 @@ jsts.geomgraph.EdgeEndStar.prototype.computeLabelling = function(geomGraph) {
  */
 jsts.geomgraph.EdgeEndStar.prototype.computeEdgeEndLabels = function(
     boundaryNodeRule) {
-  // Compute edge label for each EdgeEnd
+  // Compute edge dynamicLabel for each EdgeEnd
   for (var it = this.iterator(); it.hasNext();) {
     var ee = it.next();
     ee.computeLabel(boundaryNodeRule);
@@ -23333,15 +23333,15 @@ jsts.operation.buffer.BufferInputLineSimplifier.prototype.isConcave = function(
  * @param {Object}
  *          obj
  * @param {Object}
- *          label
+ *          dynamicLabel
  * @constructor
  */
 jsts.geomgraph.index.SweepLineEvent = function(
     x, obj, label) {
-  // label can be null, so check object to handle overloading
+  // dynamicLabel can be null, so check object to handle overloading
   if (!(obj instanceof jsts.geomgraph.index.SweepLineEvent)) {
     this.eventType = jsts.geomgraph.index.SweepLineEvent.INSERT;
-    this.label = label;
+    this.dynamicLabel = label;
     this.xValue = x;
     this.obj = obj;
     return;
@@ -23367,7 +23367,7 @@ jsts.geomgraph.index.SweepLineEvent.DELETE = 2;
  *
  * @type {Object} 
  */
-jsts.geomgraph.index.SweepLineEvent.prototype.label = null;
+jsts.geomgraph.index.SweepLineEvent.prototype.dynamicLabel = null;
 
 /**
  * @type {double} 
@@ -23447,11 +23447,11 @@ jsts.geomgraph.index.SweepLineEvent.prototype.getObject = function() {
  */
 jsts.geomgraph.index.SweepLineEvent.prototype.isSameLabel = function(
     ev) {
-  // no label set indicates single group
-  if (this.label == null) {
+  // no dynamicLabel set indicates single group
+  if (this.dynamicLabel == null) {
     return false;
   }
-  return this.label == ev.label;
+  return this.dynamicLabel == ev.dynamicLabel;
 };
 
 /**
@@ -24952,7 +24952,7 @@ jsts.geomgraph.index.MonotoneChainEdge.prototype.computeIntersectsForChain2 = fu
     var label = new jsts.geomgraph.Label(edge.getLabel());
     // since edgeStub is oriented opposite to it's parent edge, have to flip
     // sides
-    // for edge label
+    // for edge dynamicLabel
     label.flip();
     var e = new jsts.geomgraph.EdgeEnd(edge, eiCurr.coord, pPrev, label);
     // e.print(System.out); System.out.println();
@@ -25827,13 +25827,13 @@ jsts.algorithm.MinimumDiameter.prototype.getMinimumRectangle = function () {
  * @param {Coordinate[]}
  *          pts
  * @param {Label}
- *          label
+ *          dynamicLabel
  * @augments jsts.geomgraph.GraphComponent
  * @constructor
  */
 jsts.geomgraph.Edge = function(pts, label) {
   this.pts = pts;
-  this.label = label;
+  this.dynamicLabel = label;
   this.eiList = new jsts.geomgraph.EdgeIntersectionList(this);
   this.depth = new jsts.geomgraph.Depth();
 };
@@ -25842,7 +25842,7 @@ jsts.geomgraph.Edge.prototype = new jsts.geomgraph.GraphComponent();
 jsts.geomgraph.Edge.constructor = jsts.geomgraph.Edge;
 
 /**
- * Updates an IM from the label for an edge. Handles edges from both L and A
+ * Updates an IM from the dynamicLabel for an edge. Handles edges from both L and A
  * geometries.
  */
 jsts.geomgraph.Edge.updateIM = function(label, im) {
@@ -26070,7 +26070,7 @@ jsts.geomgraph.Edge.prototype.isClosed = function()
  */
 jsts.geomgraph.Edge.prototype.isCollapsed = function()
 {
-  if (! this.label.isArea()) return false;
+  if (! this.dynamicLabel.isArea()) return false;
   if (this.pts.length != 3) return false;
   if (this.pts[0].equals(this.pts[2])) return true;
   return false;
@@ -26080,7 +26080,7 @@ jsts.geomgraph.Edge.prototype.getCollapsedEdge = function()
   var newPts = [];
   newPts[0] = this.pts[0];
   newPts[1] = this.pts[1];
-  var newe = new jsts.geomgraph.Edge(newPts, jsts.geomgraph.Label.toLineLabel(this.label));
+  var newe = new jsts.geomgraph.Edge(newPts, jsts.geomgraph.Label.toLineLabel(this.dynamicLabel));
   return newe;
 };
 
@@ -26090,7 +26090,7 @@ jsts.geomgraph.Edge.prototype.getCollapsedEdge = function()
  * contributes if it has a labelling for both parent geometries
  */
 jsts.geomgraph.Edge.prototype.computeIM = function(im) {
-  jsts.geomgraph.Edge.updateIM(this.label, im);
+  jsts.geomgraph.Edge.updateIM(this.dynamicLabel, im);
 };
 
 /**
@@ -28120,7 +28120,7 @@ jsts.index.quadtree.Node.prototype.createSubnode = function(index) {
    * @param {Coordinate}
    *          p1
    * @param {Label}
-   *          label
+   *          dynamicLabel
    * @constructor
    */
   jsts.geomgraph.EdgeEnd = function(edge, p0, p1, label) {
@@ -28129,7 +28129,7 @@ jsts.index.quadtree.Node.prototype.createSubnode = function(index) {
       this.init(p0, p1);
     }
     if (label) {
-      this.label = label || null;
+      this.dynamicLabel = label || null;
     }
   };
 
@@ -28146,7 +28146,7 @@ jsts.index.quadtree.Node.prototype.createSubnode = function(index) {
    * @type {Label}
    * @protected
    */
-  jsts.geomgraph.EdgeEnd.prototype.label = null;
+  jsts.geomgraph.EdgeEnd.prototype.dynamicLabel = null;
 
 
   /**
@@ -28207,7 +28207,7 @@ jsts.index.quadtree.Node.prototype.createSubnode = function(index) {
   };
 
   jsts.geomgraph.EdgeEnd.prototype.getLabel = function() {
-    return this.label;
+    return this.dynamicLabel;
   };
 
   jsts.geomgraph.EdgeEnd.prototype.getCoordinate = function() {
@@ -31898,7 +31898,7 @@ jsts.operation.relate.RelateNode.prototype = new jsts.geomgraph.Node();
  * @protected
  */
 jsts.operation.relate.RelateNode.prototype.computeIM = function(im) {
-  im.setAtLeastIfValid(this.label.getLocation(0), this.label.getLocation(1), 0);
+  im.setAtLeastIfValid(this.dynamicLabel.getLocation(0), this.dynamicLabel.getLocation(1), 0);
 };
 
 
@@ -32113,23 +32113,23 @@ jsts.operation.relate.RelateNode.prototype.updateIMFromEdges = function(im) {
   /**
    * This edge is a line edge if
    * <ul>
-   * <li> at least one of the labels is a line label
+   * <li> at least one of the labels is a line dynamicLabel
    * <li> any labels which are not line labels have all Locations = EXTERIOR
    * </ul>
    */
   jsts.geomgraph.DirectedEdge.prototype.isLineEdge = function() {
-    var isLine = this.label.isLine(0) || this.label.isLine(1);
-    var isExteriorIfArea0 = !this.label.isArea(0) ||
-        this.label.allPositionsEqual(0, Location.EXTERIOR);
-    var isExteriorIfArea1 = !this.label.isArea(1) ||
-        this.label.allPositionsEqual(1, Location.EXTERIOR);
+    var isLine = this.dynamicLabel.isLine(0) || this.dynamicLabel.isLine(1);
+    var isExteriorIfArea0 = !this.dynamicLabel.isArea(0) ||
+        this.dynamicLabel.allPositionsEqual(0, Location.EXTERIOR);
+    var isExteriorIfArea1 = !this.dynamicLabel.isArea(1) ||
+        this.dynamicLabel.allPositionsEqual(1, Location.EXTERIOR);
 
     return isLine && isExteriorIfArea0 && isExteriorIfArea1;
   };
   /**
    * This is an interior Area edge if
    * <ul>
-   * <li> its label is an Area label for both Geometries
+   * <li> its dynamicLabel is an Area dynamicLabel for both Geometries
    * <li> and for each Geometry both sides are in the interior.
    * </ul>
    *
@@ -32138,8 +32138,8 @@ jsts.operation.relate.RelateNode.prototype.updateIMFromEdges = function(im) {
   jsts.geomgraph.DirectedEdge.prototype.isInteriorAreaEdge = function() {
     var isInteriorAreaEdge = true;
     for (var i = 0; i < 2; i++) {
-      if (!(this.label.isArea(i) &&
-          this.label.getLocation(i, Position.LEFT) === Location.INTERIOR && this.label
+      if (!(this.dynamicLabel.isArea(i) &&
+          this.dynamicLabel.getLocation(i, Position.LEFT) === Location.INTERIOR && this.dynamicLabel
           .getLocation(i, Position.RIGHT) === Location.INTERIOR)) {
         isInteriorAreaEdge = false;
       }
@@ -32148,14 +32148,14 @@ jsts.operation.relate.RelateNode.prototype.updateIMFromEdges = function(im) {
   };
 
   /**
-   * Compute the label in the appropriate orientation for this DirEdge
+   * Compute the dynamicLabel in the appropriate orientation for this DirEdge
    *
    * @private
    */
   jsts.geomgraph.DirectedEdge.prototype.computeDirectedLabel = function() {
-    this.label = new jsts.geomgraph.Label(this.edge.getLabel());
+    this.dynamicLabel = new jsts.geomgraph.Label(this.edge.getLabel());
     if (!this._isForward)
-      this.label.flip();
+      this.dynamicLabel.flip();
   };
 
   /**
@@ -32750,8 +32750,8 @@ jsts.index.strtree.SIRtree.prototype.getComparator = function() {
 
   /**
    * Insert nodes for all intersections on the edges of a Geometry. Label the
-   * created nodes the same as the edge label if they do not already have a
-   * label. This allows nodes created by either self-intersections or mutual
+   * created nodes the same as the edge dynamicLabel if they do not already have a
+   * dynamicLabel. This allows nodes created by either self-intersections or mutual
    * intersections to be labelled. Endpoint nodes will already be labelled from
    * when they were inserted.
    * <p>
@@ -32777,9 +32777,9 @@ jsts.index.strtree.SIRtree.prototype.getComparator = function() {
 
 
   /**
-   * Copy all nodes from an arg geometry into this graph. The node label in the
-   * arg geometry overrides any previously computed label for that argIndex.
-   * (E.g. a node may be an intersection node with a computed label of BOUNDARY,
+   * Copy all nodes from an arg geometry into this graph. The node dynamicLabel in the
+   * arg geometry overrides any previously computed dynamicLabel for that argIndex.
+   * (E.g. a node may be an intersection node with a computed dynamicLabel of BOUNDARY,
    * but in the original arg Geometry it is actually in the interior due to the
    * Boundary Determination Rule)
    */
@@ -37780,7 +37780,7 @@ jsts.operation.buffer.BufferBuilder = function(bufParams) {
  * Compute the change in depth as an edge is crossed from R to L
  *
  * @param {Label}
- *          label
+ *          dynamicLabel
  * @return {Number}
  */
 jsts.operation.buffer.BufferBuilder.depthDelta = function(label) {
@@ -37943,20 +37943,20 @@ jsts.operation.buffer.BufferBuilder.prototype.computeNodedEdges = function(
 
 /**
  * Inserted edges are checked to see if an identical edge already exists. If so,
- * the edge is not inserted, but its label is merged with the existing edge.
+ * the edge is not inserted, but its dynamicLabel is merged with the existing edge.
  *
  * @protected
  */
 jsts.operation.buffer.BufferBuilder.prototype.insertUniqueEdge = function(e) {
   var existingEdge = this.edgeList.findEqualEdge(e);
 
-  // If an identical edge already exists, simply update its label
+  // If an identical edge already exists, simply update its dynamicLabel
   if (existingEdge != null) {
     var existingLabel = existingEdge.getLabel();
 
     var labelToMerge = e.getLabel();
     // check if new edge is in reverse direction to existing edge
-    // if so, must flip the label before merging it
+    // if so, must flip the dynamicLabel before merging it
     if (!existingEdge.isPointwiseEqual(e)) {
       labelToMerge = new jsts.geomgraph.Label(e.getLabel());
       labelToMerge.flip();
@@ -38192,7 +38192,7 @@ jsts.operation.relate.EdgeEndBundle.prototype.edgeEnds = null;
 
 
 jsts.operation.relate.EdgeEndBundle.prototype.getLabel = function() {
-  return this.label;
+  return this.dynamicLabel;
 };
 jsts.operation.relate.EdgeEndBundle.prototype.getEdgeEnds = function() {
   return this.edgeEnds;
@@ -38206,14 +38206,14 @@ jsts.operation.relate.EdgeEndBundle.prototype.insert = function(e) {
 
 
 /**
- * This computes the overall edge label for the set of edges in this
+ * This computes the overall edge dynamicLabel for the set of edges in this
  * EdgeStubBundle. It essentially merges the ON and side labels for each edge.
  * These labels must be compatible
  */
 jsts.operation.relate.EdgeEndBundle.prototype.computeLabel = function(
     boundaryNodeRule) {
-  // create the label. If any of the edges belong to areas,
-  // the label must be an area label
+  // create the dynamicLabel. If any of the edges belong to areas,
+  // the dynamicLabel must be an area dynamicLabel
   var isArea = false;
   for (var i = 0; i < this.edgeEnds.length; i++) {
     var e = this.edgeEnds[i];
@@ -38221,12 +38221,12 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabel = function(
       isArea = true;
   }
   if (isArea)
-    this.label = new jsts.geomgraph.Label(jsts.geom.Location.NONE, jsts.geom.Location.NONE,
+    this.dynamicLabel = new jsts.geomgraph.Label(jsts.geom.Location.NONE, jsts.geom.Location.NONE,
         jsts.geom.Location.NONE);
   else
-    this.label = new jsts.geomgraph.Label(jsts.geom.Location.NONE);
+    this.dynamicLabel = new jsts.geomgraph.Label(jsts.geom.Location.NONE);
 
-  // compute the On label, and the side labels if present
+  // compute the On dynamicLabel, and the side labels if present
   for (var i = 0; i < 2; i++) {
     this.computeLabelOn(i, boundaryNodeRule);
     if (isArea)
@@ -38277,7 +38277,7 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabelOn = function(
     loc = jsts.geomgraph.GeometryGraph.determineBoundary(boundaryNodeRule,
         boundaryCount);
   }
-  this.label.setLocation(geomIndex, loc);
+  this.dynamicLabel.setLocation(geomIndex, loc);
 
 };
 
@@ -38295,7 +38295,7 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSides = function(
 
 
 /**
- * To compute the summary label for a side, the algorithm is: FOR all edges IF
+ * To compute the summary dynamicLabel for a side, the algorithm is: FOR all edges IF
  * any edge's location is INTERIOR for the side, side location = INTERIOR ELSE
  * IF there is at least one EXTERIOR attribute, side location = EXTERIOR ELSE
  * side location = NULL <br>
@@ -38304,7 +38304,7 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSides = function(
  * geometry, while another edge side may indicate the exterior of the same
  * geometry. This is not an incompatibility - GeometryCollections may contain
  * two Polygons that touch along an edge. This is the reason for
- * Interior-primacy rule above - it results in the summary label having the
+ * Interior-primacy rule above - it results in the summary dynamicLabel having the
  * Geometry interior on <b>both</b> sides.
  *
  * @private
@@ -38316,22 +38316,22 @@ jsts.operation.relate.EdgeEndBundle.prototype.computeLabelSide = function(
     if (e.getLabel().isArea()) {
       var loc = e.getLabel().getLocation(geomIndex, side);
       if (loc === jsts.geom.Location.INTERIOR) {
-        this.label.setLocation(geomIndex, side, jsts.geom.Location.INTERIOR);
+        this.dynamicLabel.setLocation(geomIndex, side, jsts.geom.Location.INTERIOR);
         return;
       } else if (loc === jsts.geom.Location.EXTERIOR)
-        this.label.setLocation(geomIndex, side, jsts.geom.Location.EXTERIOR);
+        this.dynamicLabel.setLocation(geomIndex, side, jsts.geom.Location.EXTERIOR);
     }
   }
 };
 
 
 /**
- * Update the IM with the contribution for the computed label for the EdgeStubs.
+ * Update the IM with the contribution for the computed dynamicLabel for the EdgeStubs.
  *
  * @private
  */
 jsts.operation.relate.EdgeEndBundle.prototype.updateIM = function(im) {
-  jsts.geomgraph.Edge.updateIM(this.label, im);
+  jsts.geomgraph.Edge.updateIM(this.dynamicLabel, im);
 };
 /* ======================================================================
     jsts/index/chain/MonotoneChain.js
@@ -39527,7 +39527,7 @@ jsts.noding.SegmentNodeList.prototype.checkSplitEdgesCorrectness = function(
 
 /**
  * Create a new "split edge" with the section of points between (and including)
- * the two intersections. The label for the new edge is the same as the label
+ * the two intersections. The dynamicLabel for the new edge is the same as the dynamicLabel
  * for the parent edge.
  *
  * @private
@@ -39711,7 +39711,7 @@ jsts.algorithm.distance.PointPairDistance.prototype.setMinimum2 = function(p0,
    * @private
    */
   jsts.geomgraph.DirectedEdgeStar.prototype.resultAreaEdgeList = null;
-  jsts.geomgraph.DirectedEdgeStar.prototype.label = null;
+  jsts.geomgraph.DirectedEdgeStar.prototype.dynamicLabel = null;
 
   /**
    * Insert a directed edge in the list
@@ -39722,7 +39722,7 @@ jsts.algorithm.distance.PointPairDistance.prototype.setMinimum2 = function(p0,
   };
 
   jsts.geomgraph.DirectedEdgeStar.prototype.getLabel = function() {
-    return this.label;
+    return this.dynamicLabel;
   };
 
   jsts.geomgraph.DirectedEdgeStar.prototype.getOutgoingDegree = function() {
@@ -39783,7 +39783,7 @@ jsts.algorithm.distance.PointPairDistance.prototype.setMinimum2 = function(p0,
 
     // determine the overall labelling for this DirectedEdgeStar
     // (i.e. for the node it is based at)
-    this.label = new jsts.geomgraph.Label(Location.NONE);
+    this.dynamicLabel = new jsts.geomgraph.Label(Location.NONE);
     for (var it = this.iterator(); it.hasNext();) {
       var ee = it.next();
       var e = ee.getEdge();
@@ -39791,14 +39791,14 @@ jsts.algorithm.distance.PointPairDistance.prototype.setMinimum2 = function(p0,
       for (var i = 0; i < 2; i++) {
         var eLoc = eLabel.getLocation(i);
         if (eLoc === Location.INTERIOR || eLoc === Location.BOUNDARY)
-          this.label.setLocation(i, Location.INTERIOR);
+          this.dynamicLabel.setLocation(i, Location.INTERIOR);
       }
     }
   };
 
   /**
-   * For each dirEdge in the star, merge the label from the sym dirEdge into the
-   * label
+   * For each dirEdge in the star, merge the dynamicLabel from the sym dirEdge into the
+   * dynamicLabel
    */
   jsts.geomgraph.DirectedEdgeStar.prototype.mergeSymLabels = function() {
     for (var it = this.iterator(); it.hasNext();) {
@@ -39857,7 +39857,7 @@ jsts.algorithm.distance.PointPairDistance.prototype.setMinimum2 = function(p0,
    * <p>
    * Edges are linked in CCW order (the order they are stored). This means that
    * rings have their face on the Right (in other words, the topological
-   * location of the face is given by the RHS label of the DirectedEdge)
+   * location of the face is given by the RHS dynamicLabel of the DirectedEdge)
    * <p>
    * PRECONDITION: No pair of dirEdges are both marked as being in the result
    */
@@ -42538,7 +42538,7 @@ jsts.algorithm.CentralEndpointIntersector.prototype.findNearestPoint = function(
 
 
   /**
-   * Add an Edge computed externally. The label on the Edge is assumed to be
+   * Add an Edge computed externally. The dynamicLabel on the Edge is assumed to be
    * correct.
    */
   jsts.geomgraph.GeometryGraph.prototype.addEdge = function(e) {
@@ -42700,7 +42700,7 @@ jsts.algorithm.CentralEndpointIntersector.prototype.findNearestPoint = function(
     var n = this.nodes.addNode(coord);
     var lbl = n.getLabel();
     if (lbl == null) {
-      n.label = new jsts.geomgraph.Label(argIndex, onLocation);
+      n.dynamicLabel = new jsts.geomgraph.Label(argIndex, onLocation);
     } else
       lbl.setLocation(argIndex, onLocation);
   };

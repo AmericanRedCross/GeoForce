@@ -9,9 +9,11 @@ settings = settingsNonsensitive;
 //Change to 'production' or 'test' depending on deployment.
 process.env.NODE_ENV = 'development';
 
+//Optional setting to load SpatialServer in WebViz Search mode
+settings.application.mode = "webviz";  //webviz or geoforce (or leave blank for geoforce ,will load by default).
+
 //application port settings
 settings.application.port = 3001;
-settings.application.ip = "localhost";
 
 //Enable Security?
 settings.enableSecurity = false;

@@ -29,6 +29,10 @@ L.TileLayer.PBFSource = L.TileLayer.Canvas.extend({
 
     // thats that have been loaded and drawn
     this.loadedTiles = {};
+
+    this.styleFor = options.styleFor;
+
+    this.layerLink = options.layerLink;
   },
 
   onAdd: function(map) {
@@ -40,7 +44,10 @@ L.TileLayer.PBFSource = L.TileLayer.Canvas.extend({
 //      determineActiveTiles(self, map);
 //    });
 
-    this.label = new Label(map, this, {});
+    if (typeof DynamicLabel === 'function' ) {
+      this.dynamicLabel = new DynamicLabel(map, this, {});
+    }
+
   },
 
   drawTile: function(canvas, tilePoint, zoom) {
@@ -161,11 +168,10 @@ L.TileLayer.PBFSource = L.TileLayer.Canvas.extend({
     //Take the layer and create a new PBFLayer if one doesn't exist.
     var layer = new L.TileLayer.PBFLayer(self, {
       getIDForLayerFeature: self.options.getIDForLayerFeature,
-      filter: self.options.filter
+      filter: self.options.filter,
+      styleFor: self.styleFor,
+      name: key
     }).addTo(self._map);
-
-    layer.styleFor = self.styleFor;
-    layer.name = key;
 
     return layer;
   },

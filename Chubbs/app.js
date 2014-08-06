@@ -258,9 +258,6 @@ tables.findSpatialTables(app, function(error, tables) {
           //For vector tiles
           var tileSettings = { routeProperties: {} };
 
-          //For now, assume geometry column is 'geom'.  This is because the gadm tables have more than 1 geometry, and we want the raw.
-          //item.geometry_column = 'geom';
-
           tileSettings.mapnik_datasource = {
             'host': settings.pg.server,
             'port': settings.pg.port,
@@ -277,6 +274,7 @@ tables.findSpatialTables(app, function(error, tables) {
             'geometry_type': item.type
           };
           tileSettings.routeProperties.name = key;
+          tileSettings.routeProperties.table = item.table;
           tileSettings.routeProperties.srid = item.srid;
           tileSettings.routeProperties.cartoFile = "";
           tileSettings.routeProperties.source = "postgis";
