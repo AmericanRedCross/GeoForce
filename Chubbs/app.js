@@ -89,8 +89,15 @@ app.use(require('less-middleware')({
 //Items in these folder will be served statically.
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
-app.use(ensureAuthenticated);
-app.use('/mapfolio/', express.static('../GeoAngular/app/'));
+
+//If we're in webviz mode, don't load mapfolio endpoints or ensureAuthenticated Middleware
+if(settings && settings.application && settings.application.mode && settings.application.mode === "webviz"){
+  //Nothing
+}else{
+  //In geoforce mode, load the mapfolio routes and ensure authentication.
+  app.use(ensureAuthenticated);
+  app.use('/mapfolio/', express.static('../GeoAngular/app/'));
+}
 
 //This must be after app.use(passport.initialize())
 app.use(cors());
@@ -178,16 +185,19 @@ else{
     });
 }
 
-
+//If we're in webviz mode, don't load mapfolio endpoints or ensureAuthenticated Middleware
+if(settings && settings.application && settings.application.mode && settings.application.mode === "webviz"){
+  //In webviz mode, default page is search.
+  app.get('/', function (req, res) {
+    res.redirect('/search');
+  });
+}else {
 //Root Request - show application
-app.get('/', function(req, res) {
+  app.get('/', function (req, res) {
     res.redirect('/mapfolio/index.html');
-});
+  });
+}
 
-//Mapfolio Root Request - show application
-//app.use('/mapfolio/', function(req, res) {
-//    res.redirect('/mapfolio/index.html');
-//});
 
 //Redirect /services to table list
 app.get('/services', function(req, res) {
