@@ -217,7 +217,7 @@ function loadPBFMBTilesRoutes(app){
           // `err` is an error object when generation failed, otherwise null.
           // `tile` contains the compressed image file as a Buffer
           // `headers` is a hash with HTTP headers for the image.
-          res.setHeader('content-type', 'application/octet-stream');
+          res.setHeader('content-type', 'application/x-protobuf');
           if (!err) {
             res.setHeader('content-encoding', 'deflate');
             res.send(tile);
