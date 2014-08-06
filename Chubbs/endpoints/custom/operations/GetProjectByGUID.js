@@ -15,22 +15,30 @@ operation.inputs["guids"] = {}; //comma separated list of guids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
-// Original project query where we have 1 location per project.
-var projQuerySimple = "SELECT sf_project.* " +
-  "FROM sf_aggregated_gadm_project_counts, sf_project " +
-  "WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id " +
-  "AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
+var projectArcQuery =
+  "SELECT sf_project.*, sf_project.sf_id as project__r_id, null as location__r_admin_0__c, null as location__r_admin_1__c, null as location__r_admin_2__c, null as location__r_admin_3__c, null as location__r_admin_4__c, null as location__r_admin_5__c \
+  FROM sf_project \
+  INNER JOIN sf_aggregated_gadm_project_counts_many ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
+  WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
 
 // Newer schema where we can have many-to-many locations per project.
-var projQueryMany = "SELECT vw_sf_project.* " +
-  "FROM sf_aggregated_gadm_project_counts_many, vw_sf_project " +
-  "WHERE sf_aggregated_gadm_project_counts_many.sf_id = vw_sf_project.sf_id " +
-  "AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
-
 if (settings.projectsManyToMany) {
-  operation.ProjectQuery = projQueryMany;
-} else {
-  operation.ProjectQuery = projQuerySimple;
+  operation.ProjectQuery =
+    "SELECT sf_project.*, loc.project__r_id, loc.location__r_admin_0__c, loc.location__r_admin_1__c, loc.location__r_admin_2__c, loc.location__r_admin_3__c, loc.location__r_admin_4__c, loc.location__r_admin_5__c \
+    FROM sf_project_location AS loc \
+    RIGHT JOIN sf_project ON loc.project__r_id = sf_project.sf_id \
+    INNER JOIN sf_aggregated_gadm_project_counts_many \
+      ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
+      AND sf_aggregated_gadm_project_counts_many.guid{{gadm_level}}::text = loc.location__r_gis_geo_id__c \
+    WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
+}
+// Original project query where we have 1 location per project.
+else {
+  operation.ProjectQuery =
+    "SELECT sf_project.* \
+    FROM sf_aggregated_gadm_project_counts, sf_project \
+    WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id \
+      AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
 }
 
 
@@ -90,10 +98,18 @@ operation.execute = flow.define(
         filters = activeProjectWhereClause;
       }
 
+      if (operation.inputs["gadm_level"] === "arc") {
+        operation.ProjectQuery = projectArcQuery;
+      }
+
       //need to wrap ids in single quotes
       //Execute the query
-      var projectQuery = { text: operation.ProjectQuery.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])).replace("{{gadm_level}}", operation.inputs["gadm_level"]).replace("{{filters}}", filters)};
-      common.executePgQuery(projectQuery, this); //Flow to next function when done.
+      var projectQuery = operation.ProjectQuery
+        .split("{{guids}}").join(operation.wrapIdsInQuotes(operation.inputs["guids"]))
+        .split("{{gadm_level}}").join(operation.inputs["gadm_level"])
+        .split("{{filters}}").join(filters);
+
+      common.executePgQuery({text: projectQuery}, this); //Flow to next function when done.
     }
     else {
       //Invalid arguments
@@ -103,6 +119,7 @@ operation.execute = flow.define(
   },
   function (err, results) {
     if (err) {
+      console.error(err);
       this.callback(err);
       return;
     }
