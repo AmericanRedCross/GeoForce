@@ -27,7 +27,7 @@ SELECT  0 as countARC,
     gadm5.guid as guid5,
     gadm5.geom_simplify_med as geom5,
 
-sf_project.sector__c,
+    sf_project.sector__c,
     sf_project.status__c,
     sf_project.stage_name__c,
     sf_project.start_date__c,
@@ -91,7 +91,7 @@ INSERT INTO sf_aggregated_gadm_project_counts
     null::geometry as geom5,
 
 
-sf_project.sector__c,
+    sf_project.sector__c,
     sf_project.status__c,
     sf_project.stage_name__c,
     sf_project.start_date__c,
@@ -147,7 +147,7 @@ INSERT INTO sf_aggregated_gadm_project_counts
     null as guid5,
     null::geometry as geom5,
 
-sf_project.sector__c,
+    sf_project.sector__c,
     sf_project.status__c,
     sf_project.stage_name__c,
     sf_project.start_date__c,
@@ -200,7 +200,7 @@ INSERT INTO sf_aggregated_gadm_project_counts
     null as guid5,
     null::geometry as geom5,
 
-sf_project.sector__c,
+    sf_project.sector__c,
     sf_project.status__c,
     sf_project.stage_name__c,
     sf_project.start_date__c,
@@ -249,7 +249,7 @@ INSERT INTO sf_aggregated_gadm_project_counts
     null as guid5,
     null::geometry as geom5,
 
-sf_project.sector__c,
+    sf_project.sector__c,
     sf_project.status__c,
     sf_project.stage_name__c,
     sf_project.start_date__c,
@@ -297,7 +297,7 @@ INSERT INTO sf_aggregated_gadm_project_counts
     null as guid5,
     null::geometry as geom5,
 
-sf_project.sector__c,
+    sf_project.sector__c,
     sf_project.status__c,
     sf_project.stage_name__c,
     sf_project.start_date__c,
@@ -344,7 +344,7 @@ FROM ARC_REGIONS_DISSOLVED a
 WHERE ST_INTERSECTS(a.geom, geom0);
 
 UPDATE sf_aggregated_gadm_project_counts
-set nameARC = 'USA',
+SET nameARC = 'USA',
     guidarc = 3,
     geomarc = (select geom from ARC_REGIONS_DISSOLVED where gid = 3)
-where name0 = 'United States';
+WHERE name0 = 'United States';
