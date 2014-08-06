@@ -173,20 +173,20 @@ common.executePgQuery = function (query, callback) {
             callback(err, result);
         });
     });
-}
+};
 
 //Utilities
 common.log = function(message) {
     //Write to console
     console.log(message);
-}
+};
 
 common.vacuumAnalyzeAll = function(){
     var query = { text: "VACUUM ANALYZE;", values: [] };
     common.executePgQuery(query, function (err, result) {
         console.log("Performed VACUUM ANALYZE on ALL;")
     });
-}
+};
 
 //Determine if a string contains all numbers.
 common.IsNumeric = function (sText) {
@@ -203,7 +203,7 @@ common.IsNumeric = function (sText) {
         }
     }
     return IsNumber;
-}
+};
 
 
 //Take in an array, spit out an array of escaped columns
@@ -213,7 +213,7 @@ common.escapePostGresColumns = function (items) {
         //remove all quotes then wrap with quotes, just to be sure
         return '"' + item.replace(/"/g, "") + '"';
     });
-}
+};
 
 //Take in an array, spit out an array of unescaped columns
 common.unEscapePostGresColumns = function (items) {
@@ -222,7 +222,7 @@ common.unEscapePostGresColumns = function (items) {
         //remove all quotes
         return item.replace(/"/g, "");
     });
-}
+};
 
 common.isValidSQL = function (item) {
     //if(!item || item.length == 0) return true;

@@ -15,10 +15,24 @@ operation.inputs["guids"] = {}; //comma separated list of guids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
-operation.ProjectQuery = "SELECT sf_project.* " +
+// Original project query where we have 1 location per project.
+var projQuerySimple = "SELECT sf_project.* " +
   "FROM sf_aggregated_gadm_project_counts, sf_project " +
   "WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id " +
   "AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
+
+// Newer schema where we can have many-to-many locations per project.
+var projQueryMany = "SELECT vw_sf_project.* " +
+  "FROM sf_aggregated_gadm_project_counts_many, vw_sf_project " +
+  "WHERE sf_aggregated_gadm_project_counts_many.sf_id = vw_sf_project.sf_id " +
+  "AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
+
+if (settings.projectsManyToMany) {
+  operation.ProjectQuery = projQueryMany;
+} else {
+  operation.ProjectQuery = projQuerySimple;
+}
+
 
 //operation.IndicatorQuery = "SELECT * FROM sf_indicator, sf_indicator_value " +
 //  "WHERE sf_indicator.project__c = {{guid}} AND sf_indicator_value.indicator__c = sf_indicator.sf_id; ";

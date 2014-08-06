@@ -57,16 +57,20 @@ exports.app = function (passport) {
     // listen for events to track cache rate and errors
     cacher.on("hit", function (key) {
         console.log("Using Cached response for: " + key)
-    })
+    });
+
     cacher.on("miss", function (key) {
         console.log("No cached response for: " + key + ".  Generating.")
-    })
+    });
+
     cacher.on("error", function (key) {
         console.log("Error with cache. " + err)
-    })
+    });
 
     //Show specific GP operation
-    app.all('/services/custom/custom_operation', cacher.cache('days', 3), flow.define(function (req, res) {
+// NH TURNED OFF CACHE
+//    app.all('/services/custom/custom_operation', cacher.cache('days', 3), flow.define(function (req, res) {
+    app.all('/services/custom/custom_operation', flow.define(function (req, res) {
         this.args = {};
         this.req = req;
         this.res = res;
