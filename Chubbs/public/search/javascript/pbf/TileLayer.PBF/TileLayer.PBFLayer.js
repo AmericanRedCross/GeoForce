@@ -15,14 +15,13 @@ L.TileLayer.PBFLayer = L.TileLayer.Canvas.extend({
   _featureIsClicked: {},
 
   _isPointInPoly: function(pt, poly) {
-
-	if(poly && poly.length) {
-   for (var c = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
-      ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
-      && (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
-      && (c = !c);
-    return c;
-	}
+    if(poly && poly.length) {
+     for (var c = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
+        ((poly[i].y <= pt.y && pt.y < poly[j].y) || (poly[j].y <= pt.y && pt.y < poly[i].y))
+        && (pt.x < (poly[j].x - poly[i].x) * (pt.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
+        && (c = !c);
+      return c;
+    }
   },
 
   initialize: function(pbfSource, options) {
@@ -30,9 +29,11 @@ L.TileLayer.PBFLayer = L.TileLayer.Canvas.extend({
     self.pbfSource = pbfSource;
     L.Util.setOptions(this, options);
 
+    this.styleFor = options.styleFor;
+    this.name = options.name;
     this._canvasIDToFeaturesForZoom = {};
     this.visible = true;
-    this.features = { zoom: {}};
+    this.features = {};
     this.featuresWithLabels = [];
   },
 
@@ -84,10 +85,10 @@ L.TileLayer.PBFLayer = L.TileLayer.Canvas.extend({
        */
       var filter = self.options.filter;
       if (typeof filter === 'function') {
-        if ( filter(vtf, ctx) === false ) return;
+        if ( filter(vtf, ctx) === false ) continue;
       }
 
-      var uniqueID = self.options.getIDForLayerFeature(vtf); //TODO: What happens if no unique id is provided?
+      var uniqueID = self.options.getIDForLayerFeature(vtf);
       var pbffeature = self.features[uniqueID];
 
       //Create a new PBFFeature if one doesn't already exist for this feature.
@@ -97,7 +98,7 @@ L.TileLayer.PBFLayer = L.TileLayer.Canvas.extend({
 
         //create a new feature
         self.features[uniqueID] = pbffeature = new PBFFeature(self, vtf, ctx, uniqueID, style, this._map);
-        if (typeof style.label === 'function') {
+        if (typeof style.dynamicLabel === 'function') {
           self.featuresWithLabels.push(pbffeature);
         }
       } else {
@@ -157,6 +158,9 @@ L.TileLayer.PBFLayer = L.TileLayer.Canvas.extend({
       var paths = feature.getPathsForTile(evt.tileID, this._map.getZoom());
       for (var j = 0; j < paths.length; j++) {
         if (this._isPointInPoly(tilePoint, paths[j])) {
+          if (feature.toggleEnabled) {
+            feature.toggle();
+          }
           evt.feature = feature;
           cb(evt);
           return;
@@ -191,13 +195,9 @@ L.TileLayer.PBFLayer = L.TileLayer.Canvas.extend({
 
   },
 
-  /**
-   * Given a field (property) and value, find features that match this criteria
-   * @param field
-   * @param value
-   */
-  getFeatures: function(field, value) {
-      return this.features;
+  linkedLayer: function() {
+    var linkName = this.pbfSource.layerLink(this.name);
+    return this.pbfSource.layers[linkName];
   }
 });
 

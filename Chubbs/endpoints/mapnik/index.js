@@ -552,7 +552,6 @@ exports.createVectorTileRoute = flow.define(
 
     this.app = app;
     this.settings = routeSettings;
-    this.mapnikDatasource = (this.settings.mapnik_datasource.describe ? this.settings.mapnik_datasource : new mapnik.Datasource(this.settings.mapnik_datasource));
     this();
   },
   function () {
@@ -573,10 +572,12 @@ exports.createVectorTileRoute = flow.define(
 
         //If a where clause was passed in, and we're using a postgis datasource, allow it
         if (_self.settings.mapnik_datasource.type.toLowerCase() == 'postgis') {
-          _self.settings.mapnik_datasource.table = (args.where ? "(SELECT " + _self.settings.routeProperties.geom_field + " from " + _self.settings.routeProperties.name + " WHERE " + args.where + ") as " + _self.settings.routeProperties.name : _self.settings.routeProperties.name);
+          _self.settings.mapnik_datasource.table = (args.where ? "(SELECT " + _self.settings.routeProperties.geom_field + " from " + _self.settings.routeProperties.table + " WHERE " + args.where + ") as " + _self.settings.routeProperties.table : _self.settings.routeProperties.table);
         }
       }
 
+      //Make the mapnik datasource.  We wait until now in case the table definition changes if a where clause is passed in above.
+      _self.mapnikDatasource = (_self.settings.mapnik_datasource.describe ? _self.settings.mapnik_datasource : new mapnik.Datasource(_self.settings.mapnik_datasource));
 
       try {
         //create map

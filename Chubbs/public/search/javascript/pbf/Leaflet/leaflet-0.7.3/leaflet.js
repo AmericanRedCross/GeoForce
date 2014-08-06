@@ -2103,7 +2103,7 @@
     var o = e.createElement("div");
     return o.innerHTML = n, o.firstChild
   }, _addItem: function (t) {
-    var i, n = e.createElement("label"), s = this._map.hasLayer(t.layer);
+    var i, n = e.createElement("dynamicLabel"), s = this._map.hasLayer(t.layer);
     t.overlay ? (i = e.createElement("input"), i.type = "checkbox", i.className = "leaflet-control-layers-selector", i.defaultChecked = s) : i = this._createRadioElement("leaflet-base-layers", s), i.layerId = o.stamp(t.layer), o.DomEvent.on(i, "click", this._onInputClick, this);
     var a = e.createElement("span");
     a.innerHTML = " " + t.name, n.appendChild(i), n.appendChild(a);

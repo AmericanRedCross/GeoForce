@@ -184,8 +184,8 @@
 <script type="text/javascript">
     var map = L.map('map').setView([0,0], 7);
     map.locate({setView: true, maxZoom: 10});
-    //var _server = "http://localhost:3001";
-    var _server = "https://webviz.redcross.org";
+    var _server = "http://localhost:3001";
+    //var _server = "https://webviz.redcross.org";
 
     L.tileLayer('https://a.tiles.mapbox.com/v3/americanredcross.map-dn70q0vb/{z}/{x}/{y}.png').addTo(map);
 
@@ -475,35 +475,40 @@
         if (_geoJSONLayer) map.removeLayer(_geoJSONLayer);
 
         if (_geoJSON && _geoJSON.source == "GeoDB") {
-            //This will be GeoJSON.
-            //_geoJSONLayer = L.geoJson(_geoJSON.features).addTo(map);
 
             var gjl = L.geoJson(_geoJSON.features[0].geometry);
-            map.fitBounds(gjl.getBounds());
+
 
             //if level is specified, turn on only that level. Default to 2
             if(level) {
                 showThisLayer("gadm" + level + "_geom_simplify_med", function (feature) {
+                    //Filter.  As each vector tile feature comes in, passes thru here to decide whether or not to draw. True will draw, false will omit.
                     if (feature.properties.guid == _geoJSON.features[0].properties.stack_guid) {
                         return true;
                     }
                     return false;
+                }, function(){
+                    //After layer has been added to map
+                    //zoom to layer
+                    map.fitBounds(gjl.getBounds());
                 });
             }
             else{
-                showThisLayer("gadm0_geom_simplify_med");
+                showThisLayer("gadm0_geom_simplify_med", function(feature){ return true;}, function() {
+                    //After layer has been added to map
+                    //zoom to layer
+                    map.fitBounds(gjl.getBounds());
+                });
             }
         }
         else if (_geoJSON && _geoJSON.source == "Geonames") {
             //Pluck out the x,y and plot it
             _geoJSONLayer = L.featureGroup([L.marker([infeature.properties.lat, infeature.properties.lng])]).addTo(map);
-        }
-
-
-        //zoom to layer
-        if (_geoJSONLayer) {
-            var bounds = _geoJSONLayer.getBounds();
-            map.fitBounds(bounds);
+            //zoom to layer
+            if (_geoJSONLayer) {
+                var bounds = _geoJSONLayer.getBounds();
+                map.fitBounds(bounds);
+            }
         }
     }
 
@@ -557,24 +562,27 @@
         // $("#uxChooseThis").prop("disabled", false); //enabled the second option box
     });
 
-function showThisLayer(name, filter) {
+function showThisLayer(name, filter, cb) {
     if(pbfSource) map.removeLayer(pbfSource);
     pbfSource = null;
     pbfSource = createGADMVecorTileLayer(name, filter);
     pbfSource.styleFor = pbfStyle;
 
     map.addLayer(pbfSource);
+
+    //Callback when layer is added to map
+    if(cb) cb();
 }
 
 function createGADMVecorTileLayer(name, filter){
     return new L.TileLayer.PBFSource({
         //url: "../services/vector-tiles/GADM/{z}/{x}/{y}.pbf",
-        url: "../services/postgis/" + name + "/vector-tiles/{z}/{x}/{y}.pbf",
+        url: "../services/postgis/" + name + "/vector-tiles/{z}/{x}/{y}.pbf" ,
         debug: false,
         clickableLayers: [],
         getIDForLayerFeature: function(feature) {
             return feature.properties.guid;
-        }//,
+        },
 
         /**
          * The filter function gets called when iterating though each vector tile feature (vtf). You have access
@@ -586,7 +594,7 @@ function createGADMVecorTileLayer(name, filter){
          * @param feature
          * @returns {boolean}
          */
-        //filter: filter
+        filter: filter
     });
 }
 </script>
