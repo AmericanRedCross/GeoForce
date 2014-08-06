@@ -172,6 +172,6 @@ operation.fullyQualifyFilter = function(filterString){
   });
 
 
-}
+};
 
 module.exports = operation;
