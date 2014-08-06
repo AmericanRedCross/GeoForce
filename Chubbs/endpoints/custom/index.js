@@ -7,6 +7,7 @@ var express = require('express'), common = require("../../common"), flow = requi
 var custom = require('./operations');
 var CCacher = require("../../lib/ChubbsCache");
 var cacher = new CCacher();
+var rest = require('../../lib/getJSON');
 
 var mapnik;
 try {
@@ -390,10 +391,79 @@ exports.app = function (passport) {
         }
     ));
 
+  //Admin Name Query - get - display page with default form
+  app.all('/services/nameSearch', function(req,res){
+    var args = {};
+
+    //Grab POST or QueryString args depending on type
+    if (req.method.toLowerCase() == "post") {
+      //If a post, then arguments will be members of the this.req.body property
+      args = req.body;
+    }
+    else if (req.method.toLowerCase() == "get") {
+      //If request is a get, then args will be members of the this.req.query property
+      args = req.query;
+    }
+
+    //Google Analytics
+//    ga.trackPage('NameSearch', '/services/nameSearch', function (err, resp) {
+//      if (!err && resp.statusCode === 200) {
+//        console.log('Page has been tracked with Google Analytics');
+//      }
+//    });
+
+    //Detect if args were passed in
+    if (JSON.stringify(args) != '{}') {
+      //Add custom properties as defaults
+      args.view = "admin_namesearch"
+      args.featureCollection = { source: "GeoDB" };
+
+      //Get the text arg, pass it to function
+      var featureid = "", datasource = "";
+      if (args.searchterm) {
+        //User is doing a text search
+        datasource = args.datasource; //Optional
+
+        //Try querying internal GeoDB - strict (exact match) first
+        startExecuteAdminNameSearch(args.searchterm, { type: "name", strict: true, returnGeometry: args.returnGeometry, datasource: datasource }, req, res, args);
+        //GATrackEvent("Get Feature", "by name", args.searchterm); //Analytics
+
+      }
+      else if (args.featureid) {
+        //User is searching by unique ID from text_search table
+        featureid = args.featureid;
+        //Try querying internal GeoDB using feature id
+        executeAdminIDSearch(featureid, { type: "id", returnGeometry: args.returnGeometry }, function (result) {
+          //handle results of id search
+          args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
+          args.featureCollection.source = "GeoDB";
+          args.breadcrumbs = [{ link: "/services", name: "Home" }, { link: "", name: "Query" }];
+          common.respond(req, res, args);
+          return;
+        });
+        //GATrackEvent("Get Feature", "by Id", args.featureid); //Analytics
+
+      }
+      else {
+        //No search term, abort.
+        args.breadcrumbs = [{ link: "/services", name: "Home" }, { link: "", name: "Query" }];
+        args.errorMessage = 'You must specify a search term or feature id.';
+        common.respond(req, res, args);
+        return;
+      }
+    }
+    else {
+      //If no arguments are provided, just show the regular HTML form.
+      args.breadcrumbs = [{ link: "/services", name: "Home" }, { link: "", name: "Admin Query by Name" }];
+      args.view = "admin_namesearch";
+      common.respond(req, res, args);
+    }
+  });
+
 
     //RedCross GeoWebServices Search Functions
     //pass in a search term, check the Geodatabase for matching names
-//This is part 1 of 2 for getting back an admin stack
+    //This is part 1 of 2 for getting back an admin stack
     var startExecuteAdminNameSearch = flow.define(
         function (searchterm, options, req, res, args) {
             this.req = req;
@@ -403,57 +473,55 @@ exports.app = function (passport) {
             //Start looking for exact matches
             executeStrictAdminNameSearch(searchterm, options, this);
 
-        }, function (result) {
+        }, function (err, result) {
             //this is the result of executeAdminNameSearch 'strict' callback
             //result should be sucess or error.  If success, return results to user.
             //if error or no results, try the non-strict results
-
-            common.log("strict matches for " + this.args.searchterm + ": " + result.rows.length);
-
-            if (result && result.status == "success" && result.rows.length > 0) {
-
-                this.args.featureCollection = geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
-                this.args.featureCollection.source = "GeoDB";
-                this.args.breadcrumbs = [
-                    { link: "/services", name: "Home" },
-                    { link: "", name: "Query" }
-                ];
-                common.respond(this.req, this.res, this.args);
-                return;
+            if(err || (result && result.rows.length == 0)){
+              //Try querying internal GeoDB - not strict
+              executeLooseAdminNameSearch(this.args.searchterm, { returnGeometry: this.args.returnGeometry }, this);
             }
-            else {
-                //Try querying internal GeoDB - not strict
-                executeLooseAdminNameSearch(this.args.searchterm, { returnGeometry: this.args.returnGeometry }, this);
+            else{
+              common.log("strict matches for " + this.args.searchterm + ": " + result.rows.length);
+
+              this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
+              this.args.featureCollection.source = "GeoDB";
+              this.args.breadcrumbs = [
+                { link: "/services", name: "Home" },
+                { link: "", name: "Query" }
+              ];
+              common.respond(this.req, this.res, this.args);
+              return;
             }
-        }, function (result) {
-            //this is the result of executeAdminNameSearch 'not-strict' callback
-            //result should be sucess or error.  If success, return results to user.
-            //if error or no results, try GeoNames
 
-            common.log("loose matches for " + this.args.searchterm + ": " + result.rows.length);
+        }, function (err, result) {
+        //this is the result of executeAdminNameSearch 'not-strict' callback
+        //result should be sucess or error.  If success, return results to user.
+        //if error or no results, try GeoNames
 
-            if (result && result.status == "success" && result.rows.length > 0) {
+        if (err || (result && result.rows.length == 0)) {
+          //Check GeoNames
+          executeGeoNamesAPISearch(this.args.searchterm, this);
+        }
+        else {
+          common.log("loose matches for " + this.args.searchterm + ": " + result.rows.length);
 
-                //Return results
-                //Check which format was specified
+          //Return results
+          //Check which format was specified
 
-                this.args.featureCollection = geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
-                this.args.featureCollection.source = "GeoDB";
-                this.args.breadcrumbs = [
-                    { link: "/services", name: "Home" },
-                    { link: "", name: "Query" }
-                ];
+          this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
+          this.args.featureCollection.source = "GeoDB";
+          this.args.breadcrumbs = [
+            { link: "/services", name: "Home" },
+            { link: "", name: "Query" }
+          ];
 
-                //Render HTML page with results at bottom
-                common.respond(this.req, this.res, this.args);
-                return;
-            }
-            else {
-                //Check GeoNames
-                executeGeoNamesAPISearch(this.args.searchterm, this)
-            }
-        },
-        function (statuscode, result) {
+          //Render HTML page with results at bottom
+          common.respond(this.req, this.res, this.args);
+          return;
+        }
+      },
+      function (statuscode, result) {
             //This is the callback from the GeoNamesAPI Search
             //check the result and decide what to do.
 
@@ -466,7 +534,7 @@ exports.app = function (passport) {
                 //we got a response, decide what to do
                 if (result && result.geonames && result.geonames.length > 0) {
 
-                    this.args.featureCollection = geoJSONFormatter(result.geonames); //The page will parse the geoJson to make the HTMl
+                    this.args.featureCollection = common.formatters.geoJSONFormatter(result.geonames); //The page will parse the geoJson to make the HTMl
                     this.args.featureCollection.source = "Geonames";
 
                     //Render HTML page with results at bottom
@@ -494,7 +562,31 @@ exports.app = function (passport) {
     );
 
 
-//Strict name Search
+  //pass in a search term, check the Geonames API for matching names
+  function executeGeoNamesAPISearch(searchterm, callback) {
+    //Reach out to GeoNames API
+
+    //Encode for URL
+    searchterm = encodeURIComponent(searchterm);
+
+    var options = {
+      host: 'api.geonames.org',
+      path: '/search?name=' + searchterm + '&username=' + settings.geonames.username + '&featureClass=A&featureClass=P&type=json',
+      method: 'GET',
+      port: 80,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    rest.getJSON(options, function (statusCode, result) {
+      common.log("got geonames result.");
+      callback(statusCode, result)
+    }); //send result back to calling function
+  }
+
+
+    //Strict name Search
     function executeStrictAdminNameSearch(searchterm, options, callback) {
 
         var sql = { text: "select * from udf_executestrictadminsearchbyname($1)", values: [searchterm] };
@@ -541,12 +633,13 @@ exports.app = function (passport) {
         //search by ID - without geom
         var sql = { text: "select * from udf_executeadminsearchbyid($1)", values: [featureID] }; //default
 
-        if (options) {
-            if (options.returnGeometry == "yes") {
-                //search by ID - with geom
-                sql = { text: "select * from udf_executeadminsearchbyidwithgeom($1)", values: [featureID] };
-            }
-        }
+      //With Vector Tiles, we don't need the geometry back, but if we say geometry: false won't return the extent, which we need.
+//        if (options) {
+//            if (options.returnGeometry == "yes") {
+//                //search by ID - with geom
+//                sql = { text: "select * from udf_executeadminsearchbyidwithgeom($1)", values: [featureID] };
+//            }
+//        }
 
         //run it
         common.executePgQuery(sql, callback);
@@ -650,12 +743,12 @@ exports.app = function (passport) {
             //The result of execute Admin Stack Search
             //successful search
             if (err) {
-                common.log(result.message.text);
-                this.args.errorMessage = "error: " + result.message.text;
+                common.log(err.message);
+                this.args.errorMessage = "error: " + err.message;
                 common.respond(this.req, this.res, this.args);
             }
             else {
-                this.args.featureCollection = geoJSONFormatter(result.rows); //format as JSON
+                this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //format as JSON
                 common.respond(this.req, this.res, this.args);
             }
         }
@@ -668,6 +761,10 @@ exports.app = function (passport) {
         var queryObj = {};
         try {
             queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + " FROM " + table + " WHERE guid = $1";
+            //If we're asking for Extents, then we need to include other columns in group by clause
+            if(settings.dsColumns[table].geometry.toLowerCase().indexOf("extent")){
+              queryObj.text += " GROUP BY " + settings.dsColumns[table].columns.split(",").map(function(item){ return (item.split("as ").length > 0 ? item.split("as ")[1] : item.split("as ")[0] )}).join(",");
+            }
             queryObj.values = [rowid];
         } catch (e) {
 
@@ -680,14 +777,22 @@ exports.app = function (passport) {
     }
 
     function buildAdminStackSpatialQuery(wkt, datasource, level, returnGeometry) {
-        //build the spatial query for getting Admin Stacks by WKT geometry intersect
-        var table = datasource.toLowerCase() + level; //gadm, gaul, naturalearth, local, custom
-        var queryObj = {};
+      //build the spatial query for getting Admin Stacks by WKT geometry intersect
+      var table = datasource.toLowerCase() + level; //gadm, gaul, naturalearth, local, custom
+      var queryObj = {};
 
-        queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + " FROM " + table + " WHERE ST_Intersects(ST_GeomFromText($1, 4326), geom)";
-        queryObj.values = [wkt];
+      queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + " FROM " + table + " WHERE ST_Intersects(ST_GeomFromText($1, 4326), geom)";
 
-        return queryObj;
+      //If we're asking for Extents, then we need to include other columns in group by clause
+      if (settings.dsColumns[table].geometry.toLowerCase().indexOf("extent")) {
+        queryObj.text += " GROUP BY " + settings.dsColumns[table].columns.split(",").map(function (item) {
+          return (item.split("as ").length > 0 ? item.split("as ")[1] : item.split("as ")[0] )
+        }).join(",");
+      }
+
+      queryObj.values = [wkt];
+
+      return queryObj;
     }
 
     return app;

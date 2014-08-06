@@ -44,14 +44,6 @@ var authenticationFunctions = [];
 //Load up passport for security, if it's around, and if the settings ask for it
 if (passport && settings.enableSecurity && settings.enableSecurity === true) {
 
-  if (process.env.NODE_ENV.toLowerCase() == "production") {
-    //Configure HTTPS
-    var SSLoptions = {
-      pfx: fs.readFileSync(settings.ssl.pfx),
-      passphrase: settings.ssl.password
-    };
-  }
-
 	app.use(express.session({
 	    secret : settings.expressSessionSecret
 	}));
@@ -122,6 +114,9 @@ app.use(custom.app(passport));
 var utilities = require('./endpoints/utilities');
 app.use(utilities.app(passport));
 
+var vectortiles = require('./endpoints/vectortiles');
+app.use(vectortiles.app(passport));
+
 var mapnik;
 try {
 	mapnik = require('./endpoints/mapnik');
@@ -149,6 +144,12 @@ if (datablaster)
 
 
 if(process.env.NODE_ENV.toLowerCase() == "production"){
+  //Configure HTTPS
+  var SSLoptions = {
+    pfx: fs.readFileSync(settings.ssl.pfx),
+    passphrase: settings.ssl.password
+  };
+
     //Create web server (https)
     https.createServer(SSLoptions, app).listen(app.get('port'), app.get('ipaddr'), function() {
         var startMessage = "Express server listening (HTTPS)";
@@ -237,19 +238,52 @@ tables.findSpatialTables(app, function(error, tables) {
 	} else {
 		if (tables) {
 			Object.keys(tables).forEach(function(key) {
-				var item = tables[key];
-				if (mapnik) {
-					//Spin up a route to serve dynamic tiles for this table
-					mapnik.createPGTileRenderer(app, item.table, item.geometry_column, item.srid, null);
-					mapnik.createPGTileQueryRenderer(app, item.table, item.geometry_column, item.srid, null);
+        var item = tables[key];
+        if (mapnik) {
+          //Spin up a route to serve dynamic tiles for this table
+          mapnik.createPGTileRenderer(app, item.table, item.geometry_column, item.srid, null);
+          mapnik.createPGTileQueryRenderer(app, item.table, item.geometry_column, item.srid, null);
 
-					//Create output folders for each service in public/cached_nodetiles to hold any cached tiles from dynamic service
-					mapnik.createCachedFolder(item.table);
-				}
-                else{
-                    common.log("Tables read, but no Mapnik.  Server ready.")
-                }
-			});
+
+          //For vector tiles
+          var tileSettings = { routeProperties: {} };
+
+          //For now, assume geometry column is 'geom'.  This is because the gadm tables have more than 1 geometry, and we want the raw.
+          //item.geometry_column = 'geom';
+
+          tileSettings.mapnik_datasource = {
+            'host': settings.pg.server,
+            'port': settings.pg.port,
+            'dbname': settings.pg.database,
+            //'table': item.table,
+            'table': ("(SELECT " + item.geometry_column + ((item.table.indexOf("gadm0") == 0 || item.table.indexOf("gadm1") == 0 || item.table.indexOf("gadm2") == 0 || item.table.indexOf("gadm3") == 0 || item.table.indexOf("gadm4") == 0 || item.table.indexOf("gadm5") == 0) ? ", guid::text ": "") + " from " + item.table + ") as " + item.table),
+
+            'user': settings.pg.username,
+            'password': settings.pg.password,
+            'type': 'postgis',
+            'estimate_extent': 'true',
+            'geometry_field': item.geometry_column,
+            'srid': item.srid,
+            'geometry_type': item.type
+          };
+          tileSettings.routeProperties.name = key;
+          tileSettings.routeProperties.srid = item.srid;
+          tileSettings.routeProperties.cartoFile = "";
+          tileSettings.routeProperties.source = "postgis";
+          tileSettings.routeProperties.geom_field = item.geometry_column;
+          tileSettings.routeProperties.defaultStyle = "";//The name of the style inside of the xml file
+          mapnik.createVectorTileRoute(app, tileSettings);
+
+        }
+        else {
+          common.log("Tables read, but no Mapnik.  Server ready.")
+        }
+      });
 		}
 	}
+});
+
+//Route search path to static search html file
+app.get('/search', function (req, res) {
+  res.sendfile(__dirname + '/public/search/search.html');
 });

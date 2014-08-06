@@ -11,6 +11,8 @@ parseXYZ = require('../../utils/tile.js').parseXYZ,
 path = require('path'),
 fs = require("fs"),
 flow = require('flow'),
+zlib = require("zlib"),
+crypto = require("crypto"),
 carto = require('carto');
 
 //Caching
@@ -19,6 +21,10 @@ var cacher = new CCacher();
 
 var TMS_SCHEME = false;
 var styleExtension = '.xml';
+
+// register shapefile plugin
+if (mapnik.register_default_input_plugins)
+  mapnik.register_default_input_plugins();
 
 exports.app = function (passport) {
     var app = express();
@@ -539,3 +545,147 @@ exports.createDynamicGeoJSONEndpoint = function (geoJSON, name, epsgSRID, cartoC
     //app.use('/services/nodetiles/' + name + '/tiles', nodetiles.route.tilePng({ map: map })); // tile.png
     //console.log("Created dynamic service: " + '/services/nodetiles/' + name + '/tiles');
 };
+
+//Generic implementation of vector tiles
+exports.createVectorTileRoute = flow.define(
+  function (app, routeSettings) {
+
+    this.app = app;
+    this.settings = routeSettings;
+    this.mapnikDatasource = (this.settings.mapnik_datasource.describe ? this.settings.mapnik_datasource : new mapnik.Datasource(this.settings.mapnik_datasource));
+    this();
+  },
+  function () {
+    //Flow from after getting full path to Style file
+
+    var _self = this;
+
+    var route = '/services/' + _self.settings.routeProperties.source + '/' + _self.settings.routeProperties.name + '/vector-tiles/:z/:x/:y.*';
+
+    //Create Route for this table
+    this.app.all(route, cacher.cache('day'), function (req, res) {
+
+      var args = common.getArguments(req);
+
+      //If user passes in where clause, then build the query here and set it with the table property of postgis_settings
+      if (args.where) {
+        //Validate where - TODO
+
+        //If a where clause was passed in, and we're using a postgis datasource, allow it
+        if (_self.settings.mapnik_datasource.type.toLowerCase() == 'postgis') {
+          _self.settings.mapnik_datasource.table = (args.where ? "(SELECT " + _self.settings.routeProperties.geom_field + " from " + _self.settings.routeProperties.name + " WHERE " + args.where + ") as " + _self.settings.routeProperties.name : _self.settings.routeProperties.name);
+        }
+      }
+
+
+      try {
+        //create map
+        var map = new mapnik.Map(256, 256, mercator.proj4);
+
+        var layer = new mapnik.Layer(_self.settings.routeProperties.name, ((_self.epsg && (_self.epsg == 3857 || _self.epsg == 3587)) ? mercator.proj4 : geographic.proj4));
+
+        var bbox = mercator.xyz_to_envelope(+req.param('x'), +req.param('y'), +req.param('z'), false);
+
+        layer.datasource = _self.mapnikDatasource;
+        layer.styles = [_self.table, 'default'];
+
+        map.bufferSize = 10;
+
+        map.add_layer(layer);
+        console.log(map.toXML());
+
+        //From Tilelive-Bridge - getTile
+        // set source _maxzoom cache to prevent repeat calls to map.parameters
+        if (_self._maxzoom === undefined) {
+          _self._maxzoom = map.parameters.maxzoom ? parseInt(map.parameters.maxzoom, 10) : 14;
+        }
+
+        var opts = {};
+        // use tolerance of 32 for zoom levels below max
+        opts.tolerance = req.param('z') < _self._maxzoom ? 32 : 0;
+        // make larger than zero to enable
+        opts.simplify = 0;
+        // 'radial-distance', 'visvalingam-whyatt', 'zhao-saalfeld' (default)
+        opts.simplify_algorithm = 'radial-distance';
+
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Encoding', 'deflate');
+
+        map.extent = bbox;
+        // also pass buffer_size in options to be forward compatible with recent node-mapnik
+        // https://github.com/mapnik/node-mapnik/issues/175
+        opts.buffer_size = map.bufferSize;
+
+        map.render(new mapnik.VectorTile(+req.param('z'), +req.param('x'), +req.param('y')), opts, function (err, image) {
+
+          if (err || !image) {
+            res.removeHeader('Content-Encoding');
+            res.writeHead(500, {
+              'Content-Type': 'application/octet-stream'
+            });
+            res.end();
+            return;
+          }
+
+          // Fake empty RGBA to the rest of the tilelive API for now.
+          image.isSolid(function (err, solid, key) {
+            if (err) {
+              res.writeHead(500, {
+                'Content-Type': 'text/plain'
+              });
+
+              res.end(err.message);
+              return;
+            }
+            // Solid handling.
+            var done = function (err, buffer) {
+              if (err) {
+                res.writeHead(500, {
+                  'Content-Type': 'text/plain'
+                });
+
+                res.end(err.message);
+                return;
+              }
+
+              if (solid === false) {
+                res.send(buffer); //return response
+                return;
+              }
+
+              // Empty tiles are equivalent to no tile.
+              if (_self._blank || !key) {
+                res.removeHeader('Content-Encoding');
+                res.writeHead(404, {
+                  'Content-Type': 'application/octet-stream'
+                });
+
+
+                res.end(); //new Buffer('Tile is blank or does not exist', "utf-8")
+                return;
+              }
+
+              // Fake a hex code by md5ing the key.
+              var mockrgb = crypto.createHash('md5').update(buffer).digest('hex').substr(0, 6);
+              buffer.solid = [parseInt(mockrgb.substr(0, 2), 16), parseInt(mockrgb.substr(2, 2), 16), parseInt(mockrgb.substr(4, 2), 16), 1].join(',');
+              res.send(buffer);
+
+            };
+            // No deflate.
+            //return !_self._deflate ? done(null, image.getData()) : zlib.deflate(image.getData(), done);
+            //For now, assume we're deflating
+            zlib.deflate(image.getData(), done);
+          });
+        });
+
+      } catch (err) {
+        res.writeHead(500, {
+          'Content-Type': 'text/plain'
+        });
+
+        res.end(err.message);
+      }
+    });
+
+    console.log("Created vector tile service: " + route);
+  });
