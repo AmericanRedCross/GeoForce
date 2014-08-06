@@ -1504,7 +1504,11 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 //          });
     }
 
-    $scope.resizeDetailsPanel();
+    //Need to wait until details panel switches modes, and then calculate the size.
+    setTimeout(function() {
+      $scope.resizeDetailsPanel();
+    }, 100);
+
   };
 
   function removeUnwantedItems(details, type) {
