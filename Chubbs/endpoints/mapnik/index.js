@@ -609,7 +609,7 @@ exports.createVectorTileRoute = flow.define(
         // 'radial-distance', 'visvalingam-whyatt', 'zhao-saalfeld' (default)
         opts.simplify_algorithm = 'radial-distance';
 
-        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Type', 'application/x-protobuf');
         res.setHeader('Content-Encoding', 'deflate');
 
         map.extent = bbox;
