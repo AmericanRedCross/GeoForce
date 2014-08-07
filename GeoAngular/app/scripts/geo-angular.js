@@ -1,6 +1,28 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 8/6/14.
+ */
+
+module.exports = {
+
+};
+
+},{}],2:[function(require,module,exports){
+module.exports=require(1)
+},{}],3:[function(require,module,exports){
+module.exports=require(1)
+},{}],4:[function(require,module,exports){
+module.exports=require(1)
+},{}],5:[function(require,module,exports){
+module.exports=require(1)
+},{}],6:[function(require,module,exports){
+module.exports=require(1)
+},{}],7:[function(require,module,exports){
+module.exports=require(1)
+},{}],8:[function(require,module,exports){
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 4/7/14.
  */
 
@@ -390,7 +412,7 @@ function findLargestPart(parts) {
   return largestPart;
 }
 
-},{"./Label.js":2,"./featurelabel":3}],2:[function(require,module,exports){
+},{"./Label.js":9,"./featurelabel":10}],9:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 4/7/14.
@@ -724,7 +746,7 @@ module.exports = L.Label = L.Class.extend({
   }
 });
 
-},{}],3:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 4/7/14.
@@ -744,7 +766,7 @@ module.exports = {
 
 require('./leaflet-patch');
 
-},{"./leaflet-patch":4}],4:[function(require,module,exports){
+},{"./leaflet-patch":11}],11:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 5/7/14.
@@ -797,7 +819,7 @@ module.exports = function() {
   };
 
 }();
-},{"./featurelabel":3}],5:[function(require,module,exports){
+},{"./featurelabel":10}],12:[function(require,module,exports){
 /**
  * This is the entry point of the application. We declare the main module here and then configure the main router
  * that creates corresponding views. The array parameter for module declares this module's dependencies.
@@ -1000,7 +1022,7 @@ require('./controllers/search');
 require('./controllers/export');
 
 
-},{"./controllers/basemaps":6,"./controllers/breadcrumbs":7,"./controllers/details":8,"./controllers/export":9,"./controllers/filters":10,"./controllers/info":11,"./controllers/layers":12,"./controllers/legend":13,"./controllers/main":14,"./controllers/map":15,"./controllers/navbar":16,"./controllers/search":17,"./controllers/side-view":18,"./controllers/stories":19,"./controllers/theme":20,"./controllers/upload":21,"./controllers/zoom-extent":22,"./services/Donuts":23,"./services/LayerConfig":24,"./services/StoriesConfig":25,"./services/Vector/VectorProvider":30}],6:[function(require,module,exports){
+},{"./controllers/basemaps":13,"./controllers/breadcrumbs":14,"./controllers/details":15,"./controllers/export":16,"./controllers/filters":17,"./controllers/info":18,"./controllers/layers":19,"./controllers/legend":20,"./controllers/main":21,"./controllers/map":22,"./controllers/navbar":23,"./controllers/search":24,"./controllers/side-view":25,"./controllers/stories":26,"./controllers/theme":27,"./controllers/upload":28,"./controllers/zoom-extent":29,"./services/Donuts":30,"./services/LayerConfig":31,"./services/StoriesConfig":32,"./services/Vector/VectorProvider":37}],13:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 3/28/14.
@@ -1042,7 +1064,7 @@ module.exports = angular.module('GeoAngular').controller('BasemapsCtrl', functio
   };
 
 });
-},{}],7:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 4/17/14.
@@ -1153,7 +1175,7 @@ module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', func
 
 });
 
-},{}],8:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 4/9/14.
@@ -1664,7 +1686,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
 });
 
-},{}],9:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Created by Ryan Whitley
  *       on 6/4/14.
@@ -1946,7 +1968,7 @@ module.exports = angular.module('GeoAngular').controller('ExportCtrl', function(
     self._init();
 });
 
-},{}],10:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/27/14.
@@ -2226,7 +2248,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
 });
 
-},{}],11:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/27/14.
@@ -2235,7 +2257,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 module.exports = angular.module('GeoAngular').controller('InfoCtrl', function($scope) {
   $scope.params = $stateParams;
 });
-},{}],12:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/27/14.
@@ -2430,7 +2452,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
 });
 
-},{}],13:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/27/14.
@@ -2477,7 +2499,7 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
   });
 
 });
-},{}],14:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = angular.module('GeoAngular').controller('MainCtrl', function($scope, $rootScope, $state, $stateParams, $location) {
   debug.$location = $location;
   localStorage.setItem('defaultRoute', $location.path());
@@ -2516,7 +2538,7 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
 
 });
 
-},{}],15:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *     on Mon Mar 17 2014
@@ -2827,13 +2849,13 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   }
 
 });
-},{}],16:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = angular.module('GeoAngular').controller('NavBarCtrl', function($scope, $state, $stateParams) {
   $scope.params = $stateParams;
 
 });
 
-},{}],17:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 5/21/14.
@@ -2910,7 +2932,7 @@ module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', funct
     };
 });
 
-},{}],18:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *        and Ryan Whitley      <rwhitley@spatialdev.com>
@@ -2932,7 +2954,7 @@ module.exports = angular.module('GeoAngular').controller('SideViewCtrl', functio
 
 });
 
-},{}],19:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/26/14.
@@ -3026,7 +3048,7 @@ angular.module('GeoAngular')
       return outStories;
     };
   });
-},{}],20:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 5/6/14.
@@ -3126,7 +3148,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
    */
 
 });
-},{}],21:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 4/17/14.
@@ -3232,7 +3254,7 @@ module.exports = angular.module('GeoAngular').controller('UploadCtrl', function(
 
 });
 
-},{}],22:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *        and Ryan Whitley      <rwhitley@spatialdev.com>
@@ -3274,7 +3296,7 @@ module.exports = angular.module('GeoAngular').controller('ZoomExtentCtrl', funct
 
 });
 
-},{}],23:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *   and Rich Gwozdz <rgwozdz@spatialdev.com>
@@ -3591,7 +3613,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
 
 });
 
-},{}],24:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/18/14.
@@ -3601,6 +3623,26 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
  * All of the layer names need to be lowercase.
  */
 module.exports = angular.module('GeoAngular').service('LayerConfig', function () {
+
+  var configLayers = [
+    require('../../../../Config/layers/all.js'),
+    require('../../../../Config/layers/basemaps.js'),
+    require('../../../../Config/layers/disaster.js'),
+    require('../../../../Config/layers/other.js'),
+    require('../../../../Config/layers/project.js'),
+    require('../../../../Config/layers/projecthealth.js'),
+    require('../../../../Config/layers/projectrisk.js')
+  ];
+
+  /**
+   * Adds the layers specified in the Config/layers directory to this.
+   */
+  for (var i = 0, len = configLayers.length; i < len; i++) {
+    var cfg = configLayers[i];
+    for (var key in cfg) {
+      this[key] = cfg[key];
+    }
+  }
 
   /**
    * Basemaps Panel List
@@ -4314,7 +4356,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
 
 });
 
-},{}],25:[function(require,module,exports){
+},{"../../../../Config/layers/all.js":1,"../../../../Config/layers/basemaps.js":2,"../../../../Config/layers/disaster.js":3,"../../../../Config/layers/other.js":4,"../../../../Config/layers/project.js":5,"../../../../Config/layers/projecthealth.js":6,"../../../../Config/layers/projectrisk.js":7}],32:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/18/14.
@@ -4385,7 +4427,7 @@ module.exports = angular.module('GeoAngular').service('StoriesConfig', function 
 
 });
 
-},{}],26:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -4667,7 +4709,7 @@ BBoxGeoJSON.prototype._removeInactiveLayers = function(self) {
   }
 };
 
-},{"../../../lib/featurelabel/FeatureSet":1,"./resource":32,"./vector":33}],27:[function(require,module,exports){
+},{"../../../lib/featurelabel/FeatureSet":8,"./resource":39,"./vector":40}],34:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -4731,7 +4773,7 @@ GeoJSON.prototype.getLayer = function() {
   return layer;
 };
 
-},{"./resource":32,"./vector":33}],28:[function(require,module,exports){
+},{"./resource":39,"./vector":40}],35:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -4802,7 +4844,7 @@ KML.prototype.eachLayer = function (cb) {
   });
 };
 
-},{"./resource":32,"./vector":33}],29:[function(require,module,exports){
+},{"./resource":39,"./vector":40}],36:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -4897,7 +4939,7 @@ Resource.prototype.eachLayer = function (cb) {
   this._geojsonLayer.eachLayer(cb);
 };
 
-},{"./vector":33}],30:[function(require,module,exports){
+},{"./vector":40}],37:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 3/19/14.
@@ -5112,7 +5154,7 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
 });
 
 
-},{"./BBoxGeoJSON":26,"./GeoJSON":27,"./KML":28,"./Resource":29,"./csv":31,"./vector":33}],31:[function(require,module,exports){
+},{"./BBoxGeoJSON":33,"./GeoJSON":34,"./KML":35,"./Resource":36,"./csv":38,"./vector":40}],38:[function(require,module,exports){
 /**
  * Created by Ryan Whitley <rwhitley@spatialdev.com>
  *       on 6/3/14.
@@ -5416,9 +5458,9 @@ CSV.prototype.Base64 = {
 
 };
 
-},{"./resource":32,"./vector":33}],32:[function(require,module,exports){
-module.exports=require(29)
-},{"./vector":33}],33:[function(require,module,exports){
+},{"./resource":39,"./vector":40}],39:[function(require,module,exports){
+module.exports=require(36)
+},{"./vector":40}],40:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
  *       on 6/3/14.
@@ -5470,4 +5512,4 @@ var centerLevel = vector.centerLevel = 0;
 
 
 
-},{}]},{},[5])
+},{}]},{},[12])

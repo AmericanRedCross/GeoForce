@@ -8,6 +8,26 @@
  */
 module.exports = angular.module('GeoAngular').service('LayerConfig', function () {
 
+  var configLayers = [
+    require('../../../../Config/layers/all.js'),
+    require('../../../../Config/layers/basemaps.js'),
+    require('../../../../Config/layers/disaster.js'),
+    require('../../../../Config/layers/other.js'),
+    require('../../../../Config/layers/project.js'),
+    require('../../../../Config/layers/projecthealth.js'),
+    require('../../../../Config/layers/projectrisk.js')
+  ];
+
+  /**
+   * Adds the layers specified in the Config/layers directory to this.
+   */
+  for (var i = 0, len = configLayers.length; i < len; i++) {
+    var cfg = configLayers[i];
+    for (var key in cfg) {
+      this[key] = cfg[key];
+    }
+  }
+
   /**
    * Basemaps Panel List
    *
