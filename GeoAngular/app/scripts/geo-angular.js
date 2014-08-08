@@ -2764,8 +2764,12 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     $scope.zoom = parseInt($stateParams.zoom);
   });
 
-  $scope.searchLayers = {};
-  // building the searchLayers model
+  /**
+   * This is the collection of all of the layers we have.
+   * This is used by the searchLayersFilter.
+   */
+  $scope.allLayers = {};
+  // building the allLayers model
   for (var k in LayerConfig) {
     var layer = LayerConfig[k];
 
@@ -2778,7 +2782,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
       continue;
     }
 
-    $scope.searchLayers[k] = keyToObj(k);
+    $scope.allLayers[k] = keyToObj(k);
   }
 
   $scope.layersPanels = {
@@ -2921,6 +2925,28 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   $scope.listGists();
   debug.gistsLayersPanel = $scope.gists;
 
+});
+
+angular.module('GeoAngular').filter('searchLayersFilter', function() {
+  return function(layers, searchText) {
+    if (typeof searchText === 'string') {
+      searchText = searchText.toLowerCase();
+    } else {
+      return layers;
+    }
+    var searchLayers = {};
+    for (var k in layers) {
+      var l = layers[k];
+      for (var k2 in l) {
+        var val = l[k2].toString();
+        if (val.toLowerCase().indexOf(searchText) > -1) {
+          searchLayers[k] = l;
+          break;
+        }
+      }
+    }
+    return searchLayers;
+  }
 });
 
 },{}],20:[function(require,module,exports){

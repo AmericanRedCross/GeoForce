@@ -343,7 +343,7 @@
 
                                     <h4>Search:</h4>
                                     <input class="form-control" type="text" placeholder="Search layers..." ng-model="searchLayersText">
-                                    <label class="checkbox" ng-repeat="(layerKey, layer) in searchLayers">
+                                    <label class="checkbox" ng-repeat="(layerKey, layer) in searchLayers = (allLayers | searchLayersFilter:searchLayersText)">
                                         <input type="checkbox" ng-model="layer.active" ng-change="toggleMapLayer(layerKey, layer)">
                                         {{layer.name || layer.properties.title || layerKey}}
                                     </label>
