@@ -24,12 +24,11 @@ var projectArcQuery =
 // Newer schema where we can have many-to-many locations per project.
 if (settings.projectsManyToMany) {
   operation.ProjectQuery =
-    "SELECT sf_project.*, loc.project__r_id, loc.location__r_admin_0__c, loc.location__r_admin_1__c, loc.location__r_admin_2__c, loc.location__r_admin_3__c, loc.location__r_admin_4__c, loc.location__r_admin_5__c \
-    FROM sf_project_location AS loc \
-    RIGHT JOIN sf_project ON loc.project__r_id = sf_project.sf_id \
+    "SELECT sf_project.*, \
+    name0 as location__r_admin_0__c, name1 as location__r_admin_1__c, name2 as location__r_admin_2__c, name3 as location__r_admin_3__c,name4 location__r_admin_4__c, name5 as location__r_admin_5__c \
+    FROM sf_project \
     INNER JOIN sf_aggregated_gadm_project_counts_many \
       ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
-      AND sf_aggregated_gadm_project_counts_many.guid{{gadm_level}}::text = loc.location__r_gis_geo_id__c \
     WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
 }
 // Original project query where we have 1 location per project.
