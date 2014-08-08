@@ -43,6 +43,23 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     $scope.zoom = parseInt($stateParams.zoom);
   });
 
+  $scope.searchLayers = {};
+  // building the searchLayers model
+  for (var k in LayerConfig) {
+    var layer = LayerConfig[k];
+
+    // We don't want to show layers that are basemaps, and we don't want to show the find func.
+      if (  typeof layer === 'function'
+      || k === 'basemaps'
+      || k === 'bbox'
+      || layer.type === 'basemap' ) {
+
+      continue;
+    }
+
+    $scope.searchLayers[k] = keyToObj(k);
+  }
+
   $scope.layersPanels = {
 //    'Boundaries': {},
 //    'GeoJSON': {},
@@ -58,7 +75,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
       var layer = LayerConfig[layerKey];
 
       // We don't want to show layers that are basemaps, and we don't want to show the find func.
-      if (  typeof LayerConfig[layerKey] === 'function'
+      if (  typeof layer === 'function'
         || layerKey === 'basemaps'
         || layerKey === 'bbox'
         || layer.type === 'basemap' ) {

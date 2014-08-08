@@ -17,7 +17,7 @@ module.exports = angular.module('GeoAngular').service('StoriesConfig', function 
    */
   this.stories = [
     'haiyan',
-    'ebola',
+    'ebola'
   ];
 
 

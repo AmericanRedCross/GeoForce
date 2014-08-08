@@ -13,15 +13,15 @@ module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function
   $scope.storiesSearchText = "";
   $scope.storiesExtentArray = []; //currently not used, but should be to allow Extent to perform 'AND' logic with the keywords.
 
-    for (var storiesKey in StoriesConfig) {
+  for (var storiesKey in StoriesConfig) {
 
-        // We don't want to show the find func.
-        if (  typeof StoriesConfig[storiesKey] === 'function' || storiesKey == 'stories') {
-            continue;
-        }
-
-       $scope.stories.push(StoriesConfig[storiesKey]);
+    // We don't want to show the find func.
+    if (typeof StoriesConfig[storiesKey] === 'function' || storiesKey == 'stories') {
+      continue;
     }
+
+    $scope.stories.push(StoriesConfig[storiesKey]);
+  }
 
   $scope.filterByCheckbox = function(value) {
     //Take the term passed in and add or remove it from the keywords textbox.
@@ -33,7 +33,7 @@ module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function
       //Remove it
       $scope.storiesSearchArray.splice($scope.storiesSearchArray.indexOf(value), 1);
     }
-  }
+  };
 
   $scope.filterExtentByCheckbox = function(value) {
     //Take the term passed in and add or remove it from the keywords textbox.
@@ -45,7 +45,7 @@ module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function
       //Remove it
       $scope.storiesExtentArray.splice($scope.storiesExtentArray.indexOf(value), 1);
     }
-  }
+  };
 
   $scope.clearSearch = function() {
     $scope.storiesSearchArray = [];
@@ -55,37 +55,36 @@ module.exports = angular.module('GeoAngular').controller('StoriesCtrl', function
 });
 
 
-angular.module('GeoAngular')
-  .filter('searchStoriesFilter', function () {
-    return function (stories, $scope) {
+angular.module('GeoAngular').filter('searchStoriesFilter', function() {
+    return function(stories, $scope) {
       var outStories = [];
       if (stories) {
         //loop thru stories and filter based on search text/checkboxes.
         //comma separated items should be broken up and searched for separately using 'OR' logic.
 
         var keywords = [];
-        if($scope.storiesSearchText.length > 0){
+        if ($scope.storiesSearchText.length > 0) {
           keywords = $scope.storiesSearchText.split(",").concat($scope.storiesSearchArray);
         }
-        else{
+        else {
           keywords = $scope.storiesSearchArray;
         }
-        if(keywords.length == 0){
+        if (keywords.length == 0) {
           return stories;
         }
 
-        stories.forEach(function(story){
-            keywords.forEach(function(keyword){
-                if(keyword.length > 0 && story.keywords.toLowerCase().indexOf($.trim(keyword.toLowerCase())) > -1) {
-                  if (outStories.indexOf(story) == -1) {
-                    outStories.push(story);
-                  }
-                }
-            });
+        stories.forEach(function(story) {
+          keywords.forEach(function(keyword) {
+            if (keyword.length > 0 && story.keywords.toLowerCase().indexOf($.trim(keyword.toLowerCase())) > -1) {
+              if (outStories.indexOf(story) == -1) {
+                outStories.push(story);
+              }
+            }
+          });
         });
 
 
-      }else{
+      } else {
         return stories;
       }
       return outStories;
