@@ -52,49 +52,40 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     'Contextual layers:': {}
   };
 
+  function buildLayersModel() {
+    $scope.layersPanels['Contextual layers:'] = {};
+    for (var layerKey in LayerConfig) {
+      var layer = LayerConfig[layerKey];
 
-  for (var layerKey in LayerConfig) {
+      // We don't want to show layers that are basemaps, and we don't want to show the find func.
+      if (  typeof LayerConfig[layerKey] === 'function'
+        || layerKey === 'basemaps'
+        || layerKey === 'bbox'
+        || layer.type === 'basemap' ) {
 
-    // We don't want to show layers that are basemaps, and we don't want to show the find func.
-    if (  typeof LayerConfig[layerKey] === 'function'
-       || layerKey === 'basemaps'
-       || layerKey === 'bbox'
-       || LayerConfig[layerKey].type === 'basemap') {
+        continue;
+      }
 
-      continue;
+      if (!$scope.$stateParams.theme) {
+        var theme = 'project';
+      } else {
+        var theme = $scope.$stateParams.theme.toLowerCase();
+      }
+
+      if (!layer.theme || (layer.theme.toLowerCase() !== 'all' && layer.theme.toLowerCase() !== theme) ) {
+        continue
+      }
+
+      $scope.layersPanels['Contextual layers:'][layerKey] = keyToObj(layerKey);
+
     }
-
-    /**
-     * Put layers in their respective categories.
-     */
-//    if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'bboxgeojson') {
-//      $scope.layersPanels.Boundaries[layerKey] = LayerConfig[layerKey];
-//    }
-//
-//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'geojson') {
-//      $scope.layersPanels.GeoJSON[layerKey] = LayerConfig[layerKey];
-//    }
-//
-//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'kml') {
-//      $scope.layersPanels.KML[layerKey] = LayerConfig[layerKey];
-//    }
-//
-//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'csv') {
-//      $scope.layersPanels.CSV[layerKey] = LayerConfig[layerKey];
-//    }
-//
-//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'wms') {
-//      $scope.layersPanels.WMS[layerKey] = LayerConfig[layerKey];
-//    }
-
-    $scope.layersPanels['Contextual layers:'][layerKey] = keyToObj(layerKey);
-
   }
+  buildLayersModel();
 
   debug.layersPanels = $scope.layersPanels;
 
   function keyToObj(key) {
-    val = LayerConfig[layerKey];
+    var val = LayerConfig[key];
     if (typeof val === 'string') {
       return {
         url: val
@@ -116,6 +107,8 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
    * in the panels checked accordingly.
    */
   $scope.$on('layers-update', function(evt, layers) {
+
+    buildLayersModel();
 
     // github gists
     $scope.listGists();

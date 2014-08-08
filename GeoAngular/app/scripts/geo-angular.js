@@ -43,87 +43,6 @@ module.exports = {
     }
   },
 
-  wa: {
-    type: 'geojson',
-    theme: 'all',
-    url: 'data/test/washington.geojson',
-    properties: {
-      title: 'Washington (State)',
-      fill: "#FFBE00",
-      legend: ""
-    }
-  },
-
-  wafires: {
-    type: 'geojson',
-    theme: 'all',
-    url: 'data/test/state_wa_lrg_fires.geojson',
-    properties: {
-      "title": "Washington Fires",
-      "stroke": "#FF8800",
-      "stroke-width": 1,
-      "fill": "#FFBE00",
-      "fill-opacity": 0.5,
-      legend: ""
-    }
-  },
-
-  //GADM country extents, level 0
-  countryextents: {
-    type: 'geojson',
-    theme: 'all',
-    url: 'data/vw_gadm_raw_geom.geojson'
-  },
-
-  //ARC Region extents
-  arcregionextents: {
-    type: 'geojson',
-    theme: 'all',
-    url: 'data/arc_region_extents.geojson'
-  },
-
-
-  /**
-   * KML
-   */
-  gdacs: {
-    name: 'GDACS: Global Disaster Alert and Coordination System',
-    type: 'kml',
-    theme: 'all',
-    url: 'http://www.gdacs.org/xml/gdacs.kml',
-    properties: {
-      legend: ''
-    }
-  },
-  gdacstest: {
-    name: 'GDACS Test',
-    type: 'kml',
-    theme: 'all',
-    url: 'data/test/gdacs.kml',
-    properties: {
-      legend: ''
-    }
-  },
-  earthquakes: {
-    name: 'USGS Earthquakes',
-    type: 'kml',
-    theme: 'all',
-    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml',
-    properties: {
-      legend: ''
-    }
-  },
-  earthquakestest: {
-    name: 'USGS Earthquakes Test',
-    type: 'kml',
-    theme: 'all',
-    url: 'data/test/usgs-earthquakes.kml',
-    properties: {
-      legend: ''
-    }
-  },
-
-
   /**
    * CSV
    */
@@ -136,152 +55,6 @@ module.exports = {
       legend: ''
     }
   },
-  sampletracks: {
-    name: 'Sample GPS Tracks',
-    type: 'csv',
-    theme: 'all',
-    url: 'data/test/sample-tracks.csv',
-    properties: {
-      legend: ''
-    }
-  },
-
-
-  /**
-   * WMS
-   */
-  airtemp: {
-    name: 'NOAA Air Temperature',
-    type: 'wms',
-    theme: 'all',
-    url: 'http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/obs',
-    transparent: true,      // default true
-    format: 'image/png',    // default 'image/png'
-    layers: 'OBS_MET_TEMP',
-    properties: {
-      legend: ""
-    }
-  },
-
-  // Not working??? works in QGIS. Most layers, however, don't even work in QGIS.
-  sanandreas: {
-    name: 'San Andreas Scenario ShakeMap M7.8 (1857 Rupture)',
-    type: 'wms',
-    theme: 'all',
-    url: 'http://lacrmt.sahanafoundation.org:8080/geoserver/wms?LAYERS=lacrmt%3Ainund2&',
-    transparent: false,
-    layers: 'lacrmt:sanandreas78',
-    properties: {
-      legend: ""
-    }
-  },
-
-  landcover: {
-    name: 'MODIS Landcover 2009',
-    type: 'wms',
-    theme: 'all',
-    url: 'http://ags.servirlabs.net/ArcGIS/services/ReferenceNode/MODIS_Landcover_Type1_2009/MapServer/WMSServer',
-    layers: '0',
-    properties: {
-      legend: ""
-    }
-  },
-
-  growingperiod: {
-    name: 'Average Length of Growing Period (days)',
-    type: 'wms',
-    theme: 'all',
-    url: 'http://apps.harvestchoice.org/arcgis/services/MapServices/cell_values_4/MapServer/WMSServer',
-    layers: '15',
-    properties: {
-      legend: ""
-    }
-  },
-
-
-  /**
-   * XYZ
-   */
-  clouds: {
-    name: 'Cloud Cover',
-    type: 'xyz',
-    theme: 'all',
-    url: 'http://{s}.tile.openweathermap.org/map/clouds_cls/{z}/{x}/{y}.png',
-    opacity: 0.5 // optional. opacity is 0.5 if not specified
-  },
-
-  precipitation: {
-    name: 'Precipitation',
-    type: 'xyz',
-    theme: 'all',
-    url: 'http://{s}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png',
-    opacity: 0.5
-  },
-
-  precipitationclassic: {
-    name: 'Precipitation (Classic)',
-    type: 'xyz',
-    theme: 'all',
-    url: 'http://{s}.tile.openweathermap.org/map/precipitation_cls/{z}/{x}/{y}.png',
-    opacity: 0.4
-  },
-
-  rain: {
-    name: 'Rain',
-    type: 'xyz',
-    theme: 'all',
-    url: 'http://{s}.tile.openweathermap.org/map/rain/{z}/{x}/{y}.png'
-  },
-
-  rainclassic: {
-    name: 'Rain (Classic)',
-    type: 'xyz',
-    theme: 'all',
-    url: 'http://{s}.tile.openweathermap.org/map/rain_cls/{z}/{x}/{y}.png'
-  },
-
-  pressure: {
-    name: 'Pressure',
-    type: 'xyz',
-    theme: 'all',
-    url: 'http://{s}.tile.openweathermap.org/map/pressure/{z}/{x}/{y}.png'
-  },
-
-  pressurecontour: {
-    name: 'Pressure Contour',
-    type: 'xyz',
-    theme: 'all',
-    url: 'http://{s}.tile.openweathermap.org/map/pressure_cntr/{z}/{x}/{y}.png',
-    opacity: 0.9
-  },
-
-  temperature: {
-    name: 'Temperature',
-    type: 'xyz',
-    theme: 'all',
-    url: 'http://{s}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png'
-  },
-
-  wind: {
-    name: 'Wind',
-    type: 'xyz',
-    theme: 'all',
-    url: 'http://{s}.tile.openweathermap.org/map/wind/{z}/{x}/{y}.png'
-  },
-
-  snow: {
-    name: 'Snow',
-    type: 'xyz',
-    theme: 'all',
-    url: 'http://{s}.tile.openweathermap.org/map/snow/{z}/{x}/{y}.png'
-  },
-
-
-  /**
-   * Other (Vector Provider attempts to figure out the vector type). This only
-   * works with vector layer types.
-   */
-  usoutline: 'http://eric.clst.org/wupl/Stuff/gz_2010_us_outline_20m.json'
 
 };
 
@@ -454,17 +227,256 @@ module.exports = {
  */
 
 module.exports = {
+  clouds: {
+    name: 'Cloud Cover',
+    type: 'xyz',
+    theme: 'disaster',
+    url: 'http://{s}.tile.openweathermap.org/map/clouds_cls/{z}/{x}/{y}.png',
+    opacity: 0.5 // optional. opacity is 0.5 if not specified
+  },
 
+  precipitation: {
+    name: 'Precipitation',
+    type: 'xyz',
+    theme: 'disaster',
+    url: 'http://{s}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png',
+    opacity: 0.5
+  },
+
+  precipitationclassic: {
+    name: 'Precipitation (Classic)',
+    type: 'xyz',
+    theme: 'disaster',
+    url: 'http://{s}.tile.openweathermap.org/map/precipitation_cls/{z}/{x}/{y}.png',
+    opacity: 0.4
+  },
+
+  rain: {
+    name: 'Rain',
+    type: 'xyz',
+    theme: 'disaster',
+    url: 'http://{s}.tile.openweathermap.org/map/rain/{z}/{x}/{y}.png'
+  },
+
+  rainclassic: {
+    name: 'Rain (Classic)',
+    type: 'xyz',
+    theme: 'disaster',
+    url: 'http://{s}.tile.openweathermap.org/map/rain_cls/{z}/{x}/{y}.png'
+  },
+
+  pressure: {
+    name: 'Pressure',
+    type: 'xyz',
+    theme: 'disaster',
+    url: 'http://{s}.tile.openweathermap.org/map/pressure/{z}/{x}/{y}.png'
+  }
 };
 
 },{}],4:[function(require,module,exports){
-module.exports=require(3)
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 8/6/14.
+ */
+
+module.exports = {
+  snow: {
+    name: 'Snow',
+    type: 'xyz',
+    theme: 'other',
+    url: 'http://{s}.tile.openweathermap.org/map/snow/{z}/{x}/{y}.png'
+  },
+
+  /**
+   * Other (Vector Provider attempts to figure out the vector type). This only
+   * works with vector layer types.
+   */
+  usoutline: 'http://eric.clst.org/wupl/Stuff/gz_2010_us_outline_20m.json'
+
+};
+
 },{}],5:[function(require,module,exports){
-module.exports=require(3)
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 8/6/14.
+ */
+
+module.exports = {
+
+
+  /**
+   * KML
+   */
+
+  earthquakes: {
+    name: 'USGS Earthquakes',
+    type: 'kml',
+    theme: 'project',
+    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml',
+    properties: {
+      legend: ''
+    }
+  },
+
+  /**
+   * WMS
+   */
+  airtemp: {
+    name: 'NOAA Air Temperature',
+    type: 'wms',
+    theme: 'project',
+    url: 'http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/obs',
+    transparent: true,      // default true
+    format: 'image/png',    // default 'image/png'
+    layers: 'OBS_MET_TEMP',
+    properties: {
+      legend: ""
+    }
+  },
+
+  // Not working??? works in QGIS. Most layers, however, don't even work in QGIS.
+  sanandreas: {
+    name: 'San Andreas Scenario ShakeMap M7.8 (1857 Rupture)',
+    type: 'wms',
+    theme: 'project',
+    url: 'http://lacrmt.sahanafoundation.org:8080/geoserver/wms?LAYERS=lacrmt%3Ainund2&',
+    transparent: false,
+    layers: 'lacrmt:sanandreas78',
+    properties: {
+      legend: ""
+    }
+  },
+
+  growingperiod: {
+    name: 'Average Length of Growing Period (days)',
+    type: 'wms',
+    theme: 'project',
+    url: 'http://apps.harvestchoice.org/arcgis/services/MapServices/cell_values_4/MapServer/WMSServer',
+    layers: '15',
+    properties: {
+      legend: ""
+    }
+  },
+
+
+  /**
+   * XYZ
+   */
+  pressurecontour: {
+    name: 'Pressure Contour',
+    type: 'xyz',
+    theme: 'project',
+    url: 'http://{s}.tile.openweathermap.org/map/pressure_cntr/{z}/{x}/{y}.png',
+    opacity: 0.9
+  },
+
+  temperature: {
+    name: 'Temperature',
+    type: 'xyz',
+    theme: 'project',
+    url: 'http://{s}.tile.openweathermap.org/map/temp/{z}/{x}/{y}.png'
+  },
+
+  wind: {
+    name: 'Wind',
+    type: 'xyz',
+    theme: 'project',
+    url: 'http://{s}.tile.openweathermap.org/map/wind/{z}/{x}/{y}.png'
+  }
+};
+
 },{}],6:[function(require,module,exports){
-module.exports=require(3)
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 8/6/14.
+ */
+
+module.exports = {
+  gdacs: {
+    name: 'GDACS: Global Disaster Alert and Coordination System',
+    type: 'kml',
+    theme: 'projecthealth',
+    url: 'http://www.gdacs.org/xml/gdacs.kml',
+    properties: {
+      legend: ''
+    }
+  },
+  gdacstest: {
+    name: 'GDACS Test',
+    type: 'kml',
+    theme: 'projecthealth',
+    url: 'data/test/gdacs.kml',
+    properties: {
+      legend: ''
+    }
+  },
+
+  wa: {
+    type: 'geojson',
+    theme: 'projecthealth',
+    url: 'data/test/washington.geojson',
+    properties: {
+      title: 'Washington (State)',
+      fill: "#FFBE00",
+      legend: ""
+    }
+  },
+
+  wafires: {
+    type: 'geojson',
+    theme: 'projecthealth',
+    url: 'data/test/state_wa_lrg_fires.geojson',
+    properties: {
+      "title": "Washington Fires",
+      "stroke": "#FF8800",
+      "stroke-width": 1,
+      "fill": "#FFBE00",
+      "fill-opacity": 0.5,
+      legend: ""
+    }
+  }
+};
+
 },{}],7:[function(require,module,exports){
-module.exports=require(3)
+/**
+ * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
+ *       on 8/6/14.
+ */
+
+module.exports = {
+  sampletracks: {
+    name: 'Sample GPS Tracks',
+    type: 'csv',
+    theme: 'projectrisk',
+    url: 'data/test/sample-tracks.csv',
+    properties: {
+      legend: ''
+    }
+  },
+
+  landcover: {
+    name: 'MODIS Landcover 2009',
+    type: 'wms',
+    theme: 'projectrisk',
+    url: 'http://ags.servirlabs.net/ArcGIS/services/ReferenceNode/MODIS_Landcover_Type1_2009/MapServer/WMSServer',
+    layers: '0',
+    properties: {
+      legend: ""
+    }
+  },
+
+  earthquakestest: {
+    name: 'USGS Earthquakes Test',
+    type: 'kml',
+    theme: 'projectrisk',
+    url: 'data/test/usgs-earthquakes.kml',
+    properties: {
+      legend: ''
+    }
+  }
+
+};
+
 },{}],8:[function(require,module,exports){
 /**
  * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
@@ -2761,49 +2773,40 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     'Contextual layers:': {}
   };
 
+  function buildLayersModel() {
+    $scope.layersPanels['Contextual layers:'] = {};
+    for (var layerKey in LayerConfig) {
+      var layer = LayerConfig[layerKey];
 
-  for (var layerKey in LayerConfig) {
+      // We don't want to show layers that are basemaps, and we don't want to show the find func.
+      if (  typeof LayerConfig[layerKey] === 'function'
+        || layerKey === 'basemaps'
+        || layerKey === 'bbox'
+        || layer.type === 'basemap' ) {
 
-    // We don't want to show layers that are basemaps, and we don't want to show the find func.
-    if (  typeof LayerConfig[layerKey] === 'function'
-       || layerKey === 'basemaps'
-       || layerKey === 'bbox'
-       || LayerConfig[layerKey].type === 'basemap') {
+        continue;
+      }
 
-      continue;
+      if (!$scope.$stateParams.theme) {
+        var theme = 'project';
+      } else {
+        var theme = $scope.$stateParams.theme.toLowerCase();
+      }
+
+      if (!layer.theme || (layer.theme.toLowerCase() !== 'all' && layer.theme.toLowerCase() !== theme) ) {
+        continue
+      }
+
+      $scope.layersPanels['Contextual layers:'][layerKey] = keyToObj(layerKey);
+
     }
-
-    /**
-     * Put layers in their respective categories.
-     */
-//    if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'bboxgeojson') {
-//      $scope.layersPanels.Boundaries[layerKey] = LayerConfig[layerKey];
-//    }
-//
-//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'geojson') {
-//      $scope.layersPanels.GeoJSON[layerKey] = LayerConfig[layerKey];
-//    }
-//
-//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'kml') {
-//      $scope.layersPanels.KML[layerKey] = LayerConfig[layerKey];
-//    }
-//
-//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'csv') {
-//      $scope.layersPanels.CSV[layerKey] = LayerConfig[layerKey];
-//    }
-//
-//    else if (LayerConfig[layerKey].type && LayerConfig[layerKey].type.toLowerCase() === 'wms') {
-//      $scope.layersPanels.WMS[layerKey] = LayerConfig[layerKey];
-//    }
-
-    $scope.layersPanels['Contextual layers:'][layerKey] = keyToObj(layerKey);
-
   }
+  buildLayersModel();
 
   debug.layersPanels = $scope.layersPanels;
 
   function keyToObj(key) {
-    val = LayerConfig[layerKey];
+    var val = LayerConfig[key];
     if (typeof val === 'string') {
       return {
         url: val
@@ -2825,6 +2828,8 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
    * in the panels checked accordingly.
    */
   $scope.$on('layers-update', function(evt, layers) {
+
+    buildLayersModel();
 
     // github gists
     $scope.listGists();
@@ -4398,7 +4403,20 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
 
   };
 
+  //GADM country extents, level 0
+  this.countryextents = {
+    type: 'geojson',
+      theme: 'other',
+      url: 'data/vw_gadm_raw_geom.geojson'
+  };
 
+  //ARC Region extents
+  this.arcregionextents = {
+    type: 'geojson',
+      theme: 'other',
+      url: 'data/arc_region_extents.geojson'
+  };
+  
   /**
    * For layers, we try and get an alias for everything, so if it's a URL that
    * does not match, we just want to return itself so we can fetch that given url.

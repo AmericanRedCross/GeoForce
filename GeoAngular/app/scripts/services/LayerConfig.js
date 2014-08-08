@@ -333,7 +333,20 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
 
   };
 
+  //GADM country extents, level 0
+  this.countryextents = {
+    type: 'geojson',
+      theme: 'other',
+      url: 'data/vw_gadm_raw_geom.geojson'
+  };
 
+  //ARC Region extents
+  this.arcregionextents = {
+    type: 'geojson',
+      theme: 'other',
+      url: 'data/arc_region_extents.geojson'
+  };
+  
   /**
    * For layers, we try and get an alias for everything, so if it's a URL that
    * does not match, we just want to return itself so we can fetch that given url.
