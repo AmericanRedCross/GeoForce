@@ -164,7 +164,7 @@ a {
     -webkit-transform: translateY(0%) rotateX(0deg);
 }
 
-.dropdown-menu {
+#ThemeSelectorMenu .dropdown-menu {
     border: 0px;
     border-radius: 0px
     -webkit-box-shadow: 0 0 0;

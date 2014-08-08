@@ -341,6 +341,13 @@
                                         </label>
                                     </div>
 
+                                    <h4>Search:</h4>
+                                    <input class="form-control" type="text" placeholder="Search layers..." ng-model="searchLayersText">
+                                    <label class="checkbox" ng-repeat="(layerKey, layer) in searchPanel">
+                                        <input type="checkbox" ng-model="layer.active" ng-change="toggleMapLayer(layerKey, layer)">
+                                        {{layer.name || layer.properties.title || layerKey}}
+                                    </label>
+
                                     <div ng-repeat="(panelName, panel) in layersPanels">
                                         <h4>{{panelName}}</h4>
                                         <label class="checkbox" ng-repeat="(layerKey, layer) in panel">
