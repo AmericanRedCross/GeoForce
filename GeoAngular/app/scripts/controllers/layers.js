@@ -204,14 +204,15 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   $scope.listGists();
   debug.gistsLayersPanel = $scope.gists;
 
-});
+  $scope.searchLayers = $scope.allLayers;
 
-angular.module('GeoAngular').filter('searchLayersFilter', function() {
-  return function(layers, searchText) {
+  $scope.search = function(searchText) {
+    var layers = $scope.allLayers;
     if (typeof searchText === 'string') {
       searchText = searchText.toLowerCase();
     } else {
-      return layers;
+      $scope.searchLayers = layers;
+      return;
     }
     var searchLayers = {};
     for (var k in layers) {
@@ -234,6 +235,8 @@ angular.module('GeoAngular').filter('searchLayersFilter', function() {
         }
       }
     }
-    return searchLayers;
-  }
+    $scope.searchLayers = searchLayers;
+  };
+
 });
+
