@@ -2944,6 +2944,16 @@ angular.module('GeoAngular').filter('searchLayersFilter', function() {
           break;
         }
       }
+      var props = l.properties;
+      if (props) {
+        for (var k3 in props) {
+          var val = props[k3].toString();
+          if (val.toLowerCase().indexOf(searchText) > -1) {
+            searchLayers[k] = l;
+            break;
+          }
+        }
+      }
     }
     return searchLayers;
   }

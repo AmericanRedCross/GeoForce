@@ -276,7 +276,8 @@
 
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs">
-                                <li class="active"><a class="a-nav-tab" ng-click="navTab='contextual'" data-toggle="tab">Map Layers</a></li>
+                                <li class="active"><a class="a-nav-tab" ng-click="navTab='contextual'" data-toggle="tab">Theme Layers</a></li>
+                                <li><a class="a-nav-tab" ng-click="navTab='search'" data-toggle="tab">Search</a></li>
                                 <li><a class="a-nav-tab" ng-click="navTab='uploaded'" data-toggle="tab">Uploaded Data</a></li>
                             </ul>
 
@@ -341,13 +342,6 @@
                                         </label>
                                     </div>
 
-                                    <h4>Search:</h4>
-                                    <input class="form-control" type="text" placeholder="Search layers..." ng-model="searchLayersText">
-                                    <label class="checkbox" ng-repeat="(layerKey, layer) in searchLayers = (allLayers | searchLayersFilter:searchLayersText)">
-                                        <input type="checkbox" ng-model="layer.active" ng-change="toggleMapLayer(layerKey, layer)">
-                                        {{layer.name || layer.properties.title || layerKey}}
-                                    </label>
-
                                     <div ng-repeat="(panelName, panel) in layersPanels">
                                         <h4>{{panelName}}</h4>
                                         <label class="checkbox" ng-repeat="(layerKey, layer) in panel">
@@ -356,6 +350,14 @@
                                         </label>
                                     </div>
                                     <br/>
+                                </div>
+                                <div ng-class="{active: navTab==='search'}" class="tab-pane">
+                                    <h4>Search:</h4>
+                                    <input class="form-control" type="text" placeholder="Search layers..." ng-model="searchLayersText">
+                                    <label class="checkbox" ng-repeat="(layerKey, layer) in searchLayers = (allLayers | searchLayersFilter:searchLayersText)">
+                                        <input type="checkbox" ng-model="layer.active" ng-change="toggleMapLayer(layerKey, layer)">
+                                        {{layer.name || layer.properties.title || layerKey}}
+                                    </label>
                                 </div>
                                 <div ng-class="{active: navTab==='uploaded'}" class="tab-pane">
                                     <div ng-show="numGists===0">
