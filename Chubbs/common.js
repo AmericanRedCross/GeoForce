@@ -35,22 +35,31 @@ common.respond = function (req, res, args, callback) {
   else if (args.format && (args.format.toLowerCase() == "json" || args.format.toLowerCase() == "esrijson" || args.format.toLowerCase() == "j")) {
     //Respond with JSON
     if (args.errorMessage) {
-//      res.jsonp(500, { error: args.errorMessage });
-      res.writeHead(500, {
-        'Content-Type': 'application/json'
-      });
-      res.end(JSON.stringify({ error: args.errorMessage }, null, indent));
+
+      if(args && args.jsonp){
+        //For webviz jsonp calls
+        res.jsonp(500, { error: args.errorMessage });
+      }
+      else {
+        res.writeHead(500, {
+          'Content-Type': 'application/json'
+        });
+        res.end(JSON.stringify({ error: args.errorMessage }, null, indent));
+      }
     }
     else {
       //Send back json file
-      res.setHeader('Content-disposition', 'attachment; filename=' + downloadFileName + '.json');
-      res.writeHead(200, {
-        'Content-Type': 'application/json'
-      });
-
-      res.end(JSON.stringify(args.featureCollection, null, indent));
-//    res.jsonp(args.featureCollection);
-
+      if(args && args.jsonp){
+      //For webviz jsonp calls
+        res.jsonp(args.featureCollection);
+      }
+      else{
+        res.setHeader('Content-disposition', 'attachment; filename=' + downloadFileName + '.json');
+        res.writeHead(200, {
+          'Content-Type': 'application/json'
+        });
+        res.end(JSON.stringify(args.featureCollection, null, indent));
+      }
     }
   }
   else if (args.format.toLowerCase() == "geojson") {
@@ -59,21 +68,32 @@ common.respond = function (req, res, args, callback) {
 
     //Responsd with GeoJSON
     if (args.errorMessage) {
-      res.writeHead(500, {
-        'Content-Type': 'application/json'
-      });
-      res.end(JSON.stringify({ error: args.errorMessage }, null, indent));
+
+      if(args && args.jsonp){
+        //For webviz jsonp calls
+        res.jsonp(500, { error: args.errorMessage });
+      }else{
+        res.writeHead(500, {
+          'Content-Type': 'application/json'
+        });
+        res.end(JSON.stringify({ error: args.errorMessage }, null, indent));
+      }
     }
     else {
       //Send back json file
-      res.writeHead(200, {
-        'Content-Type': 'application/json'
-      });
-
       //res.setHeader('Content-Type', 'application/json');
       //this.compress(req, res, JSON.stringify(args.featureCollection, null, indent));
+      if(args && args.jsonp){
+        //For webviz jsonp calls
+        res.jsonp(args.featureCollection);
+      }else
+      {
+        res.writeHead(200, {
+          'Content-Type': 'application/json'
+        });
+        res.end(JSON.stringify(args.featureCollection, null, indent));
+      }
 
-      res.end(JSON.stringify(args.featureCollection, null, indent));
     }
   }
   else if (args.format && (args.format.toLowerCase() == "shapefile")) {
