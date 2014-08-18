@@ -422,7 +422,7 @@
 
         var url = _server + '/services/getAdminStack';
 
-        //Send POST, using JSONP
+        //Send POST,
         $.getJSON(url, postArgs).done(function (data) {
             handleAdminStackResponse(data);
         }).fail(function (jqxhr, textStatus, error) {
