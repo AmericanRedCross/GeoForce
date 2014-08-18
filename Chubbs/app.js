@@ -90,9 +90,11 @@ app.use(require('less-middleware')({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/public/topojson", express.static(path.join(__dirname, 'public/topojson')));
 
+
 //If we're in webviz mode, don't load mapfolio endpoints or ensureAuthenticated Middleware
 if(settings && settings.application && settings.application.mode && settings.application.mode === "webviz"){
   //Nothing
+
 }else{
   //In geoforce mode, load the mapfolio routes and ensure authentication.
   app.use(ensureAuthenticated);
@@ -189,7 +191,7 @@ else{
 if(settings && settings.application && settings.application.mode && settings.application.mode === "webviz"){
   //In webviz mode, default page is search.
   app.get('/', function (req, res) {
-    res.redirect('/search');
+    res.redirect('/services');
   });
 }else {
 //Root Request - show application
@@ -293,5 +295,6 @@ tables.findSpatialTables(app, function(error, tables) {
 
 //Route search path to static search html file
 app.get('/search', function (req, res) {
-  res.sendfile(__dirname + '/public/search/search.html');
+  var querystring = (req.originalUrl.indexOf("?") > -1 ? "?" + req.originalUrl.split("?")[1] : "");
+  res.redirect("/placesearch/search.html" + querystring);
 });
