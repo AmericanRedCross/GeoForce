@@ -298,6 +298,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
   this.boundaries = {
     name: 'Boundaries',
     type: 'bboxgeojson',
+    theme: 'all',
     url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
     properties: {
       "stroke": 'white',
