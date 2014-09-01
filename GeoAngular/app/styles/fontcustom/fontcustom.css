@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.eot");
-  src: url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.woff") format("woff"),
-       url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.ttf") format("truetype"),
-       url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.svg#fontcustom") format("svg");
+  src: url("./fontcustom_3bae71a05067c8a5788efdbe408f04f0.eot");
+  src: url("./fontcustom_3bae71a05067c8a5788efdbe408f04f0.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_3bae71a05067c8a5788efdbe408f04f0.woff") format("woff"),
+       url("./fontcustom_3bae71a05067c8a5788efdbe408f04f0.ttf") format("truetype"),
+       url("./fontcustom_3bae71a05067c8a5788efdbe408f04f0.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_b1fe93f4444186af6fb5838283d9444b.svg#fontcustom") format("svg");
+    src: url("./fontcustom_3bae71a05067c8a5788efdbe408f04f0.svg#fontcustom") format("svg");
   }
 }
 
@@ -46,20 +46,35 @@
 .icon-DisasterRiskReduction:before,
 .icon-FinancialAssistance:before,
 .icon-GDPC:before,
+.icon-GISInformationManagement:before,
 .icon-Health:before,
+.icon-HumanResources:before,
 .icon-IHL:before,
+.icon-InternationalHumanitarianLaw:before,
+.icon-KnowledgeManagement:before,
 .icon-Livelihoods:before,
 .icon-Measles:before,
-.icon-NFI:before,
+.icon-Non-FoodItemsReliefSupplies:before,
 .icon-OrganizationalDevelopment:before,
+.icon-PartnershipsNetworkandDialogue:before,
 .icon-People:before,
+.icon-ProjectManagement:before,
 .icon-RFL:before,
 .icon-Readiness-ARC:before,
 .icon-Recovery:before,
 .icon-Relief:before,
+.icon-ResponseReadiness:before,
+.icon-RestoringFamilyLinks:before,
 .icon-Shelter:before,
+.icon-ShelterandSettlements:before,
+.icon-SystemsandProcesses:before,
+.icon-TBD:before,
+.icon-TechnicalAssistance:before,
+.icon-Technology:before,
+.icon-Technology-copy:before,
 .icon-UnderfundedDisasters:before,
-.icon-WatSan:before {
+.icon-WaterandSanitation:before,
+.icon-WaterandSanitation2:before {
   display: inline-block;
   font-family: "fontcustom";
   font-style: normal;
@@ -97,17 +112,32 @@
 .icon-DisasterRiskReduction:before { content: "\f126"; }
 .icon-FinancialAssistance:before { content: "\f12f"; }
 .icon-GDPC:before { content: "\f127"; }
+.icon-GISInformationManagement:before { content: "\f137"; }
 .icon-Health:before { content: "\f124"; }
+.icon-HumanResources:before { content: "\f138"; }
 .icon-IHL:before { content: "\f135"; }
+.icon-InternationalHumanitarianLaw:before { content: "\f139"; }
+.icon-KnowledgeManagement:before { content: "\f13a"; }
 .icon-Livelihoods:before { content: "\f128"; }
 .icon-Measles:before { content: "\f129"; }
-.icon-NFI:before { content: "\f133"; }
+.icon-Non-FoodItemsReliefSupplies:before { content: "\f145"; }
 .icon-OrganizationalDevelopment:before { content: "\f12a"; }
+.icon-PartnershipsNetworkandDialogue:before { content: "\f146"; }
 .icon-People:before { content: "\f130"; }
+.icon-ProjectManagement:before { content: "\f13d"; }
 .icon-RFL:before { content: "\f12b"; }
 .icon-Readiness-ARC:before { content: "\f131"; }
 .icon-Recovery:before { content: "\f132"; }
 .icon-Relief:before { content: "\f12c"; }
+.icon-ResponseReadiness:before { content: "\f147"; }
+.icon-RestoringFamilyLinks:before { content: "\f13e"; }
 .icon-Shelter:before { content: "\f12d"; }
+.icon-ShelterandSettlements:before { content: "\f13f"; }
+.icon-SystemsandProcesses:before { content: "\f140"; }
+.icon-TBD:before { content: "\f141"; }
+.icon-TechnicalAssistance:before { content: "\f142"; }
+.icon-Technology:before { content: "\f143"; }
+.icon-Technology-copy:before { content: "\f148"; }
 .icon-UnderfundedDisasters:before { content: "\f134"; }
-.icon-WatSan:before { content: "\f12e"; }
+.icon-WaterandSanitation:before { content: "\f144"; }
+.icon-WaterandSanitation2:before { content: "\f149"; }

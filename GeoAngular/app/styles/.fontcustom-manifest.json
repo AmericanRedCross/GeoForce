@@ -1,13 +1,13 @@
 {
   "checksum": {
-    "previous": "b1fe93f4444186af6fb5838283d9444b1cbdd31e2c096487137092aee56cb092",
-    "current": "b1fe93f4444186af6fb5838283d9444b1cbdd31e2c096487137092aee56cb092"
+    "previous": "3bae71a05067c8a5788efdbe408f04f099f84108562e428a7db08be77c323eee",
+    "current": "3bae71a05067c8a5788efdbe408f04f099f84108562e428a7db08be77c323eee"
   },
   "fonts": [
-    "fontcustom/fontcustom_b1fe93f4444186af6fb5838283d9444b.ttf",
-    "fontcustom/fontcustom_b1fe93f4444186af6fb5838283d9444b.svg",
-    "fontcustom/fontcustom_b1fe93f4444186af6fb5838283d9444b.woff",
-    "fontcustom/fontcustom_b1fe93f4444186af6fb5838283d9444b.eot"
+    "fontcustom/fontcustom_3bae71a05067c8a5788efdbe408f04f0.ttf",
+    "fontcustom/fontcustom_3bae71a05067c8a5788efdbe408f04f0.svg",
+    "fontcustom/fontcustom_3bae71a05067c8a5788efdbe408f04f0.woff",
+    "fontcustom/fontcustom_3bae71a05067c8a5788efdbe408f04f0.eot"
   ],
   "glyphs": {
     "10_arrow_right": {
@@ -102,13 +102,29 @@
       "codepoint": 61735,
       "source": "svg/GDPC.svg"
     },
+    "GISInformationManagement": {
+      "codepoint": 61751,
+      "source": "svg/GISInformationManagement.svg"
+    },
     "Health": {
       "codepoint": 61732,
       "source": "svg/Health.svg"
     },
+    "HumanResources": {
+      "codepoint": 61752,
+      "source": "svg/HumanResources.svg"
+    },
     "IHL": {
       "codepoint": 61749,
       "source": "svg/IHL.svg"
+    },
+    "InternationalHumanitarianLaw": {
+      "codepoint": 61753,
+      "source": "svg/InternationalHumanitarianLaw.svg"
+    },
+    "KnowledgeManagement": {
+      "codepoint": 61754,
+      "source": "svg/KnowledgeManagement.svg"
     },
     "Livelihoods": {
       "codepoint": 61736,
@@ -118,17 +134,25 @@
       "codepoint": 61737,
       "source": "svg/Measles.svg"
     },
-    "NFI": {
-      "codepoint": 61747,
-      "source": "svg/NFI.svg"
+    "Non-FoodItemsReliefSupplies": {
+      "codepoint": 61765,
+      "source": "svg/Non-FoodItemsReliefSupplies.svg"
     },
     "OrganizationalDevelopment": {
       "codepoint": 61738,
       "source": "svg/OrganizationalDevelopment.svg"
     },
+    "PartnershipsNetworkandDialogue": {
+      "codepoint": 61766,
+      "source": "svg/PartnershipsNetworkandDialogue.svg"
+    },
     "People": {
       "codepoint": 61744,
       "source": "svg/People.svg"
+    },
+    "ProjectManagement": {
+      "codepoint": 61757,
+      "source": "svg/ProjectManagement.svg"
     },
     "RFL": {
       "codepoint": 61739,
@@ -146,17 +170,53 @@
       "codepoint": 61740,
       "source": "svg/Relief.svg"
     },
+    "ResponseReadiness": {
+      "codepoint": 61767,
+      "source": "svg/ResponseReadiness.svg"
+    },
+    "RestoringFamilyLinks": {
+      "codepoint": 61758,
+      "source": "svg/RestoringFamilyLinks.svg"
+    },
     "Shelter": {
       "codepoint": 61741,
       "source": "svg/Shelter.svg"
+    },
+    "ShelterandSettlements": {
+      "codepoint": 61759,
+      "source": "svg/ShelterandSettlements.svg"
+    },
+    "SystemsandProcesses": {
+      "codepoint": 61760,
+      "source": "svg/SystemsandProcesses.svg"
+    },
+    "TBD": {
+      "codepoint": 61761,
+      "source": "svg/TBD.svg"
+    },
+    "TechnicalAssistance": {
+      "codepoint": 61762,
+      "source": "svg/TechnicalAssistance.svg"
+    },
+    "Technology": {
+      "codepoint": 61763,
+      "source": "svg/Technology.svg"
+    },
+    "Technology-copy": {
+      "codepoint": 61768,
+      "source": "svg/Technology copy.svg"
     },
     "UnderfundedDisasters": {
       "codepoint": 61748,
       "source": "svg/UnderfundedDisasters.svg"
     },
-    "WatSan": {
-      "codepoint": 61742,
-      "source": "svg/WatSan.svg"
+    "WaterandSanitation": {
+      "codepoint": 61764,
+      "source": "svg/WaterandSanitation.svg"
+    },
+    "WaterandSanitation2": {
+      "codepoint": 61769,
+      "source": "svg/WaterandSanitation2.svg"
     }
   },
   "options": {
