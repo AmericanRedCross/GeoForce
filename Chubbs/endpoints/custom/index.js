@@ -288,6 +288,7 @@ exports.app = function (passport) {
                 //Add custom properties as defaults
                 this.args.view = "get_admin_stack";
                 this.args.title = "GeoWebServices";
+                this.args.jsonp = true;
                 this.args.breadcrumbs = [
                     { link: "/services", name: "Home" },
                     { link: "", name: "Get Admin Stack" }
@@ -417,6 +418,7 @@ exports.app = function (passport) {
       //Add custom properties as defaults
       args.view = "admin_namesearch"
       args.featureCollection = { source: "GeoDB" };
+      args.jsonp = true;
 
       //Get the text arg, pass it to function
       var featureid = "", datasource = "";
