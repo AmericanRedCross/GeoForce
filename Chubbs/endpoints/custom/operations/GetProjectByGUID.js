@@ -13,31 +13,7 @@ operation.outputImage = false;
 
 operation.inputs["guids"] = {}; //comma separated list of guids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
-
-operation.ProjectQuery = "SELECT " + settings.projectDetails.join(" ,") + " " +
-  "FROM sf_aggregated_gadm_project_counts, sf_project " +
-  "WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id " +
-  "AND guid{{gadm_level}} = {{guids}}; ";
-
-//operation.IndicatorQuery = "SELECT * FROM sf_indicator, sf_indicator_value " +
-//  "WHERE sf_indicator.project__c = {{guid}} AND sf_indicator_value.indicator__c = sf_indicator.sf_id; ";
-
-operation.IndicatorQuery = "SELECT sf_indicator.*, " +
-  "val.actual__c, val.collection_period__c, val.effective_date__c, val.overlap__c, val.period__c, val.subjective__c, " +
-  "val.target_percent__c, val.target__c, val.variance__c, val.period_actual_sum__c, val.period_actuals_max__c, " +
-  "val.period_target_max__c, val.period_target_sum__c, val.unique_indicator_value__c, val.isdeleted " +
-  "FROM sf_indicator, sf_indicator_value AS val " +
-  "WHERE sf_indicator.project__c = {{guid}} AND val.indicator__c = sf_indicator.sf_id LIMIT 10;";
-
-
-//operation.IndicatorValueQuery = "SELECT * " +
-//  "FROM sf_indicator_value " +
-//  "WHERE indicator__c = {{guid}}; ";
-
-//operation.LogframeElementQuery = "SELECT * " +
-//  "FROM sf_logframe_element " +
-//  "WHERE sf_id = {{guid}}";
-
+operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
 operation.execute = flow.define(
   function (args, callback) {
@@ -48,20 +24,90 @@ operation.execute = flow.define(
     //Generate UniqueID for this Task
     operation.id = shortid.generate();
 
+    var projectArcQuery =
+      "SELECT sf_project.*, sf_project.sf_id as project__r_id, null as location__r_admin_0__c, null as location__r_admin_1__c, null as location__r_admin_2__c, null as location__r_admin_3__c, null as location__r_admin_4__c, null as location__r_admin_5__c \
+      FROM sf_project \
+      INNER JOIN sf_aggregated_gadm_project_counts_many ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
+      WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
+
+    // Newer schema where we can have many-to-many locations per project.
+    if (settings.projectsManyToMany) {
+      operation.ProjectQuery =
+        "SELECT sf_project.*, \
+        name0 as location__r_admin_0__c, name1 as location__r_admin_1__c, name2 as location__r_admin_2__c, name3 as location__r_admin_3__c,name4 location__r_admin_4__c, name5 as location__r_admin_5__c \
+        FROM sf_project \
+        INNER JOIN sf_aggregated_gadm_project_counts_many \
+          ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
+        WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
+    }
+    // Original project query where we have 1 location per project.
+    else {
+      operation.ProjectQuery =
+        "SELECT sf_project.* \
+        FROM sf_aggregated_gadm_project_counts, sf_project \
+        WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id \
+          AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
+    }
+
+
+    //operation.IndicatorQuery = "SELECT * FROM sf_indicator, sf_indicator_value " +
+    //  "WHERE sf_indicator.project__c = {{guid}} AND sf_indicator_value.indicator__c = sf_indicator.sf_id; ";
+
+    operation.IndicatorQuery = "SELECT sf_indicator.*, " +
+      "val.actual__c, val.collection_period__c, val.effective_date__c, val.overlap__c, val.period__c, val.subjective__c, " +
+      "val.target_percent__c, val.target__c, val.variance__c, val.period_actual_sum__c, val.period_actuals_max__c, " +
+      "val.period_target_max__c, val.period_target_sum__c, val.unique_indicator_value__c, val.isdeleted " +
+      "FROM sf_indicator, sf_indicator_value AS val " +
+      "WHERE sf_indicator.project__c = {{guid}} AND val.indicator__c = sf_indicator.sf_id LIMIT 10;";
+
+
+    //operation.IndicatorValueQuery = "SELECT * " +
+    //  "FROM sf_indicator_value " +
+    //  "WHERE indicator__c = {{guid}}; ";
+
+    //operation.LogframeElementQuery = "SELECT * " +
+    //  "FROM sf_logframe_element " +
+    //  "WHERE sf_id = {{guid}}";
+
+    //If theme is project, projectRisk, or projectHealth, add to the filters where phase is 1 - 5, which equates to Active projects.
+    //In SalesForce, the phase__c column is text and has delimited values in the cells.  So, we'll do a 'like' operator instead of =
+    var activeProjectWhereClause = " AND (sf_project.phase__c LIKE '%1%' OR sf_project.phase__c LIKE '%2%' OR sf_project.phase__c LIKE '%3%' OR sf_project.phase__c LIKE '%4%' OR sf_project.phase__c LIKE '%5%')";
+
+
     //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
     if (operation.isInputValid(args) === true) {
       //prepare bbox string as WKT
       operation.inputs["guids"] = args.guids;
       operation.inputs["gadm_level"] = args.gadm_level;
+      operation.inputs["filters"] = args.filters;
+
+      var filters = '';
 
       if (operation.inputs["gadm_level"] == -1) {
         operation.inputs["gadm_level"] = "arc";
       }
+      if (operation.inputs["filters"] && operation.inputs["filters"] !== 'null') {
+        var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g, '%').replace(/%27/g, "'");
+        filters = " AND (" + inputFilters + ")";
+        filters += activeProjectWhereClause;
+      }
+      else {
+        //Add where clause to only show active projects
+        filters = activeProjectWhereClause;
+      }
+
+      if (operation.inputs["gadm_level"] === "arc") {
+        operation.ProjectQuery = projectArcQuery;
+      }
 
       //need to wrap ids in single quotes
       //Execute the query
-      var projectQuery = { text: operation.ProjectQuery.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])).replace("{{gadm_level}}", operation.inputs["gadm_level"]) };
-      common.executePgQuery(projectQuery, this); //Flow to next function when done.
+      var projectQuery = operation.ProjectQuery
+        .split("{{guids}}").join(operation.wrapIdsInQuotes(operation.inputs["guids"]))
+        .split("{{gadm_level}}").join(operation.inputs["gadm_level"])
+        .split("{{filters}}").join(filters);
+
+      common.executePgQuery({text: projectQuery}, this); //Flow to next function when done.
     }
     else {
       //Invalid arguments
@@ -71,6 +117,7 @@ operation.execute = flow.define(
   },
   function (err, results) {
     if (err) {
+      console.error(err);
       this.callback(err);
       return;
     }
@@ -129,6 +176,17 @@ operation.wrapIdsInQuotes = function (ids) {
   return ids.split(',').map(function (item) {
     return "'" + item + "'";
   });
+};
+
+operation.fullyQualifyFilter = function (filterString) {
+  var Ors = filterString.split(' OR ');
+
+
+  Ors.forEach(function (item) {
+
+  });
+
+
 };
 
 module.exports = operation;
