@@ -15,52 +15,6 @@ operation.inputs["guids"] = {}; //comma separated list of guids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
-var projectArcQuery =
-  "SELECT sf_project.*, sf_project.sf_id as project__r_id, null as location__r_admin_0__c, null as location__r_admin_1__c, null as location__r_admin_2__c, null as location__r_admin_3__c, null as location__r_admin_4__c, null as location__r_admin_5__c \
-  FROM sf_project \
-  INNER JOIN sf_aggregated_gadm_project_counts_many ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
-  WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
-
-// Newer schema where we can have many-to-many locations per project.
-if (settings.projectsManyToMany) {
-  operation.ProjectQuery =
-    "SELECT sf_project.*, \
-    name0 as location__r_admin_0__c, name1 as location__r_admin_1__c, name2 as location__r_admin_2__c, name3 as location__r_admin_3__c,name4 location__r_admin_4__c, name5 as location__r_admin_5__c \
-    FROM sf_project \
-    INNER JOIN sf_aggregated_gadm_project_counts_many \
-      ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
-    WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
-}
-// Original project query where we have 1 location per project.
-else {
-  operation.ProjectQuery =
-    "SELECT sf_project.* \
-    FROM sf_aggregated_gadm_project_counts, sf_project \
-    WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id \
-      AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
-}
-
-
-//operation.IndicatorQuery = "SELECT * FROM sf_indicator, sf_indicator_value " +
-//  "WHERE sf_indicator.project__c = {{guid}} AND sf_indicator_value.indicator__c = sf_indicator.sf_id; ";
-
-operation.IndicatorQuery = "SELECT sf_indicator.*, " +
-  "val.actual__c, val.collection_period__c, val.effective_date__c, val.overlap__c, val.period__c, val.subjective__c, " +
-  "val.target_percent__c, val.target__c, val.variance__c, val.period_actual_sum__c, val.period_actuals_max__c, " +
-  "val.period_target_max__c, val.period_target_sum__c, val.unique_indicator_value__c, val.isdeleted " +
-  "FROM sf_indicator, sf_indicator_value AS val " +
-  "WHERE sf_indicator.project__c = {{guid}} AND val.indicator__c = sf_indicator.sf_id LIMIT 10;";
-
-
-//operation.IndicatorValueQuery = "SELECT * " +
-//  "FROM sf_indicator_value " +
-//  "WHERE indicator__c = {{guid}}; ";
-
-//operation.LogframeElementQuery = "SELECT * " +
-//  "FROM sf_logframe_element " +
-//  "WHERE sf_id = {{guid}}";
-
-
 operation.execute = flow.define(
   function (args, callback) {
     this.args = args;
@@ -69,6 +23,51 @@ operation.execute = flow.define(
 
     //Generate UniqueID for this Task
     operation.id = shortid.generate();
+
+    var projectArcQuery =
+      "SELECT sf_project.*, sf_project.sf_id as project__r_id, null as location__r_admin_0__c, null as location__r_admin_1__c, null as location__r_admin_2__c, null as location__r_admin_3__c, null as location__r_admin_4__c, null as location__r_admin_5__c \
+      FROM sf_project \
+      INNER JOIN sf_aggregated_gadm_project_counts_many ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
+      WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
+
+    // Newer schema where we can have many-to-many locations per project.
+    if (settings.projectsManyToMany) {
+      operation.ProjectQuery =
+        "SELECT sf_project.*, \
+        name0 as location__r_admin_0__c, name1 as location__r_admin_1__c, name2 as location__r_admin_2__c, name3 as location__r_admin_3__c,name4 location__r_admin_4__c, name5 as location__r_admin_5__c \
+        FROM sf_project \
+        INNER JOIN sf_aggregated_gadm_project_counts_many \
+          ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
+        WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
+    }
+    // Original project query where we have 1 location per project.
+    else {
+      operation.ProjectQuery =
+        "SELECT sf_project.* \
+        FROM sf_aggregated_gadm_project_counts, sf_project \
+        WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id \
+          AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
+    }
+
+
+    //operation.IndicatorQuery = "SELECT * FROM sf_indicator, sf_indicator_value " +
+    //  "WHERE sf_indicator.project__c = {{guid}} AND sf_indicator_value.indicator__c = sf_indicator.sf_id; ";
+
+    operation.IndicatorQuery = "SELECT sf_indicator.*, " +
+      "val.actual__c, val.collection_period__c, val.effective_date__c, val.overlap__c, val.period__c, val.subjective__c, " +
+      "val.target_percent__c, val.target__c, val.variance__c, val.period_actual_sum__c, val.period_actuals_max__c, " +
+      "val.period_target_max__c, val.period_target_sum__c, val.unique_indicator_value__c, val.isdeleted " +
+      "FROM sf_indicator, sf_indicator_value AS val " +
+      "WHERE sf_indicator.project__c = {{guid}} AND val.indicator__c = sf_indicator.sf_id LIMIT 10;";
+
+
+    //operation.IndicatorValueQuery = "SELECT * " +
+    //  "FROM sf_indicator_value " +
+    //  "WHERE indicator__c = {{guid}}; ";
+
+    //operation.LogframeElementQuery = "SELECT * " +
+    //  "FROM sf_logframe_element " +
+    //  "WHERE sf_id = {{guid}}";
 
     //If theme is project, projectRisk, or projectHealth, add to the filters where phase is 1 - 5, which equates to Active projects.
     //In SalesForce, the phase__c column is text and has delimited values in the cells.  So, we'll do a 'like' operator instead of =
@@ -87,12 +86,12 @@ operation.execute = flow.define(
       if (operation.inputs["gadm_level"] == -1) {
         operation.inputs["gadm_level"] = "arc";
       }
-      if(operation.inputs["filters"] && operation.inputs["filters"] !== 'null'){
-        var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g,'%').replace(/%27/g,"'");
+      if (operation.inputs["filters"] && operation.inputs["filters"] !== 'null') {
+        var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g, '%').replace(/%27/g, "'");
         filters = " AND (" + inputFilters + ")";
         filters += activeProjectWhereClause;
       }
-      else{
+      else {
         //Add where clause to only show active projects
         filters = activeProjectWhereClause;
       }
@@ -179,11 +178,11 @@ operation.wrapIdsInQuotes = function (ids) {
   });
 };
 
-operation.fullyQualifyFilter = function(filterString){
-   var Ors = filterString.split(' OR ');
+operation.fullyQualifyFilter = function (filterString) {
+  var Ors = filterString.split(' OR ');
 
 
-  Ors.forEach(function(item){
+  Ors.forEach(function (item) {
 
   });
 
