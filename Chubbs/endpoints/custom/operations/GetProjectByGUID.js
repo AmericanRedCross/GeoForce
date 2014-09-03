@@ -24,11 +24,22 @@ operation.execute = flow.define(
     //Generate UniqueID for this Task
     operation.id = shortid.generate();
 
-    var projectArcQuery =
-      "SELECT sf_project.*, sf_project.sf_id as project__r_id, null as location__r_admin_0__c, null as location__r_admin_1__c, null as location__r_admin_2__c, null as location__r_admin_3__c, null as location__r_admin_4__c, null as location__r_admin_5__c \
-      FROM sf_project \
-      INNER JOIN sf_aggregated_gadm_project_counts_many ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
-      WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
+    var projectArcQuery;
+
+    if (settings.projectsManyToMany) {
+      projectArcQuery =
+        "SELECT sf_project.*, sf_project.sf_id as project__r_id, null as location__r_admin_0__c, null as location__r_admin_1__c, null as location__r_admin_2__c, null as location__r_admin_3__c, null as location__r_admin_4__c, null as location__r_admin_5__c \
+        FROM sf_project \
+        INNER JOIN sf_aggregated_gadm_project_counts_many ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
+        WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
+    }
+    else{
+      projectArcQuery =
+        "SELECT sf_project.*, sf_project.sf_id as project__r_id, null as location__r_admin_0__c, null as location__r_admin_1__c, null as location__r_admin_2__c, null as location__r_admin_3__c, null as location__r_admin_4__c, null as location__r_admin_5__c \
+        FROM sf_project \
+        INNER JOIN sf_aggregated_gadm_project_counts ON sf_project.sf_id = sf_aggregated_gadm_project_counts.sf_id \
+        WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
+    }
 
     // Newer schema where we can have many-to-many locations per project.
     if (settings.projectsManyToMany) {
