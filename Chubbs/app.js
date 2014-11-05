@@ -21,6 +21,8 @@ var routes = [];
 //PostGres Connection String
 global.conString = "postgres://" + settings.pg.username + ":" + settings.pg.password + "@" + settings.pg.server + ":" + settings.pg.port + "/" + settings.pg.database;
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //Hopefully fixes stream.js:94 UNABLE_TO_VERIFY_LEAF_SIGNATURE problem
+
 // all environments
 app.set('ipaddr', settings.application.ip);
 app.set('port', process.env.PORT || settings.application.port);
@@ -215,7 +217,7 @@ app.get('/services', function(req, res) {
 function ensureAuthenticated(req, res, next) {
 
     //If the request is for index.html, then lock it down.
-    if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" )) {
+    if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" || req.path == "/services/")) {
         //All other requests to the mapfolio folder should be allowed.
 
         //check for authentication
