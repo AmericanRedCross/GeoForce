@@ -49,3 +49,7 @@
 .thumbnail .item-arrow{
     line-height: 27px;
 }
+
+.stories-container .arrow-height{
+  height: 16px;
+}

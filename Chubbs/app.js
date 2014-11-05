@@ -201,7 +201,7 @@ app.get('/services', function(req, res) {
 function ensureAuthenticated(req, res, next) {
 
     //If the request is for index.html, then lock it down.
-    if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" )) {
+    if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" || req.path == "/services/")) {
         //All other requests to the mapfolio folder should be allowed.
 
         //check for authentication
