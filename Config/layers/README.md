@@ -2,12 +2,12 @@ The files in the layers directory allow you to configure what layers
 are in the layers panel as well as the basemaps available in the
 application.
 
-Make sure that you have a `type` property for each layer. 
+Make sure that you have a `type` property for each layer.
 This helps save the guesswork of what type of layer it is, and
 it ensures that the application will know what to do with it.
 
 Add layers to the corresponding file for the theme you want it to
-show up in by default. Also, make sure you put the theme name in 
+show up in by default. Also, make sure you put the theme name in
 the theme property for each layer as well.
 
 If you want a layer to show up by default for all themes, flag the

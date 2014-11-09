@@ -26,33 +26,33 @@ module.exports = {
     }
   },
 
-  phl: {
-    type: 'geojson',
-    theme: 'all',
-    url: 'data/test/phl.geojson',
-    properties: {
-      "title": 'The Philippines',
-      "stroke": 'white',
-      "stroke-width": 2,
-      "dash-array": '3',
-      "stroke-opacity": 1,
-      "fill": "green",
-      "fill-opacity": 0.7,
-      legend: ""
-    }
-  },
-
-  /**
-   * CSV
-   */
-  ugandafsp: {
-    name: 'Uganda Financial Service Providers',
-    type: 'csv',
-    theme: 'all',
-    url: 'data/test/uganda.csv',
-    properties: {
-      legend: ''
-    }
-  },
+  // phl: {
+  //   type: 'geojson',
+  //   theme: 'all',
+  //   url: 'data/test/phl.geojson',
+  //   properties: {
+  //     "title": 'The Philippines',
+  //     "stroke": 'white',
+  //     "stroke-width": 2,
+  //     "dash-array": '3',
+  //     "stroke-opacity": 1,
+  //     "fill": "green",
+  //     "fill-opacity": 0.7,
+  //     legend: ""
+  //   }
+  // },
+  //
+  // /**
+  //  * CSV
+  //  */
+  // ugandafsp: {
+  //   name: 'Uganda Financial Service Providers',
+  //   type: 'csv',
+  //   theme: 'all',
+  //   url: 'data/test/uganda.csv',
+  //   properties: {
+  //     legend: ''
+  //   }
+  // },
 
 };

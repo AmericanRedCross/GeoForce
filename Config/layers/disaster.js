@@ -4,12 +4,14 @@
  */
 
 module.exports = {
-  clouds: {
-    name: 'Cloud Cover',
-    type: 'xyz',
+  earthquakes: {
+    name: 'USGS Earthquakes',
+    type: 'kml',
     theme: 'disaster',
-    url: 'http://{s}.tile.openweathermap.org/map/clouds_cls/{z}/{x}/{y}.png',
-    opacity: 0.5 // optional. opacity is 0.5 if not specified
+    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml',
+    properties: {
+      legend: ''
+    }
   },
 
   precipitation: {
@@ -20,14 +22,6 @@ module.exports = {
     opacity: 0.5
   },
 
-  precipitationclassic: {
-    name: 'Precipitation (Classic)',
-    type: 'xyz',
-    theme: 'disaster',
-    url: 'http://{s}.tile.openweathermap.org/map/precipitation_cls/{z}/{x}/{y}.png',
-    opacity: 0.4
-  },
-
   rain: {
     name: 'Rain',
     type: 'xyz',
@@ -35,17 +29,4 @@ module.exports = {
     url: 'http://{s}.tile.openweathermap.org/map/rain/{z}/{x}/{y}.png'
   },
 
-  rainclassic: {
-    name: 'Rain (Classic)',
-    type: 'xyz',
-    theme: 'disaster',
-    url: 'http://{s}.tile.openweathermap.org/map/rain_cls/{z}/{x}/{y}.png'
-  },
-
-  pressure: {
-    name: 'Pressure',
-    type: 'xyz',
-    theme: 'disaster',
-    url: 'http://{s}.tile.openweathermap.org/map/pressure/{z}/{x}/{y}.png'
-  }
 };
