@@ -1,13 +1,13 @@
 {
   "checksum": {
-    "previous": "3bae71a05067c8a5788efdbe408f04f099f84108562e428a7db08be77c323eee",
-    "current": "3bae71a05067c8a5788efdbe408f04f099f84108562e428a7db08be77c323eee"
+    "previous": "ed208884b5caa40d0ec42f2459e296c4c095bbf1e81d1dc79cab386c642bfa4e",
+    "current": "ed208884b5caa40d0ec42f2459e296c4c095bbf1e81d1dc79cab386c642bfa4e"
   },
   "fonts": [
-    "fontcustom/fontcustom_3bae71a05067c8a5788efdbe408f04f0.ttf",
-    "fontcustom/fontcustom_3bae71a05067c8a5788efdbe408f04f0.svg",
-    "fontcustom/fontcustom_3bae71a05067c8a5788efdbe408f04f0.woff",
-    "fontcustom/fontcustom_3bae71a05067c8a5788efdbe408f04f0.eot"
+    "fontcustom/fontcustom_ed208884b5caa40d0ec42f2459e296c4.ttf",
+    "fontcustom/fontcustom_ed208884b5caa40d0ec42f2459e296c4.svg",
+    "fontcustom/fontcustom_ed208884b5caa40d0ec42f2459e296c4.woff",
+    "fontcustom/fontcustom_ed208884b5caa40d0ec42f2459e296c4.eot"
   ],
   "glyphs": {
     "10_arrow_right": {
@@ -142,10 +142,6 @@
       "codepoint": 61738,
       "source": "svg/OrganizationalDevelopment.svg"
     },
-    "PartnershipsNetworkandDialogue": {
-      "codepoint": 61766,
-      "source": "svg/PartnershipsNetworkandDialogue.svg"
-    },
     "People": {
       "codepoint": 61744,
       "source": "svg/People.svg"
@@ -224,6 +220,10 @@
     "config": false,
     "css_selector": ".icon-{{glyph}}",
     "debug": false,
+    "font_ascent": 448,
+    "font_descent": 64,
+    "font_design_size": 16,
+    "font_em": 512,
     "font_name": "fontcustom",
     "force": false,
     "input": {
