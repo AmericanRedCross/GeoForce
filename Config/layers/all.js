@@ -16,43 +16,15 @@ module.exports = {
    *
    */
 
-  usgsearthquake: {
-    type: 'geojson',
-    theme: 'all',
-    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson',
-    properties: {
-      'title': 'USGS Realtime Earthquakes Feed (Week)'
-
-    }
-  },
-
-  // phl: {
+  // usgsearthquake: {
   //   type: 'geojson',
   //   theme: 'all',
-  //   url: 'data/test/phl.geojson',
+  //   url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson',
   //   properties: {
-  //     "title": 'The Philippines',
-  //     "stroke": 'white',
-  //     "stroke-width": 2,
-  //     "dash-array": '3',
-  //     "stroke-opacity": 1,
-  //     "fill": "green",
-  //     "fill-opacity": 0.7,
-  //     legend: ""
-  //   }
-  // },
+  //     'title': 'USGS Realtime Earthquakes Feed (Week)'
   //
-  // /**
-  //  * CSV
-  //  */
-  // ugandafsp: {
-  //   name: 'Uganda Financial Service Providers',
-  //   type: 'csv',
-  //   theme: 'all',
-  //   url: 'data/test/uganda.csv',
-  //   properties: {
-  //     legend: ''
   //   }
   // },
+
 
 };

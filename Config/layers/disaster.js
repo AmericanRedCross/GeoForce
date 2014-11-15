@@ -4,13 +4,13 @@
  */
 
 module.exports = {
-  earthquakes: {
-    name: 'USGS Earthquakes',
-    type: 'kml',
-    theme: 'disaster',
-    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week_age.kml',
+  usgsearthquake: {
+    type: 'geojson',
+    theme: 'all',
+    url: 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson',
     properties: {
-      legend: ''
+      'title': 'USGS Realtime Earthquakes Feed (Week)'
+
     }
   },
 
