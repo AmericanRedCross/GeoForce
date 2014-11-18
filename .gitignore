@@ -51,3 +51,5 @@ node_modules
 
 #settings.prod
 Chubbs/settings.prod.js
+
+Chubbs/private/*
