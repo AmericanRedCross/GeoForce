@@ -52,4 +52,11 @@ node_modules
 #settings.prod
 Chubbs/settings.prod.js
 
+# These are settings and confidential information that pertains to Chubbs (Spatial Server)
 Chubbs/private/*
+
+# This is the data that gets written nightly into the web app's assets by Succubus
+GeoAngular/app/succubus_gitignore/*
+
+# This data is also written within the succubus itself for debug purposes, this too should be ignored.
+Succubus/meta-data/*
