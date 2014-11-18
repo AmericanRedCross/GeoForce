@@ -1,7 +1,10 @@
 ﻿//////////Utilities
 
 //Common and settings should be used by all sub-modules
-var express = require('express'), common = require("../../common"), settings = require('../../settings'), request = require('request');
+var express = require('express'),
+    common = require("../../common"),
+    settings = require('../../private/settings'),
+    request = require('request');
 
 var mapnik;
 try {

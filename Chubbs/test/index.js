@@ -5,7 +5,7 @@ var tables = require('../endpoints/tables');
 
 //common and settings files
 var common = require("../common"),
-    settings = require('../settings');
+    settings = require('../private/settings');
 
 var gjv = require("geojson-validation");
 

@@ -9,7 +9,7 @@
 
 var flow = require('flow');
 var common = require("../../../common"),
-    settings = require('../../../settings'),
+    settings = require('../../../private/settings'),
     shortid = require('shortid');
 
 var operation = {};

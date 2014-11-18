@@ -2,7 +2,7 @@
 var pg = require('pg'),
     querystring = require('querystring'),
     http = require("http"),
-    settings = require("./settings"),
+    settings = require("./private/settings"),
     fs = require("fs"),
     zlib = require("zlib"),
     shortid = require("shortid"),

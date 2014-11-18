@@ -1,6 +1,8 @@
 //6.19.2014 - Ryan Whitley
 var flow = require('flow');
-var common = require("../../../common"), settings = require('../../../settings'), shortid = require('shortid');
+var common = require("../../../common"),
+    settings = require('../../../private/settings'),
+    shortid = require('shortid');
 
 var operation = {};
 
