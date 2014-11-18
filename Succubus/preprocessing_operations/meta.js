@@ -47,6 +47,7 @@ flow.exec(
       }
     }
     fs.writeFileSync('meta-data/sf-objects.json', JSON.stringify(tables,null,2));
+    console.log('meta-data/sf-objects.json written to disk');
 
     createObjectFieldHash();
     createProjectFilterCheckboxes();
@@ -83,7 +84,9 @@ function createObjectFieldHash() {
     }
   }
   fs.writeFileSync('meta-data/sf-object-field-hash.json', JSON.stringify(hash,null,2));
-  fs.writeFileSync('../GeoAngular/app/data/sf-object-field-hash.json', JSON.stringify(hash));
+  console.log('meta-data/sf-object-field-hash.json written to disk');
+  fs.writeFileSync('../GeoAngular/app/succubus_gitignore/sf-object-field-hash.json', JSON.stringify(hash));
+  console.log('../GeoAngular/app/succubus_gitignore/sf-object-field-hash.json written to disk');
 }
 
 function createProjectFilterCheckboxes() {
@@ -111,5 +114,7 @@ function createProjectFilterCheckboxes() {
     }
   }
   fs.writeFileSync('meta-data/sf-project-filter-checkboxes.json', JSON.stringify(checkboxes,null,2));
-  fs.writeFileSync('../GeoAngular/app/data/sf-project-filter-checkboxes.json', JSON.stringify(checkboxes));
+  console.log('meta-data/sf-project-filter-checkboxes.json written to disk');
+  fs.writeFileSync('../GeoAngular/app/succubus_gitignore/sf-project-filter-checkboxes.json', JSON.stringify(checkboxes));
+  console.log('../GeoAngular/app/succubus_gitignore/sf-project-filter-checkboxes.json written to disk');
 }
