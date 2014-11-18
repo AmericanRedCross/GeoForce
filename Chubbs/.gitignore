@@ -1,4 +1,5 @@
 settings.js
+settings.prod.js
 
 lib-cov
 *.seed
