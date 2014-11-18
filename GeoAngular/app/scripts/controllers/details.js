@@ -9,7 +9,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   $scope.salesforceUrl = config.salesforceUrl;
 
-  $http.get('data/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
+  $http.get('succubus_gitignore/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
     $scope.sfFieldHash = sfFieldHash;
   });
 
