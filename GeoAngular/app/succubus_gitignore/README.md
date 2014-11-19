@@ -9,5 +9,5 @@ UI for the Filter and Details panel in the web app.
 This data needs to be ignored by git, because Succubus runs nightly and will keep adding
 updates to the tracked area, thus preventing a clean pull on the server to get updates.
 
-You must run Succucbus or `node Succubus/preprocessing_operations/meta.js` for the 
-Mapfolio GeoAngular web app to work.
+You must run Succucbus. cd into the Succubus directory and run `node preprocessing_operations/meta.js` 
+for the Mapfolio GeoAngular web app to work. You can also run `node index.js` to do the entire ETL.
