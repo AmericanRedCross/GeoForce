@@ -10,6 +10,7 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "watch": "watchify -v -d app/scripts/app.js -o app/scripts/geo-angular.js"
+    "watch": "watchify -v -d app/scripts/app.js -o app/scripts/geo-angular.js",
+    "build": "browserify -d app/scripts/app.js -o app/scripts/geo-angular.js"
   }
-}c
+}
