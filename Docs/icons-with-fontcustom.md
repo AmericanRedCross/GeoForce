@@ -52,7 +52,7 @@ being done via AngularJS here:
 
 https://github.com/AmericanRedCross/GeoForce/blob/0ee9743712fab6ddfddf3df7eada23d567e967c8/GeoAngular/app/index.html#L411
 
-Note that it removes all spaces, & signs, and commas.
+Note that it removes all spaces, & signs, parenthesis, and commas.
 
 First thing you want to do is get an SVG for the sector you want to add. put that in:
 
@@ -63,7 +63,7 @@ GeoAngular/app/styles/svg/
 You need to get the name of the sector exactly correct, so look at `Succubus/meta-data/sf-project-filter-checkboxes.json`
 This is only there after you're run the Succubus, so make sure you do that.
 
-You'll want to name your svg with the same name without spaces, &, and commas.
+You'll want to name your svg with the same name without spaces, parenthesis, &, and commas.
 
 Then, make sure you have `cd`ed into `GeoAngular/app/styles`. Then, execute:
 
