@@ -15,12 +15,11 @@ operation.outputImage = false;
 
 operation.inputs["text"] = {}; //search text
 
-operation.Queries = []; //Query will be built dynamically below
-
 operation.ProjectSearchFields = ["sector__c", "status__c", "stage_name__c", "sub_sector__c", "name", "summary__c", "sf_id"]; //List columns from sf_project thru which to search
 operation.DisasterSearchFields = ["name", "disaster_type__c", "summary__c", "unique_disaster_id__c", "sf_id", "category__c"]; //List columns from sf_disaster thru which to search
 
 function getSQLQueries (){
+    operation.Queries = []; //Query will be built dynamically below
     operation.Queries.push({ type: 'project', query: buildQueryClause(operation.ProjectSearchFields, 'sf_project')});
     operation.Queries.push({ type: 'disaster', query: buildQueryClause(operation.DisasterSearchFields, 'sf_disaster')});
 }
