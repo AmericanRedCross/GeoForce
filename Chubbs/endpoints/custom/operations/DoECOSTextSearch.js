@@ -19,9 +19,10 @@ operation.ProjectSearchFields = ["sector__c", "status__c", "stage_name__c", "sub
 operation.DisasterSearchFields = ["name", "disaster_type__c", "summary__c", "unique_disaster_id__c", "sf_id", "category__c"]; //List columns from sf_disaster thru which to search
 
 function getSQLQueries (){
-    operation.Queries = []; //Query will be built dynamically below
-    operation.Queries.push({ type: 'project', query: buildQueryClause(operation.ProjectSearchFields, 'sf_project')});
-    operation.Queries.push({ type: 'disaster', query: buildQueryClause(operation.DisasterSearchFields, 'sf_disaster')});
+    var Queries = []; //Query will be built dynamically below
+    Queries.push({ type: 'project', query: buildQueryClause(operation.ProjectSearchFields, 'sf_project')});
+    Queries.push({ type: 'disaster', query: buildQueryClause(operation.DisasterSearchFields, 'sf_disaster')});
+    return Queries;
 }
 
 function buildQueryClause(searchFields, tableName, tableAlias){
@@ -50,7 +51,7 @@ operation.execute = flow.define(
         //Generate UniqueID for this Task
         operation.id = shortid.generate();
 
-        getSQLQueries(); //Build the query objects
+        this.queries = getSQLQueries(); //Build the query objects
 
         //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
         if (operation.isInputValid(args) === true) {
@@ -58,7 +59,7 @@ operation.execute = flow.define(
             operation.inputs["text"] = args.text;
 
             //Execute the query
-            operation.Queries.forEach(function(queryObj){
+            this.queries.forEach(function(queryObj){
                 var thisQuery = { text: queryObj.query.split("{{text}}").join(operation.inputs["text"]) };
                 if(thisQuery) {
                     common.executePgQuery(thisQuery, this.MULTI(queryObj.type));//Flow to next function when all are done.
@@ -76,7 +77,7 @@ operation.execute = flow.define(
         //Step 2 - get the results and pass back to calling function
         //Merge the results together.
         var mergedResults = {rows: []};
-        operation.Queries.forEach(function(queryObj) {
+        this.queries.forEach(function(queryObj) {
             if(queryObj.query.length > 0) {
                 if(results[queryObj.type][0]){
                     //There was an error.
