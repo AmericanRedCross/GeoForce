@@ -78,10 +78,10 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       var sector = sectors[i];
       if (sector.checked) {
         if (first) {
-          $scope.sectorClause = "sf_aggregated_gadm_project_counts.sector__c LIKE '%" + sector.name + "%' ";
+          $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
           first = false;
         } else {
-          $scope.sectorClause += "OR sf_aggregated_gadm_project_counts.sector__c LIKE '%" + sector.name + "%' ";
+          $scope.sectorClause += "OR sector__c LIKE '%" + sector.name + "%' ";
         }
       }
     }
@@ -105,10 +105,10 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       var stat = status[i];
       if (stat.checked) {
         if (first) {
-          $scope.statusClause = "sf_aggregated_gadm_project_counts.status__c LIKE '%" + stat.name + "%' ";
+          $scope.statusClause = "status__c LIKE '%" + stat.name + "%' ";
           first = false;
         } else {
-          $scope.statusClause += "OR sf_aggregated_gadm_project_counts.status__c LIKE '%" + stat.name + "%' ";
+          $scope.statusClause += "OR status__c LIKE '%" + stat.name + "%' ";
         }
       }
     }
@@ -139,22 +139,22 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       var filter = dateFilters[i];
 
       if (filter.name === 'Start Date' && filter.date) {
-        $scope.dateClause = first() + 'sf_aggregated_gadm_project_counts.start_date__c' + compare(filter) + "'" + dateString(filter.date) + "'";
+        $scope.dateClause = first() + 'start_date__c' + compare(filter) + "'" + dateString(filter.date) + "'";
         continue;
       }
 
       if (filter.name === 'End Date' && filter.date) {
-        $scope.dateClause = first() + 'sf_aggregated_gadm_project_counts.end_date__c' + compare(filter) + "'" + dateString(filter.date) + "'";
+        $scope.dateClause = first() + 'end_date__c' + compare(filter) + "'" + dateString(filter.date) + "'";
         continue;
       }
 
       if (filter.name === 'Create Date' && filter.date) {
-        $scope.dateClause = first() + 'sf_aggregated_gadm_project_counts.createdate' + compare(filter) + "'" + dateString(filter.date) + "'";
+        $scope.dateClause = first() + 'createdate' + compare(filter) + "'" + dateString(filter.date) + "'";
         continue;
       }
 
       if (filter.name === 'Last Modified' && filter.date) {
-        $scope.dateClause = first() + 'sf_aggregated_gadm_project_counts.lastmodifieddate' + compare(filter) + "'" + dateString(filter.date) + "'";
+        $scope.dateClause = first() + 'lastmodifieddate' + compare(filter) + "'" + dateString(filter.date) + "'";
       }
 
     }
@@ -227,11 +227,11 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     var min = $scope.budget.slider[0];
     var max = $scope.budget.slider[1];
     if (min !== 0 && max !== $scope.budget.max) { //both min and max changed
-      $scope.budgetClause = 'sf_aggregated_gadm_project_counts.total_budget__c>=' + min + ' AND sf_aggregated_gadm_project_counts.total_budget__c<=' + max;
+      $scope.budgetClause = 'total_budget__c>=' + min + ' AND total_budget__c<=' + max;
     } else if (min !== 0) { // only min changed
-      $scope.budgetClause = 'sf_aggregated_gadm_project_counts.total_budget__c>=' + min
+      $scope.budgetClause = 'total_budget__c>=' + min
     } else if (max !== $scope.budget.max) { // only max changed
-      $scope.budgetClause = 'sf_aggregated_gadm_project_counts.total_budget__c<=' + max;
+      $scope.budgetClause = 'total_budget__c<=' + max;
     }
     $scope.composeWhereClause();
   };
