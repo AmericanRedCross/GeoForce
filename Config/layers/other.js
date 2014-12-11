@@ -85,6 +85,13 @@ module.exports = {
     type: 'xyz',
     theme: 'other',
     url: 'http://{s}.tile.openweathermap.org/map/rain_cls/{z}/{x}/{y}.png'
+  },
+
+  laccommunities: {
+    name: 'LAC Communities',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://gist.github.com/anonymous/d58e51d612add6483257'
   }
 
 };
