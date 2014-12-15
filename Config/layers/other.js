@@ -91,7 +91,7 @@ module.exports = {
     name: 'LAC Communities',
     type: 'geojson',
     theme: 'other',
-    url: 'https://gist.github.com/anonymous/d58e51d612add6483257'
+    url: 'https://gist.githubusercontent.com/anonymous/d58e51d612add6483257/raw/LAC_Communities_styled.geojson'
   }
 
 };
