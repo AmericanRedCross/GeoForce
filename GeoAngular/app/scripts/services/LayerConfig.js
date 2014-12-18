@@ -15,7 +15,9 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     require('../../../../Config/layers/other.js'),
     require('../../../../Config/layers/project.js'),
     require('../../../../Config/layers/projecthealth.js'),
-    require('../../../../Config/layers/projectrisk.js')
+    require('../../../../Config/layers/projectrisk.js'),
+    require('../../../../Config/layers/vectortiles.js')
+
   ];
 
   /**
@@ -347,7 +349,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
       theme: 'other',
       url: 'data/arc_region_extents.geojson'
   };
-  
+
   /**
    * For layers, we try and get an alias for everything, so if it's a URL that
    * does not match, we just want to return itself so we can fetch that given url.

@@ -278,6 +278,7 @@ common.getArguments = function (req) {
 //Take a tile bounds (along with a z) and create a bounding box for PostGIS queries.
 //Tile bounds coordinates, zlevel, xmin, xmax, ymin, ymax example: 8, 44, 48, 28, 30
 common.convertTileBoundsToBBoxWKT = function(bbox){
+
     var bboxcoords = bbox.split(',');
     var z = bboxcoords[0];
     var xmin = bboxcoords[1];
@@ -296,8 +297,9 @@ common.convertTileBoundsToBBoxWKT = function(bbox){
     var bboxBottomRight = mercator.xyz_to_envelope(parseInt(BottomRightTile.x), parseInt(BottomRightTile.y), parseInt(BottomRightTile.z), false, true);
 
     //Had to reverse the indices here, they were backwards from what I thought they should be.
-    var corners = { minx: bboxTopLeft[0], miny: bboxTopLeft[1], maxx: bboxBottomRight[2], maxy: bboxBottomRight[3]};
+    var corners = { minx: bboxTopLeft[0], miny: bboxTopLeft[3], maxx: bboxBottomRight[2], maxy: bboxBottomRight[1]};
     return "POLYGON((minx miny, minx maxy, maxx maxy, maxx miny, minx miny))".split('minx').join(corners.minx).split('miny').join(corners.miny).split('maxx').join(corners.maxx).split('maxy').join(corners.maxy);
+
 }
 
 ////Take in results object, return GeoJSON (if there is geometry)

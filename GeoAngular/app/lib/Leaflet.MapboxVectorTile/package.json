@@ -1,0 +1,58 @@
+{
+  "name": "leaflet-mapbox-vector-tile",
+  "version": "0.1.0",
+  "description": "A Leaflet Plugin that renders Mapbox Vector Tiles on HTML5 Canvas.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/SpatialServer/Leaflet.MapboxVectorTile.git"
+  },
+  "keywords": [
+    "pbf",
+    "vector",
+    "tiles",
+    "vector-tiles",
+    "leaflet"
+  ],
+  "author": "Nicholas Hallahan, Ryan Whitley, Daniel Duarte",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SpatialServer/Leaflet.MapboxVectorTile/issues"
+  },
+  "homepage": "https://github.com/SpatialServer/Leaflet.MapboxVectorTile",
+  "dependencies": {
+    "vector-tile": "~0.1.2",
+    "pbf": "0.0.2",
+    "point-geometry": "0.0.0",
+    "request": "~2.44.0"
+  },
+  "devDependencies": {
+    "browserify": "~5.9.1",
+    "watchify": "1.0.1",
+    "serve": "^1.4.0",
+    "tape": "2.14.0",
+    "faucet": "0.0.1",
+    "testling": "~1.7.0"
+  },
+  "testling": {
+    "scripts": "lib/Leaflet/leaflet-0.7.3/leaflet-src.js",
+    "files": "test/js/*.js",
+    "browsers": [
+      "ie/9..latest",
+      "chrome/22..latest",
+      "firefox/16..latest",
+      "safari/latest",
+      "opera/11.0..latest",
+      "iphone/6",
+      "ipad/6",
+      "android-browser/latest"
+    ]
+  },
+  "scripts": {
+    "start": "npm run watch & serve",
+    "watch": "watchify -v -d src/MVTSource.js -o dist/Leaflet.MapboxVectorTile.js",
+    "build": "browserify -d src/MVTSource.js -o dist/Leaflet.MapboxVectorTile.js",
+    "production": "browserify -d src/MVTSource.js | uglifyjs -m -c > dist/Leaflet.MapboxVectorTile.min.js",
+    "test": "testling | faucet"
+  }
+}

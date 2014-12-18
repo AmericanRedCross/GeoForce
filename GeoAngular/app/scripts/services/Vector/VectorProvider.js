@@ -21,6 +21,7 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
   var BBoxGeoJSON = require('./BBoxGeoJSON');
   var KML = require('./KML');
   var CSV = require('./csv');
+  var PBF = require('./pbf');
 
 
   /**
@@ -33,7 +34,8 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
     geojson: GeoJSON,
     bboxgeojson: BBoxGeoJSON,
     kml: KML,
-    csv: CSV
+    csv: CSV,
+    pbf: PBF
   };
 
 
@@ -112,7 +114,10 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
         // if the resource is just a string, then it should be a url
         return new types[(type || config.type).toLowerCase()](config);
       } else {
-        if (config.slice(config.length - 3).toLowerCase() === 'kml') {
+        if (config.slice(config.length - 3).toLowerCase() === 'pbf') {
+          return new PBF(config);
+        }
+        else if (config.slice(config.length - 3).toLowerCase() === 'kml') {
           return new KML(config);
         }
         else if (config.slice(config.length - 3).toLowerCase() === 'csv') {
@@ -136,8 +141,7 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
       vector.bbox = bboxStr;
 
       console.log('VectorProvider bbox: ' + vector.bbox);
-      fetchFeatureItinerary();
-
+      //fetchFeatureItinerary();
     },
 
 
@@ -155,7 +159,7 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
         vector.bboxUrl += '&gadm_level=' + level;
       }
       console.log('bboxUrl: ' + vector.bboxUrl);
-      fetchFeatureItinerary();
+      //fetchFeatureItinerary();
     },
 
 

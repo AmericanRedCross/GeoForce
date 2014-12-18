@@ -3,10 +3,10 @@
  *     on Mon Mar 17 2014
  */
 
-module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, leafletData, LayerConfig, VectorProvider) {
-  $scope.params = $stateParams;
+module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, LayerConfig, VectorProvider) {
+  var map = L.map('map');
 
-  var lastLayersStr = '';
+  $scope.params = $stateParams;
   $scope.blur = '';
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
 
@@ -15,15 +15,19 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     $state.go(state, $stateParams);
   };
 
+  var lastLayersStr = '';
+  var lastBasemapUrl = null;
+  var basemapLayer = null;
   var layersStr = null;
   var overlayNames = [];
+  var overlays = [];
   var theme = null;
   var filters = null;
 
   function redraw() {
     var lat = parseFloat($stateParams.lat)   || 0;
     var lng = parseFloat($stateParams.lng)   || 0;
-    var zoom = parseFloat($stateParams.zoom) || 17;
+    var zoom = parseFloat($stateParams.zoom) || 8;
     layersStr = $stateParams.layers || LayerConfig.redcross.url;
     var layers = layersStr.split(',');
 
@@ -35,6 +39,14 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       var basemapUrl = basemap.url;
     }
     overlayNames = layers.slice(1);
+
+    if (lastBasemapUrl !== basemapUrl && typeof map === 'object') {
+      if (basemapLayer) {
+        map.removeLayer(basemapLayer);
+      }
+      basemapLayer = L.tileLayer(basemapUrl);
+      basemapLayer.addTo(map);
+    }
 
     if (lastLayersStr !== layersStr) {
       console.log('Setting layers.');
@@ -50,21 +62,30 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     }
 
     if (theme != $stateParams.theme || filters != $stateParams.filters) { // null and undefined should be ==
-      resetThemeCount();
+      //Update local variables
       theme = $stateParams.theme;
       filters = $stateParams.filters;
+
+      //Call the 'onChanged' function
+      onThemeChanged($stateParams.theme);
     }
 
-    $scope.center = {
+    var c = $scope.center = {
       lat: lat,
       lng: lng,
       zoom: zoom
     };
 
+    if (typeof map === 'object' && (c.lat != 0 && c.lng !=0)) {
+      map.setView([c.lat, c.lng], zoom);
+    }
+
     broadcastBBox();
     lastLayersStr = layersStr;
+    lastBasemapUrl = basemapUrl;
   }
-  redraw();
+
+  //redraw();
 
 
   /***
@@ -74,7 +95,23 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     if ($scope.blur === 'blur' && $state.current.name !== 'landing') {
       $scope.blur = '';
     }
-    var c = $scope.center;
+
+    var c;
+    if(!$scope.center){
+      var lat = parseFloat($stateParams.lat)   || 0;
+      var lng = parseFloat($stateParams.lng)   || 0;
+      var zoom = parseFloat($stateParams.zoom) || 8;
+
+      c = $scope.center = {
+        lat: lat,
+        lng: lng,
+        zoom: zoom
+      };
+    }
+    else{
+      c = $scope.center;
+    }
+
     var lat = c.lat.toFixed(6);
     var lng = c.lng.toFixed(6);
     var zoom = c.zoom.toString();
@@ -119,9 +156,13 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     if (!wait) {
       wait = true;
       setTimeout(function(){
-        leafletData.getMap().then(function (map) {
+
           //Get the MIN/MAX Tile ZYX extents.
           //If they haven't chagned, then don't proceed.
+
+          //When the page loads, no zoom or center has been set, so don't get bounds until that has happened
+
+          if(!map.getZoom()) { return; }
           var tileBounds = getCurrentTileBounds(map);
           var zoom = map.getZoom();
 
@@ -147,8 +188,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
                                   maxy;
 
           VectorProvider.updateBBox(str);
+          $rootScope.bbox = str; //save the bbox string to rootScope so VectorTile styling functions have access
 
-        });
+
         wait = false;
       }, 150);
     }
@@ -174,46 +216,45 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     }
 
 
-  /**
-   * Native Leaflet Map Object
-   */
-  leafletData.getMap().then(function (map) {
-    window.map = map;
-    map.on('moveend', function () { // move is good too
-      var c = map.getCenter();
-      var lat = c.lat.toFixed(6);
-      var lng = c.lng.toFixed(6);
-      var zoom = map.getZoom().toString();
+/**
+ * Native Leaflet Map Object
+ */
 
-      if (   $stateParams.lat  !== lat
-        || $stateParams.lng  !== lng
-        || $stateParams.zoom !== zoom ) {
+  window.map = map;
+  map.on('moveend', function () { // move is good too
+    var c = map.getCenter();
+    var lat = c.lat.toFixed(6);
+    var lng = c.lng.toFixed(6);
+    var zoom = map.getZoom().toString();
 
-        console.log('map: lat,lng,zoom !== $stateParams');
-        $stateParams.lat = lat;
-        $stateParams.lng = lng;
-        $stateParams.zoom = zoom;
-        mapMoveEnd = true;
-        $state.go($state.current.name, $stateParams);
-        broadcastBBox();
-      }
-    });
+    if (   $stateParams.lat  !== lat
+      || $stateParams.lng  !== lng
+      || $stateParams.zoom !== zoom ) {
 
-    //Connect the layout onresize end event
-    try {
-        window.layout.panes.center.bind("layoutpaneonresize_end", function () {
-            map.invalidateSize();
-        });
-    }catch(e){
-        //Nothing
+      console.log('map: lat,lng,zoom !== $stateParams');
+      $stateParams.lat = lat;
+      $stateParams.lng = lng;
+      $stateParams.zoom = zoom;
+      mapMoveEnd = true;
+      $state.go($state.current.name, $stateParams);
+      broadcastBBox();
     }
   });
 
+  //Connect the layout onresize end event
+  try {
+      window.layout.panes.center.bind("layoutpaneonresize_end", function () {
+          map.invalidateSize();
+      });
+  }catch(e) {
+    //Nothing
+  }
 
-  var overlays = [];
+
+
+
 
   function drawOverlays() {
-    leafletData.getMap().then(function (map) {
 
       for (var i = 0, len = overlayNames.length; i < len; ++i) {
         var overlayName = overlayNames[i];
@@ -229,9 +270,19 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
           map.removeLayer(currOverlay);
         }
 
+        /**
+         * Mapnik Vector Tile Format (.PBF)
+         */
+        if (typeof LayerConfig[overlayName] === 'object'
+          && LayerConfig[overlayName].type.toLowerCase() === 'pbf') {
+
+          var vecRes = VectorProvider.createResource(overlayName);
+          var layer = vecRes.getLayer();
+        }
+
         // try for WMS (not a vector layer)
         // if things get more fancy with wms, it should get its own factory
-        if (typeof LayerConfig[overlayName] === 'object'
+        else if (typeof LayerConfig[overlayName] === 'object'
                     && LayerConfig[overlayName].type.toLowerCase() === 'wms') {
 
           var cfg = LayerConfig[overlayName];
@@ -286,23 +337,43 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         delete overlays[i];
       }
 
-    });
+
   }
 
   /**
    * Used privately to rebuild the theme count layer.
    */
   function resetThemeCount() {
-    leafletData.getMap().then(function (map) {
-      for (var j = 0, len = overlayNames.length; j < len; j++) {
-        var nme = overlayNames[j];
-        if (nme === 'themecount' || nme === 'theme') {
-          var oldLyr = overlays[j];
-          oldLyr.destroyResource();
-          map.removeLayer(oldLyr);
-          var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
-          newLyr.addTo(map);
-        }
+
+    for (var j = 0, len = overlayNames.length; j < len; j++) {
+      var nme = overlayNames[j];
+      if (nme === 'themecount' || nme === 'theme') {
+        var oldLyr = overlays[j];
+        oldLyr.destroyResource();
+        map.removeLayer(oldLyr);
+        var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
+        newLyr.addTo(map);
+      }
+    }
+
+  }
+
+  /**
+   * When the theme changes, this function will be fired.
+   * @param theme
+   */
+  function onThemeChanged(theme){
+    //reset theme count
+    resetThemeCount();
+
+    //redraw map overlays - vector tiles need to be re-styled with new theme data.
+    redrawMapOverlays(overlayNames);
+  }
+
+  function redrawMapOverlays(layerNames){
+    map.eachLayer(function (layer) {
+      if(layerNames.indexOf(layer.overlayName) > -1){
+        layer.redraw();
       }
     });
   }

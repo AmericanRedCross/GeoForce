@@ -27,6 +27,6 @@ module.exports = {
     type: 'xyz',
     theme: 'disaster',
     url: 'http://{s}.tile.openweathermap.org/map/rain/{z}/{x}/{y}.png'
-  },
+  }
 
 };
