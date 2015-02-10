@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="styles/upload.css">
     <link rel="stylesheet" href="styles/export.css">
     <link rel="stylesheet" href="styles/search.css">
+    <link rel="stylesheet" href="styles/label.css">
       <!-- endbuild -->
 
     <link rel="stylesheet" href="lib/featurelabel/featurelabel.css">
@@ -639,7 +640,7 @@
                         <div id="searchResults">
                             <div class="searchResult Header" ng-show="projectResults">Project Results ({{projectResults.length}})</div>
                             <div ng-repeat="row in projectResults" class="resultItem" ng-click="handleSearchResultClick(row)">
-                                <span ng-show="row.level">(Mapped) </span>
+                                <span ng-show="(row.level >= 0)">(Mapped) </span>
                                 {{row.name}}
                             </div>
 

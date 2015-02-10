@@ -30,12 +30,20 @@
     "topojson": "1.6.15",
     "underscore": "1.6.0",
     "tilelive": "5.1.2",
-    "mbtiles": "0.4.3"
+    "mbtiles": "0.4.3",
+    "millstone": "0.6.12",
+    "request": "2.37.0",
+    "semver": "2.3.0",
+    "ya-csv": "0.9.4",
+    "jsdom": "0.10.5",
+    "jquery": "2.1.1"
   },
   "optionalDependencies": {
     "mapnik": "1.4.10",
     "carto": "0.11.0",
-    "ogr2ogr": "0.3.1"
+    "ogr2ogr": "0.3.1",
+    "mbtiles": "0.5.0",
+    "tilelive": "4.5.3"
   },
   "devDependencies": {
     "mocha": "1.20.1",

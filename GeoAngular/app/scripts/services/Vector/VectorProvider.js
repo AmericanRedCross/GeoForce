@@ -67,31 +67,32 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
       var feat = featItinerary[j];
       if ( feat.iscenter ) {
         vector.centerLevel = feat.level || 0;
+        $rootScope.$broadcast('center-feature', feat);
       }
     }
     console.log(['featItinerary',featItinerary]);
 
     // if there are no features for the current bounding box
-    if (!featItinerary || featItinerary.length === 0) {
-      return;
-    }
+    //if (!featItinerary || featItinerary.length === 0) {
+    //  return;
+    //}
 
     /**
      * Center feature logic for breadcrumbs.
      */
-    for (var i=0, len=featItinerary.length; i < len; ++i) {
-      var f = featItinerary[i];
-      if (f.iscenter == true) {
-        $rootScope.$broadcast('center-feature', f);
-      }
-    }
+    //for (var i=0, len=featItinerary.length; i < len; ++i) {
+    //  var f = featItinerary[i];
+    //  if (f.iscenter == true) {
+    //    $rootScope.$broadcast('center-feature', f);
+    //  }
+    //}
 
     /**
      * BBoxGeoJSON logic
      */
-    for(var r = 0, len = vector.bboxResources.length; r < len; ++r) {
-      vector.bboxResources[r].processFeatureItinerary(featItinerary);
-    }
+    //for(var r = 0, len = vector.bboxResources.length; r < len; ++r) {
+    //  vector.bboxResources[r].processFeatureItinerary(featItinerary);
+    //}
 
   }
 
@@ -141,7 +142,7 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
       vector.bbox = bboxStr;
 
       console.log('VectorProvider bbox: ' + vector.bbox);
-      //fetchFeatureItinerary();
+      fetchFeatureItinerary();
     },
 
 

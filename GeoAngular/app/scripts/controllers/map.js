@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, LayerConfig, VectorProvider) {
+module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, LayerConfig, VectorProvider, $http) {
   var map = L.map('map');
 
   $scope.params = $stateParams;
@@ -68,6 +68,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
       //Call the 'onChanged' function
       onThemeChanged($stateParams.theme);
+      onFiltersChanged($stateParams.filters);
     }
 
     var c = $scope.center = {
@@ -137,17 +138,27 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   //this takes in a WKT GeoJSON Extent geometry
   $scope.zoomToExtent = function(extent){
     delete $stateParams['zoom-extent'];
-    $scope.bounds = {
-      northEast: { lat: extent[2][1], lng: extent[2][0] },
-      southWest: { lat: extent[0][1], lng: extent[0][0] }
-    };
+
+    var southWest = { lat: extent[0][1], lng: extent[0][0] };
+    var northEast = { lat: extent[2][1], lng: extent[2][0] };
+
+    $scope.bounds = L.latLngBounds(southWest, northEast);
+
+    //Zoom to bounds
+    map.fitBounds($scope.bounds);
   };
 
   //This take a leaflet bounds object and handles it.
   delete $stateParams['zoom-extent'];
   $scope.zoomToBounds = function(bounds){
-    $scope.bounds = { northEast: bounds.getNorthEast(), southWest: bounds.getSouthWest()};
+
+    //Build new bounds object
+    $scope.bounds = L.latLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
+
+    //Zoom to bounds
+    map.fitBounds($scope.bounds);
   };
+
 
 
 
@@ -238,7 +249,19 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       mapMoveEnd = true;
       $state.go($state.current.name, $stateParams);
       broadcastBBox();
+
+      //Update ECOS Details - Usually this happens when tiles finish loading after a pan.  But sometimes if the tiles are loaded/cached, then the event doesn't fire after the map stops moving.
+      //updateECOSData(overlayNames);
     }
+  });
+
+  map.on('dragstart', function () {
+
+  });
+
+
+  map.on('dragend', function () {
+
   });
 
   //Connect the layout onresize end event
@@ -370,12 +393,124 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     redrawMapOverlays(overlayNames);
   }
 
+  /**
+   * When the filters change, this function will be fired.
+   * @param theme
+   */
+  function onFiltersChanged(filters){
+    //For vector tile choropleths, ask for new data .json from the server
+    getECOSProperties(function (data) {
+
+      updateECOSData(overlayNames);
+
+    })
+  }
+
   function redrawMapOverlays(layerNames){
     map.eachLayer(function (layer) {
       if(layerNames.indexOf(layer.overlayName) > -1){
         layer.redraw();
       }
     });
+  }
+
+
+  function updateECOSData(layerNames) {
+    map.eachLayer(function (layer) {
+      if (layerNames.indexOf(layer.overlayName) > -1 && !layer._tilesToProcess) {
+
+        //Fetch data from ECOS web service and refresh
+        if(layer.getECOSProperties){
+          layer.getECOSProperties(function (data) {
+
+            if (data && data.features) {
+              var layers = MVTSource.getLayers();
+
+              //If any features are returned, loop thru the vtfs and apply these values, restyle.
+              PBFObject.mergeECOSProperties(layers, data.features);
+
+              //Update Layer(s) style and redraw
+              MVTSource.setStyle(getThemeStyle);
+              MVTSource.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
+            }
+          });
+        }
+      }
+    });
+  }
+
+
+  /***
+   *
+   * When the app starts, or when the filters change, fetch the .json file that contains the counts for all of the districts for a given Administrative boundary level
+   * Currently, each of these files will be small enough to bulk load them a single time, as opposed to when the user pans the map.
+   * These files will be used to update the vector tiles choropleth map.
+   *
+   * @param $http
+   * @param $rootScope
+   * @param cb
+   */
+  function getECOSProperties (cb){
+    //This should fetch data from the server that pertains to the features loaded in the current extent.
+    //Use jQuery for now.
+    var url = "http://localhost:3001/services/custom/custom_operation?name=getaggregatedthemefeaturesbyextent&format=geojson&bbox=:bbox&theme=:theme&gadm_level=0&filters=:filters";
+    url = url.replace(":bbox", $rootScope.bbox);
+
+    if ($rootScope.$stateParams.filters) {
+      filters = $rootScope.$stateParams.filters;
+      //Add filters to URL.
+      url = url.replace(":filters", filters);
+    }
+    else {
+      url = url.replace("&filters=:filters", ""); //no filters.  Remove
+    }
+
+    var theme = $rootScope.$stateParams.theme || 'project';
+    url = url.replace(":theme", theme);
+
+    //When done, call the cb (callback) function
+    $http.get(url, {cache: true}).success(cb).error(function (err) {
+      console.log("err");
+    });
+  }
+
+//Take an MVTFeature and add in properties from a web service call
+  function mergeECOSProperties(MVTLayers, details, $rootScope){
+    if (MVTLayers) {
+
+      var guids = {};
+
+      angular.forEach(details, function (dataItem, dataKey){
+        guids[dataItem.properties.guid] = dataItem.properties;
+      });
+
+
+      if (guids.length == 0) {
+        //No matches brought back.
+        return;
+      }
+
+      //Grab the current theme.
+      var theme = $rootScope.$stateParams.theme || 'project';
+
+      for (var layer in MVTLayers) {
+        if (layer && MVTLayers[layer].features) {
+          //Clear out old ECOS properties.
+          clearFeatureProperties(MVTLayers[layer].features);
+
+          angular.forEach(MVTLayers[layer].features, function (vtf) {
+            if (vtf.properties.guid && guids[vtf.properties.guid]) {
+              //We've found it.  Add a property to all matching features.
+              vtf.properties.theme = theme;
+              vtf.properties.ecos_properties = {};
+              vtf.properties.ecos_properties[theme] = guids[vtf.properties.guid];
+            }
+          });
+
+        }
+      }
+
+    }
   }
 
 });

@@ -4,15 +4,20 @@
  */
 
 module.exports = {
-  gaul_fsp : {
+  gadm0 : {
     type: 'pbf',
     name: 'GADM0',
-    url: "http://localhost:3000/services/postgis/gadm0_7perc/geom/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year",
-    debug: true,
-    clickableLayers: [],
+    //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year&labelpoints=true",
+    //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year",
+
+    url: "http://localhost:3001/services/vector-tiles/GAUL_2014_Lvl10/{z}/{x}/{y}.pbf",
+    detailsUrl: 'services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters',
+    debug: false,
+    clickableLayers: ["GADM_2014"],
 
     getIDForLayerFeature: function (feature) {
       return feature.properties.guid;
+      //return feature.properties.name_0;
     },
 
     /**
@@ -47,86 +52,57 @@ module.exports = {
 
     style: getThemeStyle,
 
-    onClick: function(evt) {
-      console.log('clickkkk');
+    onClick: function(evt, $http, $rootScope, PBFObject) {
+
+      if(evt && evt.feature && evt.feature.id){
+        //Do the onclick thing
+        PBFObject.fetchFeatureDetails(evt.feature.id, 0);
+      }
     },
 
-    onTilesLoaded: function(MVTSource, $http, vector, $rootScope) {
-      //Should fire every time a set of tiles loads.
+    onTilesLoaded: function(MVTSource, $http, $rootScope) {
+      //Should fire every time a set of tiles loads AND after we've finished dragging map.
+      //Wait unitl map is done moving.
 
-      //This should fetch data from the server that pertains to the features loaded in the current extent.
-      //Use jQuery for now.
-      var url = "http://localhost:3001/services/custom/custom_operation?name=getaggregatedthemefeaturesbyextent&format=geojson&bbox=:bbox&theme=:theme&gadm_level=0&filters=:filters";
-      url = url.replace(":bbox", $rootScope.bbox);
+      //If we're still dragging, then kill the old countdown, and start it again.
+      //When we stop panning, this should let the countdown resume, which will then allow the functions to proceed
+      //if ($rootScope.dragTimer && $rootScope.isDraggingMap === true){
+      //  console.log("isDragging: " + $rootScope.isDraggingMap + ". dragTimer: " + $rootScope.dragTimer + " Cancelling countdown.");
+      //  window.clearTimeout($rootScope.dragTimer);
+      //  $rootScope.dragTimer = null;
+      //  console.log("Cancelled countdown. dragTimer:" + $rootScope.dragTimer);
+      //}
 
-      if ($rootScope.$stateParams.filters) {
-        filters = $rootScope.$stateParams.filters;
-        //Add filters to URL.
-        url = url.replace(":filters", filters);
-      }
-      else {
-        url = url.replace("&filters=:filters", ""); //no filters.  Remove
-      }
+      //Start the countdown
+      console.log("Starting new countdown.")
+      //$rootScope.dragTimer = window.setTimeout(function () {
 
-      var theme = $rootScope.$stateParams.theme || 'project';
-      url = url.replace(":theme", theme);
+        console.log("Countdown reached.  Executing dragTimer:" + $rootScope.dragTimer)
 
+        //getECOSProperties($http, $rootScope, function (data) {
+        //
+        //  if (data && data.features) {
+        //    var layers = MVTSource.getLayers();
+        //
+        //    //If any features are returned, loop thru the vtfs and apply these values.
+        //    mergeECOSProperties(layers, data.features, $rootScope);
+        //    //
+        //    ////Update Layer(s) style and redraw
+        //    //MVTSource.setStyle(getThemeStyle);
+        //    //MVTSource.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
+        //  }
+        //})
 
-      $http.get(url, {cache: true}).success(function (data, status) {
+      //}, 500);
 
-        //If any features are returned, loop thru the vtfs and apply these values, restyle.
-        if (data && data.features) {
-
-          var guids = {};
-
-          angular.forEach(data.features, function (dataItem, dataKey){
-            guids[dataItem.properties.guid] = dataItem.properties;
-          });
-
-          var layers = MVTSource.getLayers();
-
-          if (guids.length == 0) {
-            //No matches brought back.  make all polygons clear
-
-            return;
-          }
-
-          for (var layer in layers) {
-            if (layer && layers[layer].features) {
-              //Clear out old ECOS properties.
-              clearFeatureProperties(layers[layer].features);
-
-              angular.forEach(layers[layer].features, function (vtf, vtfkey) {
-                if (vtf.properties.guid && guids[vtf.properties.guid]) {
-                  //We've found it.  Add a property to all matching features, then redraw the layer.
-                  console.log("found " + vtf.properties.guid);
-                  vtf.properties.theme = theme;
-                  vtf.properties.ecos_properties = {};
-                  vtf.properties.ecos_properties[theme] = guids[vtf.properties.guid];
-                }
-                else {
-                  //no match.  Make it hollow
-                  console.log("miss");
-                }
-              });
-
-              //Update Layer style and redraw
-              MVTSource.setStyle(getThemeStyle);
-              MVTSource.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
-
-            }
-          }
-
-        }
-      }).error(function (err) {
-        console.log("err");
-      });
-
+      console.log("Created dragTimer:" + $rootScope.dragTimer);
 
     }
   }
-
 };
+
+
+
 
 function getThemeStyle(vtf){
 
@@ -138,7 +114,9 @@ function getThemeStyle(vtf){
   style.outline = {
     color: 'rgb(20,20,20)',
     size: 2
-  }
+  };
+
+
 
   var properties = vtf.properties;
 
@@ -146,8 +124,10 @@ function getThemeStyle(vtf){
     return style;
   }
 
+  var ecosProperties;
+
   if (properties.theme == "disaster") {
-    var ecosProperties = properties["ecos_properties"]["disaster"];
+    ecosProperties = properties["ecos_properties"]["disaster"];
 
     if (ecosProperties) {
       if (ecosProperties.iroc_status__c) {
@@ -179,7 +159,7 @@ function getThemeStyle(vtf){
 
   }
   else if (properties.theme == "projectRisk") {
-    var ecosProperties = properties["ecos_properties"]["projectRisk"];
+    ecosProperties = properties["ecos_properties"]["projectRisk"];
     if (ecosProperties && ecosProperties.overall_assessment__c) {
       switch (ecosProperties.overall_assessment__c.toLowerCase()) {
         case "critical":
@@ -214,7 +194,7 @@ function getThemeStyle(vtf){
     }
   }
   else if (properties.theme == "projectHealth") {
-    var ecosProperties = properties["ecos_properties"]["projectHealth"];
+    ecosProperties = properties["ecos_properties"]["projectHealth"];
     if (ecosProperties && ecosProperties.overall_status__c) {
       switch (ecosProperties.overall_status__c.toLowerCase()) {
         case "red":
@@ -249,7 +229,7 @@ function getThemeStyle(vtf){
     }
   }
   else if (properties.theme == "project") {
-    var ecosProperties = properties["ecos_properties"]["project"];
+    ecosProperties = properties["ecos_properties"]["project"];
 
     if (ecosProperties && ecosProperties) {
 
@@ -314,9 +294,29 @@ function getThemeStyle(vtf){
       }
     }
   }
+
+  //Label
+  //if (vtf.layer.name === 'gadm0_7perc_geom_label') {
+  //  style.staticLabel = function () {
+  //    var labelStyle = {
+  //      html: ecosProperties.theme_count,
+  //      iconSize: [42, 42],
+  //      cssClass: 'label-icon-number-lg'
+  //    };
+  //    return labelStyle;
+  //  };
+  //}
+
+
   return style;
 
+
+
 }
+
+
+
+
 
 //As we swap ECOS properties out on the vector tile layer, clear out the old properties so we don't get residual theme values from old themes.
 function clearFeatureProperties(features){
@@ -328,4 +328,31 @@ function clearFeatureProperties(features){
     }
   });
 
+}
+
+//**********************************************************************
+// function waitfor - Wait until a condition is met
+//
+// Needed parameters:
+//    test: a value
+//    expectedValue: the value of the test function we are waiting for
+//    msec: delay between the calls to test
+//    callback: function to execute when the condition is met
+// Parameters for debugging:
+//    count: used to count the loops
+//    source: a string to specify an ID, a message, etc
+//**********************************************************************
+function waitfor(test, expectedValue, msec, count, source, callback) {
+  // Check if condition met. If not, re-check later (msec).
+  while (test() !== expectedValue) {
+    count++;
+    console.log("Waiting for condition to be met..." + count);
+    setTimeout(function() {
+      waitfor(test, expectedValue, msec, count, source, callback);
+    }, msec);
+    return;
+  }
+  // Condition finally met. callback() can be executed.
+  console.log(source + ': ' + test() + ', expected: ' + expectedValue + ', ' + count + ' loops.');
+  callback();
 }

@@ -43,6 +43,7 @@ module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', funct
       });
   }
 
+    //When a user clicks one of the search result items
     $scope.handleSearchResultClick = function(properties){
         //Send to deatils panel
         sendProjectToDetailsPanel(properties);
@@ -53,8 +54,8 @@ module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', funct
         }
     };
 
-    function sendProjectToDetailsPanel (properties){
-        $rootScope.$broadcast('details', { feature: { properties: properties } });
+    function sendProjectToDetailsPanel (properties) {
+      $rootScope.$broadcast('details', {feature: {properties: properties}});
     }
 
 
