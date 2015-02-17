@@ -311,45 +311,49 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (item.name || item.title) {
       $scope.title = item.name || item.title;
     }
+
     if (typeof idx === 'number') $scope.activeThemeItemIdx = idx;
     if (themeItems) $scope.activeThemeItemsList = themeItems;
+
     $scope.itemsList = false;
+
     $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+
     if (!$scope.contextualLayer) {
       $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item, $stateParams.theme)), $stateParams.theme);
     }
 
     //Filter/Format RFAs and Indicators
-    if ($scope.details.requestsForAssistance && typeof $scope.details.requestsForAssistance === 'array') {
+    if ($scope.details.requestsForAssistance && angular.isArray($scope.details.requestsForAssistance)) {
       //Filter/Format
       $scope.details.requestsForAssistance = $scope.details.requestsForAssistance.map(function (rfa) {
         return removeUnwantedItems(formatDetails(rfa, "RFA"), "RFA");
       });
     }
 
-    if ($scope.details.indicators && typeof $scope.details.indicators === 'array') {
+    if ($scope.details.indicators && angular.isArray($scope.details.indicators)) {
       //Filter/Format
       $scope.details.indicators = $scope.details.indicators.map(function (indicator) {
         return removeUnwantedItems(formatDetails(indicator, "indicator"), "indicator");
       });
     }
 
-    if ($scope.details.risks && typeof $scope.details.risks === 'array') {
+    if ($scope.details.risks && angular.isArray($scope.details.risks) === true) {
       //Filter/Format
-//          $scope.details.risks = $scope.details.risks.map(function (risk) {
-//              return removeUnwantedItems(formatDetails(risk, "risk"), "risk");
-//          });
+      $scope.details.risks = $scope.details.risks.map(function (risk) {
+        return removeUnwantedItems(formatDetails(risk, "risk"), "risk");
+      });
     }
 
-    if ($scope.details.statuses && typeof $scope.details.statuses === 'array') {
+    if ($scope.details.statuses && angular.isArray($scope.details.statuses)) {
       //Filter/Format
-//          $scope.details.statuses = $scope.details.statuses.map(function (status) {
-//              return removeUnwantedItems(formatDetails(status, "status"), "status");
-//          });
+      $scope.details.statuses = $scope.details.statuses.map(function (status) {
+        return removeUnwantedItems(formatDetails(status, "status"), "status");
+      });
     }
 
     //Need to wait until details panel switches modes, and then calculate the size.
-    setTimeout(function() {
+    setTimeout(function () {
       $scope.resizeDetailsPanel();
     }, 100);
 
@@ -370,6 +374,12 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     }
     else if (type === 'indicator') {
       blacklistDictionary = config.unwantedIndicatorDetails;
+    }
+    else if (type === 'projectRisk') {
+      blacklistDictionary = config.unwantedProjectRiskDetails;
+    }
+    else if (type === 'projectHealth') {
+      blacklistDictionary = config.unwantedProjectHealthDetails;
     }
 
     for (var key in details) {
@@ -403,6 +413,12 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     else if (type === 'indicator') {
       formattingDictionary = config.indicatorDetailsFormatting;
     }
+    else if (type === 'projectRisk') {
+      formattingDictionary = config.projectRiskDetailsFormatting;
+    }
+    else if (type === 'projectHealth') {
+      formattingDictionary = config.projectHealthDetailsFormatting;
+    }
 
     for (var key in details) {
       var formatter = formattingDictionary[key];
@@ -419,6 +435,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
           case "date":
             formattedDetails[key] = $filter('date')(details[key], "yyyy-dd-MM");
             break;
+
           case "rfaName":
             formattedDetails[key] = $scope.details.location__r_admin_0__c + ' ' + $scope.details.disaster_type__c + ' - ' + details.appeal_source__c;
             break;

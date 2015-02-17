@@ -5,6 +5,7 @@
 
 module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, LayerConfig, VectorProvider, $http) {
   var map = L.map('map');
+  var firstLoad = true;
 
   $scope.params = $stateParams;
   $scope.blur = '';
@@ -61,7 +62,10 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       };
     }
 
-    if (theme != $stateParams.theme || filters != $stateParams.filters) { // null and undefined should be ==
+    if ((theme != $stateParams.theme || filters != $stateParams.filters) || firstLoad === true) { // null and undefined should be ==
+
+      firstLoad = false;
+
       //Update local variables
       theme = $stateParams.theme;
       filters = $stateParams.filters;
@@ -86,7 +90,8 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     lastBasemapUrl = basemapUrl;
   }
 
-  //redraw();
+  //For vector tile choropleths, ask for new data .json from the server
+  onThemeChanged($stateParams.theme);
 
 
   /***
@@ -255,12 +260,8 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     }
   });
 
-  map.on('dragstart', function () {
-
-  });
-
-
-  map.on('dragend', function () {
+  //merge vector tiles in the new view with .json stats
+  map.on('moveend', function () {
 
   });
 
@@ -301,6 +302,8 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
           var vecRes = VectorProvider.createResource(overlayName);
           var layer = vecRes.getLayer();
+          layer.overlayName = overlayName;
+
         }
 
         // try for WMS (not a vector layer)
@@ -389,8 +392,15 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     //reset theme count
     resetThemeCount();
 
+    //For vector tile choropleths, ask for new data .json from the server
+    getECOSProperties(function (data) {
+
+      updateECOSData(data, overlayNames);
+
+    })
+
     //redraw map overlays - vector tiles need to be re-styled with new theme data.
-    redrawMapOverlays(overlayNames);
+    //redrawMapOverlays(overlayNames);
   }
 
   /**
@@ -399,11 +409,11 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    */
   function onFiltersChanged(filters){
     //For vector tile choropleths, ask for new data .json from the server
-    getECOSProperties(function (data) {
-
-      updateECOSData(overlayNames);
-
-    })
+    //getECOSProperties(function (data) {
+    //
+    //  updateECOSData(data, overlayNames);
+    //
+    //})
   }
 
   function redrawMapOverlays(layerNames){
@@ -415,29 +425,240 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   }
 
 
-  function updateECOSData(layerNames) {
+  function updateECOSData(ecosData, layerNames) {
     map.eachLayer(function (layer) {
-      if (layerNames.indexOf(layer.overlayName) > -1 && !layer._tilesToProcess) {
+      if (layerNames.indexOf(layer.overlayName) > -1 && layer._tilesToProcess <=0) {
 
         //Fetch data from ECOS web service and refresh
-        if(layer.getECOSProperties){
-          layer.getECOSProperties(function (data) {
+        //if(layer.getECOSProperties){
+        //  layer.getECOSProperties(function (data) {
 
-            if (data && data.features) {
-              var layers = MVTSource.getLayers();
+            if (ecosData && ecosData.features) {
+              var layers = layer.getLayers();
 
               //If any features are returned, loop thru the vtfs and apply these values, restyle.
-              PBFObject.mergeECOSProperties(layers, data.features);
+              mergeECOSProperties(layers, ecosData.features);
 
               //Update Layer(s) style and redraw
-              MVTSource.setStyle(getThemeStyle);
-              MVTSource.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
+              layer.setStyle(getThemeStyle);
+              layer.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
             }
-          });
-        }
+          //});
+        //}
       }
     });
   }
+
+  function getThemeStyle(vtf){
+
+    var opacity = "0.5";
+
+    var style = {};
+    //Default style - make hollow
+    style.color = 'rgba(0,0,0,' + opacity + ')';
+    style.outline = {
+      color: 'rgb(20,20,20)',
+      size: 2
+    };
+
+
+
+    var properties = vtf.properties;
+
+    if(!properties.theme){
+      return style;
+    }
+
+    var ecosProperties;
+
+    if (properties.theme == "disaster") {
+      ecosProperties = properties["ecos_properties"]["disaster"];
+
+      if (ecosProperties) {
+        if (ecosProperties.iroc_status__c) {
+          switch (ecosProperties.iroc_status__c.toLowerCase()) {
+            case "active":
+              style.color = 'rgba(204,0,51,' + opacity + ')';
+              style.outline = {
+                color: 'rgb(20,20,20)',
+                size: 2
+              }
+              break;
+            case "monitoring":
+              style.color = 'rgba(204,153,0,' + opacity + ')';
+              style.outline = {
+                color: 'rgb(20,20,20)',
+                size: 2
+              }
+              break;
+            case "inactive":
+              style.color = 'rgba(255,255,255,' + opacity + ')';
+              style.outline = {
+                color: 'rgb(20,20,20)',
+                size: 2
+              }
+              break;
+          }
+        }
+      }
+
+    }
+    else if (properties.theme == "projectRisk") {
+      ecosProperties = properties["ecos_properties"]["projectRisk"];
+      if (ecosProperties && ecosProperties.overall_assessment__c) {
+        switch (ecosProperties.overall_assessment__c.toLowerCase()) {
+          case "critical":
+            style.color = 'rgba(255,0,0,' + opacity + ')';
+            style.outline = {
+              color: 'rgb(20,20,20)',
+              size: 2
+            }
+            break;
+          case "high":
+            style.color = 'rgba(255,127,0,' + opacity + ')';
+            style.outline = {
+              color: 'rgb(20,20,20)',
+              size: 2
+            }
+            break;
+          case "medium":
+            style.color = 'rgba(255,255,0,' + opacity + ')';
+            style.outline = {
+              color: 'rgb(20,20,20)',
+              size: 2
+            }
+            break;
+          case "low":
+            style.color = 'rgba(0,255,0,' + opacity + ')';
+            style.outline = {
+              color: 'rgb(20,20,20)',
+              size: 2
+            }
+            break;
+        }
+      }
+    }
+    else if (properties.theme == "projectHealth") {
+      ecosProperties = properties["ecos_properties"]["projectHealth"];
+      if (ecosProperties && ecosProperties.overall_status__c) {
+        switch (ecosProperties.overall_status__c.toLowerCase()) {
+          case "red":
+            style.color = 'rgba(255,0,0,' + opacity + ')';
+            style.outline = {
+              color: 'rgb(20,20,20)',
+              size: 2
+            }
+            break;
+          case "yellow":
+            style.color = 'rgba(255,255,0,' + opacity + ')';
+            style.outline = {
+              color: 'rgb(20,20,20)',
+              size: 2
+            }
+            break;
+          case "green":
+            style.color = 'rgba(0,255,0,' + opacity + ')';
+            style.outline = {
+              color: 'rgb(20,20,20)',
+              size: 2
+            }
+            break;
+          case "white":
+            style.color = 'rgba(255,255,255,' + opacity + ')';
+            style.outline = {
+              color: 'rgb(20,20,20)',
+              size: 2
+            }
+            break;
+        }
+      }
+    }
+    else if (properties.theme == "project") {
+      ecosProperties = properties["ecos_properties"]["project"];
+
+      if (ecosProperties && ecosProperties) {
+
+        var count =  parseInt(ecosProperties.theme_count);
+
+        if(count == 0) {
+          //make hollow
+          style.color = 'rgba(0,0,0,' + opacity + ')';
+          style.outline = {
+            color: 'rgb(20,20,20)',
+            size: 2
+          }
+        }
+        else if(count > 0 && count <= 2) {
+          //make hollow
+          style.color = 'rgba(229,255,235,' + opacity + ')';
+          style.outline = {
+            color: 'rgb(20,20,20)',
+            size: 2
+          }
+        }
+        else if(count > 2 && count <= 5) {
+          //make hollow
+          style.color = 'rgba(169,255,189,' + opacity + ')';
+          style.outline = {
+            color: 'rgb(20,20,20)',
+            size: 2
+          }
+        }
+        else if(count > 5 && count <= 8) {
+          //make hollow
+          style.color = 'rgba(169,255,125,' + opacity + ')';
+          style.outline = {
+            color: 'rgb(20,20,20)',
+            size: 2
+          }
+        }
+        else if(count > 8 && count <= 10) {
+          //make hollow
+          style.color = 'rgba(41,255,90,' + opacity + ')';
+          style.outline = {
+            color: 'rgb(20,20,20)',
+            size: 2
+          }
+        }
+        else if(count > 10) {
+          //make hollow
+          style.color = 'rgba(0,255,59,' + opacity + ')';
+          style.outline = {
+            color: 'rgb(20,20,20)',
+            size: 2
+          }
+        }
+
+      }
+      else{
+        //make hollow
+        style.color = 'rgba(0,0,0,' + opacity + ')';
+        style.outline = {
+          color: 'rgb(20,20,20)',
+          size: 2
+        }
+      }
+    }
+
+    //Label
+    //if (vtf.layer.name === 'gadm0_7perc_geom_label') {
+    //  style.staticLabel = function () {
+    //    var labelStyle = {
+    //      html: ecosProperties.theme_count,
+    //      iconSize: [42, 42],
+    //      cssClass: 'label-icon-number-lg'
+    //    };
+    //    return labelStyle;
+    //  };
+    //}
+
+
+    return style;
+
+
+
+  }
+
 
 
   /***
@@ -474,8 +695,20 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     });
   }
 
+  //As we swap ECOS properties out on the vector tile layer, clear out the old properties so we don't get residual theme values from old themes.
+  function clearFeatureProperties(features){
+
+    angular.forEach(features, function (vtf, vtfkey) {
+      if(vtf.properties) {
+        vtf.properties.ecos_properties = {};
+        vtf.theme = "";
+      }
+    });
+
+  }
+
 //Take an MVTFeature and add in properties from a web service call
-  function mergeECOSProperties(MVTLayers, details, $rootScope){
+  function mergeECOSProperties(MVTLayers, details){
     if (MVTLayers) {
 
       var guids = {};

@@ -73,6 +73,32 @@ config.projectDetailsFormatting = {
  *
  * @type {{}}
  */
+config.projectRiskDetailsFormatting = {
+  createddate: "date",
+  systemmodstamp: "date",
+  lastmodifieddate: "date",
+  likelihood__c: "number",
+  impact__c: "number"
+};
+
+
+/**
+ * This defines the type of formatting used for each field in the details panel
+ *
+ * @type {{}}
+ */
+config.projectHealthDetailsFormatting = {
+  createddate: "date",
+  systemmodstamp: "date",
+  lastmodifieddate: "date",
+  evaluation_date__c: "date"
+};
+
+/**
+ * This defines the type of formatting used for each field in the details panel
+ *
+ * @type {{}}
+ */
 config.disasterDetailsFormatting = {
   date__c: "date",
   source_people_affected__c: "number",
@@ -261,3 +287,25 @@ config.unwantedRFADetails = {
 config.unwantedIndicatorDetails = {
 
 };
+
+/**
+ * This defines the fields we DON'T want to show in the Details panel
+ * Specify true to hide it.
+ * @type {{}}
+ */
+config.unwantedProjectRiskDetails = {
+  id : true
+};
+
+/**
+ * This defines the fields we DON'T want to show in the Details panel
+ * Specify true to hide it.
+ * @type {{}}
+ */
+config.unwantedProjectHealthDetails = {
+
+  id: true
+
+};
+
+

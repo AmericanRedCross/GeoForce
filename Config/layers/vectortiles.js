@@ -318,17 +318,7 @@ function getThemeStyle(vtf){
 
 
 
-//As we swap ECOS properties out on the vector tile layer, clear out the old properties so we don't get residual theme values from old themes.
-function clearFeatureProperties(features){
 
-  angular.forEach(features, function (vtf, vtfkey) {
-    if(vtf.properties) {
-      vtf.properties.ecos_properties = {};
-      vtf.theme = "";
-    }
-  });
-
-}
 
 //**********************************************************************
 // function waitfor - Wait until a condition is met
