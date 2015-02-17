@@ -99,6 +99,9 @@ operation.execute = flow.define(
                 //If a disaster, include RFA counts from rollup table
                 this.Query = this.Query.replace("{{rfacount}},", "sum(rfacount{{gadm_level}}) as rfa_count,");
                 this.Query = this.Query.replace("{{theme_details}},", theme_details["disaster"].join(",") + ",");
+                //This is hard coded into disaster requests UNTIL disaster filters are enabled in the left panel
+                filters = " AND iroc_status__c != 'Inactive'";
+
             } else if (operation.inputs["theme"].toLowerCase() == 'project') {
                 //No RFA counts.
                 this.Query = this.Query.replace("{{rfacount}},", "");
