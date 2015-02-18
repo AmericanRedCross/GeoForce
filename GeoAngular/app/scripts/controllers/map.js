@@ -91,7 +91,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   }
 
   //For vector tile choropleths, ask for new data .json from the server
-  onThemeChanged($stateParams.theme);
+  //onThemeChanged($stateParams.theme);
 
 
   /***
@@ -262,6 +262,10 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   //merge vector tiles in the new view with .json stats
   map.on('moveend', function () {
+    if($rootScope && $rootScope.vtData) {
+      var data = $rootScope.vtData;
+      updateECOSData(data, overlayNames, false); //false means the theme didn't change, so don't clear old features.
+    }
 
   });
 
@@ -395,7 +399,20 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     //For vector tile choropleths, ask for new data .json from the server
     getECOSProperties(function (data) {
 
-      updateECOSData(data, overlayNames);
+      if(data && data.features){
+
+        var guids = {};
+
+        angular.forEach(data.features, function (dataItem, dataKey) {
+          guids[dataItem.properties.guid] = dataItem.properties;
+        });
+
+        $rootScope.vtData = guids; //Store the data to be merged with vector tile layer.  In config/vectortiles.js, the MVT choropleth layers will attempt to merge this data in when tiles finish loading (any time new tiles are requested, like zoomin/out/pan)
+
+        updateECOSData(guids, overlayNames, true); //true is for ThemeChanged boolean
+
+      }
+
 
     })
 
@@ -424,27 +441,27 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     });
   }
 
-
-  function updateECOSData(ecosData, layerNames) {
+  /**
+   * Take data/properties from the server and merge them in with a vector tiles layer.
+   * @param ecosData - the data
+   * @param layerNames - any layer names to apply the data to
+   * @newTheme - boolean. If true, a new theme has been selected, so existing VT propeties will be cleared.  If false, then we can skip features that already have been 'filled' and worry about new ones.
+   */
+  function updateECOSData(ecosData, layerNames, newTheme) {
     map.eachLayer(function (layer) {
-      if (layerNames.indexOf(layer.overlayName) > -1 && layer._tilesToProcess <=0) {
+      if (layerNames.indexOf(layer.overlayName) > -1 && layer._tilesToProcess <= 0) {
 
-        //Fetch data from ECOS web service and refresh
-        //if(layer.getECOSProperties){
-        //  layer.getECOSProperties(function (data) {
+        if (ecosData) {
+          var layers = layer.getLayers();
 
-            if (ecosData && ecosData.features) {
-              var layers = layer.getLayers();
+          //If any features are returned, loop thru the vtfs and apply these values, restyle.
+          mergeECOSProperties(layers, ecosData, newTheme);
 
-              //If any features are returned, loop thru the vtfs and apply these values, restyle.
-              mergeECOSProperties(layers, ecosData.features);
+          //Update Layer(s) style and redraw
+          layer.setStyle(getThemeStyle);
+          layer.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
+        }
 
-              //Update Layer(s) style and redraw
-              layer.setStyle(getThemeStyle);
-              layer.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
-            }
-          //});
-        //}
       }
     });
   }
@@ -673,9 +690,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    */
   function getECOSProperties (cb){
     //This should fetch data from the server that pertains to the features loaded in the current extent.
-    //Use jQuery for now.
-    var url = "http://localhost:3001/services/custom/custom_operation?name=getaggregatedthemefeaturesbyextent&format=geojson&bbox=:bbox&theme=:theme&gadm_level=0&filters=:filters";
-    url = url.replace(":bbox", $rootScope.bbox);
+    //var url = "http://localhost:3001/services/custom/custom_operation?name=getaggregatedthemefeaturesbyextent&format=geojson&bbox=:bbox&theme=:theme&gadm_level=0&filters=:filters";
+    var url = "http://localhost:3001/services/custom/custom_operation?name=getallaggregatedthemefeatures&format=geojson&theme=:theme&gadm_level=0&filters=:filters";
+    //url = url.replace(":bbox", $rootScope.bbox);
 
     if ($rootScope.$stateParams.filters) {
       filters = $rootScope.$stateParams.filters;
@@ -695,6 +712,37 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     });
   }
 
+
+  //Take an MVTLayer(s) and add in properties from a web service call
+  //newTheme is a boolean that tells us whether to clear existing properties or keep what we've got and just add to the set.
+  function mergeECOSProperties(MVTLayers, data, newTheme){
+    if (MVTLayers) {
+
+
+      //Grab the current theme.
+      var theme = ($rootScope && $rootScope.$stateParams && $rootScope.$stateParams.theme) || 'project';
+
+      for (var layer in MVTLayers) {
+        if (layer && MVTLayers[layer].features) {
+          //Clear out old ECOS properties.
+
+          if(newTheme === true) clearFeatureProperties(MVTLayers[layer].features);
+
+          angular.forEach(MVTLayers[layer].features, function (vtf) {
+            if (vtf.properties.guid && data[vtf.properties.guid]) {
+              //We've found it.  Add a property to all matching features.
+              vtf.properties.theme = theme;
+              vtf.properties.ecos_properties = {};
+              vtf.properties.ecos_properties[theme] = data[vtf.properties.guid];
+            }
+          });
+
+        }
+      }
+
+    }
+  }
+
   //As we swap ECOS properties out on the vector tile layer, clear out the old properties so we don't get residual theme values from old themes.
   function clearFeatureProperties(features){
 
@@ -705,45 +753,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       }
     });
 
-  }
-
-//Take an MVTFeature and add in properties from a web service call
-  function mergeECOSProperties(MVTLayers, details){
-    if (MVTLayers) {
-
-      var guids = {};
-
-      angular.forEach(details, function (dataItem, dataKey){
-        guids[dataItem.properties.guid] = dataItem.properties;
-      });
-
-
-      if (guids.length == 0) {
-        //No matches brought back.
-        return;
-      }
-
-      //Grab the current theme.
-      var theme = $rootScope.$stateParams.theme || 'project';
-
-      for (var layer in MVTLayers) {
-        if (layer && MVTLayers[layer].features) {
-          //Clear out old ECOS properties.
-          clearFeatureProperties(MVTLayers[layer].features);
-
-          angular.forEach(MVTLayers[layer].features, function (vtf) {
-            if (vtf.properties.guid && guids[vtf.properties.guid]) {
-              //We've found it.  Add a property to all matching features.
-              vtf.properties.theme = theme;
-              vtf.properties.ecos_properties = {};
-              vtf.properties.ecos_properties[theme] = guids[vtf.properties.guid];
-            }
-          });
-
-        }
-      }
-
-    }
   }
 
 });

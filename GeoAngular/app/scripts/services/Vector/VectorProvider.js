@@ -211,6 +211,8 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
       }
 
     }
+
+
   };
 
 

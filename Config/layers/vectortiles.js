@@ -74,10 +74,26 @@ module.exports = {
       //}
 
       //Start the countdown
-      console.log("Starting new countdown.")
+      //console.log("Starting new countdown.");
       //$rootScope.dragTimer = window.setTimeout(function () {
 
-        console.log("Countdown reached.  Executing dragTimer:" + $rootScope.dragTimer)
+        //console.log("Countdown reached.  Executing dragTimer:" + $rootScope.dragTimer);
+
+      //$rootScope.vtData is set in scripts/controllers/map.js whenever a theme is changed.
+      //if($rootScope.vtData) {
+      //  var data = $rootScope.vtData;
+      //
+      //  if (data && data.features) {
+      //    var layers = MVTSource.getLayers();
+      //
+      //    //If any features are returned, loop thru the vtfs and apply these values.
+      //    mergeECOSProperties(layers, data.features, $rootScope);
+      //    //
+      //    ////Update Layer(s) style and redraw
+      //    //MVTSource.setStyle(getThemeStyle);
+      //    //MVTSource.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
+      //  }
+      //}
 
         //getECOSProperties($http, $rootScope, function (data) {
         //
@@ -95,7 +111,7 @@ module.exports = {
 
       //}, 500);
 
-      console.log("Created dragTimer:" + $rootScope.dragTimer);
+      //onsole.log("Created dragTimer:" + $rootScope.dragTimer);
 
     }
   }
@@ -313,8 +329,6 @@ function getThemeStyle(vtf){
 
 
 }
-
-
 
 
 

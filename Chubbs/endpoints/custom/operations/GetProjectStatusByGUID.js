@@ -20,12 +20,10 @@ operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 // Newer schema where we can have many-to-many locations per project.
 if (settings.projectsManyToMany) {
   operation.ProjectQuery =
-    "SELECT sf_project.*, \
-    name0 as location__r_admin_0__c, name1 as location__r_admin_1__c, name2 as location__r_admin_2__c, name3 as location__r_admin_3__c,name4 location__r_admin_4__c, name5 as location__r_admin_5__c \
+    "SELECT sf_project.* \
     FROM sf_project \
-    INNER JOIN sf_aggregated_gadm_project_counts_many \
-      ON sf_project.sf_id = sf_aggregated_gadm_project_counts_many.sf_id \
-    WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
+    WHERE sf_id = (SELECT DISTINCT sf_id from sf_aggregated_gadm_project_counts_many where sf_project.sf_id = sf_id and guid{{gadm_level}} = {{guids}}) \
+     {{filters}};";
 }
 // Original project query where we have 1 location per project.
 else {
@@ -36,9 +34,10 @@ else {
       AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
 }
 
+//Updated to only pull the latest status updates in cases where there are many.  Only the latest status should be used.
 operation.StatusQuery = "SELECT * " +
   "FROM sf_project_status " +
-  "WHERE project__c = {{guid}}; " ;
+  "WHERE project__c = {{guid}};"; // AND evaluation_date__c::timestamp = (SELECT MAX(evaluation_date__c::timestamp) FROM sf_project_status WHERE project__c = {{guid}});" ;
 
 operation.execute = flow.define(
   function (args, callback) {
@@ -78,7 +77,7 @@ operation.execute = flow.define(
 
       //need to wrap ids in single quotes
       //Execute the query
-      var projectQuery = { text: operation.ProjectQuery.replace("{{guids}}", operation.wrapIdsInQuotes(operation.inputs["guids"])).replace("{{gadm_level}}", operation.inputs["gadm_level"]).replace("{{filters}}", filters)};
+      var projectQuery = { text: operation.ProjectQuery.split("{{guids}}").join(operation.wrapIdsInQuotes(operation.inputs["guids"])).replace("{{gadm_level}}", operation.inputs["gadm_level"]).replace("{{filters}}", filters)};
       common.executePgQuery(projectQuery, this); //Flow to next function when done.
     }
     else {
@@ -96,7 +95,7 @@ operation.execute = flow.define(
     for (var i = 0, len = projects.length; i < len; i++) {
       var proj = projects[i];
       var projId = proj.sf_id;
-      var statusQuery = { text: operation.StatusQuery.replace("{{guid}}", operation.wrapIdsInQuotes(projId)) };
+      var statusQuery = { text: operation.StatusQuery.split("{{guid}}").join(operation.wrapIdsInQuotes(projId)) };
       common.executePgQuery(statusQuery, this.MULTI(projId));
     }
   },
