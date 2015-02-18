@@ -262,7 +262,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   //merge vector tiles in the new view with .json stats
   map.on('moveend', function () {
-    if($rootScope && $rootScope.vtData) {
+    if ($rootScope && $rootScope.vtData) {
       var data = $rootScope.vtData;
       updateECOSData(data, overlayNames, false); //false means the theme didn't change, so don't clear old features.
     }
