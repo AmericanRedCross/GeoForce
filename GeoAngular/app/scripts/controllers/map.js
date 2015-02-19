@@ -718,7 +718,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   function mergeECOSProperties(MVTLayers, data, newTheme){
     if (MVTLayers) {
 
-
       //Grab the current theme.
       var theme = ($rootScope && $rootScope.$stateParams && $rootScope.$stateParams.theme) || 'project';
 

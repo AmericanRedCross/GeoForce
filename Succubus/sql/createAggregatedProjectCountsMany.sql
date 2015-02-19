@@ -70,7 +70,10 @@ WHERE   gadm0.id_0 = gadm1.id_0
     AND gadm3.id_3 = gadm4.id_3
     AND gadm5.id_3 = gadm4.id_3
     AND gadm4.id_4 = gadm5.id_4
-    AND gadm5.guid::text = geo_id;
+    AND gadm5.guid::text = geo_id
+        --Ignore projects in sf_project where consolidated_record_type__c is 'Disaster Response'
+        -- https://github.com/AmericanRedCross/GeoForce/issues/227
+    AND consolidated_record_type__c != 'Disaster Response';
 
 
 INSERT INTO sf_aggregated_gadm_project_counts_many
@@ -134,7 +137,10 @@ WHERE   gadm0.id_0 = gadm1.id_0
     AND gadm2.id_2 = gadm3.id_2
     AND gadm4.id_2 = gadm3.id_2
     AND gadm3.id_3 = gadm4.id_3
-    AND gadm4.guid::text = geo_id);
+    AND gadm4.guid::text = geo_id
+        --Ignore projects in sf_project where consolidated_record_type__c is 'Disaster Response'
+        -- https://github.com/AmericanRedCross/GeoForce/issues/227
+    AND consolidated_record_type__c != 'Disaster Response');
 
 
 INSERT INTO sf_aggregated_gadm_project_counts_many
@@ -194,7 +200,10 @@ WHERE   gadm0.id_0 = gadm1.id_0
     AND gadm1.id_1 = gadm2.id_1
     AND gadm3.id_1 = gadm2.id_1
     AND gadm2.id_2 = gadm3.id_2
-    AND gadm3.guid::text = geo_id);
+    AND gadm3.guid::text = geo_id
+        --Ignore projects in sf_project where consolidated_record_type__c is 'Disaster Response'
+        -- https://github.com/AmericanRedCross/GeoForce/issues/227
+    AND consolidated_record_type__c != 'Disaster Response');
 
 INSERT INTO sf_aggregated_gadm_project_counts_many
 ( SELECT 0 as countARC,
@@ -251,7 +260,10 @@ FROM  gadm0, gadm1, gadm2, vw_sf_project
 WHERE gadm0.id_0 = gadm1.id_0
 AND gadm1.id_1 = gadm2.id_1
 AND gadm2.id_0 = gadm1.id_0
-AND gadm2.guid::text = geo_id);
+AND gadm2.guid::text = geo_id
+    --Ignore projects in sf_project where consolidated_record_type__c is 'Disaster Response'
+    -- https://github.com/AmericanRedCross/GeoForce/issues/227
+AND consolidated_record_type__c != 'Disaster Response');
 
 
 INSERT INTO sf_aggregated_gadm_project_counts_many
@@ -307,7 +319,10 @@ INSERT INTO sf_aggregated_gadm_project_counts_many
 
 FROM  gadm1, gadm0, vw_sf_project
 WHERE gadm0.id_0 = gadm1.id_0
-AND gadm1.guid::text = geo_id);
+AND gadm1.guid::text = geo_id
+    --Ignore projects in sf_project where consolidated_record_type__c is 'Disaster Response'
+    -- https://github.com/AmericanRedCross/GeoForce/issues/227
+AND consolidated_record_type__c != 'Disaster Response');
 
 INSERT INTO sf_aggregated_gadm_project_counts_many
 ( SELECT 0 as countARC,
@@ -361,7 +376,10 @@ INSERT INTO sf_aggregated_gadm_project_counts_many
     vw_sf_project.phase__c
 
 FROM gadm0, vw_sf_project
-WHERE gadm0.guid::text = geo_id AND geo_id IS NOT NULL );
+WHERE gadm0.guid::text = geo_id AND geo_id IS NOT NULL
+    --Ignore projects in sf_project where consolidated_record_type__c is 'Disaster Response'
+    -- https://github.com/AmericanRedCross/GeoForce/issues/227
+AND consolidated_record_type__c != 'Disaster Response');
 
 
 ALTER TABLE sf_aggregated_gadm_project_counts_many ADD COLUMN id SERIAL;
