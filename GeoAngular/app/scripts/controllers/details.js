@@ -375,10 +375,10 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     else if (type === 'indicator') {
       blacklistDictionary = config.unwantedIndicatorDetails;
     }
-    else if (type === 'projectRisk') {
+    else if (type === 'projectRisk' || type === 'risk') {
       blacklistDictionary = config.unwantedProjectRiskDetails;
     }
-    else if (type === 'projectHealth') {
+    else if (type === 'projectHealth' || type === 'status') {
       blacklistDictionary = config.unwantedProjectHealthDetails;
     }
 
@@ -413,10 +413,10 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     else if (type === 'indicator') {
       formattingDictionary = config.indicatorDetailsFormatting;
     }
-    else if (type === 'projectRisk') {
+    else if (type === 'projectRisk' || type === 'risk') {
       formattingDictionary = config.projectRiskDetailsFormatting;
     }
-    else if (type === 'projectHealth') {
+    else if (type === 'projectHealth' || type === 'status') {
       formattingDictionary = config.projectHealthDetailsFormatting;
     }
 

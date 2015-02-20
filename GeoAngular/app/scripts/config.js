@@ -147,7 +147,9 @@ config.RFADetailsFormatting = {
  * @type {{}}
  */
 config.indicatorDetailsFormatting = {
-
+  createddate: "date",
+  systemmodstamp: "date",
+  lastmodifieddate: "date"
 };
 
 /**
@@ -285,6 +287,15 @@ config.unwantedRFADetails = {
  * @type {{}}
  */
 config.unwantedIndicatorDetails = {
+  createdbyid: true,
+  lastmodifiedbyid: true,
+  logframe_element__c: true,
+  project__c: true,
+  unique_indicator_value__c: true,
+  systemmodstamp: true,
+  showIndicators: true,
+  type__c: true,
+  sf_id: true
 
 };
 
@@ -294,7 +305,13 @@ config.unwantedIndicatorDetails = {
  * @type {{}}
  */
 config.unwantedProjectRiskDetails = {
-  id : true
+  id : true,
+  project__c: true,
+  risk_owner__c: true,
+  sf_id: true,
+  showRisks: true,
+  systemmodstamp: true
+
 };
 
 /**
@@ -304,7 +321,11 @@ config.unwantedProjectRiskDetails = {
  */
 config.unwantedProjectHealthDetails = {
 
-  id: true
+  id: true,
+  sf_id: true,
+  project__c: true,
+  showStatuses: true,
+  systemmodstamp: true
 
 };
 
