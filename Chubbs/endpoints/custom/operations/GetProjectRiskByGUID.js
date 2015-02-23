@@ -47,9 +47,9 @@ operation.execute = flow.define(
     //Generate UniqueID for this Task
     operation.id = shortid.generate();
 
-    //If theme is project, projectRisk, or projectHealth, add to the filters where phase is 1 - 5, which equates to Active projects.
+    //If theme is project, projectRisk, or projectHealth, add to the filters where phase is 2 - 4, which equates to Active projects.
     //In SalesForce, the phase__c column is text and has delimited values in the cells.  So, we'll do a 'like' operator instead of =
-    var activeProjectWhereClause = " AND (sf_project.phase__c LIKE '%1%' OR sf_project.phase__c LIKE '%2%' OR sf_project.phase__c LIKE '%3%' OR sf_project.phase__c LIKE '%4%' OR sf_project.phase__c LIKE '%5%')";
+    var activeProjectWhereClause = " AND (sf_project.phase__c LIKE '%2%' OR sf_project.phase__c LIKE '%3%' OR sf_project.phase__c LIKE '%4%')";
 
 
     //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.

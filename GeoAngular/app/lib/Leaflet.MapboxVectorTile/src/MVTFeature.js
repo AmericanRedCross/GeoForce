@@ -43,7 +43,7 @@ function MVTFeature(mvtLayer, vtf, ctx, id, style) {
     self.staticLabel = null;
   });
 
-  if (typeof style.dynamicLabel === 'function') {
+  if (style && style.dynamicLabel && typeof style.dynamicLabel === 'function') {
     this.dynamicLabel = this.mvtSource.dynamicLabel.createFeature(this);
   }
 
@@ -53,7 +53,7 @@ function MVTFeature(mvtLayer, vtf, ctx, id, style) {
 
 function ajax(self) {
   var style = self.style;
-  if (typeof style.ajaxSource === 'function') {
+  if (style && style.ajaxSource && typeof style.ajaxSource === 'function') {
     var ajaxEndpoint = style.ajaxSource(self);
     if (ajaxEndpoint) {
       Util.getJSON(ajaxEndpoint, function(error, response, body) {
@@ -325,7 +325,7 @@ MVTFeature.prototype._drawPolygon = function(ctx, coordsArray, style) {
 
   // color may be defined via function to make choropleth work right
   if (typeof style.color === 'function') {
-    ctx2d.fillStyle = style.color();
+    ctx2d.fillStyle = style.color(ctx2d);
   } else {
     ctx2d.fillStyle = style.color;
   }

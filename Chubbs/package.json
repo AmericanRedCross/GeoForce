@@ -36,7 +36,9 @@
     "semver": "2.3.0",
     "ya-csv": "0.9.4",
     "jsdom": "0.10.5",
-    "jquery": "2.1.1"
+    "jquery": "2.1.1",
+    "node-phantom": "0.2.5"
+
   },
   "optionalDependencies": {
     "mapnik": "1.4.10",

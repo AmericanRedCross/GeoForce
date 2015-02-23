@@ -25,7 +25,7 @@ function PBF(options) {
 
   options.onTilesLoaded = function(MVTSource){
 
-    self._onTilesLoaded(MVTSource, $http, $rootScope);
+    if(self._onTilesLoaded) self._onTilesLoaded(MVTSource, $http, $rootScope);
 
   }
 

@@ -10,7 +10,7 @@ module.exports = {
     //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year&labelpoints=true",
     //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year",
 
-    url: "http://localhost:3001/services/vector-tiles/GAUL_2014_Lvl10/{z}/{x}/{y}.pbf",
+    url: "../services/vector-tiles/gadm0_labels_2014/{z}/{x}/{y}.pbf",
     detailsUrl: 'services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters',
     debug: false,
     clickableLayers: ["GADM_2014"],
@@ -19,6 +19,7 @@ module.exports = {
       return feature.properties.guid;
       //return feature.properties.name_0;
     },
+    mutexToggle: true,
 
     /**
      * The filter function gets called when iterating though each vector tile feature (vtf). You have access
@@ -59,66 +60,42 @@ module.exports = {
         PBFObject.fetchFeatureDetails(evt.feature.id, 0);
       }
     },
-
-    onTilesLoaded: function(MVTSource, $http, $rootScope) {
-      //Should fire every time a set of tiles loads AND after we've finished dragging map.
-      //Wait unitl map is done moving.
-
-      //If we're still dragging, then kill the old countdown, and start it again.
-      //When we stop panning, this should let the countdown resume, which will then allow the functions to proceed
-      //if ($rootScope.dragTimer && $rootScope.isDraggingMap === true){
-      //  console.log("isDragging: " + $rootScope.isDraggingMap + ". dragTimer: " + $rootScope.dragTimer + " Cancelling countdown.");
-      //  window.clearTimeout($rootScope.dragTimer);
-      //  $rootScope.dragTimer = null;
-      //  console.log("Cancelled countdown. dragTimer:" + $rootScope.dragTimer);
-      //}
-
-      //Start the countdown
-      //console.log("Starting new countdown.");
-      //$rootScope.dragTimer = window.setTimeout(function () {
-
-        //console.log("Countdown reached.  Executing dragTimer:" + $rootScope.dragTimer);
-
-      //$rootScope.vtData is set in scripts/controllers/map.js whenever a theme is changed.
-      //if($rootScope.vtData) {
-      //  var data = $rootScope.vtData;
-      //
-      //  if (data && data.features) {
-      //    var layers = MVTSource.getLayers();
-      //
-      //    //If any features are returned, loop thru the vtfs and apply these values.
-      //    mergeECOSProperties(layers, data.features, $rootScope);
-      //    //
-      //    ////Update Layer(s) style and redraw
-      //    //MVTSource.setStyle(getThemeStyle);
-      //    //MVTSource.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
-      //  }
-      //}
-
-        //getECOSProperties($http, $rootScope, function (data) {
-        //
-        //  if (data && data.features) {
-        //    var layers = MVTSource.getLayers();
-        //
-        //    //If any features are returned, loop thru the vtfs and apply these values.
-        //    mergeECOSProperties(layers, data.features, $rootScope);
-        //    //
-        //    ////Update Layer(s) style and redraw
-        //    //MVTSource.setStyle(getThemeStyle);
-        //    //MVTSource.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
-        //  }
-        //})
-
-      //}, 500);
-
-      //onsole.log("Created dragTimer:" + $rootScope.dragTimer);
-
+    labelProperty: function (properties) {
+      if (properties.theme == "disaster") {
+        var color = "";
+        var labelColor = "";
+        if (properties && properties.iroc_status__c) {
+          switch (properties.iroc_status__c.toLowerCase()) {
+            case "active":
+              color = "#cc0033";
+              labelColor = "#fff";
+              break;
+            case "monitoring":
+              color = "#e1bb25";
+              labelColor = "#fff";
+              break;
+            case "inactive":
+              color = "#bdbdbd";
+              labelColor = "#000";
+              break;
+          }
+        }
+        return '<div class="featurelabel-icon-number"' + (color ? ' style="background-color: ' + color + ';color: ' + labelColor + '"' : '') + '><span>' + properties.theme_count + '</span></div>';
+      }
+      else {
+        return '<div class="featurelabel-icon-number"><span>' + properties.theme_count + '</span></div>';
+      }
+    },
+    "map-icon-size": function (properties) {
+      //Return an array of 2 items. size of map icon
+      return [35,35];
     }
+
   }
 };
 
 
-
+var hatchDesign;
 
 function getThemeStyle(vtf){
 
@@ -131,8 +108,6 @@ function getThemeStyle(vtf){
     color: 'rgb(20,20,20)',
     size: 2
   };
-
-
 
   var properties = vtf.properties;
 
@@ -311,17 +286,37 @@ function getThemeStyle(vtf){
     }
   }
 
+  if(!hatchDesign){
+    hatchDesign = getImageRef();
+  }
+
+  style.selected = {
+    color: function(ctx2d){
+      //RW Experiment with hatching
+      //var repeat = ctx2d.createPattern(hatchDesign, "repeat");
+      //return repeat;
+
+      var repeat = ctx2d.createPattern(hatchDesign, "repeat");
+      return repeat;
+
+    },
+    outline : {
+      color: 'rgb(255,255,0)',
+      size: 2
+    }
+  }
+
   //Label
-  //if (vtf.layer.name === 'gadm0_7perc_geom_label') {
-  //  style.staticLabel = function () {
-  //    var labelStyle = {
-  //      html: ecosProperties.theme_count,
-  //      iconSize: [42, 42],
-  //      cssClass: 'label-icon-number-lg'
-  //    };
-  //    return labelStyle;
-  //  };
-  //}
+  if (vtf.layer.name === 'GADM_2014_label') {
+    style.staticLabel = function () {
+      var labelStyle = {
+        html: (ecosProperties && ecosProperties.theme_count ? ecosProperties.theme_count : ""),
+        iconSize: [42, 42],
+        cssClass: 'label-icon-number-40percent'
+      };
+      return labelStyle;
+    };
+  }
 
 
   return style;
@@ -359,4 +354,23 @@ function waitfor(test, expectedValue, msec, count, source, callback) {
   // Condition finally met. callback() can be executed.
   console.log(source + ': ' + test() + ', expected: ' + expectedValue + ', ' + count + ' loops.');
   callback();
+}
+
+function createDesign(){
+  var pattern = document.createElement('canvas');
+  pattern.width = 40;
+  pattern.height = 40;
+  var pctx = pattern.getContext('2d');
+
+  pctx.fillStyle = "rgba(188, 222, 178, 0.5)";
+  pctx.fillRect(0,0,20,20);
+  pctx.fillRect(20,20,20,20);
+
+  return pattern;
+}
+
+function getImageRef(url){
+  var img = new Image(40,40); // width, height values are optional params
+  img.src = 'images/navbar_stripes.png';
+  return img;
 }

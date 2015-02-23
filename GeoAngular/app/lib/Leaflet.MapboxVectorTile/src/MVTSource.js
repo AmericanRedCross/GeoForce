@@ -95,8 +95,8 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
     this._tilesToProcess = 0; //store the max number of tiles to be loaded.  Later, we can use this count to count down PBF loading.
   },
 
-  redraw: function(triggerOnTilesLoadedEvent) {
-
+  redraw: function(triggerOnTilesLoadedEvent){
+    //Only set to false if it actually is passed in as 'false'
     if (triggerOnTilesLoadedEvent === false) {
       this._triggerOnTilesLoadedEvent = false;
     }
@@ -249,7 +249,7 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
       for(var i=0; i < self.options.visibleLayers.length; i++){
         var layerName = self.options.visibleLayers[i];
         if(vt.layers[layerName]){
-          //Proceed with parsing
+           //Proceed with parsing
           self.prepareMVTLayers(vt.layers[layerName], layerName, ctx, parsed);
         }
       }
@@ -378,6 +378,11 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
 
     // We must have an array of clickable layers, otherwise, we just pass
     // the event to the public onClick callback in options.
+
+    if(!clickableLayers){
+      clickableLayers = Object.keys(self.layers);
+    }
+
     if (clickableLayers && clickableLayers.length > 0) {
       for (var i = 0, len = clickableLayers.length; i < len; i++) {
         var key = clickableLayers[i];
@@ -473,10 +478,10 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
     var self = this;
     var onTilesLoaded = self.options.onTilesLoaded;
 
-    if (onTilesLoaded && typeof onTilesLoaded === 'function' && self._triggerOnTilesLoadedEvent === true) {
+    if (onTilesLoaded && typeof onTilesLoaded === 'function' && this._triggerOnTilesLoadedEvent === true) {
       onTilesLoaded(this);
     }
-    self._triggerOnTilesLoadedEvent = true; //reset
+    self._triggerOnTilesLoadedEvent = true; //reset - if redraw() is called with the optinal 'false' parameter to temporarily disable the onTilesLoaded event from firing.  This resets it back to true after a single time of firing as 'false'.
   }
 
 });
