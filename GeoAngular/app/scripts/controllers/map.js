@@ -413,7 +413,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
       }
 
-
     })
 
     //redraw map overlays - vector tiles need to be re-styled with new theme data.
@@ -425,12 +424,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    * @param theme
    */
   function onFiltersChanged(filters){
-    //For vector tile choropleths, ask for new data .json from the server
-    //getECOSProperties(function (data) {
-    //
-    //  updateECOSData(data, overlayNames);
-    //
-    //})
+
   }
 
   function redrawMapOverlays(layerNames){
@@ -538,6 +532,10 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         vtf.properties.ecos_properties = {};
         vtf.theme = "";
       }
+
+      //Remove Old labels
+      vtf.removeLabel();
+
     });
 
   }

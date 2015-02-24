@@ -60,37 +60,13 @@ module.exports = {
         PBFObject.fetchFeatureDetails(evt.feature.id, 0);
       }
     },
-    labelProperty: function (properties) {
-      if (properties.theme == "disaster") {
-        var color = "";
-        var labelColor = "";
-        if (properties && properties.iroc_status__c) {
-          switch (properties.iroc_status__c.toLowerCase()) {
-            case "active":
-              color = "#cc0033";
-              labelColor = "#fff";
-              break;
-            case "monitoring":
-              color = "#e1bb25";
-              labelColor = "#fff";
-              break;
-            case "inactive":
-              color = "#bdbdbd";
-              labelColor = "#000";
-              break;
-          }
-        }
-        return '<div class="featurelabel-icon-number"' + (color ? ' style="background-color: ' + color + ';color: ' + labelColor + '"' : '') + '><span>' + properties.theme_count + '</span></div>';
+    onSelect: function(vtf, PBFObject){
+      //When a selection has changed (likey when a label was clicked and the corresponding feature selected)
+      if(vtf && vtf.id){
+        //Do the onclick thing
+        PBFObject.fetchFeatureDetails(vtf.id, 0);
       }
-      else {
-        return '<div class="featurelabel-icon-number"><span>' + properties.theme_count + '</span></div>';
-      }
-    },
-    "map-icon-size": function (properties) {
-      //Return an array of 2 items. size of map icon
-      return [35,35];
     }
-
   }
 };
 
@@ -292,10 +268,7 @@ function getThemeStyle(vtf){
 
   style.selected = {
     color: function(ctx2d){
-      //RW Experiment with hatching
-      //var repeat = ctx2d.createPattern(hatchDesign, "repeat");
-      //return repeat;
-
+      //Hatch symbol
       var repeat = ctx2d.createPattern(hatchDesign, "repeat");
       return repeat;
 
@@ -308,24 +281,53 @@ function getThemeStyle(vtf){
 
   //Label
   if (vtf.layer.name === 'GADM_2014_label') {
-    style.staticLabel = function () {
-      var labelStyle = {
-        html: (ecosProperties && ecosProperties.theme_count ? ecosProperties.theme_count : ""),
-        iconSize: [42, 42],
-        cssClass: 'label-icon-number-40percent'
+    if(ecosProperties && ecosProperties.theme_count){
+      style.staticLabel = function () {
+        var labelStyle = {
+          html: (ecosProperties && ecosProperties.theme_count ? buildDynamicLabel(ecosProperties) : ""),
+          iconSize: [42, 42],
+          cssClass: 'noclass'
+        };
+        return labelStyle;
       };
-      return labelStyle;
-    };
+    }
+    else{
+      //When switching themes, reset old label styles to null so labels don't get drawn for old theme.
+      style.staticLabel = null;
+    }
+
   }
 
 
   return style;
-
-
-
 }
 
-
+function buildDynamicLabel(properties){
+  if (properties.theme == "disaster") {
+    var color = "";
+    var labelColor = "";
+    if (properties && properties.iroc_status__c) {
+      switch (properties.iroc_status__c.toLowerCase()) {
+        case "active":
+          color = "rgba(204,0,51,0.4)";
+          labelColor = "#fff";
+          break;
+        case "monitoring":
+          color = "rgba(225,187,37,0.4)";
+          labelColor = "#fff";
+          break;
+        case "inactive":
+          color = "rgba(189,189,189,0.4)";
+          labelColor = "#000";
+          break;
+      }
+    }
+    return '<div class="label-icon-number-40percent"' + (color ? ' style="background-color: ' + color + ';color: ' + labelColor + '"' : '') + '><span>' + properties.theme_count + '</span></div>';
+  }
+  else {
+    return '<div class="label-icon-number-40percent"><span>' + properties.theme_count + '</span></div>';
+  }
+}
 
 
 

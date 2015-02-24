@@ -37,7 +37,7 @@
     "ya-csv": "0.9.4",
     "jsdom": "0.10.5",
     "jquery": "2.1.1",
-    "node-phantom": "0.2.5"
+    "phantom": "0.7.2"
 
   },
   "optionalDependencies": {

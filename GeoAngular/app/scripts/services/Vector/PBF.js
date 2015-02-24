@@ -20,6 +20,7 @@ function PBF(options) {
   this.options = options;
   this._onTilesLoaded = options.onTilesLoaded; //Store the real function in a local property.
   this._onClick = options.onClick; //Store the real function in a local property.
+  this._onSelect = options.onSelect;  //Store the real function in a local property so we can overload it later with angular stuff.
 
   var self = this;
 
@@ -35,6 +36,11 @@ function PBF(options) {
 
   }
 
+  options.onSelect = function(vtf){
+
+    self._onSelect(vtf, self);
+
+  }
 
   this.layer = new L.TileLayer.MVTSource(options);
 }
