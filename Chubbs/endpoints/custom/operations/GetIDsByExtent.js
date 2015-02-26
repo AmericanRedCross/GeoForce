@@ -38,7 +38,7 @@ operation.execute = flow.define(
             args.wkt = common.convertTileBoundsToBBoxWKT(args.bbox);
 
             //Execute the query
-            var query = { text: "select * from udf_getidsbyextent(" + (args.gadm_level || "null") + ", '" + args.wkt + "');", values: []};
+            var query = { text: "select * from udf_getidsbyextent(" + (args.gadm_level || "0") + ", '" + args.wkt + "');", values: []};
             common.executePgQuery(query, this);//Flow to next function when done.
         }
         else {

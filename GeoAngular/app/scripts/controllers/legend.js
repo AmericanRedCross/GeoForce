@@ -14,7 +14,7 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
 
       layer.alias = l;
       layer.name = lcfg.name;
-      if(l === 'themecount' || l === 'theme'){
+      if(l === 'gadm0' || l === 'theme'){
           layer.name = $stateParams.theme || 'Project';
       }
       if (!name && lcfg.properties && lcfg.properties.title) {

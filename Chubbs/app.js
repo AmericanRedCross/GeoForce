@@ -128,6 +128,9 @@ app.use(utilities.app(passport));
 var vectortiles = require('./endpoints/vectortiles');
 app.use(vectortiles.app(passport));
 
+var print = require('./endpoints/print');
+app.use(print.app(passport));
+
 var mapnik;
 try {
 	mapnik = require('./endpoints/mapnik');
