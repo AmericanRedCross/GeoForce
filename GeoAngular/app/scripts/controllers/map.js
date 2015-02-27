@@ -473,7 +473,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   function getECOSProperties (cb){
     //This should fetch data from the server that pertains to the features loaded in the current extent.
     //var url = "http://localhost:3001/services/custom/custom_operation?name=getaggregatedthemefeaturesbyextent&format=geojson&bbox=:bbox&theme=:theme&gadm_level=0&filters=:filters";
-    var url = "services/custom/custom_operation?name=getallaggregatedthemefeatures&format=geojson&theme=:theme&gadm_level=0&filters=:filters";
+    var url = "../services/custom/custom_operation?name=getallaggregatedthemefeatures&format=geojson&theme=:theme&gadm_level=0&filters=:filters";
     //url = url.replace(":bbox", $rootScope.bbox);
 
     if ($rootScope.$stateParams.filters) {
