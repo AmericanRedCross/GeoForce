@@ -188,7 +188,7 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
     var self = this;
 
 //    //This works to skip fetching and processing tiles if they've already been processed.
-//    var vectorTile = this.processedTiles[ctx.zoom][ctx.id];
+//    var vectorTile = loadedTiles[ctx.id];
 //    //if we've already parsed it, don't get it again.
 //    if(vectorTile){
 //      console.log("Skipping fetching " + ctx.id);
@@ -196,6 +196,8 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
 //      self.reduceTilesToProcessCount();
 //      return;
 //    }
+
+    var fullStart = new Date();
 
     if (!this.options.url) return;
     var url = self.options.url.replace("{z}", ctx.zoom).replace("{x}", ctx.tile.x).replace("{y}", ctx.tile.y);
@@ -217,6 +219,9 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
         self.checkVectorTileLayers(parseVT(vt), ctx);
         tileLoaded(self, ctx);
       }
+
+      var msDiff = new Date().getTime() - new Date(fullStart).getTime(); //Difference in ms
+      //console.log("Timer - " + ctx.zoom + "/" + ctx.tile.x + "/" + ctx.tile.y + ": " + msDiff);
 
       //either way, reduce the count of tilesToProcess tiles here
       self.reduceTilesToProcessCount();

@@ -22,6 +22,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   var layersStr = null;
   var overlayNames = [];
   var overlays = [];
+  var overlays_dictionary = {};
   var theme = null;
   var filters = null;
 
@@ -40,6 +41,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       var basemapUrl = basemap.url;
     }
     overlayNames = layers.slice(1);
+
 
     if (lastBasemapUrl !== basemapUrl && typeof map === 'object') {
       if (basemapLayer) {
@@ -62,7 +64,18 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       };
     }
 
-    if ((theme != $stateParams.theme || filters != $stateParams.filters) || firstLoad === true) { // null and undefined should be ==
+    var c = $scope.center = {
+      lat: lat,
+      lng: lng,
+      zoom: zoom
+    };
+
+    if (typeof map === 'object' && (c.lat != 0 && c.lng !=0)) {
+      map.setView([c.lat, c.lng], zoom);
+    }
+
+
+    if ((theme != $stateParams.theme || filters != $stateParams.filters) || firstLoad === true) {
 
       firstLoad = false;
 
@@ -75,23 +88,13 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       onFiltersChanged($stateParams.filters);
     }
 
-    var c = $scope.center = {
-      lat: lat,
-      lng: lng,
-      zoom: zoom
-    };
-
-    if (typeof map === 'object' && (c.lat != 0 && c.lng !=0)) {
-      map.setView([c.lat, c.lng], zoom);
-    }
-
     broadcastBBox();
     lastLayersStr = layersStr;
     lastBasemapUrl = basemapUrl;
   }
 
   //For vector tile choropleths, ask for new data .json from the server
-  //onThemeChanged($stateParams.theme);
+  onThemeChanged($stateParams.theme);
 
 
   /***
@@ -247,7 +250,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       || $stateParams.lng  !== lng
       || $stateParams.zoom !== zoom ) {
 
-      console.log('map: lat,lng,zoom !== $stateParams');
+
       $stateParams.lat = lat;
       $stateParams.lng = lng;
       $stateParams.zoom = zoom;
@@ -262,10 +265,10 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   //merge vector tiles in the new view with .json stats
   map.on('moveend', function () {
-    if ($rootScope && $rootScope.vtData) {
-      var data = $rootScope.vtData;
-      updateECOSData(data, overlayNames, false); //false means the theme didn't change, so don't clear old features.
-    }
+    //if ($rootScope && $rootScope.vtData) {
+    //  var data = $rootScope.vtData;
+    //  updateECOSData(data, false); //false means the theme didn't change, so don't clear old features.
+    //}
 
   });
 
@@ -356,6 +359,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         layer.overlayName = overlayName;
         layer.addTo(map);
         overlays[i] = layer;
+        overlays_dictionary[overlayName] = layer; //keep a dictionary reference for faster fetching in UpdateECOSData
 
       }
 
@@ -364,7 +368,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       for(var len2 = overlays.length; i < len2; ++i) {
         if (overlays[i].destroyResource) overlays[i].destroyResource();
         map.removeLayer(overlays[i]);
+        delete overlays_dictionary[overlays[i].overlayName]; //delete dictionary reference for faster fetching in UpdateECOSData
         delete overlays[i];
+
       }
 
 
@@ -396,24 +402,44 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     //reset theme count
     resetThemeCount();
 
-    //For vector tile choropleths, ask for new data .json from the server
-    getECOSProperties(function (data) {
+    var layer = overlays_dictionary["gadm0"];
 
-      if(data && data.features){
+    if(layer){
+      //For vector tile choropleths, ask for new data .json from the server
+      getECOSProperties(function (data) {
 
-        var guids = {};
+        if(data && data.features) {
 
-        angular.forEach(data.features, function (dataItem, dataKey) {
-          guids[dataItem.properties.guid] = dataItem.properties;
-        });
+          var guids = {};
 
-        $rootScope.vtData = guids; //Store the data to be merged with vector tile layer.  In config/vectortiles.js, the MVT choropleth layers will attempt to merge this data in when tiles finish loading (any time new tiles are requested, like zoomin/out/pan)
+          angular.forEach(data.features, function (dataItem, dataKey) {
+            guids[dataItem.properties.guid] = dataItem.properties;
+          });
 
-        updateECOSData(guids, overlayNames, true); //true is for ThemeChanged boolean
+          $rootScope.vtData = guids; //Store the data to be merged with vector tile layer.  In config/vectortiles.js, the MVT choropleth layers will attempt to merge this data in when tiles finish loading (any time new tiles are requested, like zoomin/out/pan)
 
-      }
+          var layers = layer.getLayers();
+          var vtLayer = layers["GADM_2014"];
+          var vtLabelLayer = layers["GADM_2014_label"];
 
-    })
+          //Clear ecos property from MVTFeature
+          clearFeatureProperties(vtLayer.features);
+          //Clear ecos property from Label Layer
+          clearFeatureProperties(vtLabelLayer.features);
+
+          //Update Layer(s) style and redraw
+          vtLayer.clearLayerFeatureHash(); //Force VTs to be reparsed.
+          vtLabelLayer.clearLayerFeatureHash();
+
+          //layer.setStyle(layer.style); //feed back in the same style
+          layer.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
+          //updateECOSData(guids, true); //true is for ThemeChanged boolean
+        }
+
+      })
+    }
+
+
 
     //redraw map overlays - vector tiles need to be re-styled with new theme data.
     //redrawMapOverlays(overlayNames);
@@ -441,23 +467,31 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    * @param layerNames - any layer names to apply the data to
    * @newTheme - boolean. If true, a new theme has been selected, so existing VT propeties will be cleared.  If false, then we can skip features that already have been 'filled' and worry about new ones.
    */
-  function updateECOSData(ecosData, layerNames, newTheme) {
-    map.eachLayer(function (layer) {
-      if (layerNames.indexOf(layer.overlayName) > -1 && layer._tilesToProcess <= 0) {
+  function updateECOSData(ecosData, newTheme) {
 
+      var layer = overlays_dictionary["gadm0"];
+
+      if(layer){
         if (ecosData) {
           var layers = layer.getLayers();
 
+          //Update VTFSource filter
+          //layer.setFilter(function(mvt, ctx){
+          //  //Filter checks if feature has ecos properties.
+          //  return ($rootScope.vtData && $rootScope.vtData[mvt.properties.guid]) ? true : false;
+          //})
+
           //If any features are returned, loop thru the vtfs and apply these values, restyle.
           mergeECOSProperties(layers, ecosData, newTheme);
+
+
 
           //Update Layer(s) style and redraw
           layer.setStyle(layer.style); //feed back in the same style
           layer.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
         }
-
       }
-    });
+
   }
 
   /***
@@ -494,33 +528,45 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     });
   }
 
-
   //Take an MVTLayer(s) and add in properties from a web service call
   //newTheme is a boolean that tells us whether to clear existing properties or keep what we've got and just add to the set.
   function mergeECOSProperties(MVTLayers, data, newTheme){
     if (MVTLayers) {
+
+      var fullStart = new Date();
 
       //Grab the current theme.
       var theme = ($rootScope && $rootScope.$stateParams && $rootScope.$stateParams.theme) || 'project';
 
       for (var layer in MVTLayers) {
         if (layer && MVTLayers[layer].features) {
-          //Clear out old ECOS properties.
 
-          if(newTheme === true) clearFeatureProperties(MVTLayers[layer].features);
+          //optionally clear out old ECOS properties.
+          if (newTheme === true) {
+            //Clear ecos property from MVTFeature
+            clearFeatureProperties(MVTLayers[layer].features);
+            //"unlink" the data - set the linked property to false.
+          }
 
-          angular.forEach(MVTLayers[layer].features, function (vtf) {
-            if (vtf.properties.guid && data[vtf.properties.guid]) {
-              //We've found it.  Add a property to all matching features.
+          //Iterate over data, use the ID to attempt to line up data in MVTLayer.features dictionary (id is the key)
+          angular.forEach(Object.keys(data), function (key) { //.map(function(item){ return !item.properties.isMapped; })
+            var vtf = MVTLayers[layer].features[key];
+
+            //mark as linked
+            data.isLinked = true;
+
+            if (vtf) {
               vtf.properties.theme = theme;
               vtf.properties.ecos_properties = {};
-              vtf.properties.ecos_properties[theme] = data[vtf.properties.guid];
+              vtf.properties.ecos_properties[theme] = data[key];
             }
           });
 
         }
       }
 
+      var msDiff = new Date().getTime() - new Date(fullStart).getTime(); //Difference in ms
+      console.log("Merge Time: " + msDiff);
     }
   }
 

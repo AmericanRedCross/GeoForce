@@ -78,7 +78,7 @@
                     <button type="button" class="btn btn-default"   ng-mouseenter="isFiltersActive = isNotParam('filters-panel')"
                                                                     ng-mouseleave="isFiltersActive=false"
                                                                     ng-click="toggleParam('filters-panel')"
-                                                                    ng-class="{on: isParam('filters-panel'), disabled: (params.theme !== 'project' && params.theme !== null) }">
+                                                                    ng-class="{on: isParam('filters-panel'), disabled: ((params.theme !== 'project' && params.theme !== 'disaster') && params.theme !== null) }">
                         <i class="icon-4_filters"></i>
                     </button>
                     <button type="button" class="btn btn-default"   ng-mouseenter="isLegendActive = isNotParam('legend')"
@@ -385,110 +385,219 @@
 
                     <!--Filters Panel-->
                     <div ng-controller="FiltersCtrl" ng-class="{on: isParam('filters-panel')}" class="navpanel container filters-container">
+
+                      <div ng-show="$stateParams.theme == 'project'">
                         <div class="row">
-                            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters-panel')"><span class="glyphicon glyphicon-chevron-left"></span></button>
-                            <div class="col-md-10 side-view-title-wrapper">
-                                <div class="title">Project Filters</div> <a class="clear-all" ng-click="clearAllFilters()">Clear All Filters</a>
-                            </div>
+                          <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters-panel')"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                          <div class="col-md-10 side-view-title-wrapper">
+                            <div class="title">Project Filters</div> <a class="clear-all" ng-click="clearAllFilters()">Clear All Filters</a>
+                          </div>
                         </div>
                         <div class="row">
 
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a class="a-nav-tab" ng-click="navTab='sectors'" data-toggle="tab">Sectors</a></li>
-                                <li><a class="a-nav-tab" ng-click="navTab='date'" data-toggle="tab">Date</a></li>
-                                <li><a class="a-nav-tab" ng-click="navTab='status'" data-toggle="tab">Status</a></li>
-                                <li><a class="a-nav-tab" ng-click="navTab='budget'" data-toggle="tab">Budget</a></li>
-                                <li><a class="a-nav-tab" ng-click="navTab='custom'" data-toggle="tab">Custom</a></li>
-                            </ul>
+                          <!-- Nav tabs -->
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a class="a-nav-tab" ng-click="navTab='sectors'" data-toggle="tab">Sectors</a></li>
+                            <li><a class="a-nav-tab" ng-click="navTab='date'" data-toggle="tab">Date</a></li>
+                            <li><a class="a-nav-tab" ng-click="navTab='status'" data-toggle="tab">Status</a></li>
+                            <li><a class="a-nav-tab" ng-click="navTab='budget'" data-toggle="tab">Budget</a></li>
+                            <li><a class="a-nav-tab" ng-click="navTab='custom'" data-toggle="tab">Custom</a></li>
+                          </ul>
 
-                            <!-- Tab panes -->
-                            <div class="tab-content scrollable">
-                                <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
-                                    <a ng-click="clearSectorsFilter()">Clear All Sector Filters</a>
-                                    <div ng-repeat="sector in sectors">
-                                        <label class="checkbox" style="color: {{sector.color}};">
-                                            <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
-                                            <i class="icon-{{sector.name.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i> <span class="sector-name">{{sector.name}}</span>
-                                        </label>
-                                        <hr/>
-                                    </div>
-                                    <br/>
-                                    <br/>
+                          <!-- Tab panes -->
+                          <div class="tab-content scrollable">
+                            <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
+                              <a ng-click="clearSectorsFilter()">Clear All Sector Filters</a>
+                              <div ng-repeat="sector in sectors">
+                                <label class="checkbox" style="color: {{sector.color}};">
+                                  <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
+                                  <i class="icon-{{sector.name.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i> <span class="sector-name">{{sector.name}}</span>
+                                </label>
+                                <hr/>
+                              </div>
+                              <br/>
+                              <br/>
+                            </div>
+                            <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
+                              <a ng-click="clearDateFilter()">Clear All Date Filters</a>
+                              <div class="panel panel-default" ng-repeat="filter in dateFilters">
+                                <div class="panel-heading">
+                                  <h3 class="panel-title">{{filter.name}}</h3>
                                 </div>
-                                <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
-                                    <a ng-click="clearDateFilter()">Clear All Date Filters</a>
-                                    <div class="panel panel-default" ng-repeat="filter in dateFilters">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">{{filter.name}}</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            <p class="input-group">
-                                                <input type="text" class="form-control" ng-change="dateFilter()" datepicker-popup="EEE MMM d, y" ng-model="filter.date" is-open="filter.opened" ng-required="true" close-text="Close" />
+                                <div class="panel-body">
+                                  <p class="input-group">
+                                    <input type="text" class="form-control" ng-change="dateFilter()" datepicker-popup="EEE MMM d, y" ng-model="filter.date" is-open="filter.opened" ng-required="true" close-text="Close" />
                                                 <span class="input-group-btn">
                                                   <button type="button" class="btn btn-default" ng-click="toggleDate($event, filter)"><i class="glyphicon glyphicon-calendar"></i></button>
                                                 </span>
-                                                <div class="btn-group">
-                                                    <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'before'">Before</label>
-                                                    <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'on'">On</label>
-                                                    <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'after'">After</label>
-                                                </div>
-                                                <label class="checkbox">
-                                                    <input type="checkbox" ng-model="filter.empty" ng-change="dateFilter()">
-                                                    Include Records with an Empty {{filter.name}}.
-                                                </label>
-                                            </p>
-                                        </div>
-                                    </div>
+                                  <div class="btn-group">
+                                    <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'before'">Before</label>
+                                    <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'on'">On</label>
+                                    <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'after'">After</label>
+                                  </div>
+                                  <label class="checkbox">
+                                    <input type="checkbox" ng-model="filter.empty" ng-change="dateFilter()">
+                                    Include Records with an Empty {{filter.name}}.
+                                  </label>
+                                  </p>
+                                </div>
+                              </div>
 
-                                </div>
-                                <div ng-class="{active: navTab==='status'}" class="tab-pane" id="status-filter">
-                                    <a ng-click="clearStatusFilter()">Clear All Status Filters</a>
-                                    <label ng-repeat="stat in status" class="checkbox">
-                                        <input type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
-                                        {{stat.name}}
-                                    </label>
-                                </div>
-                                <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
-                                    <a ng-click="clearBudgetFilter()">Clear Budget Filter</a>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Total Budget</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            <b>Min: {{budget.slider[0] | currency:"$"}}</b>
-                                            <b>Max: {{budget.slider[1] | currency:"$"}}</b>
-                                            <br/><br/>
-                                            <div ui-slider="{range: true}" ui-slider min="{{budget.min}}" max="{{budget.max}}" ng-model="budget.slider" ng-keyup="budgetFilter()" ng-mouseup="budgetFilter()"></div>
-                                        </div>
-                                    </div>
-                                    <h4>Total Budget Stats</h4>
-                                    <table class="table panel panel-default">
-                                        <thead class="panel-heading">
-                                        <tr>
-                                            <th>Min</th>
-                                            <th>Mean</th>
-                                            <th>Max</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>{{budget.min | currency:"$"}}</td>
-                                            <td>{{budget.mean | currency:"$"}}</td>
-                                            <td>{{budget.max | currency:"$"}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                                <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
-                                    <h4>Filter WHERE Clause</h4>
-                                    <textarea class="form-control" rows="6" placeholder="Create a custom where clause..." ng-model="whereClause"></textarea>
-                                    <button ng-click="submitFilter()" type="button" class="btn btn-danger pull-right custom-filter-submit">Submit</button>
-                                </div>
                             </div>
+                            <div ng-class="{active: navTab==='status'}" class="tab-pane" id="status-filter">
+                              <a ng-click="clearStatusFilter()">Clear All Status Filters</a>
+                              <label ng-repeat="stat in status" class="checkbox">
+                                <input type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
+                                {{stat.name}}
+                              </label>
+                            </div>
+                            <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
+                              <a ng-click="clearBudgetFilter()">Clear Budget Filter</a>
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h3 class="panel-title">Total Budget</h3>
+                                </div>
+                                <div class="panel-body">
+                                  <b>Min: {{budget.slider[0] | currency:"$"}}</b>
+                                  <b>Max: {{budget.slider[1] | currency:"$"}}</b>
+                                  <br/><br/>
+                                  <div ui-slider="{range: true}" ui-slider min="{{budget.min}}" max="{{budget.max}}" ng-model="budget.slider" ng-keyup="budgetFilter()" ng-mouseup="budgetFilter()"></div>
+                                </div>
+                              </div>
+                              <h4>Total Budget Stats</h4>
+                              <table class="table panel panel-default">
+                                <thead class="panel-heading">
+                                <tr>
+                                  <th>Min</th>
+                                  <th>Mean</th>
+                                  <th>Max</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                  <td>{{budget.min | currency:"$"}}</td>
+                                  <td>{{budget.mean | currency:"$"}}</td>
+                                  <td>{{budget.max | currency:"$"}}</td>
+                                </tr>
+                                </tbody>
+                              </table>
+
+                            </div>
+                            <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
+                              <h4>Filter WHERE Clause</h4>
+                              <textarea class="form-control" rows="6" placeholder="Create a custom where clause..." ng-model="whereClause"></textarea>
+                              <button ng-click="submitFilter()" type="button" class="btn btn-danger pull-right custom-filter-submit">Submit</button>
+                            </div>
+                          </div>
 
                         </div>
+                      </div>
+                      <div ng-show="$stateParams.theme == 'disaster'">
+                        <div class="row">
+                          <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters-panel')"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                          <div class="col-md-10 side-view-title-wrapper">
+                            <div class="title">Disaster Filters</div> <a class="clear-all" ng-click="clearAllFilters()">Clear All Filters</a>
+                          </div>
+                        </div>
+                        <div class="row">
+
+                          <!-- Nav tabs -->
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a class="a-nav-tab" ng-click="navTab='disasterType'" data-toggle="tab">Disaster Type</a></li>
+                            <!--<li><a class="a-nav-tab" ng-click="navTab='date'" data-toggle="tab">Date</a></li>-->
+                            <!--<li><a class="a-nav-tab" ng-click="navTab='status'" data-toggle="tab">Status</a></li>-->
+                            <!--<li><a class="a-nav-tab" ng-click="navTab='budget'" data-toggle="tab">Budget</a></li>-->
+                            <!--<li><a class="a-nav-tab" ng-click="navTab='custom'" data-toggle="tab">Custom</a></li>-->
+                          </ul>
+
+                          <!-- Tab panes -->
+                          <div class="tab-content scrollable">
+                            <div ng-class="{active: navTab==='disasterType'}" class="tab-pane" id="disasterType-filter">
+                              <a ng-click="clearDisasterTypeFilter()">Clear All Disaster Filters</a>
+                              <div ng-repeat="types in disasterTypes">
+                                <label class="checkbox" style="color: {{types.color}};">
+                                  <input type="checkbox" ng-model="types.checked" ng-change="disasterTypesFilter()">
+                                  <i class="icon-{{types.name.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i> <span class="sector-name">{{types.name}}</span>
+                                </label>
+                                <hr/>
+                              </div>
+                              <br/>
+                              <br/>
+                            </div>
+                            <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
+                              <a ng-click="clearDateFilter()">Clear All Date Filters</a>
+                              <div class="panel panel-default" ng-repeat="filter in dateFilters">
+                                <div class="panel-heading">
+                                  <h3 class="panel-title">{{filter.name}}</h3>
+                                </div>
+                                <div class="panel-body">
+                                  <p class="input-group">
+                                    <input type="text" class="form-control" ng-change="dateFilter()" datepicker-popup="EEE MMM d, y" ng-model="filter.date" is-open="filter.opened" ng-required="true" close-text="Close" />
+                                                <span class="input-group-btn">
+                                                  <button type="button" class="btn btn-default" ng-click="toggleDate($event, filter)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                </span>
+                                  <div class="btn-group">
+                                    <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'before'">Before</label>
+                                    <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'on'">On</label>
+                                    <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'after'">After</label>
+                                  </div>
+                                  <label class="checkbox">
+                                    <input type="checkbox" ng-model="filter.empty" ng-change="dateFilter()">
+                                    Include Records with an Empty {{filter.name}}.
+                                  </label>
+                                  </p>
+                                </div>
+                              </div>
+
+                            </div>
+                            <div ng-class="{active: navTab==='status'}" class="tab-pane" id="status-filter">
+                              <a ng-click="clearStatusFilter()">Clear All Status Filters</a>
+                              <label ng-repeat="stat in status" class="checkbox">
+                                <input type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
+                                {{stat.name}}
+                              </label>
+                            </div>
+                            <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
+                              <a ng-click="clearBudgetFilter()">Clear Budget Filter</a>
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h3 class="panel-title">Total Budget</h3>
+                                </div>
+                                <div class="panel-body">
+                                  <b>Min: {{budget.slider[0] | currency:"$"}}</b>
+                                  <b>Max: {{budget.slider[1] | currency:"$"}}</b>
+                                  <br/><br/>
+                                  <div ui-slider="{range: true}" ui-slider min="{{budget.min}}" max="{{budget.max}}" ng-model="budget.slider" ng-keyup="budgetFilter()" ng-mouseup="budgetFilter()"></div>
+                                </div>
+                              </div>
+                              <h4>Total Budget Stats</h4>
+                              <table class="table panel panel-default">
+                                <thead class="panel-heading">
+                                <tr>
+                                  <th>Min</th>
+                                  <th>Mean</th>
+                                  <th>Max</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                  <td>{{budget.min | currency:"$"}}</td>
+                                  <td>{{budget.mean | currency:"$"}}</td>
+                                  <td>{{budget.max | currency:"$"}}</td>
+                                </tr>
+                                </tbody>
+                              </table>
+
+                            </div>
+                            <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
+                              <h4>Filter WHERE Clause</h4>
+                              <textarea class="form-control" rows="6" placeholder="Create a custom where clause..." ng-model="whereClause"></textarea>
+                              <button ng-click="submitFilter()" type="button" class="btn btn-danger pull-right custom-filter-submit">Submit</button>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
                     </div>
                     <!--End Filters Panel-->
 

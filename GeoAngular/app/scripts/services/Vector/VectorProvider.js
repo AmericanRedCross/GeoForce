@@ -141,7 +141,6 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
     updateBBox: function(bboxStr) {
       vector.bbox = bboxStr;
 
-      console.log('VectorProvider bbox: ' + vector.bbox);
       fetchFeatureItinerary();
     },
 

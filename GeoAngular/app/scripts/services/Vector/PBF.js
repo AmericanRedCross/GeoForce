@@ -21,6 +21,7 @@ function PBF(options) {
   this._onTilesLoaded = options.onTilesLoaded; //Store the real function in a local property.
   this._onClick = options.onClick; //Store the real function in a local property.
   this._onSelect = options.onSelect;  //Store the real function in a local property so we can overload it later with angular stuff.
+  this._onFilter = options.filter; //Store the real function in a local property.
 
   var self = this;
 
@@ -39,6 +40,12 @@ function PBF(options) {
   options.onSelect = function(vtf){
 
     self._onSelect(vtf, self);
+
+  }
+
+  options.filter = function(vtf){
+
+    return self._onFilter(vtf, $rootScope);
 
   }
 

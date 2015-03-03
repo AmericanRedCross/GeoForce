@@ -23,18 +23,19 @@ var gadm0 = {
   },
   mutexToggle: true,
 
-  /**
-   * The filter function gets called when iterating though each vector tile feature (vtf). You have access
-   * to every property associated with a given feature (the feature, and the layer). You can also filter
-   * based of the context (each tile that the feature is drawn onto).
-   *
-   * Returning false skips over the feature and it is not drawn.
-   *
-   * @param feature
-   * @returns {boolean}
-   */
-  filter: function (feature, context) {
-    return true;
+  filter: function(vtf, $rootScope){
+    var data = $rootScope.vtData;
+
+    if(data && data[vtf.properties.guid]){
+      var theme = $rootScope.$stateParams.theme;
+      vtf.properties.theme = theme;
+      vtf.properties.ecos_properties = {};
+      vtf.properties.ecos_properties[theme] = data[vtf.properties.guid];
+      return true;
+    }
+
+    return false;
+
   },
 
   /**
@@ -98,8 +99,18 @@ var gadm1 = {
    * @param feature
    * @returns {boolean}
    */
-  filter: function (feature, context) {
-    return true;
+  filter: function(vtf, $rootScope){
+    var data = $rootScope.vtData;
+
+    if(data && data[vtf.properties.guid]){
+      var theme = $rootScope.$stateParams.theme;
+      vtf.properties.theme = theme;
+      vtf.properties.ecos_properties = {};
+      vtf.properties.ecos_properties[theme] = data[vtf.properties.guid];
+      return true;
+    }
+
+    return false;
   },
 
   /**
@@ -153,7 +164,8 @@ function getThemeStyle(vtf){
 
   var properties = vtf.properties;
 
-  if(!properties.theme){
+  //Skip if we're a regular polygon, and not a label point, and if there is no ECOS properties.
+  if(vtf.layer.name.indexOf('label') == -1 && !properties.theme){
     return style;
   }
 
@@ -327,6 +339,7 @@ function getThemeStyle(vtf){
       }
     }
   }
+
 
   //if(!hatchDesign){
   //  hatchDesign = getImageRef();
