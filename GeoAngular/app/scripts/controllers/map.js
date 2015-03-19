@@ -47,8 +47,13 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       if (basemapLayer) {
         map.removeLayer(basemapLayer);
       }
-      basemapLayer = L.tileLayer(basemapUrl);
-      basemapLayer.addTo(map);
+      basemapLayer = L.tileLayer(basemapUrl).addTo(map);
+
+      basemapLayer.on('load', function () {
+        //Move to back
+        basemapLayer.bringToBack();
+      });
+
     }
 
     if (lastLayersStr !== layersStr) {
