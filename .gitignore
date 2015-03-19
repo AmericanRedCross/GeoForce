@@ -66,3 +66,7 @@ GeoAngular/app/succubus_gitignore/sf-project-filter-checkboxes.json
 Succubus/meta-data/sf-object-field-hash.json
 Succubus/meta-data/sf-objects.json
 Succubus/meta-data/sf-project-filter-checkboxes.json
+
+*.mbtiles
+
+GeoAngular/app/scripts/global.js
