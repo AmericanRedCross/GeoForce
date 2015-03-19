@@ -815,7 +815,6 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <button type="button" class="btn btn-default btn-xs" ng-show="feature" ng-click="save(feature, title + '.geojson')">Download GeoJSON</button>
                                 </div>
 
                                 <div class="section scrollable" ng-show="details && !(navTab && (navTab==='request' || navTab==='indicator' || navTab==='risk' || navTab==='status'))">
@@ -883,7 +882,7 @@
                                                 <a ng-click="hideIndicators(details, _value)">< Back To Indicators List</a>
                                                 <h4>{{_value.name}}</h4>
                                                 <ul>
-                                                    <li ng-repeat="(key2, value2) in _value">
+                                                    <li ng-repeat="(key2, value2) in _value" ng-if="key2!='showIndicators' && key2!='name'">
                                                         <div class="details-info">
                                                             <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
                                                         </div>
@@ -903,7 +902,7 @@
                                         There are currently <b>no risks</b> for this project...
                                     </p>
                                     <ul ng-show="details.risks !== 'none'">
-                                        <li ng-repeat="(key_, value_) in details.risks">
+                                        <li ng-repeat="(key_, value_) in details.risks" ng-if="key2!='showRisks' && key2!='name'">
                                             <a ng-show="!details.showRisks" ng-click="showRisks(details, value_)">{{value_.name}}</a>
 
                                             <div ng-show="value_.showRisks">
@@ -930,7 +929,7 @@
                                         There are currently no <b>health statuses</b> for this project...
                                     </p>
                                     <ul ng-show="details.statuses !== 'none'">
-                                        <li ng-repeat="(key_, value_) in details.statuses">
+                                        <li ng-repeat="(key_, value_) in details.statuses" ng-if="key2!='showStatuses' && key2!='name'">
                                             <a ng-show="!details.showStatuses" ng-click="showStatuses(details, value_)">{{value_.name}}</a>
 
                                             <div ng-show="value_.showStatuses">
