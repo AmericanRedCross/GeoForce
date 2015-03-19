@@ -20,6 +20,7 @@
     overflow: visible;
     z-index: 1 !important;
     box-shadow: 1px 0 5px #777;
+    min-height: 532px;
 }
 
 .NavButtonGroup, .NavFlyoutGroup{
