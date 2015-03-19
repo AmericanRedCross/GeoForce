@@ -258,9 +258,10 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (properties.salesforce) { // salesforce theme badge selected
       $scope.contextualLayer = false;
       $scope.groupings = properties.salesforce;
+      var projectkey = Object.keys($scope.groupings)[0];
 
-      if($scope.groupings.hasOwnProperty('Project Risk')==true){
-        $scope.groupings['Project Risk'] = SortByProjectRisk($scope.groupings['Project Risk']);
+      if(projectkey.indexOf('Project')!==-1){
+        $scope.groupings[projectkey] = SortByProjectRisk($scope.groupings[projectkey]);
       };
 
       if($scope.groupings.hasOwnProperty('Disasters')==true){

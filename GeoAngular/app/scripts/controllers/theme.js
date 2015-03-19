@@ -54,6 +54,9 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
 
   $scope.setThemeQueryParam = function (theme) {
     $stateParams.theme = theme;
+    if((($stateParams.theme !== 'project' && $stateParams.theme !== 'disaster') && $stateParams.theme !== null)){
+      $scope.closeParam('filters-panel');
+    }
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
   };
