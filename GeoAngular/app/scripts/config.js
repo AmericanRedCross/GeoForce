@@ -218,6 +218,7 @@ config.unwantedProjectDetails = {
  * @type {{}}
  */
 config.unwantedDisasterDetails = {
+  sf_id: true,
   affected_as_of__c: true,
   createddate: true,
   deaths_as_of__c: true,

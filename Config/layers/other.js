@@ -4,6 +4,7 @@
  */
 
 module.exports = {
+
   landcover: {
     name: 'MODIS Landcover 2009',
     type: 'wms',

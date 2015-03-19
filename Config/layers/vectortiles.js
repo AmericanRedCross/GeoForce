@@ -23,6 +23,7 @@ var gadm0 = {
   },
   mutexToggle: true,
 
+  //The filter function does 2 things: 1) Merge in external properties that can be used for choroplething.  2) Filter out features that don't have ECOS properties
   filter: function(vtf, $rootScope){
     var data = $rootScope.vtData;
 
@@ -34,8 +35,7 @@ var gadm0 = {
       return true;
     }
 
-    return false;
-
+    return false; //don't draw feature
   },
 
   /**
@@ -85,7 +85,6 @@ var gadm1 = {
 
   getIDForLayerFeature: function (feature) {
     return feature.properties.guid;
-    //return feature.properties.name_0;
   },
   mutexToggle: true,
 
