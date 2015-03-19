@@ -136,6 +136,7 @@ config.RFADetailsFormatting = {
   start_date__c: "date",
   total_arc_contributions__c: "currency,$",
   requested_amount_foreign_currerncy__c: "currency,CHF ",
+  total_arc_cash_contribution_on_rfa__c: "currency,$",
   requested_amount_usd__c: "currency,$",
   name: "rfaName"
 };
@@ -270,6 +271,16 @@ config.unwantedDisasterDetails = {
  */
 config.unwantedRFADetails = {
   beneficiaries_reached_as_of__c: true,
+  beneficiaries_reached_households__c: true,
+  beneficiaries_reached_individuals__c: true,
+  beneficiaries_targeted_households__c: true,
+  createdbyid: true,
+  disaster__c: true,
+  isdeleted: true,
+  lastmodifiedbyid: true,
+  latest_checklist__c: true,
+  sf_id: true,
+  showRfa: true,
   createddate: true,
   date_issued__c: true,
   disaster__r_id: true,

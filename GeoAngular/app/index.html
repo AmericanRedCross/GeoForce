@@ -855,7 +855,7 @@
                                                 <a ng-click="hideRfa(details, value)">< Back to RFA List</a>
                                                 <h4>{{value.name}}</h4>
                                                 <ul>
-                                                    <li ng-repeat="(key2, value2) in value">
+                                                    <li ng-repeat="(key2, value2) in value" ng-if="key2!='showRfa' && key2!='name'">
                                                         <div class="details-info">
                                                             <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
                                                         </div>

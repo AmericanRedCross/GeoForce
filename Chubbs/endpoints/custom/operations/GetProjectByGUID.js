@@ -135,6 +135,12 @@ operation.execute = flow.define(
       return;
     }
     var projects = this.projects = results.rows;
+    if(!projects || projects.length == 0){
+      //No properties for this GUID
+      this({});
+    }
+
+    //Get related project indicators
     for (var i = 0, len = projects.length; i < len; i++) {
       var proj = projects[i];
       var projId = proj.sf_id;
