@@ -341,4 +341,17 @@ config.unwantedProjectHealthDetails = {
 
 };
 
+config.ProjectRiskOrder = {
+  null:0,
+  Low:1,
+  Medium:2,
+  High:3
+};
+
+config.DisasterOrder = {
+  null:0,
+  Inactive:1,
+  Monitoring:2,
+  Active:3
+};
 

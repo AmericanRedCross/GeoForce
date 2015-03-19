@@ -258,6 +258,15 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (properties.salesforce) { // salesforce theme badge selected
       $scope.contextualLayer = false;
       $scope.groupings = properties.salesforce;
+
+      if($scope.groupings.hasOwnProperty('Project Risk')==true){
+        $scope.groupings['Project Risk'] = SortByProjectRisk($scope.groupings['Project Risk']);
+      };
+
+      if($scope.groupings.hasOwnProperty('Disasters')==true){
+        $scope.groupings['Disasters'] = SoryByDisaster($scope.groupings['Disasters']);
+      };
+
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
       $scope.showList();
       $scope.openParam('details-panel');
@@ -270,6 +279,37 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     }
     $scope.resizeDetailsPanel();
   });
+
+  var SortByProjectRisk = function(arr){
+    arr.sort(function (a, b) {
+      if (config.ProjectRiskOrder[a.overall_assessment__c] < config.ProjectRiskOrder[b.overall_assessment__c]) {
+        return 1;
+      }
+      if (config.ProjectRiskOrder[a.overall_assessment__c] > config.ProjectRiskOrder[b.overall_assessment__c]) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+
+    return arr;
+  };
+  var SoryByDisaster = function(arr){
+    arr.sort(function (a, b) {
+      if (config.DisasterOrder[a.iroc_status__c] < config.DisasterOrder[b.iroc_status__c]) {
+        return 1;
+      }
+      if (config.DisasterOrder[a.iroc_status__c] > config.DisasterOrder[b.iroc_status__c]) {
+        return -1;
+      }
+      // in case of a tie; order by date
+      return new Date(b.date__c) - new Date(a.date__c);
+
+    });
+
+    return arr;
+  };
+
 
   $scope.$on('route-update', function () {
     var sf_id = $stateParams.sf_id;
