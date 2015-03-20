@@ -4,9 +4,11 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $state, $stateParams) {
+  $scope.filterMode = "project"; //Which theme are we filtering?
   $scope.params = $stateParams;
   $scope.navTab = 'sectors';
   $scope.sectors = [];
+  $scope.disasterTypes = [];
   $scope.status = [];
   debug.budget = $scope.budget = {
     slider: [2000, 8000],

@@ -78,6 +78,12 @@ PBF.prototype.fetchFeatureDetails = function(guid, level) {
     filters = $rootScope.$stateParams.filters;
   }
 
+  //for disasterType, just use the disaster endpoint
+  if(theme.toLowerCase() == 'disastertype'){
+    theme = 'disaster';
+  }
+
+
   detailsUrl = detailsUrl.replace(':theme', theme)
     .replace(':guids', guid)
     .replace(':level', level)

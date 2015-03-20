@@ -27,15 +27,16 @@ var gadm0 = {
   filter: function(vtf, $rootScope){
     var data = $rootScope.vtData;
 
+    //Show only countries with active theme properties
     if(data && data[vtf.properties.guid]){
       var theme = $rootScope.$stateParams.theme;
       vtf.properties.theme = theme;
       vtf.properties.ecos_properties = {};
       vtf.properties.ecos_properties[theme] = data[vtf.properties.guid];
-      return true;
+      //return true;
     }
 
-    return false; //don't draw feature
+    return true; //draw feature
   },
 
   /**
@@ -202,6 +203,31 @@ function getThemeStyle(vtf){
     }
 
   }
+  else if (properties.theme == "disasterType") {
+    ecosProperties = properties["ecos_properties"]["disasterType"]; //this is an array of disaster types for this area
+    if (ecosProperties && ecosProperties.disaster_type__c) {
+
+      //Look up the color in the dictionary
+      style.color = UNOCHAIconLookup[ecosProperties.disaster_type__c[0]].color;
+      //Use the same outline
+      style.outline = {
+        color: 'rgb(20,20,20)',
+        size: 2
+      }
+
+
+      //Disaster Type should use OCHA icons
+      style.staticLabel = function () {
+        var labelStyle = {
+          html: (ecosProperties && ecosProperties.disaster_type__c[0] ? buildDisasterTypeLabel(ecosProperties.disaster_type__c[0], style.color, style.outline) : ""),
+          iconSize: [42, 42],
+          cssClass: 'noclass'
+        };
+        return labelStyle;
+      };
+
+    }
+  }
   else if (properties.theme == "projectRisk") {
     ecosProperties = properties["ecos_properties"]["projectRisk"];
     if (ecosProperties && ecosProperties.overall_assessment__c) {
@@ -367,15 +393,23 @@ function getThemeStyle(vtf){
 
   //Label
   if (vtf.layer.name === 'GADM_2014_label') {
-    if(ecosProperties && ecosProperties.theme_count){
-      style.staticLabel = function () {
-        var labelStyle = {
-          html: (ecosProperties && ecosProperties.theme_count ? buildDynamicLabel(ecosProperties) : ""),
-          iconSize: [42, 42],
-          cssClass: 'noclass'
+    if(ecosProperties && ecosProperties.theme_count) {
+
+      if (properties.theme != "disasterType") {
+        //Disaster Type labels are set in the bloc above
+        //All others are set here.
+
+        style.staticLabel = function () {
+          var labelStyle = {
+            html: (ecosProperties && ecosProperties.theme_count ? buildDynamicLabel(ecosProperties) : ""),
+            iconSize: [42, 42],
+            cssClass: 'noclass'
+          };
+          return labelStyle;
         };
-        return labelStyle;
-      };
+
+      }
+
     }
     else{
       //When switching themes, reset old label styles to null so labels don't get drawn for old theme.
@@ -413,6 +447,54 @@ function buildDynamicLabel(properties){
   else {
     return '<div class="label-icon-number-40percent"><span>' + properties.theme_count + '</span></div>';
   }
+}
+
+
+/*
+Set the dictionary used to look up UNOCHA icons for disaster types
+ */
+var UNOCHAIconLookup = {
+
+  "Meteorological - Tropical Cyclone": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0,1)"},
+  "Floods": {icon: "icon-disaster_flood", color: "rgba(255,0,0,1)"},
+  "Tsunami, Volcano": {icon: "icon-disaster_tsunami", color: "rgba(255,0,0,1)"},
+  "Floods, Storm": {icon: "icon-disaster_flood", color: "rgba(255,0,0,1)"},
+  "Tsunami": {icon: "icon-disaster_tsunami", color: "rgba(255,0,0,1)"},
+  "Famine / Food Insecurity": {icon: "icon-cluster_food_security", color: "rgba(255,0,0,1)"},
+  "Drought": {icon: "icon-disaster_drought", color: "rgba(255,0,0,1)"},
+  "Meteorological - Tropical Cyclone;Hydrological - Floods": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0,1)"},
+  "Food Insecurity": {icon: "icon-cluster_food_security", color: "rgba(255,0,0,1)"},
+  "Civil Unrest": {icon: "icon-people_rebel", color: "rgba(255,0,0,1)"},
+  "Floods, Tropical Storm": {icon: "icon-disaster_flood", color: "rgba(255,0,0,1)"},
+  "Complex Emergency": {icon: "icon-crisis_conflict", color: "rgba(255,0,0,1)"},
+  "Epidemic": {icon: "icon-disaster_epidemic", color: "rgba(255,0,0,1)"},
+  "Population Movement": {icon: "icon-crisis_population_displacement", color: "rgba(255,0,0,1)"},
+  "Climatological - Drought": {icon: "icon-disaster_drought", color: "rgba(255,0,0,1)"},
+  "Winter Storm": {icon: "icon-disaster_snowfall", color: "rgba(255,0,0,1)"},
+  "Tropical Storm": {icon: "icon-disaster_heavy_rain", color: "rgba(255,0,0,1)"},
+  "Earthquake, Tsunami": {icon: "icon-disaster_earthquake", color: "rgba(255,0,0,1)"},
+  "Hydrological - Floods": {icon: "icon-disaster_flood", color: "rgba(255,0,0,1)"},
+  "Landslide;Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0,1)"},
+  "Earthquake": {icon: "icon-disaster_earthquake", color: "rgba(255,0,0,1)"},
+  "Landslide;Hydrological - Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0,1)"}
+
+}
+
+function buildDisasterTypeLabel(disasterType, color) {
+
+  var color = "";
+  var labelColor = "";
+  if (disasterType) {
+
+    color = color || "rgba(204,0,51,0.4)";
+    labelColor = "#fff";
+
+  }
+
+  var icon = UNOCHAIconLookup[disasterType].icon || 'icon-other_cluster_other';
+
+  return '<div class="label-icon-number-100percent"' + (color ? ' style="font-family: humanitarian_icons; background-color: ' + color + ';color: ' + labelColor + '"' : '') + '><i class="un ' + icon + '"></i></div>';
+
 }
 
 
