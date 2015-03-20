@@ -290,7 +290,8 @@ config.unwantedRFADetails = {
   lastmodifieddate: true,
   subject__c: true,
   target_population__c: true,
-  systemmodstamp: true
+  systemmodstamp: true,
+  total_arc_contributions__c: true
 };
 
 /**
