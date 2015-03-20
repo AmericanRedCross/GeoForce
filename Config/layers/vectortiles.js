@@ -156,10 +156,10 @@ function getThemeStyle(vtf){
 
   var style = {};
   //Default style - make hollow
-  style.color = 'rgba(0,0,0,' + opacity + ')';
+  style.color = 'rgba(0,0,0,0.1)';
   style.outline = {
     color: 'rgb(20,20,20)',
-    size: 2
+    size: 1
   };
 
   var properties = vtf.properties;

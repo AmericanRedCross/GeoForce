@@ -83,7 +83,6 @@ PBF.prototype.fetchFeatureDetails = function(guid, level) {
     theme = 'disaster';
   }
 
-
   detailsUrl = detailsUrl.replace(':theme', theme)
     .replace(':guids', guid)
     .replace(':level', level)
