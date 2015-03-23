@@ -11,7 +11,6 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
 
   var levelStr = $stateParams.level;
   var zoomStr = $stateParams.zoom;
-
   $rootScope.$broadcast('route-update');
 
   /**
@@ -32,6 +31,11 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   if (zoomStr !== window.prevZoomStr) {
     window.prevZoomStr = zoomStr;
     $rootScope.$broadcast('zoom-update', zoomStr);
+  }
+
+  if (themeStr !== window.prevthemeStr) {
+    window.prevthemeStr = themeStr;
+    $rootScope.$broadcast('theme-update', themeStr);
   }
 
 });

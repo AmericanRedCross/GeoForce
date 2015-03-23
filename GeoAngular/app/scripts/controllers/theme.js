@@ -60,15 +60,24 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   }
 
   $scope.setThemeQueryParam = function (theme) {
+    //close details panel on theme change
+    if($scope.isParam('details-panel') == true){
+      if($stateParams.theme !== theme){
+        $scope.closeParam('details-panel');
+      }
+    }
     $stateParams.theme = theme;
+
+    //close filters panel if theme is Project Risk/Health or None
     if((($stateParams.theme !== 'project' && $stateParams.theme !== 'disaster') && $stateParams.theme !== null)){
       $scope.closeParam('filters-panel');
     }
+
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
   };
 
-  $scope.themeName = themeNameHash[$stateParams.theme] || 'Projects';
+  $scope.themeName = themeNameHash[$stateParams.theme] || themeNameHash[config.defaultTheme];
 
   /*
    Handling Theme Menu Animations
