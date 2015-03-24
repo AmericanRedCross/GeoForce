@@ -459,5 +459,16 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.clearDisasterTypeFilter();
   };
 
+  // puts the category in URL
+  $scope.putCategoryURL = function (categoryName) {
+      if ($stateParams.category == categoryName){
+        $stateParams.category = null;
+        $state.go($state.current.name, $stateParams);
+      }else{
+        $stateParams.category = categoryName;
+        $state.go($state.current.name, $stateParams);
+      }
+  };
+
 
 });

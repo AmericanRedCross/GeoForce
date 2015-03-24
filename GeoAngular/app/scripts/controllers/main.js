@@ -9,6 +9,8 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
   var themeStr = $stateParams.theme;
   var filtersStr = $stateParams.filters;
+  var categoryStr = $stateParams.category; // layer category open
+
 
   var levelStr = $stateParams.level;
   var zoomStr = $stateParams.zoom;
@@ -42,6 +44,12 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   if (filtersStr !== window.prevfiltersStr) {
     window.prevfiltersStr = filtersStr;
     $rootScope.$broadcast('filters-update', filtersStr);
+  }
+
+  // if the open category has changed broadcast category has changed
+  if (categoryStr !== window.prevCategoryStr) {
+    window.prevCategoryStr = categoryStr;
+    $rootScope.$broadcast('category-update', categoryStr);
   }
 
 });
