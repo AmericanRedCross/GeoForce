@@ -8,6 +8,7 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   // part of the path does not go away...
   var layersStr = $stateParams.layers = $stateParams.layers.replace('http//', 'http://');
   var themeStr = $stateParams.theme;
+  var filtersStr = $stateParams.filters;
 
   var levelStr = $stateParams.level;
   var zoomStr = $stateParams.zoom;
@@ -36,6 +37,11 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   if (themeStr !== window.prevthemeStr) {
     window.prevthemeStr = themeStr;
     $rootScope.$broadcast('theme-update', themeStr);
+  }
+
+  if (filtersStr !== window.prevfiltersStr) {
+    window.prevfiltersStr = filtersStr;
+    $rootScope.$broadcast('filters-update', filtersStr);
   }
 
 });
