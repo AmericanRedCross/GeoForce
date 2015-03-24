@@ -10,6 +10,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $scope.sectors = [];
   $scope.disasterTypes = [];
   $scope.status = [];
+  $scope.disasterTypescategory = {};
   debug.budget = $scope.budget = {
     slider: [2000, 8000],
     min: 0,
@@ -26,6 +27,90 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   }).error(function() {
     console.error("Unable to fetch project filter meta data");
   });
+
+  $http.get('succubus_gitignore/sf-disaster-filter-checkboxes.json', {cache: true}).success(function (data, status) {
+    angular.extend($scope, data);
+    debug.filtersScope = $scope;
+    $scope.categorizeDisasterFilters();
+  }).error(function() {
+    console.error("Unable to fetch project filter meta data");
+  });
+
+  // take array of disaster types and create a new object that separates by category
+  $scope.categorizeDisasterFilters = function (){
+    var dt = $scope.disasterTypes;
+    var p = null;
+    var arr = [];
+    var cTypes = {};
+    for(var i=0;i<dt.length;i++) {
+      if (dt[i].name.indexOf('---') !== -1) {
+        arr = [];
+        cTypes[dt[i].name.replace("--- ","").replace(" ---", "")] = {};
+        p = dt[i].name.replace("--- ","").replace(" ---", "");
+      }
+      if(dt[i].name.indexOf('---') == -1){
+        arr.push(dt[i]);
+        cTypes[p] = arr;
+      }
+    }
+    $scope.disasterTypescategory = cTypes;
+  };
+
+  $scope.$on('theme-update',function(){
+    if($stateParams.theme == 'disaster'){
+      $scope.navTab = 'disasterType';
+    };
+    if($stateParams.theme == 'project'){
+      $scope.navTab = 'sectors';
+    };
+
+    $scope.clearAllFilters();
+
+    //clear theme filters
+    if($stateParams.filters !== null) {
+      $stateParams.filters = null; //clear theme filters
+      var state = $state.current.name || 'main';
+      $state.go(state, $stateParams);
+    }
+  });
+
+  $scope.$on('filters-update',function(){
+
+    if($stateParams.filters !== null) {
+
+      //var arr = $stateParams.filters.split(" ");
+      //var selections = [];
+      //
+      //for (var i = 0; i < arr.length; i++) {
+      //  if (arr[i].indexOf("%") !== -1) {
+      //    selections.push(arr[i].replace("'%", "").replace("%'", ""));
+      //  }
+      //}
+      //
+      //var disasters = $scope.disasterTypes;
+      //$scope.sectorClause = null;
+      //var first = true;
+      //for (var i = 0, len = disasters.length; i < len; ++i) {
+      //  var disaster = disasters[i];
+      //  if (selections.indexOf(disaster.name !== -1)) {
+      //    if (first) {
+      //      disaster.checked = true;
+      //      $scope.sectorClause = "disaster_type__c LIKE '%" + disaster.name + "%' ";
+      //      first = false;
+      //    } else {
+      //      disaster.checked = true;
+      //      $scope.sectorClause += "OR disaster_type__c LIKE '%" + disaster.name + "%' ";
+      //    }
+      //  }
+      //}
+
+    }
+
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+
+  });
+
 
   /**
    * Get budget stats from Chubbs - dynamic from PostGIS.
@@ -90,10 +175,46 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
+  $scope.disasterTypesFilter = function (){
+    var disasters = $scope.disasterTypes;
+    $scope.sectorClause = null;
+    var first = true;
+    for (var i = 0, len = disasters.length; i < len; ++i) {
+      var disaster = disasters[i];
+      if (disaster.checked) {
+        if (first) {
+          $scope.sectorClause = "disaster_type__c LIKE '%" + disaster.name + "%' ";
+          first = false;
+        } else {
+          $scope.sectorClause += "OR disaster_type__c LIKE '%" + disaster.name + "%' ";
+        }
+      }
+    }
+    $scope.composeWhereClause();
+  };
+
   $scope.clearSectorsFilter = function () {
     var sectors = $scope.sectors;
     for (var i = 0, len = sectors.length; i < len; ++i) {
       sectors[i].checked = false;
+    }
+    $scope.sectorClause = null;
+    $scope.composeWhereClause();
+  };
+
+  $scope.clearDisasterTypeFilter = function(){
+    var disasters = $scope.disasterTypes;
+    for (var i = 0, len = disasters.length; i < len; ++i) {
+      disasters[i].checked = false;
+    }
+    $scope.sectorClause = null;
+    $scope.composeWhereClause();
+  };
+
+  $scope.clearDisasterFilter = function () {
+    var disasters = $scope.disasterTypes;
+    for (var i = 0, len = disasters.length; i < len; ++i) {
+      disasters[i].checked = false;
     }
     $scope.sectorClause = null;
     $scope.composeWhereClause();
@@ -275,6 +396,8 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.clearStatusFilter();
     $scope.clearDateFilter();
     $scope.clearBudgetFilter();
+    $scope.clearDisasterTypeFilter();
   };
+
 
 });

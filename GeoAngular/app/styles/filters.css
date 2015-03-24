@@ -38,3 +38,37 @@
     padding-left: 11px;
     line-height: 27px;
 }
+
+#disasterType-filter i {
+  font-size: 24px;
+  padding-left: 5px;
+}
+
+#disasterType-filter input {
+  margin-top: 15px;
+}
+
+#disasterType-filter hr {
+  border-top: 1px solid #D1D1D1;
+  margin: 0;
+}
+
+#disasterType-filter .label-disaster {
+  margin-top: 0px;
+}
+
+#disasterType-filter .sector-name {
+  line-height: 10px;
+  padding-left: 8px;
+}
+
+#disasterType-filter label {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+#disasterType-filter .category {
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+}

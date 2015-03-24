@@ -289,7 +289,7 @@
 
                                     <h4>Theme layer:</h4>
                                     <label class="checkbox">
-                                        <input type="checkbox" ng-model="themeLabels.isChecked" ng-change="updateThemeLabel()">
+                                        <input type="checkbox" ng-model="themecountLayer.active" ng-change="setBadges(themecountLayer.active)">
                                         Theme Count Badges
                                     </label>
 
@@ -515,12 +515,17 @@
                           <div class="tab-content scrollable">
                             <div ng-class="{active: navTab==='disasterType'}" class="tab-pane" id="disasterType-filter">
                               <a ng-click="clearDisasterTypeFilter()">Clear All Disaster Filters</a>
-                              <div ng-repeat="types in disasterTypes">
-                                <label class="checkbox" style="color: {{types.color}};">
+                              <div ng-init="up=false" ng-repeat="(key,val) in disasterTypescategory">
+                                <div ng-click="up=!up" class="category">{{key}}</div>
+                              <div ng-repeat="types in val">
+                                <div ng-show="up">
+                                <label class="checkbox label-disaster" style="color: {{types.color}};">
                                   <input type="checkbox" ng-model="types.checked" ng-change="disasterTypesFilter()">
                                   <i class="icon-{{types.name.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i> <span class="sector-name">{{types.name}}</span>
                                 </label>
                                 <hr/>
+                              </div>
+                                </div>
                               </div>
                               <br/>
                               <br/>
