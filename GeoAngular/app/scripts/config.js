@@ -280,7 +280,7 @@ config.unwantedRFADetails = {
   isdeleted: true,
   lastmodifiedbyid: true,
   latest_checklist__c: true,
-  sf_id: true,
+  //sf_id: true, //we need this to provide a link to ECOS. In the .html ng-repeat, we will use a filter to exclude this property from being written
   showRfa: true,
   createddate: true,
   date_issued__c: true,
