@@ -236,6 +236,24 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   //Init selectedFeatureTitle property
   $scope.title= "Feature Details";
 
+  var sortDetails = function(){
+    var projectkey = Object.keys($scope.groupings)[0];
+
+    // Projects and Project Risk have same sorting rules
+    if($scope.groupings.hasOwnProperty('Projects')==true || $scope.groupings.hasOwnProperty('Project Risk')==true){
+      $scope.groupings[projectkey] = SortByProjectRisk($scope.groupings[projectkey]);
+    };
+
+    if($scope.groupings.hasOwnProperty('Project Health')==true){
+      $scope.groupings[projectkey] = SortByProjectHealth($scope.groupings[projectkey]);
+    };
+
+    if($scope.groupings.hasOwnProperty('Disasters')==true){
+      $scope.groupings['Disasters'] = SoryByDisaster($scope.groupings['Disasters']);
+    };
+
+  };
+
   $scope.toggleState = function(stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
     $state.go(state, $stateParams);
@@ -258,15 +276,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (properties.salesforce) { // salesforce theme badge selected
       $scope.contextualLayer = false;
       $scope.groupings = properties.salesforce;
-      var projectkey = Object.keys($scope.groupings)[0];
 
-      if(projectkey.indexOf('Project')!==-1){
-        $scope.groupings[projectkey] = SortByProjectRisk($scope.groupings[projectkey]);
-      };
-
-      if($scope.groupings.hasOwnProperty('Disasters')==true){
-        $scope.groupings['Disasters'] = SoryByDisaster($scope.groupings['Disasters']);
-      };
+      sortDetails();
 
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
       $scope.showList();
@@ -306,6 +317,20 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       // in case of a tie; order by date
       return new Date(b.date__c) - new Date(a.date__c);
 
+    });
+
+    return arr;
+  };
+  var SortByProjectHealth = function(arr){
+    arr.sort(function (a, b) {
+      if (config.ProjectHealthOrder[a.overall_status__c] < config.ProjectHealthOrder[b.overall_status__c]) {
+        return 1;
+      }
+      if (config.ProjectHealthOrder[a.overall_status__c] > config.ProjectHealthOrder[b.overall_status__c]) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
     });
 
     return arr;

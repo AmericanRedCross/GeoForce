@@ -15,6 +15,7 @@ config.proxyPath = function (path) {
 
 config.salesforceUrl = "https://na14.salesforce.com";
 
+config.defaultTheme = 'disaster';
 
 /**
  * These are the details initially shown for projects.
@@ -354,5 +355,13 @@ config.DisasterOrder = {
   Inactive:1,
   Monitoring:2,
   Active:3
+};
+
+config.ProjectHealthOrder = {
+  null:0,
+  White:1,
+  Green:2,
+  Yellow:3,
+  Red:4
 };
 
