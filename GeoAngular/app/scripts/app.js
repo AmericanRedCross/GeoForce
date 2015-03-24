@@ -98,7 +98,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider
     .when('/default', '/map@0.1,0.1,2(satellite,gadm0),disaster')
     .when('/phl', '/map@11.759815,121.893311,6(redcross,phl),disaster')
-    .otherwise(localStorage.getItem('defaultRoute') || '/map@0,0,2(satellite,gadm0),disaster');
+    .otherwise(localStorage.getItem('defaultRoute') || '/map@1,1,2(satellite,gadm0),disaster?level=0');
 
   $stateProvider
     .state('main', {
@@ -115,7 +115,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('upload', {
-      url: '/map@:lat,:lng,:zoom(*layers):theme/upload?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels',
+      url: '/map@:lat,:lng,:zoom(*layers),:theme/upload?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels',
       views: {
         'details': {
           template: ' ',
@@ -128,18 +128,18 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('export', {
-       url: '/map@:lat,:lng,:zoom(*layers),:theme/export?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels',
-          views: {
-              'details': {
-                  template: ' ',
-                  controller: 'MainCtrl'
-              },
-              'export': {
-                  templateUrl: 'views/export.html',
-                  controller: 'ExportCtrl'
-              }
-          }
-     });
+      url: '/map@:lat,:lng,:zoom(*layers),:theme/export?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels',
+      views: {
+        'details': {
+          template: ' ',
+          controller: 'MainCtrl'
+        },
+        'export': {
+          templateUrl: 'views/export.html',
+          controller: 'ExportCtrl'
+        }
+      }
+    });
 
 });
 
