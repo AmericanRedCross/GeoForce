@@ -150,7 +150,7 @@ var gadm1 = {
 
 //var hatchDesign;
 
-function getThemeStyle(vtf){
+function getThemeStyle(vtf, $rootScope){
 
   var opacity = "0.5";
 
@@ -168,6 +168,9 @@ function getThemeStyle(vtf){
   if(vtf.layer.name.indexOf('label') == -1 && !properties.theme){
     return style;
   }
+
+  //See if we should show theme badges/bubbles or not
+  var checked = ($stateParams.themelabels && $stateParams.themelabels.toLowerCase() === 'true');
 
   var ecosProperties;
 
@@ -216,15 +219,19 @@ function getThemeStyle(vtf){
       }
 
 
-      //Disaster Type should use OCHA icons
-      style.staticLabel = function () {
-        var labelStyle = {
-          html: (ecosProperties && ecosProperties.disaster_type__c[0] ? buildDisasterTypeLabel(ecosProperties.disaster_type__c[0], style.color, style.outline) : ""),
-          iconSize: [42, 42],
-          cssClass: 'noclass'
+
+      if(checked === true){
+        //Disaster Type should use OCHA icons
+        style.staticLabel = function () {
+          var labelStyle = {
+            html: (ecosProperties && ecosProperties.disaster_type__c[0] ? buildDisasterTypeLabel(ecosProperties.disaster_type__c[0], style.color, style.outline) : ""),
+            iconSize: [42, 42],
+            cssClass: 'noclass'
+          };
+          return labelStyle;
         };
-        return labelStyle;
-      };
+      }
+
 
     }
   }
@@ -392,32 +399,34 @@ function getThemeStyle(vtf){
   }
 
   //Label
-  if (vtf.layer.name === 'GADM_2014_label') {
-    if(ecosProperties && ecosProperties.theme_count) {
+  if(checked === true) {
 
-      if (properties.theme != "disasterType") {
-        //Disaster Type labels are set in the bloc above
-        //All others are set here.
+    if (vtf.layer.name === 'GADM_2014_label') {
+      if (ecosProperties && ecosProperties.theme_count) {
 
-        style.staticLabel = function () {
-          var labelStyle = {
-            html: (ecosProperties && ecosProperties.theme_count ? buildDynamicLabel(ecosProperties) : ""),
-            iconSize: [42, 42],
-            cssClass: 'noclass'
+        if (properties.theme != "disasterType") {
+          //Disaster Type labels are set in the bloc above
+          //All others are set here.
+
+          style.staticLabel = function () {
+            var labelStyle = {
+              html: (ecosProperties && ecosProperties.theme_count ? buildDynamicLabel(ecosProperties) : ""),
+              iconSize: [42, 42],
+              cssClass: 'noclass'
+            };
+            return labelStyle;
           };
-          return labelStyle;
-        };
 
+        }
+
+      }
+      else {
+        //When switching themes, reset old label styles to null so labels don't get drawn for old theme.
+        style.staticLabel = null;
       }
 
     }
-    else{
-      //When switching themes, reset old label styles to null so labels don't get drawn for old theme.
-      style.staticLabel = null;
-    }
-
   }
-
 
   return style;
 }

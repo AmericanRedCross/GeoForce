@@ -22,6 +22,7 @@ function PBF(options) {
   this._onClick = options.onClick; //Store the real function in a local property.
   this._onSelect = options.onSelect;  //Store the real function in a local property so we can overload it later with angular stuff.
   this._onFilter = options.filter; //Store the real function in a local property.
+  this._style = options.style; //Store the real function in a local property.
 
   var self = this;
 
@@ -49,6 +50,12 @@ function PBF(options) {
 
   }
 
+  options.style = function(vtf){
+
+    return self._style(vtf, $rootScope);
+
+  }
+
   this.layer = new L.TileLayer.MVTSource(options);
 }
 
@@ -60,6 +67,7 @@ PBF.prototype.getLayer = function () {
 };
 
 PBF.prototype.fetchFeatureDetails = function(guid, level) {
+
 
   var detailsUrl = config.chubbsPath(this.options.detailsUrl);
   if (!detailsUrl) {

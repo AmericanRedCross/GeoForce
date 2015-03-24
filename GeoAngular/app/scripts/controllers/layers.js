@@ -13,20 +13,22 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
   $scope.gadmLevel = $stateParams.level || 'auto';
 
+  $scope.themeLabels = { isChecked: $stateParams.themelabels || true };
+
   $scope.themeLayer = LayerConfig.theme;
-  //$scope.themecountLayer = LayerConfig.themecount;
 
-  $scope.setBadges = function(bool) {
-    //RW - TODO - Implement this option for vector tiles.
-    //if (bool) {
-    //  $scope.themeLayer.active = false;
-    //} else {
-    //  $scope.themeLayer.active = true;
-    //}
-    //$scope.toggleMapLayer('themecount', $scope.themecountLayer);
-    //$scope.toggleMapLayer('theme', $scope.themeLayer);
+  $scope.updateThemeLabel = function() {
+    if ($scope.themeLabels.isChecked === true) {
+      $stateParams.themelabels = true;
+    }
+    else {
+      //remove from stateparams
+      delete $stateParams.themelabels;
+    }
 
-  };
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+  }
 
   $scope.$watch('gadmLevel', function (newValue) {
     $stateParams.level = newValue;
@@ -43,6 +45,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     console.log("zoom: " + $stateParams.zoom);
     $scope.zoom = parseInt($stateParams.zoom);
   });
+
 
   /**
    * This is the collection of all of the layers we have.
@@ -171,6 +174,18 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
         }
       }
     }
+  });
+
+  $scope.$on('route-update', function() {
+    //Check the stateParams
+    //Specifically, see about the label properties being checked.
+
+    var checked = ($stateParams.themelabels && $stateParams.themelabels.toLowerCase() === 'true');
+    $scope.themeLabels = { isChecked: checked };
+
+    //If themeLabels is not checked, remove the labels.
+    //Refresh the theme layer
+
   });
 
 
