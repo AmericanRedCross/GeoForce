@@ -11,7 +11,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   debug.LayerConfig = LayerConfig;
   debug.setGadmLevel = VectorProvider.setGadmLevel;
 
-  $scope.gadmLevel = $stateParams.level || 0;
+  $scope.gadmLevel = $rootScope.level || 0;
 
   $scope.themeLabels = { isChecked: $stateParams.themelabels || true };
 

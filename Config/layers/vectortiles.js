@@ -392,9 +392,10 @@ function getThemeStyle(vtf, $rootScope){
   //}
 
   style.selected = {
-    color: 'rgba(255,255,0,0.8)',
+    //color: 'rgba(0,255,255,0.1)',
+    color: style.color,
     outline : {
-      color: 'rgb(255,255,0)',
+      color: 'rgba(0,255,255,1)',
       size: 2
     }
   }

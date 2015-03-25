@@ -276,6 +276,11 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     }
   });
 
+  $rootScope.$watch('level', function () {
+     //if the GADM level changes (and is something), then need to fetch new ECOS data for this theme
+     onThemeChanged();
+  });
+
   //Connect the layout onresize end event
   try {
     window.layout.panes.center.bind("layoutpaneonresize_end", function () {
@@ -362,13 +367,12 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       overlays[i] = layer;
       overlays_dictionary[overlayName] = layer; //keep a dictionary reference for faster fetching in UpdateECOSData
 
-      //See which GADM level is currently loaded and store it in rootScope
+      //See which GADM level is currently loaded and store it in rootScope (assumes one at a time, which might go away at some point)
       if (LayerConfig.themeLayers.indexOf(overlayName) > -1) {
         //We have one of the theme layers (GADM), parse the name and find out which level we're dealing with as opposed to storing a seaprate level state param
         var level = overlayName.substring(overlayName.length - 1, overlayName.length);
         $rootScope.level = level; //Store in rootscope
       }
-
     }
 
     // there are more overlays left in the list, less layers specified in route
@@ -380,8 +384,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       delete overlays[i];
 
     }
-
-
   }
 
 
