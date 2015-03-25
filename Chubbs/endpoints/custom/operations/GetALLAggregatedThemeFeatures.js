@@ -47,13 +47,13 @@ operation.execute = flow.define(
             //No cached
             if (settings.projectsManyToMany) {
                 if (operation.inputs["theme"] === 'projectrisk') {
-                    this.Query = "SELECT '" + operation.inputs["theme"] + "' as theme, sum(riskcount{{gadm_level}}) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid FROM sf_aggregated_gadm_{{theme}}_counts_many WHERE 1=1 {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
+                    this.Query = "SELECT '" + operation.inputs["theme"] + "' as theme, count(distinct sf_id) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid FROM sf_aggregated_gadm_{{theme}}_counts_many WHERE 1=1 {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
                 }
                 else if (operation.inputs["theme"] === 'project' || operation.inputs["theme"] === 'projecthealth') {
-                    this.Query = "SELECT '" + operation.inputs["theme"] + "' as theme, sum(count{{gadm_level}}) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid FROM sf_aggregated_gadm_{{theme}}_counts_many WHERE 1=1 {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
+                    this.Query = "SELECT '" + operation.inputs["theme"] + "' as theme, count(distinct sf_id) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid FROM sf_aggregated_gadm_{{theme}}_counts_many WHERE 1=1 {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
                 }
                 else if (operation.inputs["theme"] === 'disaster' || operation.inputs["theme"] === 'disastertype') {
-                    this.Query = "SELECT '" + operation.inputs["theme"] + "' as theme, sum(count{{gadm_level}}) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid FROM sf_aggregated_gadm_{{theme}}_counts WHERE 1=1 {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
+                    this.Query = "SELECT '" + operation.inputs["theme"] + "' as theme, count(distinct sf_id) as theme_count, {{rfacount}}, {{theme_details}}, guid{{gadm_level}} as guid FROM sf_aggregated_gadm_{{theme}}_counts WHERE 1=1 {{filters}} GROUP BY guid{{gadm_level}}, geom{{gadm_level}}";
                 }
             }
             else {
