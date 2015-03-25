@@ -287,26 +287,24 @@
                             <div class="tab-content scrollable">
                                 <div ng-class="{active: navTab==='contextual'}" class="tab-pane">
 
-                                    <h4>Theme layer:</h4>
+                                    <h4>ECOS layer:</h4>
                                     <label class="checkbox">
-                                      <input type="checkbox" ng-model="themeLabels.isChecked" ng-change="updateThemeLabel()">
-                                      Theme Count Badges
+                                      <input type="checkbox" ng-model="themeLabels.isChecked" ng-disabled="!theme.isChecked" ng-change="updateThemeLabel()">
+                                      ECOS Count Bubbles
+                                    </label>
+                                    <label class="checkbox">
+                                      <input type="checkbox" ng-model="theme.isChecked" ng-change="updateTheme()">
+                                      ECOS Overlay
                                     </label>
 
                                     <h4>Administrative boundary levels:</h4>
 
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" ng-model="gadmLevel" value="auto">
-                                            Automatic
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" ng-model="gadmLevel" value="-1">
-                                            ARC - American Red Cross Regions
-                                        </label>
-                                    </div>
+                                    <!--<div class="radio">-->
+                                        <!--<label>-->
+                                            <!--<input type="radio" ng-model="gadmLevel" value="-1">-->
+                                            <!--ARC - American Red Cross Regions-->
+                                        <!--</label>-->
+                                    <!--</div>-->
                                     <div class="radio">
                                         <label>
                                             <input type="radio" ng-model="gadmLevel" value="0">

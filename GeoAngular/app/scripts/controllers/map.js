@@ -58,7 +58,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     }
 
     if (lastLayersStr !== layersStr) {
-      console.log('Setting layers.');
+
       drawOverlays();
 
       $scope.defaults = {
@@ -371,6 +371,12 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       overlays[i] = layer;
       overlays_dictionary[overlayName] = layer; //keep a dictionary reference for faster fetching in UpdateECOSData
 
+      if (LayerConfig.themeLayers.indexOf(overlayName) > -1) {
+        //We have one of the theme layers (GADM), parse the name and find out which level we're dealing with as opposed to storing a seaprate level state param
+        var level = overlayName.substring(overlayName.length - 1, overlayName.length);
+        $rootScope.level = level; //Store in rootscope
+      }
+
     }
 
     // there are more overlays left in the list, less layers specified in route
@@ -410,13 +416,31 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    */
   function onThemeLabelChanged() {
 
-    var layer = overlays_dictionary["gadm0"];
+    //Find the current theme level, if any
+    var level = $rootScope.level; //set in drawoverlays
+
+    if(!level) return; //no theme
+
+    var layer = overlays_dictionary["gadm" + level];
 
     if (layer) {
 
       var layers = layer.getLayers();
-      var vtLayer = layers["GADM_2014"];
-      var vtLabelLayer = layers["GADM_2014_label"];
+
+      if(!layers) return; //no layers have loaded yet.  This needs to wait until some tiles have loaded.
+
+      var vtLayer;
+      var vtLabelLayer;
+
+      if(level == 0){
+        vtLayer = layers["GADM_2014"];
+        vtLabelLayer = layers["GADM_2014_label"];
+      }
+      else if(level == 1){
+        vtLayer = layers["Gadm1_2014"];
+        vtLabelLayer = layers["Gadm1_2014_label"];
+      }
+
 
       //Clear ecos property from MVTFeature
       clearFeatureProperties(vtLayer.features);
@@ -440,17 +464,22 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    * When the theme changes, this function will be fired.
    * @param theme
    */
-  function onThemeChanged(theme){
+  function onThemeChanged(theme) {
     //reset theme count
     resetThemeCount();
 
-    var layer = overlays_dictionary["gadm0"];
+    //Find the current theme level, if any
+    var level = $rootScope.level; //set in drawoverlays
 
-    if(layer){
+    if (!level) return; //no theme
+
+    var layer = overlays_dictionary["gadm" + level];
+
+    if (layer) {
       //For vector tile choropleths, ask for new data .json from the server
       getECOSProperties(function (data) {
 
-        if(data && data.features) {
+        if (data && data.features) {
 
           var guids = {};
 
@@ -461,8 +490,21 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
           $rootScope.vtData = guids; //Store the data to be merged with vector tile layer.  In config/vectortiles.js, the MVT choropleth layers will attempt to merge this data in when tiles finish loading (any time new tiles are requested, like zoomin/out/pan)
 
           var layers = layer.getLayers();
-          var vtLayer = layers["GADM_2014"];
-          var vtLabelLayer = layers["GADM_2014_label"];
+
+          if (!layers) return; //no layers have loaded yet.  This needs to wait until some tiles have loaded.
+
+          var vtLayer;
+          var vtLabelLayer;
+
+          //TODO: Move this logic to a single location
+          if (level == 0) {
+            vtLayer = layers["GADM_2014"];
+            vtLabelLayer = layers["GADM_2014_label"];
+          }
+          else if (level == 1) {
+            vtLayer = layers["Gadm1_2014"];
+            vtLabelLayer = layers["Gadm1_2014_label"];
+          }
 
           //Clear ecos property from MVTFeature
           clearFeatureProperties(vtLayer.features);
@@ -481,10 +523,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       })
     }
 
-
-
-    //redraw map overlays - vector tiles need to be re-styled with new theme data.
-    //redrawMapOverlays(overlayNames);
   }
 
   /**
@@ -549,8 +587,12 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   function getECOSProperties (cb){
     //This should fetch data from the server that pertains to the features loaded in the current extent.
     //var url = "http://localhost:3001/services/custom/custom_operation?name=getaggregatedthemefeaturesbyextent&format=geojson&bbox=:bbox&theme=:theme&gadm_level=0&filters=:filters";
-    var url = "../services/custom/custom_operation?name=getallaggregatedthemefeatures&format=geojson&theme=:theme&gadm_level=0&filters=:filters";
-    //url = url.replace(":bbox", $rootScope.bbox);
+
+    var level = $rootScope.level;
+
+    if (!level) return; //exit if no level
+
+    var url = "../services/custom/custom_operation?name=getallaggregatedthemefeatures&format=geojson&theme=:theme&gadm_level=" + level + "&filters=:filters";
 
     if ($rootScope.$stateParams.filters) {
       filters = $rootScope.$stateParams.filters;

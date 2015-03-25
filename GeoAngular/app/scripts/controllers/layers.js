@@ -11,9 +11,11 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   debug.LayerConfig = LayerConfig;
   debug.setGadmLevel = VectorProvider.setGadmLevel;
 
-  $scope.gadmLevel = $stateParams.level || 'auto';
+  $scope.gadmLevel = $stateParams.level || 0;
 
   $scope.themeLabels = { isChecked: $stateParams.themelabels || true };
+
+  $scope.theme = { isChecked: true };
 
   $scope.themeLayer = LayerConfig.theme;
 
@@ -30,19 +32,55 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     $state.go(state, $stateParams);
   }
 
-  $scope.$watch('gadmLevel', function (newValue) {
-    $stateParams.level = newValue;
+  //Toggle ECOS Layer - if off, then turn on and vice versa.
+  $scope.updateTheme = function() {
+
+    var layersArray = $stateParams.layers.split(",");
+
+    if ($scope.theme.isChecked === true) {
+
+
+      //Remove all GADM layers.
+      angular.forEach(layersArray, function (value, key) {
+        if (LayerConfig.themeLayers.indexOf(value) > -1) {
+          layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+        }
+      });
+
+      //Add in the gadm layer to the layers list in the stateparams.
+      layersArray.push("gadm" + $scope.gadmLevel);
+      $stateParams.layers = layersArray.join(",");
+
+
+    }
+    else {
+      //remove from stateparams
+      //Remove all GADM layers.
+      angular.forEach(layersArray, function (value, key) {
+        if (LayerConfig.themeLayers.indexOf(value) > -1) {
+          layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+        }
+      });
+
+      $stateParams.layers = layersArray.join(",");
+    }
+
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
+
+  }
+
+
+  $scope.$watch('gadmLevel', function (newValue) {
+    $scope.updateTheme();
   });
 
-  $scope.$on('level-update', function () {
-    VectorProvider.setGadmLevel($stateParams.level);
-    $scope.gadmLevel = $stateParams.level
-  });
+  //$scope.$on('level-update', function () {
+  //  VectorProvider.setGadmLevel($stateParams.level);
+  //  $scope.gadmLevel = $stateParams.level
+  //});
 
   $scope.$on('zoom-update', function () {
-    console.log("zoom: " + $stateParams.zoom);
     $scope.zoom = parseInt($stateParams.zoom);
   });
 

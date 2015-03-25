@@ -108,10 +108,10 @@ var gadm1 = {
       vtf.properties.theme = theme;
       vtf.properties.ecos_properties = {};
       vtf.properties.ecos_properties[theme] = data[vtf.properties.guid];
-      return true;
+      //return true;
     }
 
-    return false;
+    return true;
   },
 
   /**
@@ -402,7 +402,7 @@ function getThemeStyle(vtf, $rootScope){
   //Label
   if(checked === true) {
 
-    if (vtf.layer.name === 'GADM_2014_label') {
+    if (vtf.layer.name === 'GADM_2014_label' || vtf.layer.name === 'Gadm1_2014_label') {
       if (ecosProperties && ecosProperties.theme_count) {
 
         if (properties.theme != "disasterType") {
@@ -558,5 +558,6 @@ function getImageRef(url){
 
 module.exports = {
   gadm0 : gadm0,
-  gadm1 : gadm1
+  gadm1 : gadm1,
+  themeLayers: ["gadm0", "gadm1"] //a list of the theme layers - used to determine whether or not one is currently loaded or not.
 };
