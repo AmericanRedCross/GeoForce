@@ -3,11 +3,13 @@
  *       on 3/27/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function ($scope, $http, $state, $stateParams) {
+module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function ($scope, $http, $state, $stateParams,$timeout) {
   $scope.filterMode = "project"; //Which theme are we filtering?
   $scope.params = $stateParams;
+  $scope.searchText = '';
   $scope.navTab = 'sectors';
   $scope.sectors = [];
+  $scope.selected = false;
   $scope.disasterTypes = [];
   $scope.status = [];
   $scope.disasterTypescategory = {};
@@ -38,6 +40,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
   // take array of disaster types and create a new object that separates by category
   $scope.categorizeDisasterFilters = function () {
+    $scope.searchList = [];
     var dt = $scope.disasterTypes;
     var p = null;
     var arr = [];
@@ -47,6 +50,8 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
         arr = [];
         cTypes[dt[i].name.replace("--- ", "").replace(" ---", "")] = {};
         p = dt[i].name.replace("--- ", "").replace(" ---", "");
+      } else {
+        $scope.searchList.push(dt[i]);
       }
       if (dt[i].name.indexOf('---') == -1) {
         arr.push(dt[i]);
@@ -269,6 +274,9 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     }
     $scope.sectorClause = null;
     $scope.composeWhereClause();
+    
+    $stateParams.category = null;
+    $state.go($state.current.name, $stateParams);
   };
 
   $scope.clearDisasterFilter = function () {
@@ -470,5 +478,37 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       }
   };
 
+  $scope.handleSearch = function(val){
+    var dt = $scope.disasterTypescategory;
+    $scope.searchText = val;
+    for(var i=0;i<Object.keys(dt).length;i++){
+      var arr = dt[Object.keys(dt)[i]];
+      for(var z=0;z<arr.length;z++){
+        if(arr[z].name.indexOf(val)!==-1){
+          $stateParams.category = Object.keys(dt)[i];
+          $scope.disasterTypescategory[Object.keys(dt)[i]][z].isSearchActive = true;
+        }
+      }
+    }
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+  };
+
+  $scope.highlightLayer = function (val){
+    $scope.selected = true;
+    $timeout(function(){
+      var dt = $scope.disasterTypescategory;
+      for(var i=0;i<Object.keys(dt).length;i++){
+        var arr = dt[Object.keys(dt)[i]];
+        for(var z=0;z<arr.length;z++){
+          if(arr[z].name.indexOf(val)!==-1){
+            $scope.disasterTypescategory[Object.keys(dt)[i]][z].isSearchActive = false;
+          }
+        }
+      }
+      $scope.searchText = '';
+      $scope.selected = false;
+    },2000);
+  }
 
 });
