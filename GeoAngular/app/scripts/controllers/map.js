@@ -276,15 +276,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     }
   });
 
-  //merge vector tiles in the new view with .json stats
-  map.on('moveend', function () {
-    //if ($rootScope && $rootScope.vtData) {
-    //  var data = $rootScope.vtData;
-    //  updateECOSData(data, false); //false means the theme didn't change, so don't clear old features.
-    //}
-
-  });
-
   //Connect the layout onresize end event
   try {
     window.layout.panes.center.bind("layoutpaneonresize_end", function () {
@@ -371,6 +362,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       overlays[i] = layer;
       overlays_dictionary[overlayName] = layer; //keep a dictionary reference for faster fetching in UpdateECOSData
 
+      //See which GADM level is currently loaded and store it in rootScope
       if (LayerConfig.themeLayers.indexOf(overlayName) > -1) {
         //We have one of the theme layers (GADM), parse the name and find out which level we're dealing with as opposed to storing a seaprate level state param
         var level = overlayName.substring(overlayName.length - 1, overlayName.length);
@@ -392,23 +384,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   }
 
-  /**
-   * Used privately to rebuild the theme count layer.
-   */
-  function resetThemeCount() {
-
-    for (var j = 0, len = overlayNames.length; j < len; j++) {
-      var nme = overlayNames[j];
-      if (nme === 'themecount' || nme === 'theme') {
-        var oldLyr = overlays[j];
-        oldLyr.destroyResource();
-        map.removeLayer(oldLyr);
-        var newLyr = overlays[j] = VectorProvider.createResource(nme).getLayer();
-        newLyr.addTo(map);
-      }
-    }
-
-  }
 
   /**
    * When the theme label state changes, this function will be fired.
@@ -432,28 +407,24 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       var vtLayer;
       var vtLabelLayer;
 
-      if(level == 0){
-        vtLayer = layers["GADM_2014"];
-        vtLabelLayer = layers["GADM_2014_label"];
+
+      vtLayer = layers["GADM_2014"];
+      vtLabelLayer = layers["GADM_2014_label"];
+
+
+      if(vtLayer && vtLayer.features) {
+        //Clear ecos property from MVTFeature
+        clearFeatureProperties(vtLayer.features);
+        //Clear ecos property from Label Layer
+        clearFeatureProperties(vtLabelLayer.features);
+
+
+        //Update Layer(s) style and redraw
+        vtLayer.clearLayerFeatureHash(); //Force VTs to be reparsed.
+        vtLabelLayer.clearLayerFeatureHash();
       }
-      else if(level == 1){
-        vtLayer = layers["Gadm1_2014"];
-        vtLabelLayer = layers["Gadm1_2014_label"];
-      }
 
-
-      //Clear ecos property from MVTFeature
-      clearFeatureProperties(vtLayer.features);
-      //Clear ecos property from Label Layer
-      clearFeatureProperties(vtLabelLayer.features);
-
-      //Update Layer(s) style and redraw
-      vtLayer.clearLayerFeatureHash(); //Force VTs to be reparsed.
-      vtLabelLayer.clearLayerFeatureHash();
-
-      //layer.setStyle(layer.style); //feed back in the same style
       layer.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
-      //updateECOSData(guids, true); //true is for ThemeChanged boolean
     }
 
   }
@@ -465,8 +436,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    * @param theme
    */
   function onThemeChanged(theme) {
-    //reset theme count
-    resetThemeCount();
 
     //Find the current theme level, if any
     var level = $rootScope.level; //set in drawoverlays
@@ -497,27 +466,24 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
           var vtLabelLayer;
 
           //TODO: Move this logic to a single location
-          if (level == 0) {
-            vtLayer = layers["GADM_2014"];
-            vtLabelLayer = layers["GADM_2014_label"];
+
+          vtLayer = layers["GADM_2014"];
+          vtLabelLayer = layers["GADM_2014_label"];
+
+
+          if(vtLayer && vtLayer.features) {
+            //Clear ecos property from MVTFeature
+            clearFeatureProperties(vtLayer.features);
+            //Clear ecos property from Label Layer
+            clearFeatureProperties(vtLabelLayer.features);
+
+
+            //Update Layer(s) style and redraw
+            vtLayer.clearLayerFeatureHash(); //Force VTs to be reparsed.
+            vtLabelLayer.clearLayerFeatureHash();
           }
-          else if (level == 1) {
-            vtLayer = layers["Gadm1_2014"];
-            vtLabelLayer = layers["Gadm1_2014_label"];
-          }
 
-          //Clear ecos property from MVTFeature
-          clearFeatureProperties(vtLayer.features);
-          //Clear ecos property from Label Layer
-          clearFeatureProperties(vtLabelLayer.features);
-
-          //Update Layer(s) style and redraw
-          vtLayer.clearLayerFeatureHash(); //Force VTs to be reparsed.
-          vtLabelLayer.clearLayerFeatureHash();
-
-          //layer.setStyle(layer.style); //feed back in the same style
           layer.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
-          //updateECOSData(guids, true); //true is for ThemeChanged boolean
         }
 
       })

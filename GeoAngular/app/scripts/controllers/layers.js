@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig, VectorProvider) {
+module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig, VectorProvider, $rootScope) {
   $scope.params = $stateParams;
   $scope.zoom = parseInt($stateParams.zoom);
   $scope.navTab = 'contextual';
@@ -35,7 +35,15 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   //Toggle ECOS Layer - if off, then turn on and vice versa.
   $scope.updateTheme = function() {
 
-    var layersArray = $stateParams.layers.split(",");
+    var layersArray;
+
+    if($stateParams.layers){
+      layersArray = $stateParams.layers.split(",");
+    }
+    else{
+      return;
+    }
+
 
     if ($scope.theme.isChecked === true) {
 
@@ -220,6 +228,11 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
     var checked = ($stateParams.themelabels && $stateParams.themelabels.toLowerCase() === 'true');
     $scope.themeLabels = { isChecked: checked };
+
+    //See which, if any, gadm levels is active
+    if($rootScope.level){
+      $scope.gadmLevel = $rootScope.level;
+    }
 
     //If themeLabels is not checked, remove the labels.
     //Refresh the theme layer

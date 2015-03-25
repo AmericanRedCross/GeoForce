@@ -83,7 +83,7 @@ var gadm1 = {
   url: "../services/vector-tiles/gadm1_labels_2014/{z}/{x}/{y}.pbf",
   detailsUrl: 'services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=1&filters=:filters',
   debug: false,
-  clickableLayers: ["Gadm1_2014"],
+  clickableLayers: ["GADM_2014"],
 
   getIDForLayerFeature: function (feature) {
     return feature.properties.guid;
@@ -159,8 +159,8 @@ function getThemeStyle(vtf, $rootScope){
   //Default style - make hollow
   style.color = 'rgba(0,0,0,0.1)';
   style.outline = {
-    color: 'rgb(20,20,20)',
-    size: 1
+    color: 'rgba(20,20,20,0.5)',
+    size:.5
   };
 
   var properties = vtf.properties;
@@ -402,7 +402,7 @@ function getThemeStyle(vtf, $rootScope){
   //Label
   if(checked === true) {
 
-    if (vtf.layer.name === 'GADM_2014_label' || vtf.layer.name === 'Gadm1_2014_label') {
+    if (vtf.layer.name === 'GADM_2014_label') {
       if (ecosProperties && ecosProperties.theme_count) {
 
         if (properties.theme != "disasterType") {
