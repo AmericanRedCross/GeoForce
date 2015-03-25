@@ -276,6 +276,30 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     }
   });
 
+  map.on('zoomend', function(evt) {
+
+    var zoom = evt.target.getZoom();
+
+    //When zoom ends, swap css class on map div, so the labels will change size
+    //remove old classes, just in case
+    $("#map").removeClass("small-label");
+    $("#map").removeClass("medium-label");
+    $("#map").removeClass("large-label");
+
+
+    //Add appropriate class basd on zoom
+    if (zoom >= 0 && zoom <= 5) {
+      $("#map").addClass("small-label");
+    }
+    else if (zoom > 5 && zoom <= 9) {
+      $("#map").addClass("medium-label");
+    }
+    else if (zoom > 10 && zoom <= 13) {
+      $("#map").addClass("large-label");
+    }
+
+  });
+
   $rootScope.$watch('level', function () {
      //if the GADM level changes (and is something), then need to fetch new ECOS data for this theme
      onThemeChanged();
