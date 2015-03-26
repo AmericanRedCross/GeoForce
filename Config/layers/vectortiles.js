@@ -13,7 +13,8 @@ var gadm0 = {
   //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year",
 
   //url: "../services/vector-tiles/gadm0_labels_2014/{z}/{x}/{y}.pbf",
-  url: "https://s3-us-west-2.amazonaws.com/gadm0-labels/tiles/{z}/{x}/{y}.pbf",
+  //url: "https://s3-us-west-2.amazonaws.com/gadm0-labels/tiles/{z}/{x}/{y}.pbf",
+  url: "http://b.spatialdevtiles.com/tiles/{z}/{x}/{y}.pbf",
   detailsUrl: 'services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters',
   debug: false,
   clickableLayers: ["GADM_2014"],
@@ -80,7 +81,7 @@ var gadm1 = {
   //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year&labelpoints=true",
   //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year",
 
-  url: "../services/vector-tiles/gadm1_labels_2014/{z}/{x}/{y}.pbf",
+  url: "https://s3-us-west-2.amazonaws.com/gadm1-labels/tiles/{z}/{x}/{y}.pbf",
   detailsUrl: 'services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=1&filters=:filters',
   debug: false,
   clickableLayers: ["GADM_2014"],
