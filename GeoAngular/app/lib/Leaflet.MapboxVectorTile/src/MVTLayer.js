@@ -174,7 +174,7 @@ module.exports = L.TileLayer.Canvas.extend({
        * of TileLayer.MVTSource.js
        */
       var filter = self.options.filter;
-      if (filter && typeof filter === 'function') {
+      if (typeof filter === 'function') {
         if ( filter(vtf, layerCtx) === false ) continue;
       }
 
@@ -198,8 +198,6 @@ module.exports = L.TileLayer.Canvas.extend({
 
       //Create a new MVTFeature if one doesn't already exist for this feature.
       if (!mvtFeature) {
-
-
         //Get a style for the feature - set it just once for each new MVTFeature
         var style = self.style(vtf);
 

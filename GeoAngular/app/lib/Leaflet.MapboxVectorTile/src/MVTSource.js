@@ -18,6 +18,7 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
   processedTiles: {}, //Keep a list of tiles that have been processed already
   _eventHandlers: {},
   _triggerOnTilesLoadedEvent: true, //whether or not to fire the onTilesLoaded event when all of the tiles finish loading.
+  _url: "", //internal URL property
 
   style: function(feature) {
     var style = {};
@@ -70,6 +71,8 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
 
     // thats that have been loaded and drawn
     this.loadedTiles = {};
+
+    this._url = this.options.url;
 
     /**
      * For some reason, Leaflet has some code that resets the
@@ -188,7 +191,7 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
     var self = this;
 
 //    //This works to skip fetching and processing tiles if they've already been processed.
-//    var vectorTile = loadedTiles[ctx.id];
+//    var vectorTile = this.processedTiles[ctx.zoom][ctx.id];
 //    //if we've already parsed it, don't get it again.
 //    if(vectorTile){
 //      console.log("Skipping fetching " + ctx.id);
@@ -197,10 +200,8 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
 //      return;
 //    }
 
-    var fullStart = new Date();
-
-    if (!this.options.url) return;
-    var url = self.options.url.replace("{z}", ctx.zoom).replace("{x}", ctx.tile.x).replace("{y}", ctx.tile.y);
+    if (!this._url) return;
+    var src = this.getTileUrl({ x: ctx.tile.x, y: ctx.tile.y, z: ctx.zoom });
 
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
@@ -220,9 +221,6 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
         tileLoaded(self, ctx);
       }
 
-      var msDiff = new Date().getTime() - new Date(fullStart).getTime(); //Difference in ms
-      //console.log("Timer - " + ctx.zoom + "/" + ctx.tile.x + "/" + ctx.tile.y + ": " + msDiff);
-
       //either way, reduce the count of tilesToProcess tiles here
       self.reduceTilesToProcessCount();
     };
@@ -231,7 +229,7 @@ module.exports = L.TileLayer.MVTSource = L.TileLayer.Canvas.extend({
       console.log("xhr error: " + xhr.status)
     };
 
-    xhr.open('GET', url, true); //async is true
+    xhr.open('GET', src, true); //async is true
     xhr.responseType = 'arraybuffer';
     xhr.send();
   },

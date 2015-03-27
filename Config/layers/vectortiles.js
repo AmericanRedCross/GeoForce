@@ -14,7 +14,7 @@ var gadm0 = {
 
   //url: "../services/vector-tiles/gadm0_labels_2014/{z}/{x}/{y}.pbf",
   //url: "https://s3-us-west-2.amazonaws.com/gadm0-labels/tiles/{z}/{x}/{y}.pbf",
-  url: "http://b.spatialdevtiles.com/tiles/{z}/{x}/{y}.pbf",
+  url: "http://{s}.spatialdevtiles.com/tiles/{z}/{x}/{y}.pbf",
   detailsUrl: 'services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters',
   debug: false,
   clickableLayers: ["GADM_2014"],
