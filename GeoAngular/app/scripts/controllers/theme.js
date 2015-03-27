@@ -3,7 +3,7 @@
  *       on 5/6/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $state, $stateParams, VectorProvider) {
+module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $state, $stateParams, VectorProvider, LayerConfig) {
 
   var themeNameHash = $rootScope.themeNameHash = {
     project: 'Projects',
@@ -66,6 +66,27 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
         $scope.closeParam('details-panel');
       }
     }
+
+    //force gadm0 on disaster and disasterType
+    if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){
+      var layersArray;
+
+      if($stateParams.layers){
+        layersArray = $stateParams.layers.split(",");
+      }
+
+      //Remove all GADM layers.
+      layersArray.forEach(function (value, key) {
+        if (LayerConfig.themeLayers.indexOf(value) > -1) {
+          layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+        }
+      });
+
+      //Add in the gadm layer to the layers list in the stateparams.
+      layersArray.push("gadm0");
+      $stateParams.layers = layersArray.join(",");
+    }
+
     $stateParams.theme = theme;
 
     //close filters panel if theme is Project Risk/Health or None

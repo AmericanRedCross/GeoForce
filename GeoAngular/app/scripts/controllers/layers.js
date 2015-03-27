@@ -198,8 +198,33 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
     /**
      * Check if the layer is active in map layers
+     * Force gadm0 on disaster themes
      */
-    $scope.mapLayers = layers;
+
+    var theme = $stateParams.theme;
+
+    //force gadm0 on disaster themes when user changes gadm level
+    if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){
+      var layersArray;
+
+      if($stateParams.layers){
+        layersArray = $stateParams.layers.split(",");
+      }
+
+      //Remove all GADM layers.
+      layersArray.forEach(function (value, key) {
+        if (LayerConfig.themeLayers.indexOf(value) > -1) {
+          layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+        }
+      });
+
+      //Add in the gadm layer to the layers list in the stateparams.
+      layersArray.push("gadm0");
+      $stateParams.layers = layersArray.join(",");
+    }
+
+
+    $scope.mapLayers = layersArray;
     // skip the first layer, the basemap
     for (var i = 1, len = layers.length; i < len; i++) {
       var l = layers[i];
@@ -220,6 +245,9 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
         }
       }
     }
+
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
   });
 
   $scope.$on('route-update', function() {

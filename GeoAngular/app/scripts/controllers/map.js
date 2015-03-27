@@ -455,13 +455,36 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   }
 
-
-
   /**
    * When the theme changes, this function will be fired.
    * @param theme
    */
   function onThemeChanged(theme) {
+
+    if($stateParams.theme){
+      var theme = $stateParams.theme;
+
+      // force gadm0 on disaster themes
+      if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){
+        var layersArray;
+
+        if($stateParams.layers){
+          layersArray = $stateParams.layers.split(",");
+        }
+
+        //Remove all GADM layers.
+        layersArray.forEach(function (value, key) {
+          if (LayerConfig.themeLayers.indexOf(value) > -1) {
+            layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+          }
+        });
+
+        //Add in the gadm layer to the layers list in the stateparams.
+        layersArray.push("gadm0");
+        $stateParams.layers = layersArray.join(",");
+      }
+
+    }
 
     //Find the current theme level, if any
     var level = $rootScope.level; //set in drawoverlays

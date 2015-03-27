@@ -332,8 +332,9 @@
                                         </label>
                                     </div>
                                     <div class="radio">
-                                        <label>
-                                            <input type="radio" ng-model="gadmLevel" value="1">
+                                        <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
+                                            <input ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"
+                                                   type="radio" ng-model="gadmLevel" value="1">
                                             1. State / Province
                                         </label>
                                     </div>
