@@ -739,9 +739,20 @@
 
       <!--Info Panel-->
       <div ng-controller="InfoCtrl" ng-class="{on: isParam('info')}" class="navpanel container">
-        <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('info')"><span
-          class="glyphicon glyphicon-chevron-left"></span></button>
-        info.html
+
+        <div class="row">
+          <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('info')"><span
+            class="glyphicon glyphicon-chevron-left"></span></button>
+          <div class="col-md-7 side-view-title-wrapper">
+            <div class="title">INFO</div>
+          </div>
+        </div>
+        <div class="row scrollable">
+
+          <!-- INFO Content HERE  -->
+
+        </div>
+
       </div>
       <!--End Info Panel-->
 
