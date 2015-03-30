@@ -28,6 +28,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   var filters = null;
 
   function redraw() {
+    onLayersChanged();
     var lat = parseFloat($stateParams.lat) || 0;
     var lng = parseFloat($stateParams.lng) || 0;
     var zoom = parseFloat($stateParams.zoom) || 8;
@@ -41,8 +42,8 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     } else {
       var basemapUrl = basemap.url;
     }
-    overlayNames = layers.slice(1);
 
+    overlayNames = layers.slice(1);
 
     if (lastBasemapUrl !== basemapUrl && typeof map === 'object') {
       if (basemapLayer) {
@@ -56,6 +57,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       });
 
     }
+
 
     if (lastLayersStr !== layersStr) {
 
@@ -482,6 +484,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         //Add in the gadm layer to the layers list in the stateparams.
         layersArray.push("gadm0");
         $stateParams.layers = layersArray.join(",");
+
+        var state = $state.current.name || 'main';
+        $state.go(state, $stateParams);
       }
 
     }
@@ -545,6 +550,37 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    * @param theme
    */
   function onFiltersChanged(filters){
+
+  }
+
+  /**
+   * When the layers change, this function will be fired.
+   * @param theme
+   */
+  function onLayersChanged(){
+    var theme = $stateParams.theme;
+
+    if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){
+      var layersArray;
+
+      if($stateParams.layers){
+        layersArray = $stateParams.layers.split(",");
+      }
+
+      //Remove all GADM layers.
+      layersArray.forEach(function (value, key) {
+        if (LayerConfig.themeLayers.indexOf(value) > -1) {
+          layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+        }
+      });
+
+      //Add in the gadm layer to the layers list in the stateparams.
+      layersArray.push("gadm0");
+      $stateParams.layers = layersArray.join(",");
+
+      var state = $state.current.name || 'main';
+      $state.go(state, $stateParams);
+    }
 
   }
 
