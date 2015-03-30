@@ -145,7 +145,20 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     }
 
     //Should we show 'bubbles' on top of the theme layer?
-    var themeLabels = ($stateParams.themelabels && $stateParams.themelabels.toLowerCase() === 'true');
+   // var themeLabels = ($stateParams.themelabels && $stateParams.themelabels.toLowerCase() === 'true');
+    var themeLabels;
+
+    if($stateParams.hasOwnProperty('themelabels')){
+        //has the property
+      themeLabels = $stateParams.themelabels;
+    }
+    else{
+      //no property, add labels by default
+      $stateParams.themelabels = true;
+      $state.go($state.current.name, $stateParams);
+      return;
+    }
+
     if (themeLabels != lastThemeLabels) {
 
       onThemeLabelChanged();
