@@ -116,8 +116,8 @@ a {
 #ThemeSelectorMenu {
     position: absolute;
     z-index: 2000;
-    right: 40px;
-    bottom: 25px;
+    right: 5px;
+    bottom: 5px;
     left: auto;
     font-family: oswaldregular;
     z-index: 2001;

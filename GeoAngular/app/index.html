@@ -763,7 +763,7 @@
     <div class="windowEffects" ng-class="{grayout: isParam('zoom-extent')}"></div>
     <!-- Use this window to gray out the map -->
 
-    <div id="map"></div>
+    <div id="map"  class="ui-layout-center"></div>
 
     <!-- Upper Right Toolbar in Map -->
     <div id="MapUpperRightToolbarWrapper">
@@ -859,10 +859,8 @@
       </div>
     </div>
 
-
     <!-- Bottom Right Theme Selector -->
     <div ui-view="theme"></div>
-
 
     <!-- Right Hand Details Panel -->
     <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: isParam('details-panel')}">
@@ -1089,6 +1087,15 @@
         </div>
       </div>
     </div>
+
+  <div class="ui-layout-south" style="background-color: #43484a;">
+    <div class="list-group legend-list">
+      <div class="list-group-item ng-scope">
+      <div class="legendTitle ng-binding">Legend:</div>
+      <div class="legendIcon ng-binding"></div>
+    </div>
+    </div>
+  </div>
   </div>
   <div ui-view="upload"></div>
   <div ui-view="export"></div>

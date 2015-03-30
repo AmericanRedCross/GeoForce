@@ -21,6 +21,23 @@ window.layout = $('#AppContainer').layout({
 //resize left(west panel) to be 59px wide.
 window.layout.sizePane("west", 59);
 
+window.sublayout = $('#MapCtrl').layout({
+  applyDefaultStyles: false,
+  center__resizable: false,
+  center__closable: false,
+  south__resizable: false,
+  south__closable: false,
+  center__spacing_open: 0,
+  south__spacing_open: 0
+});
+
+window.sublayout.sizePane("south", 62); //how tall the bottom map panel should be.
+
+
+
+
+
+
 window.wait = false;
 window.mapMoveEnd = false;
 

@@ -4,6 +4,7 @@
 
 .legend-list {
     padding:10px;
+  float: left;
 }
 
 .legendIcon div, .legendIcon {
@@ -15,7 +16,7 @@
 }
 
 .legend-container li{
-    
+
 }
 
 .legend-container li .featurelabel-icon-number, .legend-container li .featurelabel-icon-RFA {
