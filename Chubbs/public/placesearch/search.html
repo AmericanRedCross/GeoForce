@@ -322,7 +322,7 @@
             returnGeometry: "no"
         };
 
-        var url = _server + '/services/nameSearch';
+        var url = '/services/nameSearch';
 
         //Send POST, using JSONP
         $.getJSON(url, postArgs).done(function (data) {
@@ -400,7 +400,7 @@
         var loading = new loader("#adminResult");
 
 
-        var url = _server + '/services/getAdminStack';
+        var url = '/services/getAdminStack';
 
         //Send POST, using JSONP
         $.getJSON(url, postArgs).done(function (data) {
@@ -420,7 +420,7 @@
             returnGeometry: "yes"
         };
 
-        var url = _server + '/services/getAdminStack';
+        var url = '/services/getAdminStack';
 
         //Send POST,
         $.getJSON(url, postArgs).done(function (data) {
