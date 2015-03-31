@@ -929,26 +929,6 @@
                   </li>
                 </ul>
               </div>
-              <div class="sectorsvg">
-                <div class="title">
-                  Sectors:
-                </div>
-                <div class="svgcontainer">
-                <div ng-repeat="c in dataset" class="inline">
-                    <svg ng-mouseenter="updateSectorLegend(c.alias,c.color,c.count)" ng-attr-width="{{c.width}}" height="25">
-                      <rect ng-attr-width="{{c.width}}" height="25" fill="{{c.color}}"> </rect>
-                    </svg>
-                </div>
-                </div>
-              </div>
-              <div id="sectorlegend">
-                <svg height="25" width="25">
-                  <circle cx="15" cy="15" r="7.5" fill="{{datasetColor}}"></circle>
-                </svg>
-                <div class="title">
-                  {{datasetTitle}} ({{datasetCount}})
-                </div>
-              </div>
 
             </div>
 
@@ -1096,6 +1076,30 @@
               </ul>
             </div>
 
+          </div>
+
+          <div ng-show="title == 'Selected Feature' && $stateParams.theme == 'project' && dataset.length>1">
+            <div class="sectorsvg">
+              <div class="title">
+                Sectors:
+              </div>
+              <div class="svgcontainer">
+                <div ng-repeat="c in dataset" class="inline">
+                  <svg ng-mouseenter="updateSectorLegend(c.alias,c.color,c.count)" ng-attr-width="{{c.width}}" height="20">
+                    <rect ng-attr-width="{{c.width}}" height="20" fill="{{c.color}}"> </rect>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div id="sectorlegend">
+              <div class="title">
+                <svg height="25" width="25">
+                  <circle cx="15" cy="15" r="7.5" fill="{{datasetColor}}"></circle>
+                </svg>
+                {{datasetTitle}} ({{datasetCount}})
+              </div>
+            </div>
           </div>
 
           <div class="details-bottom-buttons pull-right" ng-show="!contextualLayer && !itemsList">
