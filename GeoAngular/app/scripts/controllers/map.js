@@ -10,6 +10,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   $scope.params = $stateParams;
   $scope.blur = '';
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
+  $scope.legendObject = {}; //When PBF layers are drawn, grab the legendObject out of it so we know what classes are being drawn on the map
 
   $scope.toggleState = function (stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
@@ -509,7 +510,20 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
             vtLabelLayer.clearLayerFeatureHash();
           }
 
-          layer.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
+          layer.redraw(true); //false means that this redraw won't trigger the onTilesLoaded event.
+
+          //Fetch the legend after redraw
+          //need to wait until all tiles finish drawing
+          layer.options.onTilesLoaded = function(){
+            var legendObject = vtLayer.getLegendObject();
+            if(legendObject){
+              //Format the contents and set it equal to the scope
+              $scope.legendObject = legendObject;
+            }
+          }
+
+
+
         }
 
       })
@@ -692,5 +706,18 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     });
 
   }
+
+  //Take a legend dicionary from MVTLayer and format it for display in HTML land.
+  //function formatLegend(legendObject){
+  //  var html = "";
+  //
+  //  for(var styleClass in legendObject){
+  //
+  //
+  //
+  //  }
+  //
+  //  return "";
+  //}
 
 });

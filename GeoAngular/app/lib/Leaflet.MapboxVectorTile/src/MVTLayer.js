@@ -68,6 +68,7 @@ module.exports = L.TileLayer.Canvas.extend({
     this.features = {};
     this.featuresWithLabels = [];
     this._highestCount = 0;
+    this.legendObject = {};
   },
 
   onAdd: function(map) {
@@ -200,6 +201,11 @@ module.exports = L.TileLayer.Canvas.extend({
       if (!mvtFeature) {
         //Get a style for the feature - set it just once for each new MVTFeature
         var style = self.style(vtf);
+
+        //If style.legendLabel property exists, build a legend object.
+        if(style.legendLabel){
+          self.legendObject[style.legendLabel] = style;
+        }
 
         //create a new feature
         self.features[uniqueID] = mvtFeature = new MVTFeature(self, vtf, layerCtx, uniqueID, style);
@@ -417,6 +423,11 @@ module.exports = L.TileLayer.Canvas.extend({
 
   featureWithLabelAdded: function(feature) {
     this.featuresWithLabels.push(feature);
+  },
+
+  getLegendObject: function(){
+    //Get the legend object for this layer.
+    return this.legendObject;
   }
 
 });

@@ -192,6 +192,8 @@ function getThemeStyle(vtf, $rootScope){
 
     if (ecosProperties) {
       if (ecosProperties.iroc_status__c) {
+        //Keep track of the property name for the sake of legend display
+        style.legendLabel = ecosProperties.iroc_status__c;
         switch (ecosProperties.iroc_status__c.toLowerCase()) {
           case "active":
             style.color = 'rgba(204,0,51,' + opacity + ')';
@@ -223,6 +225,9 @@ function getThemeStyle(vtf, $rootScope){
     ecosProperties = properties["ecos_properties"]["disasterType"]; //this is an array of disaster types for this area
     if (ecosProperties && ecosProperties.disaster_type__c) {
 
+      //Keep track of the property name for the sake of legend display
+      style.legendLabel = ecosProperties.disaster_type__c;
+
       //Look up the color in the dictionary
       style.color = UNOCHAIconLookup[ecosProperties.disaster_type__c[0]].color;
       //Use the same outline
@@ -251,6 +256,9 @@ function getThemeStyle(vtf, $rootScope){
   else if (properties.theme == "projectRisk") {
     ecosProperties = properties["ecos_properties"]["projectRisk"];
     if (ecosProperties && ecosProperties.overall_assessment__c) {
+      //Keep track of the property name for the sake of legend display
+      style.legendLabel = ecosProperties.overall_assessment__c;
+
       switch (ecosProperties.overall_assessment__c.toLowerCase()) {
         case "critical":
           style.color = 'rgba(255,0,0,' + opacity + ')';
@@ -286,6 +294,9 @@ function getThemeStyle(vtf, $rootScope){
   else if (properties.theme == "projectHealth") {
     ecosProperties = properties["ecos_properties"]["projectHealth"];
     if (ecosProperties && ecosProperties.overall_status__c) {
+      //Keep track of the property name for the sake of legend display
+      style.legendLabel = ecosProperties.overall_status__c;
+
       switch (ecosProperties.overall_status__c.toLowerCase()) {
         case "red":
           style.color = 'rgba(255,0,0,' + opacity + ')';
@@ -322,6 +333,15 @@ function getThemeStyle(vtf, $rootScope){
     ecosProperties = properties["ecos_properties"]["project"];
 
     if (ecosProperties && ecosProperties) {
+
+      //Keep track of the property name for the sake of legend display
+      style.legendLabel = "# Projects";
+
+      //for the purposes of showing a legend, keep this gradient handy
+      style.gradient = [
+        'rgba(0,0,0,' + opacity + ')',
+        'rgba(0,255,59,' + opacity + ')'
+      ];
 
       var count =  parseInt(ecosProperties.theme_count);
 
