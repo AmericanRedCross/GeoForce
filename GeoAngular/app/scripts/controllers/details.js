@@ -281,7 +281,15 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
       $scope.showList();
-      $scope.openParam('details-panel');
+
+      // close param if user selects a country with no data
+      var objtitle = Object.keys(properties.salesforce)[0];
+      if(properties.salesforce[objtitle].length>=1){
+        $scope.openParam('details-panel');
+      } else {
+        $scope.closeParam('details-panel');
+      }
+
       $scope.createDonuts();
       $scope.dataset = Donuts.dataset;
 
@@ -291,7 +299,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
         dc = dc + $scope.dataset[i].count;
       }
       for(var i=0;i<$scope.dataset.length;i++){
-        $scope.dataset[i].width = Math.round((250 * ($scope.dataset[i].count/dc))); // percentage of div (250px)
+        $scope.dataset[i].width = Math.round((268 * ($scope.dataset[i].count/dc))); // percentage of div (250px)
       }
       // Sort sector array by count
       $scope.dataset.sort(function (a, b) {
@@ -618,5 +626,6 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     $scope.datasetColor = color;
     $scope.datasetCount = count;
   }
+
 
 });
