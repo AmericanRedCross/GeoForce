@@ -301,6 +301,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
       $scope.datasetTitle = $scope.dataset[0].alias;
       $scope.datasetColor = $scope.dataset[0].color;
+      $scope.datasetCount = $scope.dataset[0].count;
 
     } else { // standard geojson, show properties as details
 
@@ -612,9 +613,11 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     downloadLink.click();
   };
 
-  $scope.updateSectorLegend = function(alias,color){
+  $scope.updateSectorLegend = function(alias,color,count){
     $scope.datasetTitle = alias;
     $scope.datasetColor = color;
+    $scope.datasetCount = count;
+
   }
 
 });

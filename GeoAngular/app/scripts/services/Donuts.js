@@ -75,7 +75,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
             data['-9999'] = {
               'count': 1,
               'color': visualizationDictionary[-9999].color,
-              'alias': visualizationDictionary[-9999].label
+              'alias': visualizationDictionary[-9999].label || 'Unknown'
             };
           }
         }
@@ -94,7 +94,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
           data[reportingValue] = {
             'count': 1,
             'color': reportingProperties.color,
-            'alias': reportingProperties.label
+            'alias': reportingProperties.label || 'Unknown'
           };
         }
 
@@ -115,7 +115,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
     var mergedOther = {
       'count': 0,
       'color': visualizationDictionary[-9999].color,
-      'alias': visualizationDictionary[-9999].label
+      'alias': visualizationDictionary[-9999].label || 'Unknown'
     };
 
     // Merge all 'other' objects; we determine which are 'other' by testing to see if its been assigned the 'other' color

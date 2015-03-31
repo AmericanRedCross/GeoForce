@@ -935,7 +935,7 @@
                 </div>
                 <div class="svgcontainer">
                 <div ng-repeat="c in dataset" class="inline">
-                    <svg ng-mouseenter="updateSectorLegend(c.alias,c.color)" width="{{c.width}}" height="25">
+                    <svg ng-mouseenter="updateSectorLegend(c.alias,c.color,c.count)" width="{{c.width}}" height="25">
                       <rect width="{{c.width}}" height="25" fill="{{c.color}}"> </rect>
                     </svg>
                 </div>
@@ -948,7 +948,7 @@
                   <circle cx="15" cy="15" r="7.5" fill="{{datasetColor}}"></circle>
                 </svg>
               <div class="title">
-                {{datasetTitle}}
+                {{datasetTitle}} ({{datasetCount}})
               </div>
             </div>
 

@@ -315,3 +315,7 @@
 #sectorlegend .svgcontainer{
   margin:0px;
 }
+
+rect:hover {
+  opacity: 0.5;
+}
