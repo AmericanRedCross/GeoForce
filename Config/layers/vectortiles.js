@@ -72,6 +72,9 @@ var gadm0 = {
       //Do the onclick thing
       PBFObject.fetchFeatureDetails(vtf.id, 0);
     }
+  },
+  legend: function(){
+
   }
 }
 

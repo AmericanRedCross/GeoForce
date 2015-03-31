@@ -28,7 +28,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   var filters = null;
 
   function redraw() {
-    onLayersChanged();
+    forceGadm0();
     var lat = parseFloat($stateParams.lat) || 0;
     var lng = parseFloat($stateParams.lng) || 0;
     var zoom = parseFloat($stateParams.zoom) || 8;
@@ -477,31 +477,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   function onThemeChanged(theme) {
 
     if($stateParams.theme){
-      var theme = $stateParams.theme;
-
-      // force gadm0 on disaster themes
-      if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){
-        var layersArray;
-
-        if($stateParams.layers){
-          layersArray = $stateParams.layers.split(",");
-        }
-
-        //Remove all GADM layers.
-        layersArray.forEach(function (value, key) {
-          if (LayerConfig.themeLayers.indexOf(value) > -1) {
-            layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
-          }
-        });
-
-        //Add in the gadm layer to the layers list in the stateparams.
-        layersArray.push("gadm0");
-        $stateParams.layers = layersArray.join(",");
-
-        var state = $state.current.name || 'main';
-        $state.go(state, $stateParams);
-      }
-
+      forceGadm0();
     }
 
     //Find the current theme level, if any
@@ -567,10 +543,10 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   }
 
   /**
-   * When the layers change, this function will be fired.
+   * Force gadm0 on all disaster themes
    * @param theme
    */
-  function onLayersChanged(){
+  function forceGadm0(){
     var theme = $stateParams.theme;
 
     if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){

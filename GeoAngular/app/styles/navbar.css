@@ -137,6 +137,17 @@
     visibility: visible;
 }
 
+.icon_title {
+  font-size: 9px;
+  font-family: 'oswaldregular';
+  color: rgb(20, 21, 21);
+  text-align: center;
+  position: absolute;
+  bottom: 5px;
+  width: 59px;
+  left: 0px;
+}
+
 /* The Flyout for the info panel */
 .bottom .flyout{
 
