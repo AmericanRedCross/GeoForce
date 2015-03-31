@@ -291,7 +291,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
         dc = dc + $scope.dataset[i].count;
       }
       for(var i=0;i<$scope.dataset.length;i++){
-        $scope.dataset[i].width =  Math.round((240 * ($scope.dataset[i].count/dc))); // percentage of div (240px)
+        $scope.dataset[i].width = Math.round((250 * ($scope.dataset[i].count/dc))); // percentage of div (250px)
       }
       // Sort sector array by count
       $scope.dataset.sort(function (a, b) {
@@ -617,7 +617,6 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     $scope.datasetTitle = alias;
     $scope.datasetColor = color;
     $scope.datasetCount = count;
-
   }
 
 });
