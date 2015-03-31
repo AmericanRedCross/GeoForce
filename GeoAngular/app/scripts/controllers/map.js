@@ -190,7 +190,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         //If they haven't chagned, then don't proceed.
 
         //When the page loads, no zoom or center has been set, so don't get bounds until that has happened
-
         if (!map.getZoom()) {
           return;
         }
