@@ -113,21 +113,21 @@
       <div id="FlyoutLogoPlaceHolder"></div>
       <!-- the container for the sliding nav button tooltips -->
       <div class="NavFlyoutGroup">
-        <div class="flyout" ng-class="{on: isStoriesActive}">
-          Stories
-        </div>
-        <div class="flyout" ng-class="{on: isLayersActive}">
-          Layers
-        </div>
-        <div class="flyout" ng-class="{on: isFiltersActive}">
-          Filters
-        </div>
+        <!--<div class="flyout" ng-class="{on: isStoriesActive}">-->
+          <!--Stories-->
+        <!--</div>-->
+        <!--<div class="flyout" ng-class="{on: isLayersActive}">-->
+          <!--Layers-->
+        <!--</div>-->
+        <!--<div class="flyout" ng-class="{on: isFiltersActive}">-->
+          <!--Filters-->
+        <!--</div>-->
         <!--<div class="flyout" ng-class="{on: isLegendActive}">-->
           <!--Legend-->
         <!--</div>-->
-        <div class="flyout" ng-class="{on: isBasemapsActive}">
-          Basemaps
-        </div>
+        <!--<div class="flyout" ng-class="{on: isBasemapsActive}">-->
+          <!--Basemaps-->
+        <!--</div>-->
       </div>
 
     </div>
@@ -137,13 +137,14 @@
               ng-click="toggleParam('info')"
               ng-class="{on: isParam('info')}">
         <i class="icon-1_info"></i>
+        <div class="icon_title">Info</div>
       </button>
     </div>
     <div class="NavigationTooltipContainer bottom">
       <div class="NavFlyoutGroup">
-        <div class="flyout" ng-class="{on: isInfoActive}">
-          Info
-        </div>
+        <!--<div class="flyout" ng-class="{on: isInfoActive}">-->
+          <!--Info-->
+        <!--</div>-->
       </div>
     </div>
   </div>
@@ -912,11 +913,6 @@
             <div class="section scrollable" my-show="itemsList" after-show="createDonuts()"
                  ng-repeat="(themeName, themeItems) in groupings">
 
-
-              <div id="details-donut">
-
-              </div>
-
               <div class="heading">{{themeName}}</div>
               <div class="list">
                 <ul>
@@ -931,6 +927,27 @@
                   </li>
                 </ul>
               </div>
+              <div class="sectorsvg">
+                <div class="title">
+                  Sectors:
+                </div>
+                <div class="svgcontainer">
+                <div ng-repeat="c in dataset" class="inline">
+                    <svg ng-mouseenter="updateSectorLegend(c.alias,c.color,c.count)" width="{{c.width}}" height="25">
+                      <rect width="{{c.width}}" height="25" fill="{{c.color}}"> </rect>
+                    </svg>
+                </div>
+                </div>
+              </div>
+              <div id="sectorlegend">
+                <svg height="25" width="25">
+                  <circle cx="15" cy="15" r="7.5" fill="{{datasetColor}}"></circle>
+                </svg>
+                <div class="title">
+                  {{datasetTitle}} ({{datasetCount}})
+                </div>
+              </div>
+
             </div>
 
             <div class="section scrollable"
@@ -939,7 +956,7 @@
               <ul ng-show="!contextualLayer && moreLess==='More'">
                 <li ng-repeat="detail in lessDetails">
                   <div class="details-info">
-                    <a tooltip="{{tooltip(detail.key)}}"><i class="icon-1_info"></i></a>
+                    <!--<a tooltip="{{tooltip(detail.key)}}"><i class="icon-1_info"></i></a>-->
                   </div>
                   <div class="details-body">
                     {{label(detail.key)}}: <span ng-bind-html="detail.value" class="details-value"></span><i
@@ -951,7 +968,7 @@
                 <li ng-repeat="(key, value) in details">
                   <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'"
                        class="details-info">
-                    <a tooltip="{{tooltip(key)}}"><i class="icon-1_info"></i></a>
+                    <!--<a tooltip="{{tooltip(key)}}"><i class="icon-1_info"></i></a>-->
                   </div>
                   <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'"
                        class="details-body">
@@ -977,7 +994,7 @@
                     <ul>
                       <li ng-repeat="(key2, value2) in value" ng-if="key2!='showRfa' && key2!='name' && key2!='sf_id'">
                         <div class="details-info">
-                          <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
+                          <!--<a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>-->
                         </div>
                         <div class="details-body">
                           {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i
@@ -1007,7 +1024,7 @@
                     <ul>
                       <li ng-repeat="(key2, value2) in _value" ng-if="key2!='showIndicators' && key2!='name'">
                         <div class="details-info">
-                          <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
+                          <!--<a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>-->
                         </div>
                         <div class="details-body">
                           {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i
@@ -1035,7 +1052,7 @@
                     <ul>
                       <li ng-repeat="(key2, value2) in value_">
                         <div class="details-info">
-                          <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
+                          <!--<a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>-->
                         </div>
                         <div class="details-body">
                           {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i
@@ -1063,7 +1080,7 @@
                     <ul>
                       <li ng-repeat="(key2, value2) in value_">
                         <div class="details-info">
-                          <a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>
+                          <!--<a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>-->
                         </div>
                         <div class="details-body">
                           {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i

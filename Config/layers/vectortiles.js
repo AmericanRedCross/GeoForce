@@ -174,8 +174,16 @@ function getThemeStyle(vtf, $rootScope){
     return style;
   }
 
+  var checked;
+
   //See if we should show theme badges/bubbles or not
-  var checked = ($stateParams.themelabels && $stateParams.themelabels.toLowerCase() === 'true');
+  if($stateParams.themelabels !== null && $stateParams.themelabels !== undefined){
+    checked = $stateParams.themelabels;
+  }
+  else{
+    //if not present, default to true
+    checked = 'true';
+  }
 
   var ecosProperties;
 
@@ -225,7 +233,7 @@ function getThemeStyle(vtf, $rootScope){
 
 
 
-      if(checked === true){
+      if(checked == 'true'){
         //Disaster Type should use OCHA icons
         style.staticLabel = function () {
           var labelStyle = {
@@ -405,7 +413,7 @@ function getThemeStyle(vtf, $rootScope){
   }
 
   //Label
-  if(checked === true) {
+  if(checked == 'true') {
 
     if (vtf.layer.name === 'GADM_2014_label') {
       if (ecosProperties && ecosProperties.theme_count) {

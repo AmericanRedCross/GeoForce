@@ -7,6 +7,9 @@
 
 module.exports = angular.module('GeoAngular').factory('Donuts', function () {
 
+  var service = {};
+  service.dataset = [];
+
   /**
    * Creates a D3 Donut that is located in the details panel.
    */
@@ -72,7 +75,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
             data['-9999'] = {
               'count': 1,
               'color': visualizationDictionary[-9999].color,
-              'alias': visualizationDictionary[-9999].label
+              'alias': visualizationDictionary[-9999].label || 'Unknown'
             };
           }
         }
@@ -91,7 +94,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
           data[reportingValue] = {
             'count': 1,
             'color': reportingProperties.color,
-            'alias': reportingProperties.label
+            'alias': reportingProperties.label || 'Unknown'
           };
         }
 
@@ -112,7 +115,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
     var mergedOther = {
       'count': 0,
       'color': visualizationDictionary[-9999].color,
-      'alias': visualizationDictionary[-9999].label
+      'alias': visualizationDictionary[-9999].label || 'Unknown'
     };
 
     // Merge all 'other' objects; we determine which are 'other' by testing to see if its been assigned the 'other' color
@@ -125,8 +128,9 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
       }
     }
 
-    // Add the merge objedt to the dataset we will use in donut chart
+    // Add the merge object to the dataset we will use in donut chart
     dataset.push(mergedOther);
+    service.dataset = dataset;
 
 
     // Use jQuery to get this cluster markers height and width (set in the CSS)
@@ -298,18 +302,18 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
    * Public functions that are accessible elsewhere in the app.
    * Ex: Donuts.createDetailsDonut(arg1, arg2);
    */
-  return {
 
     /**
      * Creates a D3 donut that goes around a label on the map.
      */
-    createLabelDonut: function(sectors, projects, divId) {
+    service.createLabelDonut = function(sectors, projects, divId) {
       var vizDictionary = makeVisualizationDictionary(sectors);
       var donut = new ExpandoDonut(projects, vizDictionary, divId , 'bottom');
       $(divId).prepend('<div id="sectors-heading" class="heading">Sectors</div>');
       return donut;
-    }
+    };
 
-  };
+  return service;
+
 
 });

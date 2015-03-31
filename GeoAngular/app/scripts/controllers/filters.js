@@ -75,14 +75,15 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     if ($stateParams.filters !== null) {
 
       // only clear filters when switching from project to disaster; and vice versa
-      if(($stateParams.theme.indexOf('disaster')!==-1 && $stateParams.filters.indexOf("disaster_type__c")!==-1)
-      || ($stateParams.theme.indexOf('project')!==-1 && $stateParams.filters.indexOf("sector__c")!==-1)
+      if(($stateParams.theme.indexOf('disaster')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("disaster_type__c")!==-1))
+      || ($stateParams.theme.indexOf('project')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("sector__c")!==-1))
       ){
         var state = $state.current.name || 'main';
         $state.go(state, $stateParams);
 
       } else {
-        $stateParams.filters = null; //clear theme filters
+        delete $stateParams.filters;
+        //$stateParams.filters = null; //clear theme filters
         var state = $state.current.name || 'main';
         $state.go(state, $stateParams);
       }
@@ -274,7 +275,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     }
     $scope.sectorClause = null;
     $scope.composeWhereClause();
-    
+
     $stateParams.category = null;
     $state.go($state.current.name, $stateParams);
   };

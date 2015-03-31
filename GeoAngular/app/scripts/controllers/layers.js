@@ -21,11 +21,11 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
   $scope.updateThemeLabel = function() {
     if ($scope.themeLabels.isChecked === true) {
-      $stateParams.themelabels = true;
+      $stateParams.themelabels = 'true';
     }
     else {
       //remove from stateparams
-      delete $stateParams.themelabels;
+      $stateParams.themelabels = 'false';
     }
 
     var state = $state.current.name || 'main';
@@ -254,16 +254,23 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     //Check the stateParams
     //Specifically, see about the label properties being checked.
 
-    var checked = ($stateParams.themelabels && $stateParams.themelabels.toLowerCase() === 'true');
-    $scope.themeLabels = { isChecked: checked };
+    var checked;
+
+    //See if we should show theme badges/bubbles or not
+    if($stateParams.themelabels !== null && $stateParams.themelabels !== undefined){
+      checked = $stateParams.themelabels;
+    }
+    else{
+      //if not present, default to true
+      checked = 'true';
+    }
+
+    $scope.themeLabels = { isChecked: (checked == 'true' ? true : false) };
 
     //See which, if any, gadm levels is active
     if($rootScope.level){
       $scope.gadmLevel = $rootScope.level;
     }
-
-    //If themeLabels is not checked, remove the labels.
-    //Refresh the theme layer
 
   });
 

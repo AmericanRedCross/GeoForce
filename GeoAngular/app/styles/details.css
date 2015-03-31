@@ -188,7 +188,7 @@
 }
 
 #DetailsPanel .InnerContainer .section {
-    margin-bottom: 15px;
+    /*margin-bottom: 15px;*/
 }
 
 .details-li {
@@ -283,4 +283,39 @@
 
 #DetailsPanel .details-bottom-buttons {
     margin-top: 5px;
+}
+
+.sectorsvg{
+  max-height: 100px;
+}
+
+.sectorsvg .title {
+  text-transform: uppercase;
+}
+
+.sectorsvg .inline {
+  display:inline;
+  margin: -2px;
+}
+
+
+#sectorlegend {
+  height: 37px;
+}
+
+#sectorlegend .title{
+  display: inline;
+  font-size: 12px;
+}
+
+#sectorlegend svg{
+  margin-bottom: -4px;
+}
+
+#sectorlegend .svgcontainer{
+  margin:0px;
+}
+
+rect:hover {
+  opacity: 0.5;
 }

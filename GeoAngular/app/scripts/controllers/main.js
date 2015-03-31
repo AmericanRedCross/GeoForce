@@ -10,7 +10,7 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   var themeStr = $stateParams.theme;
   var filtersStr = $stateParams.filters;
   var categoryStr = $stateParams.category; // layer category open
-
+  var themeLabelStr = $stateParams.themelabels; // themelabels (bubbles)
 
   var levelStr = $stateParams.level;
   var zoomStr = $stateParams.zoom;
@@ -50,6 +50,12 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   if (categoryStr !== window.prevCategoryStr) {
     window.prevCategoryStr = categoryStr;
     $rootScope.$broadcast('category-update', categoryStr);
+  }
+
+  // if the themelabels has changed broadcast themelabels has changed
+  if(window.themeLabelStr != themeLabelStr) {
+    window.themeLabelStr = themeLabelStr;
+    $rootScope.$broadcast('themelabels-update', themeLabelStr);
   }
 
 });
