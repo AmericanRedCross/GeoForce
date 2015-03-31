@@ -7,6 +7,9 @@
 
 module.exports = angular.module('GeoAngular').factory('Donuts', function () {
 
+  var service = {};
+  service.dataset = [];
+
   /**
    * Creates a D3 Donut that is located in the details panel.
    */
@@ -125,8 +128,9 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
       }
     }
 
-    // Add the merge objedt to the dataset we will use in donut chart
+    // Add the merge object to the dataset we will use in donut chart
     dataset.push(mergedOther);
+    service.dataset = dataset;
 
 
     // Use jQuery to get this cluster markers height and width (set in the CSS)
@@ -298,18 +302,18 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
    * Public functions that are accessible elsewhere in the app.
    * Ex: Donuts.createDetailsDonut(arg1, arg2);
    */
-  return {
 
     /**
      * Creates a D3 donut that goes around a label on the map.
      */
-    createLabelDonut: function(sectors, projects, divId) {
+    service.createLabelDonut = function(sectors, projects, divId) {
       var vizDictionary = makeVisualizationDictionary(sectors);
       var donut = new ExpandoDonut(projects, vizDictionary, divId , 'bottom');
       $(divId).prepend('<div id="sectors-heading" class="heading">Sectors</div>');
       return donut;
-    }
+    };
 
-  };
+  return service;
+
 
 });

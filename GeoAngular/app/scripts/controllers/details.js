@@ -283,6 +283,25 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       $scope.showList();
       $scope.openParam('details-panel');
       $scope.createDonuts();
+      $scope.dataset = Donuts.dataset;
+
+      //sector legend
+      var dc=0; //total sectors
+      for(var i=0;i<$scope.dataset.length;i++){
+        dc = dc + $scope.dataset[i].count;
+      }
+      for(var i=0;i<$scope.dataset.length;i++){
+        $scope.dataset[i].width =  Math.round((240 * ($scope.dataset[i].count/dc))); // percentage of div (240px)
+      }
+      // Sort sector array by count
+      $scope.dataset.sort(function (a, b) {
+        return b.width - a.width; // sort by count
+      });
+      // end sector legend
+
+      $scope.datasetTitle = $scope.dataset[0].alias;
+      $scope.datasetColor = $scope.dataset[0].color;
+
     } else { // standard geojson, show properties as details
 
       $scope.contextualLayer = (properties.sf_id ? false : true);
@@ -592,5 +611,10 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     downloadLink.download = name || 'feature.geojson';
     downloadLink.click();
   };
+
+  $scope.updateSectorLegend = function(alias,color){
+    $scope.datasetTitle = alias;
+    $scope.datasetColor = color;
+  }
 
 });
