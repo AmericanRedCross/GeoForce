@@ -104,11 +104,13 @@
 }
 
 #DetailsNub {
-    color: #ed1b2e;
-    padding: 20px;
-    background-color: #fff;
-    cursor:pointer;
-    border-radius: 0px;
+  color: #ed1b2e;
+  cursor: pointer;
+  border-radius: 0px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #d3d3d3;
+  background-color: rgb(255, 255, 255);
 }
 
 .on #DetailsNub {
@@ -335,3 +337,20 @@
 rect:hover {
   opacity: 0.5;
 }
+
+.btnless {
+  padding:8px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(220, 219, 219);
+  border-radius: 1px;
+  background-image: -moz-linear-gradient( 90deg, rgb(244,244,244) 0%, rgb(255,255,255) 100%);
+  background-image: -webkit-linear-gradient( 90deg, rgb(244,244,244) 0%, rgb(255,255,255) 100%);
+  background-image: -ms-linear-gradient( 90deg, rgb(244,244,244) 0%, rgb(255,255,255) 100%);
+  font-size: 11px;
+  font-family: oswaldregular;
+  color: rgb(63, 63, 63);
+  width: 106px;
+  z-index: 122;
+}
+

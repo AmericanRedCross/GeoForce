@@ -1,6 +1,6 @@
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content modal-comp">
             <form role="form">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button ng-click="addToMap()" type="button" class="btn btn-danger">Add to Map</button>
+                    <div ng-click="addToMap()" type="button" class="btn btn-danger btn-footer">Add to Map</div>
                 </div>
             </form>
         </div>
