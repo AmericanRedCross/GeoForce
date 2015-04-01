@@ -1119,14 +1119,31 @@
       <!--<div class="legendTitle ng-binding">Legend:</div>-->
       <!--<div class="legendIcon ng-binding"></div>-->
     <!--</div>-->
-    <div class="list-group legend-list">
+    <div class="list-group legend-list" ng-cloak>
       <div class="list-group-item class-list" ng-repeat="layer in layers">
-        <div class="legendTitle">{{layer.name}}</div>
-        <div ng-repeat="layerClass in legendObject">
+        <div class="legend-title">Legend:</div>
+        <div ng-repeat="layerClass in legendObject" class="legend-class">
+
+          <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
+          <div class="legend-swatch" ng-style="{backgroundColor: '{{layerClass.color}}'}" ng-show="!layerClass.gradient"> </div>
+
+          <!-- Legend Color swatch label for PBF THEME Layer.  Set in Config/VectorTiles.js -->
+          <div class="legend-swatch-label">
             {{layerClass.legendLabel}}
-          <div ng-show="layerClass.gradient.length > 0" ng-style='"background" : "linear-gradient(to right,\'{{layerClass.gradient[0]}}\', \'{{layerClass.gradient[1]}})\''>
-            Gradient Here
           </div>
+
+          <div ng-show="layerClass.gradient.length > 0">
+            <div class="gradient-label">
+              Fewer
+              </div>
+            <div class="gradient-legend" ng-style="{background : 'linear-gradient(to right, {{layerClass.gradient[0]}}, {{layerClass.gradient[1]}})'}">
+
+            </div>
+            <div class="gradient-label">
+              More
+              </div>
+          </div>
+
         </div>
 
         <div class="legendIcon" ng-bind-html="layer.activeLegend"></div>

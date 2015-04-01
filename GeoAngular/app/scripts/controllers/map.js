@@ -510,6 +510,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
             vtLabelLayer.clearLayerFeatureHash();
           }
 
+          //Clear the MVT internal legend object before redrawing
+          vtLayer.clearLegendObject();
+
           layer.redraw(true); //false means that this redraw won't trigger the onTilesLoaded event.
 
           //Fetch the legend after redraw

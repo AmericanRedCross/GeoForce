@@ -194,6 +194,7 @@ function getThemeStyle(vtf, $rootScope){
       if (ecosProperties.iroc_status__c) {
         //Keep track of the property name for the sake of legend display
         style.legendLabel = ecosProperties.iroc_status__c;
+
         switch (ecosProperties.iroc_status__c.toLowerCase()) {
           case "active":
             style.color = 'rgba(204,0,51,' + opacity + ')';
@@ -335,11 +336,11 @@ function getThemeStyle(vtf, $rootScope){
     if (ecosProperties && ecosProperties) {
 
       //Keep track of the property name for the sake of legend display
-      style.legendLabel = "# Projects";
+      style.legendLabel = "#Projects";
 
       //for the purposes of showing a legend, keep this gradient handy
       style.gradient = [
-        'rgba(0,0,0,' + opacity + ')',
+        'rgba(255,255,255,' + opacity + ')',
         'rgba(0,255,59,' + opacity + ')'
       ];
 

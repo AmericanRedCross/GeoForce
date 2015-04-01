@@ -35,3 +35,31 @@
 .list-group-item.class-list div{
   display: inline-block;
 }
+
+.gradient-legend{
+   width: 50px;
+  height: 20px;
+}
+
+.gradient-label{
+  font-size: 10px;
+}
+
+.legend-swatch{
+  height: 16px;
+  width: 16px;
+}
+
+.legend-swatch-label{
+  font-size: 11px;
+  transform: translateY(-25%);
+}
+
+.legend-class{
+  transform: translateY(3px);
+  margin-right: 20px;
+}
+
+.legend-title{
+  margin-right: 10px;
+}
