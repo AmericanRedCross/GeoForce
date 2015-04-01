@@ -1146,7 +1146,14 @@
 
         </div>
 
-        <div class="legendIcon" ng-bind-html="layer.activeLegend"></div>
+        <div ng-show="singleBubbleObject && themeLabelsChecked" class="single-bubble-class">
+          <div ng-bind-html="singleBubbleObject" class="legend-swatch singleIcon">
+          </div>
+          <div class="legend-swatch-label">
+             Counts
+          </div>
+        </div>
+
       </div>
     </div>
     </div>

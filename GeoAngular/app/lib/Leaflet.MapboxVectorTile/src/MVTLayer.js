@@ -395,10 +395,7 @@ module.exports = L.TileLayer.Canvas.extend({
         selectedFeatures.push(feature);
       } else {
         feature.draw(canvasID);
-        //If style.legendLabel property exists, build a legend object.
-        if(feature.style.legendLabel){
-          this.legendObject[feature.style.legendLabel] = feature.style;
-        }
+        this.addLegendStyle(feature);
       }
     }
 
@@ -430,6 +427,20 @@ module.exports = L.TileLayer.Canvas.extend({
 
   featureWithLabelAdded: function(feature) {
     this.featuresWithLabels.push(feature);
+  },
+
+  addLegendStyle: function(feature){
+    //Take in a feature, and add in class names and colors based on drawing style
+
+    //If style.legendLabel property exists, build a legend object.
+    if(feature.style.legendLabel){
+      this.legendObject[feature.style.legendLabel] = feature.style;
+    }
+
+    //Store the bubble HTML, if present
+    if(feature.staticLabel){
+      this.legendObject[feature.style.legendLabel] = feature.staticLabel.icon;
+    }
   },
 
   clearLegendObject: function(){

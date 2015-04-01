@@ -63,3 +63,22 @@
 .legend-title{
   margin-right: 10px;
 }
+
+.singleIcon div{
+    height: 20px;
+    width: 20px;
+    color: transparent;
+}
+
+.legend-swatch.singleIcon{
+  height: 20px;
+  width: 25px;
+}
+
+.single-bubble-class .legend-swatch-label{
+  transform: translateY(0);
+}
+
+.single-bubble-class{
+  transform: translateY(-1px);
+}

@@ -3,7 +3,7 @@
  *     on Mon Mar 17 2014
  */
 
-module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, LayerConfig, VectorProvider, $http) {
+module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, LayerConfig, VectorProvider, $http, $sce) {
   var map = L.map('map');
   var firstLoad = true;
 
@@ -149,6 +149,15 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   $rootScope.$on('themelabels-update', function () {
     //Call the function
     onThemeLabelChanged();
+
+    //See if we should show theme badges/bubbles or not
+    if($stateParams.themelabels !== null && $stateParams.themelabels !== undefined){
+      $scope.themeLabelsChecked = $stateParams.themelabels;
+    }
+    else{
+      //if not present, default to true
+      $scope.themeLabelsChecked = 'true';
+    }
   });
 
 
@@ -424,32 +433,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     var layer = overlays_dictionary["gadm" + level];
 
     if (layer) {
-
-      var layers = layer.getLayers();
-
-      if(!layers) return; //no layers have loaded yet.  This needs to wait until some tiles have loaded.
-
-      var vtLayer;
-      var vtLabelLayer;
-
-
-      vtLayer = layers["GADM_2014"];
-      vtLabelLayer = layers["GADM_2014_label"];
-
-
-      if(vtLayer && vtLayer.features) {
-        //Clear ecos property from MVTFeature
-        clearFeatureProperties(vtLayer.features);
-        //Clear ecos property from Label Layer
-        clearFeatureProperties(vtLabelLayer.features);
-
-
-        //Update Layer(s) style and redraw
-        vtLayer.clearLayerFeatureHash(); //Force VTs to be reparsed.
-        vtLabelLayer.clearLayerFeatureHash();
-      }
-
-      layer.redraw(false); //false means that this redraw won't trigger the onTilesLoaded event.
+      redrawThemeLayers(layer);
     }
 
   }
@@ -485,54 +469,76 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
           $rootScope.vtData = guids; //Store the data to be merged with vector tile layer.  In config/vectortiles.js, the MVT choropleth layers will attempt to merge this data in when tiles finish loading (any time new tiles are requested, like zoomin/out/pan)
 
-          var layers = layer.getLayers();
-
-          if (!layers) return; //no layers have loaded yet.  This needs to wait until some tiles have loaded.
-
-          var vtLayer;
-          var vtLabelLayer;
-
-          //TODO: Move this logic to a single location
-
-          vtLayer = layers["GADM_2014"];
-          vtLabelLayer = layers["GADM_2014_label"];
-
-
-          if(vtLayer && vtLayer.features) {
-            //Clear ecos property from MVTFeature
-            clearFeatureProperties(vtLayer.features);
-            //Clear ecos property from Label Layer
-            clearFeatureProperties(vtLabelLayer.features);
-
-
-            //Update Layer(s) style and redraw
-            vtLayer.clearLayerFeatureHash(); //Force VTs to be reparsed.
-            vtLabelLayer.clearLayerFeatureHash();
-          }
-
-          //Clear the MVT internal legend object before redrawing
-          vtLayer.clearLegendObject();
-
-          layer.redraw(true); //false means that this redraw won't trigger the onTilesLoaded event.
-
-          //Fetch the legend after redraw
-          //need to wait until all tiles finish drawing
-          layer.options.onTilesLoaded = function(){
-            var legendObject = vtLayer.getLegendObject();
-            if(legendObject){
-              //Format the contents and set it equal to the scope
-              $scope.legendObject = legendObject;
-            }
-          }
-
-
+          redrawThemeLayers(layer);
 
         }
-
       })
     }
 
   }
+
+
+
+  function redrawThemeLayers(layer){
+    var layers = layer.getLayers();
+
+    if (!layers) return; //no layers have loaded yet.  This needs to wait until some tiles have loaded.
+
+    var vtLayer;
+    var vtLabelLayer;
+
+    //TODO: Move this logic to a single location
+
+    vtLayer = layers["GADM_2014"];
+    vtLabelLayer = layers["GADM_2014_label"];
+
+
+    if(vtLayer && vtLayer.features) {
+      //Clear ecos property from MVTFeature
+      clearFeatureProperties(vtLayer.features);
+      //Clear ecos property from Label Layer
+      clearFeatureProperties(vtLabelLayer.features);
+
+
+      //Update Layer(s) style and redraw
+      vtLayer.clearLayerFeatureHash(); //Force VTs to be reparsed.
+      vtLabelLayer.clearLayerFeatureHash();
+    }
+
+    //Clear the MVT internal legend object before redrawing
+    vtLayer.clearLegendObject();
+    vtLabelLayer.clearLegendObject();
+
+    layer.redraw(true); //false means that this redraw won't trigger the onTilesLoaded event.
+
+    //Fetch the legend after redraw
+    //need to wait until all tiles finish drawing
+    layer.options.onTilesLoaded = function(){
+      var legendObject = vtLayer.getLegendObject();
+      if(legendObject){
+        //set it equal to the scope
+        $scope.legendObject = legendObject;
+      }
+
+      var bubbleLegendObject = vtLabelLayer.getLegendObject();
+      if(bubbleLegendObject){
+        //set it equal to the scope
+        if($stateParams.theme.toLowerCase() == "disastertype"){
+          //Disaster type has different bubble images
+          $scope.bubbleLegendObject = bubbleLegendObject;
+        }
+        else{
+          //Other themes use the same bubble type.
+          //So just grab the first one
+          var keys = Object.keys(bubbleLegendObject);
+          if(bubbleLegendObject[keys[0]] && bubbleLegendObject[keys[0]].options && bubbleLegendObject[keys[0]].options.html){
+            $scope.singleBubbleObject = $sce.trustAsHtml(bubbleLegendObject[keys[0]].options.html);
+          }
+        }
+      }
+    }
+  }
+
 
   /**
    * When the filters change, this function will be fired.
