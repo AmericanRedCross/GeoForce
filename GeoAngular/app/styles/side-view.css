@@ -25,6 +25,8 @@
     left: 0px;
     background-color: #F2F2F2;
     z-index: 2003;
+  font-family: 'Open Sans';
+
 }
 .side-view.on {
     left: 0px;
@@ -43,7 +45,7 @@
     line-height: 1;
 }
 
-.side-view .title{
+.side-view .uppertitle{
     font-size: 20px;
     font-family: oswaldregular;
     float: left;

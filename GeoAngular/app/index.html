@@ -162,10 +162,11 @@
       <div ng-controller="StoriesCtrl" ng-class="{on: isParam('stories')}" class="navpanel container stories-container">
 
         <div class="row">
-          <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('stories')"><span
-            class="glyphicon glyphicon-chevron-left"></span></button>
+          <div class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('stories')">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </div>
           <div class="col-md-10 side-view-title-wrapper">
-            <div class="title">STORIES</div>
+            <div class="uppertitle">STORIES</div>
             <div class="description">Click on a thumbnail to load a predefined map.</div>
           </div>
         </div>
@@ -291,10 +292,11 @@
            class="navpanel container layers-container">
 
         <div class="row">
-          <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('layers-panel')"><span
-            class="glyphicon glyphicon-chevron-left"></span></button>
+          <div class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('layers-panel')">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </div>
           <div class="col-md-8 side-view-title-wrapper">
-            <div class="title">Map Layers</div>
+            <div class="uppertitle">Map Layers</div>
             <div class="description"></div>
           </div>
         </div>
@@ -312,7 +314,7 @@
           <div class="tab-content scrollable">
             <div ng-class="{active: navTab==='contextual'}" class="tab-pane">
 
-                                    <h4>ECOS layer:</h4>
+                                    <h4 class="title">ECOS layer:</h4>
                                     <label class="checkbox">
                                       <input type="checkbox" ng-model="themeLabels.isChecked" ng-disabled="!theme.isChecked" ng-change="updateThemeLabel()">
                                       ECOS Count Bubbles
@@ -322,7 +324,7 @@
                                       ECOS Overlay
                                     </label>
 
-                                    <h4>Administrative boundary levels:</h4>
+                                    <h4 class="title">Administrative boundary levels:</h4>
 
                                     <!--<div class="radio">-->
                                         <!--<label>-->
@@ -369,7 +371,7 @@
                                     </div>
 
               <div ng-repeat="(panelName, panel) in layersPanels">
-                <h4>{{panelName}}</h4>
+                <h4 class="title">{{panelName}}</h4>
                 <label class="checkbox" ng-repeat="(layerKey, layer) in panel">
                   <input type="checkbox" ng-model="layer.active" ng-change="toggleMapLayer(layerKey, layer)">
                   {{layer.name || layer.properties.title || layerKey}}
@@ -418,10 +420,11 @@
 
         <div ng-show="$stateParams.theme == 'project'">
           <div class="row">
-            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters-panel')"><span
-              class="glyphicon glyphicon-chevron-left"></span></button>
+            <div class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters-panel')"><span
+              class="glyphicon glyphicon-chevron-left"></span>
+            </div>
             <div class="col-md-10 side-view-title-wrapper">
-              <div class="title">Project Filters</div>
+              <div class="uppertitle">Project Filters</div>
               <a class="clear-all" ng-click="clearAllFilters()">Clear All Filters</a>
             </div>
           </div>
@@ -541,8 +544,9 @@
         </div>
         <div ng-show="$stateParams.theme == 'disaster' || $stateParams.theme == 'disasterType'">
           <div class="row">
-            <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters-panel')"><span
-              class="glyphicon glyphicon-chevron-left"></span></button>
+            <div class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters-panel')">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+            </div>
             <div class="col-md-10 side-view-title-wrapper">
               <div class="title">Disaster Filters</div>
               <a class="clear-all" ng-click="clearAllFilters()">Clear All Filters</a>
@@ -706,10 +710,11 @@
            class="navpanel container basemaps-container">
 
         <div class="row">
-          <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('basemaps')"><span
-            class="glyphicon glyphicon-chevron-left"></span></button>
+          <div class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('basemaps')">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </div>
           <div class="col-md-7 side-view-title-wrapper">
-            <div class="title">BASEMAPS</div>
+            <div class="uppertitle">BASEMAPS</div>
           </div>
         </div>
         <div class="row scrollable">
@@ -1101,9 +1106,9 @@
           </div>
 
           <div class="details-bottom-buttons pull-right" ng-show="!contextualLayer && !itemsList">
-            <button type="button" class="btn btn-default btn-xs" ng-click="toggleMoreLess()">Show {{moreLess}} Details
-            </button>
-            <a href="{{salesforceUrl}}/{{details.sf_id}}" target="_blank" class="btn btn-default btn-xs">View in
+            <div type="button" class="btn btn-default btn-xs btnless" ng-click="toggleMoreLess()">Show {{moreLess}} Details
+            </div>
+            <a href="{{salesforceUrl}}/{{details.sf_id}}" target="_blank" class="btn btn-default btn-xs btnless">View in
               ECOS</a>
           </div>
 

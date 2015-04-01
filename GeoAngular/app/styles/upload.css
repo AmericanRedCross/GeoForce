@@ -1,13 +1,14 @@
 .dnd-box {
-    border: 3px dashed #ccc;
-    width: 350px;
-    margin: 20px auto;
-    background-color: #F6ECED;
-    color: #a5a5a5;
-    font-size: 20px;
-    text-align: center;
-    padding: 20px 30px;
-    cursor: pointer;
+  border: 3px dashed #ccc;
+  width: 558px;
+  margin: 20px auto 0px auto;
+  background-color: #F6ECED;
+  color: #a5a5a5;
+  font-size: 20px;
+  text-align: center;
+  padding: 20px 30px;
+  cursor: pointer;
+
 }
 
 .dnd-box-drag-over {

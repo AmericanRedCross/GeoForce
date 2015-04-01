@@ -30,3 +30,9 @@
 .layers-container div.icon{
     font-size: 45px;
 }
+
+.layers-container .title{
+  font-family: oswaldregular;
+  color: #3f3f3f;
+  text-transform: uppercase;
+}
