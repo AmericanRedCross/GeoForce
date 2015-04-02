@@ -445,7 +445,7 @@
                 <a ng-click="clearSectorsFilter()">Clear All Sector Filters</a>
 
                 <div ng-repeat="sector in sectors">
-                  <label class="checkbox" style="color: {{sector.color}};">
+                  <label class="checkbox">
                     <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
                     <i
                       class="icon-{{sector.name.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i>

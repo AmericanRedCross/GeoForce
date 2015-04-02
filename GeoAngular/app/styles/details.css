@@ -284,7 +284,10 @@
 }
 
 #DetailsPanel .details-bottom-buttons {
-    margin-top: 5px;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0px 10px 0px;
+  background-color: rgb(255, 255, 255);
 }
 
 .sectorsvg{

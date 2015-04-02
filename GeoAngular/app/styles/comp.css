@@ -222,39 +222,4 @@ a {
     text-align: center;
 }
 
-.modal-dialog .modal-comp{
-  background-color: rgb(255, 255, 255);
-  opacity: 0.961;
-  border-radius: 0px;
-  color: rgb(63, 63, 63);
-  font-size: 14px;
-  font-family: "Open Sans";
-  color: rgb(63, 63, 63);
-  line-height: 25px;
-}
-
-.modal-title {
-  font-size: 21px;
-  font-family: oswaldregular;
-}
-
-.btn-footer {
-  background-color: rgb(237, 27, 46);
-  padding: 20px;
-  border-radius: 0px;
-  font-size: 29px;
-  font-family: oswaldregular;
-  color: rgb(255, 255, 255);
-  -moz-transform: matrix( 0.53548387096774,0,0,0.53571428571429,0,0);
-  -webkit-transform: matrix( 0.53548387096774,0,0,0.53571428571429,0,0);
-  -ms-transform: matrix( 0.53548387096774,0,0,0.53571428571429,0,0);
-  text-transform: uppercase;
-}
-
-.modal-footer {
-  padding: 0px;
-  margin:0px;
-  text-align: right;
-  border:none;
-}
 
