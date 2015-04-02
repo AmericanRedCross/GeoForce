@@ -46,10 +46,10 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
-    var layersArr = $.grep($stateParams.layers.split(','), function(routeLayer){
-      return routeLayer !== 'gadm0' && routeLayer !== 'theme';
-    });
-    $stateParams.layers = layersArr.join(',');
+    //var layersArr = $.grep($stateParams.layers.split(','), function(routeLayer){
+    //  return routeLayer !== 'gadm0' && routeLayer !== 'theme';
+    //});
+    //$stateParams.layers = layersArr.join(',');
     $scope.setThemeQueryParam('none');
   };
 

@@ -76,6 +76,10 @@ PBF.prototype.fetchFeatureDetails = function(guid, level) {
   }
 
   var theme = $rootScope.$stateParams.theme || 'project';
+
+  //Exit if theme is none.
+  if(theme.toLowerCase() === 'none') return;
+
   var themeName = $rootScope.themeNameHash[theme];
   if (typeof level === 'undefined' || level === null) {
     console.error('we need a level.');

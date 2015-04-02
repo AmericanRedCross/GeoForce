@@ -456,23 +456,32 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     var layer = overlays_dictionary["gadm" + level];
 
     if (layer) {
-      //For vector tile choropleths, ask for new data .json from the server
-      getECOSProperties(function (data) {
 
-        if (data && data.features) {
-
-          var guids = {};
-
-          angular.forEach(data.features, function (dataItem, dataKey) {
-            guids[dataItem.properties.guid] = dataItem.properties;
-          });
-
-          $rootScope.vtData = guids; //Store the data to be merged with vector tile layer.  In config/vectortiles.js, the MVT choropleth layers will attempt to merge this data in when tiles finish loading (any time new tiles are requested, like zoomin/out/pan)
-
+      if($stateParams.theme.toLowerCase() === 'none'){
+          //Skip the mumbo jumbo.  Clear the cached ECOS data and redraw empty
+          $rootScope.vtData = {};
           redrawThemeLayers(layer);
+      }
+      else{
+        //For vector tile choropleths, ask for new data .json from the server
+        getECOSProperties(function (data) {
 
-        }
-      })
+          if (data && data.features) {
+
+            var guids = {};
+
+            angular.forEach(data.features, function (dataItem, dataKey) {
+              guids[dataItem.properties.guid] = dataItem.properties;
+            });
+
+            $rootScope.vtData = guids; //Store the data to be merged with vector tile layer.  In config/vectortiles.js, the MVT choropleth layers will attempt to merge this data in when tiles finish loading (any time new tiles are requested, like zoomin/out/pan)
+
+            redrawThemeLayers(layer);
+
+          }
+        })
+      }
+
     }
 
   }
