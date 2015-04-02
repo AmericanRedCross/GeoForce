@@ -305,14 +305,14 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       $scope.dataset.sort(function (a, b) {
         return b.width - a.width; // sort by count
       });
-      // end sector legend
 
-      if($scope.dataset.length > 0){
+      if($scope.dataset.length>0) {
         $scope.datasetTitle = $scope.dataset[0].alias;
         $scope.datasetColor = $scope.dataset[0].color;
         $scope.datasetCount = $scope.dataset[0].count;
       }
 
+      // end sector legend
 
     } else { // standard geojson, show properties as details
 
@@ -594,7 +594,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.resizeDetailsPanel = function() {
-    var height = $('#MapCtrl').height() - 200; //Magic Number
+    var height = $('#MapCtrl').height() - 260; //Magic Number
 
     //height is the value that the entire details panel should never exceed.
     //Within the panel itself, the inner container needs to adjust its height based on the contents of the panel.

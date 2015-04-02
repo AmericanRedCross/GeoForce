@@ -82,7 +82,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       map.setView([c.lat, c.lng], zoom);
     }
 
-    if ((theme != $stateParams.theme || filters != $stateParams.filters) || firstLoad === true) {
+    if ((theme !== $stateParams.theme || filters !== $stateParams.filters) || firstLoad === true) {
 
       firstLoad = false;
 

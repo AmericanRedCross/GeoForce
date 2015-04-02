@@ -1,6 +1,6 @@
 <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content modal-comp">
             <form role="form">
                 <button class="side-view-close btn btn-lg btn-danger" data-dismiss="modal" aria-hidden="true">
                     <span class="glyphicon glyphicon glyphicon-remove"></span>
@@ -8,8 +8,10 @@
                 <div class="modal-header">
                     <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
 
-                    <h4 class="modal-title" id="exportModalLabel">EXPORT</h4>
-                    <span>Choose from the following 2 options:</span>
+                    <div class="modal-title" id="exportModalLabel">
+                      EXPORT
+                      <span class="description">Choose from the following 2 options:</span>
+                    </div>
                 </div>
                 <div class="modal-body">
 
@@ -22,14 +24,14 @@
 
                     <div class="form-group permalink">
                         <span class="redbox">1</span>
-                        <label for="routeUrl">PERMALINK</label>
-                        <div>Please copy the link below.</div>
+                        <label class="mini-title" for="routeUrl">PERMALINK</label>
+                        <div class="permalinkdesc">Please copy the link below:</div>
                         <input type="remoteUrl" class="form-control" id="routeUrl" ng-model="routeUrl" />
                     </div>
 
                     <div class="form-group exportImage">
                         <span class="redbox">2</span>
-                        <label for="routeUrl">EXPORT AN IMAGE</label>
+                        <label class="mini-title" for="routeUrl">EXPORT AN IMAGE</label>
                         <div style="display:none;">What element(s) would you like to include in the exported image?</div>
 
 
@@ -84,7 +86,7 @@
                                         </tr>
                                     </table>
                                 </div>
-                                <div id="executeExportButton" class="redbtn">CREATE IMAGE NOW<div class="arrow"></div></div>
+                                <div id="executeExportButton" class="redbtn">CREATE IMAGE NOW</div>
 
                                 <div id="exportOptionsContainer" class="exportOptionsContainer clearfix" style="display:none;">
                                     <div class="exportOptionsGroup">

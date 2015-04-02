@@ -25,12 +25,12 @@
 }
 
 #exportModal .redbtn {
+    font-size: 16px;
+    font-family: oswaldregular;
+    color: rgb(255, 255, 255);
     background-color: #ed1b2e;
     padding: 6px 25px;
     border-radius: 0px;
-    color: #fff;
-    font-size: 16px;
-    font-family: oswaldregular;
     text-transform: uppercase;
     display: inline-block;
     cursor:pointer;
@@ -77,5 +77,35 @@
 }
 
 #exportModal .modal-header{
-    border-bottom: 0px;
+  border-bottom: 0px;
+  padding: 35px 20px 0px 20px;
+}
+
+#exportModal .modal-comp{
+  background-color: rgb(255, 255, 255);
+  opacity: 0.961;
+  border-radius: 0px;
+  color: rgb(63, 63, 63);
+  font-size: 14px;
+  font-family: "Open Sans";
+  color: rgb(63, 63, 63);
+  line-height: 25px;
+}
+
+#exportModal .modal-title .description{
+  font-size: 12px;
+  color: rgb(63, 63, 63);
+  font-family: "Open Sans";
+}
+
+#exportModal .mini-title {
+  font-size: 15px;
+  font-family: oswaldregular;
+  color: rgb(63, 63, 63);
+  margin: 0px;
+}
+
+#exportModal .permalinkdesc {
+  margin-left: 26px;
+  margin-bottom: 5px;
 }

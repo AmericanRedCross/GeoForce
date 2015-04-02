@@ -30,8 +30,9 @@
 }
 
 #sectors-filter label {
-    font-weight: bold;
-    font-size: 15px;
+  font-size: 14px;
+  font-family: "Open Sans";
+  color: #3f3f3f;
 }
 
 .filters-container .clear-all {
@@ -65,13 +66,13 @@
   -o-transition: all 0.30s ease-in-out;
 }
 
-#disasterType-filter label {
-  font-weight: bold;
-  font-size: 15px;
+#disasterType-filter {
+  font-size: 14px;
+  font-family: "Open Sans";
+  color: #3f3f3f;
 }
 
 #disasterType-filter .category {
-  font-weight: bold;
   font-size: 18px;
   cursor: pointer;
 }
