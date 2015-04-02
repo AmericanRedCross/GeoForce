@@ -3,8 +3,8 @@
  *       on 12/15/14.
  */
 
-
-
+//Default opacity of GADM polygons
+var opacity = "0.5";
 
 var gadm0 = {
   type: 'pbf',
@@ -63,14 +63,14 @@ var gadm0 = {
 
     if(evt && evt.feature && evt.feature.id){
       //Do the onclick thing
-      PBFObject.fetchFeatureDetails(evt.feature.id, 0);
+      PBFObject.fetchFeatureDetails(evt.feature.id, 0, evt.feature.properties.name_0);
     }
   },
   onSelect: function(vtf, PBFObject){
     //When a selection has changed (likey when a label was clicked and the corresponding feature selected)
     if(vtf && vtf.id){
       //Do the onclick thing
-      PBFObject.fetchFeatureDetails(vtf.id, 0);
+      PBFObject.fetchFeatureDetails(vtf.id, 0, vtf.properties.name_0);
     }
   },
   legend: function(){
@@ -140,14 +140,14 @@ var gadm1 = {
 
     if(evt && evt.feature && evt.feature.id){
       //Do the onclick thing
-      PBFObject.fetchFeatureDetails(evt.feature.id, 0);
+      PBFObject.fetchFeatureDetails(evt.feature.id, 0, evt.feature.properties.name_1 + ", " + evt.feature.properties.name_0);
     }
   },
   onSelect: function(vtf, PBFObject){
     //When a selection has changed (likey when a label was clicked and the corresponding feature selected)
     if(vtf && vtf.id){
       //Do the onclick thing
-      PBFObject.fetchFeatureDetails(vtf.id, 0);
+      PBFObject.fetchFeatureDetails(vtf.id, 0, vtf.properties.name_1 + ", " + vtf.properties.name_0);
     }
   }
 }
@@ -157,7 +157,7 @@ var gadm1 = {
 
 function getThemeStyle(vtf, $rootScope){
 
-  var opacity = "0.5";
+
 
   var style = {};
   //Default style - make hollow
@@ -473,15 +473,15 @@ function buildDynamicLabel(properties){
     if (properties && properties.iroc_status__c) {
       switch (properties.iroc_status__c.toLowerCase()) {
         case "active":
-          color = "rgba(204,0,51,0.4)";
+          color = "rgba(204,0,51,1)";
           labelColor = "#fff";
           break;
         case "monitoring":
-          color = "rgba(225,187,37,0.4)";
+          color = "rgba(225,187,37,1)";
           labelColor = "#fff";
           break;
         case "inactive":
-          color = "rgba(189,189,189,0.4)";
+          color = "rgba(189,189,189,1)";
           labelColor = "#000";
           break;
       }
@@ -499,28 +499,28 @@ Set the dictionary used to look up UNOCHA icons for disaster types
  */
 var UNOCHAIconLookup = {
 
-  "Meteorological - Tropical Cyclone": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0,1)"},
-  "Floods": {icon: "icon-disaster_flood", color: "rgba(255,0,0,1)"},
-  "Tsunami, Volcano": {icon: "icon-disaster_tsunami", color: "rgba(255,0,0,1)"},
-  "Floods, Storm": {icon: "icon-disaster_flood", color: "rgba(255,0,0,1)"},
-  "Tsunami": {icon: "icon-disaster_tsunami", color: "rgba(255,0,0,1)"},
-  "Famine / Food Insecurity": {icon: "icon-cluster_food_security", color: "rgba(255,0,0,1)"},
-  "Drought": {icon: "icon-disaster_drought", color: "rgba(255,0,0,1)"},
-  "Meteorological - Tropical Cyclone;Hydrological - Floods": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0,1)"},
-  "Food Insecurity": {icon: "icon-cluster_food_security", color: "rgba(255,0,0,1)"},
-  "Civil Unrest": {icon: "icon-people_rebel", color: "rgba(255,0,0,1)"},
-  "Floods, Tropical Storm": {icon: "icon-disaster_flood", color: "rgba(255,0,0,1)"},
-  "Complex Emergency": {icon: "icon-crisis_conflict", color: "rgba(255,0,0,1)"},
-  "Epidemic": {icon: "icon-disaster_epidemic", color: "rgba(255,0,0,1)"},
-  "Population Movement": {icon: "icon-crisis_population_displacement", color: "rgba(255,0,0,1)"},
-  "Climatological - Drought": {icon: "icon-disaster_drought", color: "rgba(255,0,0,1)"},
-  "Winter Storm": {icon: "icon-disaster_snowfall", color: "rgba(255,0,0,1)"},
-  "Tropical Storm": {icon: "icon-disaster_heavy_rain", color: "rgba(255,0,0,1)"},
-  "Earthquake, Tsunami": {icon: "icon-disaster_earthquake", color: "rgba(255,0,0,1)"},
-  "Hydrological - Floods": {icon: "icon-disaster_flood", color: "rgba(255,0,0,1)"},
-  "Landslide;Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0,1)"},
-  "Earthquake": {icon: "icon-disaster_earthquake", color: "rgba(255,0,0,1)"},
-  "Landslide;Hydrological - Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0,1)"}
+  "Meteorological - Tropical Cyclone": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0," + opacity + ")"},
+  "Floods": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + opacity + ")"},
+  "Tsunami, Volcano": {icon: "icon-disaster_tsunami", color: "rgba(255,0,0," + opacity + ")"},
+  "Floods, Storm": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + opacity + ")"},
+  "Tsunami": {icon: "icon-disaster_tsunami", color: "rgba(255,0,0," + opacity + ")"},
+  "Famine / Food Insecurity": {icon: "icon-cluster_food_security", color: "rgba(255,0,0," + opacity + ")"},
+  "Drought": {icon: "icon-disaster_drought", color: "rgba(255,0,0," + opacity + ")"},
+  "Meteorological - Tropical Cyclone;Hydrological - Floods": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0," + opacity + ")"},
+  "Food Insecurity": {icon: "icon-cluster_food_security", color: "rgba(255,0,0," + opacity + ")"},
+  "Civil Unrest": {icon: "icon-people_rebel", color: "rgba(255,0,0," + opacity + ")"},
+  "Floods, Tropical Storm": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + opacity + ")"},
+  "Complex Emergency": {icon: "icon-crisis_conflict", color: "rgba(255,0,0," + opacity + ")"},
+  "Epidemic": {icon: "icon-disaster_epidemic", color: "rgba(255,0,0," + opacity + ")"},
+  "Population Movement": {icon: "icon-crisis_population_displacement", color: "rgba(255,0,0," + opacity + ")"},
+  "Climatological - Drought": {icon: "icon-disaster_drought", color: "rgba(255,0,0," + opacity + ")"},
+  "Winter Storm": {icon: "icon-disaster_snowfall", color: "rgba(255,0,0," + opacity + ")"},
+  "Tropical Storm": {icon: "icon-disaster_heavy_rain", color: "rgba(255,0,0," + opacity + ")"},
+  "Earthquake, Tsunami": {icon: "icon-disaster_earthquake", color: "rgba(255,0,0," + opacity + ")"},
+  "Hydrological - Floods": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + opacity + ")"},
+  "Landslide;Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0," + opacity + ")"},
+  "Earthquake": {icon: "icon-disaster_earthquake", color: "rgba(255,0,0," + opacity + ")"},
+  "Landslide;Hydrological - Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0," + opacity + ")"}
 
 }
 

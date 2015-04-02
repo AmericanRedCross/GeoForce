@@ -66,7 +66,7 @@ PBF.prototype.getLayer = function () {
   return this.layer;
 };
 
-PBF.prototype.fetchFeatureDetails = function(guid, level) {
+PBF.prototype.fetchFeatureDetails = function(guid, level, name) {
 
 
   var detailsUrl = config.chubbsPath(this.options.detailsUrl);
@@ -104,6 +104,7 @@ PBF.prototype.fetchFeatureDetails = function(guid, level) {
     var featureLayer = { feature: { properties: {}}};
     featureLayer.feature.properties.salesforce = {};
     featureLayer.feature.properties.salesforce[themeName] = details;
+    featureLayer.feature.properties.name = name;
     $rootScope.$broadcast('details', featureLayer);
 
   }).error(function(err){
