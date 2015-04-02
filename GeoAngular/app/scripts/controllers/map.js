@@ -506,33 +506,37 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     }
 
     //Clear the MVT internal legend object before redrawing
-    vtLayer.clearLegendObject();
-    vtLabelLayer.clearLegendObject();
+    if(vtLayer) vtLayer.clearLegendObject();
+    if(vtLabelLayer) vtLabelLayer.clearLegendObject();
 
     layer.redraw(true); //false means that this redraw won't trigger the onTilesLoaded event.
 
     //Fetch the legend after redraw
     //need to wait until all tiles finish drawing
     layer.options.onTilesLoaded = function(){
-      var legendObject = vtLayer.getLegendObject();
-      if(legendObject){
-        //set it equal to the scope
-        $scope.legendObject = legendObject;
+      if(vtLayer){
+        var legendObject = vtLayer.getLegendObject();
+        if(legendObject){
+          //set it equal to the scope
+          $scope.legendObject = legendObject;
+        }
       }
 
-      var bubbleLegendObject = vtLabelLayer.getLegendObject();
-      if(bubbleLegendObject){
-        //set it equal to the scope
-        if($stateParams.theme.toLowerCase() == "disastertype"){
-          //Disaster type has different bubble images
-          $scope.bubbleLegendObject = bubbleLegendObject;
-        }
-        else{
-          //Other themes use the same bubble type.
-          //So just grab the first one
-          var keys = Object.keys(bubbleLegendObject);
-          if(bubbleLegendObject[keys[0]] && bubbleLegendObject[keys[0]].options && bubbleLegendObject[keys[0]].options.html){
-            $scope.singleBubbleObject = $sce.trustAsHtml(bubbleLegendObject[keys[0]].options.html);
+      if(vtLabelLayer){
+        var bubbleLegendObject = vtLabelLayer.getLegendObject();
+        if(bubbleLegendObject){
+          //set it equal to the scope
+          if($stateParams.theme.toLowerCase() == "disastertype"){
+            //Disaster type has different bubble images
+            $scope.bubbleLegendObject = bubbleLegendObject;
+          }
+          else{
+            //Other themes use the same bubble type.
+            //So just grab the first one
+            var keys = Object.keys(bubbleLegendObject);
+            if(bubbleLegendObject[keys[0]] && bubbleLegendObject[keys[0]].options && bubbleLegendObject[keys[0]].options.html){
+              $scope.singleBubbleObject = $sce.trustAsHtml(bubbleLegendObject[keys[0]].options.html);
+            }
           }
         }
       }

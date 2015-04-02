@@ -67,7 +67,7 @@
 .singleIcon div{
     height: 20px;
     width: 20px;
-    color: transparent;
+    color: transparent !important;
 }
 
 .legend-swatch.singleIcon{

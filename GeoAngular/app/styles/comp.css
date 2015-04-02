@@ -164,7 +164,7 @@ a {
     border: 1px solid #d3d3d3;
     min-width: 120px;
     -webkit-transform: translateY(50%) rotateX(90deg);
-    -webkit-transition: all .1s ease;
+    -webkit-transition: all .15s ease;
     background-color: #fff;
 }
 

@@ -122,7 +122,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
       var self = this;
       setTimeout(function () {
         $(self).addClass("theme-selector-li-on");
-      }, index*150);
+      }, index*100);
     });
   };
 

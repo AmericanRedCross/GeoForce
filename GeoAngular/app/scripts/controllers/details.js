@@ -307,9 +307,12 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       });
       // end sector legend
 
-      $scope.datasetTitle = $scope.dataset[0].alias;
-      $scope.datasetColor = $scope.dataset[0].color;
-      $scope.datasetCount = $scope.dataset[0].count;
+      if($scope.dataset.length > 0){
+        $scope.datasetTitle = $scope.dataset[0].alias;
+        $scope.datasetColor = $scope.dataset[0].color;
+        $scope.datasetCount = $scope.dataset[0].count;
+      }
+
 
     } else { // standard geojson, show properties as details
 
