@@ -170,22 +170,12 @@
     </div>
 
     </div> <!-- /#wrapper -->
-    <script src="javascript/pbf/vectortile/vectortilelayer.js"></script>
-    <script src="javascript/pbf/vectortile/vectortilefeature.js"></script>
-    <script src="javascript/pbf/vectortile/vectortile.js"></script>
-    <script src="javascript/pbf/vectortile/pbf/ieee/ieee.js"></script>
-    <script src="javascript/pbf/vectortile/pbf/pbf.js"></script>
-    <script src="javascript/pbf/vectortile/point.js"></script>
+    <script src="javascript/Leaflet.MapboxVectorTile.js"></script>
 
-    <script src="javascript/pbf/TileLayer.PBF/TileLayer.PBFSource.js"></script>
-    <script src="javascript/pbf/TileLayer.PBF/TileLayer.PBFLayer.js"></script>
-    <script src="javascript/pbf/TileLayer.PBF/PBFFeature.js"></script>
 
 <script type="text/javascript">
     var map = L.map('map').setView([0,0], 7);
     map.locate({setView: true, maxZoom: 10});
-    //var _server = "http://localhost:3001";
-    var _server = "https://webviz.redcross.org";
 
     L.tileLayer('https://a.tiles.mapbox.com/v3/americanredcross.map-dn70q0vb/{z}/{x}/{y}.png').addTo(map);
 
@@ -261,13 +251,13 @@
     //Add layer
     //map.addLayer(pbfSource);
 
-    map.on("layerremove", function(removed){
-        //This is the layer that was removed.
-        //If it is a TileLayer.PBFSource, then call a method to actually remove the children, too.
-        if(removed.layer.removeChildLayers){
-            removed.layer.removeChildLayers(map);
-        }
-    });
+//    map.on("layerremove", function(removed){
+//        //This is the layer that was removed.
+//        //If it is a TileLayer.PBFSource, then call a method to actually remove the children, too.
+//        if(removed.layer.removeChildLayers){
+//            removed.layer.removeChildLayers(map);
+//        }
+//    });
 
     //Set 'enter' click trigger for button
     $('#uxSearchterm').keypress(function (e) {
@@ -322,7 +312,7 @@
             returnGeometry: "no"
         };
 
-        var url = _server + '/services/nameSearch';
+        var url = '/services/nameSearch';
 
         //Send POST, using JSONP
         $.getJSON(url, postArgs).done(function (data) {
@@ -400,7 +390,7 @@
         var loading = new loader("#adminResult");
 
 
-        var url = _server + '/services/getAdminStack';
+        var url = '/services/getAdminStack';
 
         //Send POST, using JSONP
         $.getJSON(url, postArgs).done(function (data) {
@@ -420,7 +410,7 @@
             returnGeometry: "yes"
         };
 
-        var url = _server + '/services/getAdminStack';
+        var url = '/services/getAdminStack';
 
         //Send POST,
         $.getJSON(url, postArgs).done(function (data) {
@@ -566,7 +556,7 @@ function showThisLayer(name, filter, cb) {
     if(pbfSource) map.removeLayer(pbfSource);
     pbfSource = null;
     pbfSource = createGADMVecorTileLayer(name, filter);
-    pbfSource.styleFor = pbfStyle;
+    pbfSource.style = pbfStyle;
 
     map.addLayer(pbfSource);
 
@@ -575,8 +565,7 @@ function showThisLayer(name, filter, cb) {
 }
 
 function createGADMVecorTileLayer(name, filter){
-    return new L.TileLayer.PBFSource({
-        //url: "../services/vector-tiles/GADM/{z}/{x}/{y}.pbf",
+    return new L.TileLayer.MVTSource({
         url: "../services/postgis/" + name + "/vector-tiles/{z}/{x}/{y}.pbf" ,
         debug: false,
         clickableLayers: [],
