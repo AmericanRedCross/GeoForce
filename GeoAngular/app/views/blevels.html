@@ -1,0 +1,22 @@
+<nav ng-controller="LayersCtrl" id="BLevelSelectorMenu" class="navbar navbar-default navbar-fixed-bottom"
+     role="navigation">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="javascript: return false;">Boundary Levels:</a>
+  </div>
+  <div class="menu-selection">
+    <ul class="nav navbar-nav">
+      <li class="dropdown">
+        <span class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleBLevelMenu()">
+          ARC
+          <div class="glyphicon glyphicon-chevron-up pull-right"></div>
+          <div class="mini-label">(American Red Cross Regions)</div>
+
+        </span>
+        <ul id="BLevelMenu" class="dropdown-menu">
+          <li ng-click="updateGadm(0)">0. Countries</li>
+          <li ng-hide="$stateParams.theme.indexOf('disaster')!==-1" ng-click="updateGadm(1)">1. State / Province</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>

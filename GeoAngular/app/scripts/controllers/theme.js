@@ -60,6 +60,9 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   }
 
   $scope.setThemeQueryParam = function (theme) {
+    debugger;
+    $stateParams.theme = theme;
+
     //close details panel on theme change
     if($scope.isParam('details-panel') == true){
       if($stateParams.theme !== theme){
@@ -86,8 +89,6 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
       layersArray.push("gadm0");
       $stateParams.layers = layersArray.join(",");
     }
-
-    $stateParams.theme = theme;
 
     //close filters panel if theme is Project Risk/Health or None
     if((($stateParams.theme !== 'project' && $stateParams.theme !== 'disaster') && $stateParams.theme !== null)){

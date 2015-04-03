@@ -1,12 +1,12 @@
 /* use this panel when developing to preview css changes using live edit in webstorm */
 html, body {
-    height: 100%;
-    width: 100%;
-    min-width:960px;
+  height: 100%;
+  width: 100%;
+  min-width: 960px;
 }
 
 a {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #map {
@@ -15,46 +15,46 @@ a {
 }
 
 #AppContainer {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
 /* Override Leaflet Zoom In/Out Defaults */
 .leaflet-bar a:first-child {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    color: #ed1b2e;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  color: #ed1b2e;
 }
 
 .leaflet-bar a:last-child {
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-bottom: 1px solid #d3d3d3;
-    color: #ed1b2e;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom: 1px solid #d3d3d3;
+  color: #ed1b2e;
 }
 
 .leaflet-bar {
-    box-shadow: none;
-    border-radius: 0px;
+  box-shadow: none;
+  border-radius: 0px;
 }
 
 .leaflet-bar a, .leaflet-bar a:hover {
-    width: 33px;
-    height: 33px;
-    line-height: 30px;
-    border: 1px solid #d3d3d3;
+  width: 33px;
+  height: 33px;
+  line-height: 30px;
+  border: 1px solid #d3d3d3;
 }
 
 .leaflet-control-attribution {
-    display: none;
+  display: none;
 }
 
 .leaflet-left .leaflet-control {
-    margin-left: 30px;
+  margin-left: 30px;
 }
 
 .leaflet-top .leaflet-control {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 /* End Override Leaflet Zoom In/Out */
@@ -62,40 +62,40 @@ a {
 /* Map Top Right Toolbar */
 
 #MapUpperRightToolbarWrapper {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 2002;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2002;
 }
 
 #MapUpperRightToolbarWrapper > div {
-    float: left;
-    background-color: #43484a;
-    color: #fff;
-    text-transform: uppercase;
-    padding: 7px 25px;
-    font-size: 14px;
-    font-family: oswaldregular;
-    cursor: pointer;
+  float: left;
+  background-color: #43484a;
+  color: #fff;
+  text-transform: uppercase;
+  padding: 7px 25px;
+  font-size: 14px;
+  font-family: oswaldregular;
+  cursor: pointer;
 
 }
 
-#MapUpperRightToolbarWrapper .btn{
-    border-radius: 0px;
-    border: 0px;
-    background-color: #EA2035;
-    padding: 11px;
-    font-size: 11px;
+#MapUpperRightToolbarWrapper .btn {
+  border-radius: 0px;
+  border: 0px;
+  background-color: #EA2035;
+  padding: 11px;
+  font-size: 11px;
 }
 
-#MapUpperRightToolbarWrapper button{
-    font-size: 12px;
-    float: left;
-    padding: 10px;
+#MapUpperRightToolbarWrapper button {
+  font-size: 12px;
+  float: left;
+  padding: 10px;
 }
 
 #MapUpperRightToolbarWrapper div.light {
-    background-color: #666666;
+  background-color: #666666;
 }
 
 #MapUpperRightToolbarWrapper div.light:hover {
@@ -103,123 +103,119 @@ a {
 }
 
 #MapUpperRightToolbarWrapper div.light.export {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 
 #MapUpperRightToolbarWrapper .search {
-    font-size: 20px;
-    padding: 2px 17px;
-    border-left: 1px solid #fff;
-    height: 34px;
-    min-width: 55px;
+  font-size: 20px;
+  padding: 2px 17px;
+  border-left: 1px solid #fff;
+  height: 34px;
+  min-width: 55px;
 }
 
 /* End Map Top Right Toolbar */
 
 /* Theme Selector Menu */
 #ThemeSelectorMenu {
-    position: absolute;
-    z-index: 2000;
-    right: 5px;
-    bottom: 5px;
-    left: auto;
-    font-family: oswaldregular;
-    z-index: 2001;
+  position: absolute;
+  z-index: 2000;
+  right: 270px;
+  bottom: 5px;
+  left: auto;
+  font-family: oswaldregular;
+  z-index: 2001;
 }
 
-#ThemeSelectorMenu .navbar-brand{
-    font-size: 16px;
+#ThemeSelectorMenu .navbar-brand {
+  font-size: 16px;
 }
 
 #ThemeSelectorMenu .dropdown-toggle {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap;
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
 }
 
 #ThemeSelectorMenu .dropdown-menu {
-    padding: 0;
-    min-width: 120px;
+  padding: 0;
+  min-width: 120px;
 }
 
 #ThemeSelectorMenu .dropdown-menu > li, #ThemeSelectorMenu .dropdown-toggle {
-    text-transform: uppercase;
-    padding: 10px 0px;
-    font-size: 16px;
-    color: #3f3f3f;
-    padding-top: 13px;
+  text-transform: uppercase;
+  padding: 10px 0px;
+  font-size: 16px;
+  color: #3f3f3f;
+  padding-top: 13px;
 }
 
 #ThemeSelectorMenu .dropdown-menu > li:hover, #ThemeSelectorMenu .dropdown-menu > li > a:focus, #ThemeSelectorMenu .dropdown-toggle {
-    color: #ed1b2e;
-    text-decoration: none;
-    background-color: #fff;
+  color: #ed1b2e;
+  text-decoration: none;
+  background-color: #fff;
 }
 
 #ThemeSelectorMenu .dropdown-menu > li {
-    border: 1px solid #d3d3d3;
-    min-width: 120px;
-    -webkit-transform: translateY(50%) rotateX(90deg);
-    -webkit-transition: all .15s ease;
-    background-color: #fff;
+  border: 1px solid #d3d3d3;
+  min-width: 120px;
+  -webkit-transform: translateY(50%) rotateX(90deg);
+  -webkit-transition: all .15s ease;
+  background-color: #fff;
 }
 
 /* Unfurl Up */
 #ThemeSelectorMenu li.theme-selector-li-on {
-    -webkit-transform: translateY(0%) rotateX(0deg);
+  -webkit-transform: translateY(0%) rotateX(0deg);
 }
 
 #ThemeSelectorMenu .dropdown-menu {
-    border: 0px;
-    border-radius: 0px
-    -webkit-box-shadow: 0 0 0;
-    box-shadow: 0 0 0;
+  border: 0px;
+  border-radius: 0px -webkit-box-shadow : 0 0 0;
+  box-shadow: 0 0 0;
 }
 
 #ThemeMenu {
-    text-align: center;
-    background-color: transparent;
+  text-align: center;
+  background-color: transparent;
 }
 
 #ThemeSelectorMenu .menu-selection {
-    float: left;
-    cursor: pointer;
+  float: left;
+  cursor: pointer;
 }
 
 #ThemeSelectorMenu .dropdown-toggle {
-    min-width: 120px;
-    text-align: center;
+  min-width: 120px;
+  text-align: center;
 }
 
 /* End Theme Selector Menu */
 
-
 /* Override the Bootstrap Inner-Shadow */
 
 .btn:active, .btn.active {
-    background-image: none;
-    outline: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 .stories-container a.thumbnail:hover, .stories-container a.thumbnail:focus, .stories-container a.thumbnail.active {
-    border: none;
+  border: none;
 }
 
 /* End override the Bootstrap Inner-Shadow */
 
 .scrollable {
-    overflow-y: auto;
-    overflow-x: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
-
-

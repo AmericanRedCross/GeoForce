@@ -1,0 +1,87 @@
+
+#BLevelSelectorMenu {
+  position: absolute;
+  z-index: 2000;
+  right: 5px;
+  bottom: 5px;
+  left: auto;
+  font-family: oswaldregular;
+  z-index: 2001;
+}
+
+#BLevelSelectorMenu .navbar-brand {
+  font-size: 15px;
+  font-family: oswaldregular;
+  color: rgb(63, 63, 63);
+  max-width: 84px;
+  padding: 4px 10px 5px 10px;
+}
+
+#BLevelSelectorMenu .dropdown-toggle {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+}
+
+#BLevelSelectorMenu .dropdown-menu {
+  padding: 0;
+  min-width: 120px;
+}
+
+#BLevelSelectorMenu .dropdown-menu > li, #BLevelSelectorMenu .dropdown-toggle {
+  text-transform: uppercase;
+  font-size: 16px;
+  color: #3f3f3f;
+}
+
+#BLevelSelectorMenu .dropdown-menu > li:hover, #BLevelSelectorMenu .dropdown-menu > li > a:focus, #BLevelSelectorMenu .dropdown-toggle {
+  color: rgb(35, 35, 35);
+  text-decoration: none;
+  background-color: #fff;
+}
+
+#BLevelSelectorMenu .dropdown-menu > li {
+  border: 1px solid #d3d3d3;
+  -webkit-transform: translateY(50%) rotateX(90deg);
+  -webkit-transition: all .15s ease;
+  background-color: #fff;
+  padding: 13px;
+  min-width: 171px;
+}
+
+/* Unfurl Up */
+#BLevelSelectorMenu li.theme-selector-li-on {
+  -webkit-transform: translateY(0%) rotateX(0deg);
+}
+
+#BLevelSelectorMenu .dropdown-menu {
+  border: 0px;
+  border-radius: 0px -webkit-box-shadow : 0 0 0;
+  box-shadow: 0 0 0;
+}
+
+#BLevelMenu {
+  text-align: center;
+  background-color: transparent;
+}
+
+#BLevelSelectorMenu .menu-selection {
+  float: left;
+  cursor: pointer;
+}
+
+#BLevelSelectorMenu .dropdown-toggle {
+  min-width: 120px;
+  text-align: left;
+  padding-top: 8px;
+}
+
+#BLevelSelectorMenu .mini-label{
+  display: block;
+  font-size: 10px;
+  background-color: #fff;
+}

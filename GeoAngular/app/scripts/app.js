@@ -96,9 +96,9 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
 
 GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider
-    .when('/default', '/map@0.1,0.1,2(satellite,gadm0),disaster')
+    .when('/default', '/map@0.1,0.1,2(osmtransport,gadm0),disaster')
     .when('/phl', '/map@11.759815,121.893311,6(redcross,phl),disaster')
-    .otherwise(localStorage.getItem('defaultRoute') || '/map@1,1,2(satellite,gadm0),disaster');
+    .otherwise(localStorage.getItem('defaultRoute') || '/map@1,1,2(osmtransport,gadm0),disaster');
 
   $stateProvider
     .state('main', {
@@ -111,6 +111,10 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
         'theme': {
           templateUrl: 'views/theme.html',
           controller: 'ThemeCtrl'
+        },
+        'blevels':{
+          templateUrl: 'views/blevels.html',
+          controller: 'LayersCtrl'
         }
       }
     })

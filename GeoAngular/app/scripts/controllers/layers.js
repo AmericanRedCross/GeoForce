@@ -19,6 +19,10 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
   $scope.themeLayer = LayerConfig.theme;
 
+  $scope.updateGadm = function (level) {
+    $scope.gadmLevel = level || 0;
+  };
+
   $scope.updateThemeLabel = function() {
     if ($scope.themeLabels.isChecked === true) {
       $stateParams.themelabels = 'true';
@@ -339,6 +343,42 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     }
     $scope.searchLayers = searchLayers;
   };
+
+  /*
+   Handling Theme Menu Animations
+   */
+
+  $scope.toggleBLevelMenu = function(){
+    var flippedOut = $(".menu-selection .dropdown").hasClass("open");
+
+    if(flippedOut == false){
+      $scope.unfurlThemes();
+    }
+    else{
+      $scope.refurlThemes();
+    }
+  };
+
+  $scope.unfurlThemes = function(){
+    $scope.refurlThemes();
+    //Try jQuery to add an 'on' class to each of the theme LI elements on a timer.
+    $($('#BLevelMenu li').get().reverse()).each(function(index){
+      var self = this;
+      setTimeout(function () {
+        $(self).addClass("theme-selector-li-on");
+      }, index*100);
+    });
+  };
+
+  //Refurl?
+  $scope.refurlThemes = function(){
+    //Try jQuery to remove the 'on' class to each of the theme LI elements on a timer.
+    $('#BLevelSelectorMenu .dropdown-menu li').removeClass("theme-selector-li-on");
+  };
+
+  /*
+   End Theme Menu Animations
+   */
 
 });
 

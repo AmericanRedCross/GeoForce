@@ -46,6 +46,7 @@
   <link rel="stylesheet" href="styles/export.css">
   <link rel="stylesheet" href="styles/search.css">
   <link rel="stylesheet" href="styles/label.css">
+  <link rel="stylesheet" href="styles/blevels.css">
   <!-- endbuild -->
 
   <link rel="stylesheet" href="lib/featurelabel/featurelabel.css">
@@ -531,12 +532,12 @@
 
               </div>
               <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
-                <h4>Filter WHERE Clause</h4>
+                <h4 class="title">Filter WHERE Clause</h4>
                 <textarea class="form-control" rows="6" placeholder="Create a custom where clause..."
                           ng-model="whereClause"></textarea>
-                <button ng-click="submitFilter()" type="button" class="btn btn-danger pull-right custom-filter-submit">
+                <div ng-click="submitFilter()" type="button" class="btn btn-danger btn-footer pull-right custom-filter-submit">
                   Submit
-                </button>
+                </div>
               </div>
             </div>
 
@@ -548,7 +549,7 @@
               <span class="glyphicon glyphicon-chevron-left"></span>
             </div>
             <div class="col-md-10 side-view-title-wrapper">
-              <div class="title">Disaster Filters</div>
+              <div class="uppertitle">Disaster Filters</div>
               <a class="clear-all" ng-click="clearAllFilters()">Clear All Filters</a>
             </div>
           </div>
@@ -751,8 +752,8 @@
       <div ng-controller="InfoCtrl" ng-class="{on: isParam('info')}" class="navpanel container">
 
         <div class="row">
-          <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('info')"><span
-            class="glyphicon glyphicon-chevron-left"></span></button>
+          <div class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('info')"><span
+            class="glyphicon glyphicon-chevron-left"></span></div>
           <div class="col-md-7 side-view-title-wrapper">
             <div class="title">INFO</div>
           </div>
@@ -871,6 +872,8 @@
 
     <!-- Bottom Right Theme Selector -->
     <div ui-view="theme"></div>
+
+    <div ui-view="blevels"></div>
 
     <!-- Right Hand Details Panel -->
     <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: isParam('details-panel')}">
