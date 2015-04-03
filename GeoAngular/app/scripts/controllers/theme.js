@@ -60,7 +60,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   }
 
   $scope.setThemeQueryParam = function (theme) {
-    debugger;
+    //debugger;
     $stateParams.theme = theme;
 
     //close details panel on theme change
@@ -100,7 +100,6 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
   };
 
   $scope.themeName = themeNameHash[$stateParams.theme] || themeNameHash[config.defaultTheme];
-
   /*
    Handling Theme Menu Animations
    */

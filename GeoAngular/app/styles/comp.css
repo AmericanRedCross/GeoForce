@@ -128,7 +128,8 @@ a {
 }
 
 #ThemeSelectorMenu .navbar-brand {
-  font-size: 16px;
+  font-size: 15px;
+  color: rgb(63, 63, 63);
 }
 
 #ThemeSelectorMenu .dropdown-toggle {

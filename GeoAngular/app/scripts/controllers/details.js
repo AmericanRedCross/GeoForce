@@ -312,6 +312,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
         $scope.datasetCount = $scope.dataset[0].count;
       }
 
+      $scope.hideLegend = false;
+
       // end sector legend
 
     } else { // standard geojson, show properties as details
@@ -402,6 +404,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.showDetails = function (item, themeItems, idx) {
+    $scope.hideLegend = true;
+
     if (item.sf_id) {
       $rootScope.setParamWithVal('sf_id', item.sf_id);
     }
@@ -591,6 +595,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     $scope.title = $scope.featureTitle;
     $scope.itemsList = true;
     $scope.details = false;
+    $scope.hideLegend = false;
   };
 
   $scope.resizeDetailsPanel = function() {
