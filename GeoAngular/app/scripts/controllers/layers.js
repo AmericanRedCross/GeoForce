@@ -8,6 +8,10 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   $scope.zoom = parseInt($stateParams.zoom);
   $scope.navTab = 'contextual';
 
+  $scope.gadm0Label = '0. Countries';
+  $scope.gadm1Label = '1. State / Province';
+
+
   debug.LayerConfig = LayerConfig;
   debug.setGadmLevel = VectorProvider.setGadmLevel;
 
@@ -20,7 +24,12 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   $scope.themeLayer = LayerConfig.theme;
 
   $scope.updateGadm = function (level) {
-    $scope.gadmLevel = level || 0;
+    if(level !== $scope.gadmLevel) {
+      $scope.closeParam('details-panel');
+      $scope.gadmLevel = level.toString() || "0";
+      console.log($scope.gadmLevel);
+    };
+
   };
 
   $scope.updateThemeLabel = function() {
@@ -48,9 +57,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
       return;
     }
 
-
     if ($scope.theme.isChecked === true) {
-
 
       //Remove all GADM layers.
       angular.forEach(layersArray, function (value, key) {
