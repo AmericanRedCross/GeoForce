@@ -19,9 +19,8 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   /**
    * Only if the latest route has a different layer string than before.
    */
-  if (layersStr !== window.prevLayersStr || themeStr !== window.prevTheme) {
+  if (layersStr !== window.prevLayersStr) {
     window.prevLayersStr = layersStr;
-    window.prevTheme = themeStr;
     var layers = layersStr.split(',');
     $rootScope.$broadcast('layers-update', layers);
   }

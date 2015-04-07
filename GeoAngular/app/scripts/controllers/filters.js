@@ -75,18 +75,25 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     if ($stateParams.filters !== null) {
 
       // only clear filters when switching from project to disaster; and vice versa
-      if(($stateParams.theme.indexOf('disaster')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("disaster_type__c")!==-1))
-      || ($stateParams.theme.indexOf('project')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("sector__c")!==-1))
-      ){
+      if(($stateParams.theme.indexOf('disaster')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("sector__c")!==-1))) {
+          delete $stateParams.filters;
+          var state = $state.current.name || 'main';
+          $state.go(state, $stateParams);
+        }
+
+      if($stateParams.theme.indexOf('project')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("disaster_type__c")!==-1)) {
+        delete $stateParams.filters;
         var state = $state.current.name || 'main';
         $state.go(state, $stateParams);
 
-      } else {
-        delete $stateParams.filters;
-        //$stateParams.filters = null; //clear theme filters
-        var state = $state.current.name || 'main';
-        $state.go(state, $stateParams);
       }
+
+      //else {
+      //  //delete $stateParams.filters;
+      //  ////$stateParams.filters = null; //clear theme filters
+      //  //var state = $state.current.name || 'main';
+      //  //$state.go(state, $stateParams);
+      //}
 
     }
   });
@@ -104,7 +111,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       i = i + 1;
     }
 
-    if ($stateParams.filters !== null && $stateParams.filters !== "" && $stateParams.filters !== "null"){
+    if ($stateParams.filters !== null && $stateParams.filters !== "" && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined'){
       var disasters = $scope.disasterTypes;
       $scope.sectorClause = null;
       var first = true;
@@ -142,7 +149,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       i = i + 1;
     }
 
-    if ($stateParams.filters !== null && $stateParams.filters !== "" && $stateParams.filters !== "null"){
+    if ($stateParams.filters !== null && $stateParams.filters !== "" && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined'){
       var sectors = $scope.sectors;
       $scope.sectorClause = null;
       var first = true;
@@ -171,9 +178,6 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
     if($stateParams.theme.indexOf('disaster')!==-1) decodeDisasterFiltersURL();
     if($stateParams.theme == 'project') decodeProjectFiltersURL();
-
-    var state = $state.current.name || 'main';
-    $state.go(state, $stateParams);
 
   });
 
@@ -455,7 +459,10 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   };
 
   $scope.submitFilter = function () {
-    $stateParams.filters = $scope.whereClause;
+
+    if($stateParams.theme.indexOf('project')!==-1)$stateParams.filters = $scope.whereClause;
+    if($stateParams.theme.indexOf('disaster')!==-1)$stateParams.filters = $scope.sectorClause;
+
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
   };
