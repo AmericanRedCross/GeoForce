@@ -27,12 +27,20 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   $scope.themeLayer = LayerConfig.theme;
 
   $scope.updateGadm = function (level) {
-    if(level !== $scope.gadmLevel) {
-      $scope.closeParam('details-panel');
+    $scope.level = level.toString();
+    if(level.toString() !== $scope.gadmLevel) {
       $scope.gadmLevel = level.toString() || "0";
       console.log($scope.gadmLevel);
     };
 
+  };
+
+  $scope.closePanels = function (){
+    for (var param in $stateParams) {
+      if ($stateParams[param] === 'open') {
+        $stateParams[param] = null;
+      }
+    }
   };
 
   $scope.updateThemeLabel = function() {
@@ -52,6 +60,8 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   $scope.updateTheme = function() {
 
     var layersArray;
+
+    //$scope.closePanels();
 
     if($stateParams.layers){
       layersArray = $stateParams.layers.split(",");
@@ -90,7 +100,9 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
 
-  }
+    //$scope.closeParam('details-panel');
+
+  };
 
 
   $scope.$watch('gadmLevel', function (newValue) {
@@ -263,8 +275,6 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
       }
     }
 
-    var state = $state.current.name || 'main';
-    //$state.go(state, $stateParams);
   });
 
   $scope.$on('route-update', function() {
