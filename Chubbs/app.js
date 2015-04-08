@@ -216,8 +216,13 @@ app.get('/services', function(req, res) {
 
 function ensureAuthenticated(req, res, next) {
 
+  //Allow /services/namesearch to proceed without login.
+  if(settings.enableSecurity && (req.path.indexOf("/services/nameSearch") == 0 && req.path.indexOf("services/getAdminStack") == 0)){
+    return next();
+  }
+
     //If the request is for index.html, then lock it down.
-  if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" || req.path.indexOf("/services/") == 0 || req.path.indexOf("/search") == 0 || req.path.indexOf("/placesearch") == 0)) {
+  if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" || req.path.indexOf("/services/") == 0 )) {
         //All other requests to the mapfolio folder should be allowed.
 
         //check for authentication
