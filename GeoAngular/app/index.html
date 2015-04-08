@@ -595,10 +595,10 @@
                 </div>
 
                 <div class="category-title" ng-repeat="(key,val) in disasterTypescategory">
-                  <div ng-click="putCategoryURL(key);" class="category">{{key}}</div>
-                  <div ng-class="{'disaster-filtertypes': $stateParams.category == key}">
+                  <div  ng-class="{on: $stateParams.category == key}" ng-click="putCategoryURL(key);" class="category">{{key}}</div>
+                  <div class="show-categories" ng-class="{'on': $stateParams.category == key}" ng-show="$stateParams.category == key">
                     <div ng-repeat="types in val">
-                    <div ng-show="$stateParams.category == key">
+                    <div>
                       <label class="checkbox label-disaster">
                         <input type="checkbox" ng-model="types.checked" ng-change="disasterTypesFilter()">
                         <i class="icon-{{types.name.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i>
@@ -608,8 +608,6 @@
                   </div>
                   </div>
                 </div>
-                <br/>
-                <br/>
               </div>
 
 

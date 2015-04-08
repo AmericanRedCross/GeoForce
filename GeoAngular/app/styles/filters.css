@@ -76,6 +76,17 @@
   padding-bottom: 15px;
 }
 
+#disasterType-filter .show-categories{
+  -moz-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
+  -webkit-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
+  -ms-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
+  height:auto;
+}
+
+#disasterType-filter .show-categories.on{
+  min-height: 190px;
+}
+
 #disasterType-filter {
   font-size: 14px;
   font-family: "Open Sans";
@@ -92,7 +103,7 @@
 }
 
 #disasterType-filter .disaster-searchresult{
-  padding: 10px 26px 9px;
+  padding: 0px;
 }
 
 #disasterType-filter .category-title{
@@ -104,6 +115,10 @@
 
 #disasterType-filter .category:hover {
   color: #ed1b2e;
+}
+
+#disasterType-filter .on {
+  color:#ed1b2e;
 }
 
 .searchLayerContainer {
@@ -118,10 +133,10 @@
   text-align: left;
   margin-top: 5px;
   background: #F2F2F2;
-  padding: 3px;
+  padding: 7px;
   font-size: 14px;
   font-weight: 400;
-  color: #ed1b2e;
+  color: rgb(109, 110, 112);
   cursor: pointer;
 }
 

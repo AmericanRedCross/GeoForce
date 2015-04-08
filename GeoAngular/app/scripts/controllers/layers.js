@@ -54,14 +54,12 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
-  }
+  };
 
   //Toggle ECOS Layer - if off, then turn on and vice versa.
   $scope.updateTheme = function() {
 
     var layersArray;
-
-    //$scope.closePanels();
 
     if($stateParams.layers){
       layersArray = $stateParams.layers.split(",");
@@ -82,7 +80,6 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
       //Add in the gadm layer to the layers list in the stateparams.
       layersArray.push("gadm" + $scope.gadmLevel);
       $stateParams.layers = layersArray.join(",");
-
 
     }
     else {

@@ -61,6 +61,14 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.disasterTypescategory = cTypes;
   };
 
+  $scope.closePanels = function (){
+    for (var param in $stateParams) {
+      if ($stateParams[param] === 'open') {
+        $stateParams[param] = null;
+      }
+    }
+  };
+
   $scope.$on('theme-update', function () {
     if ($stateParams.theme == 'disaster' || $stateParams.theme == 'disasterType') {
       $scope.navTab = 'disasterType';
@@ -69,7 +77,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       $scope.navTab = 'sectors';
     };
 
-    //$scope.clearAllFilters();
+    //$scope.closePanels(); // close all panels on theme change
 
     //clear theme filters
     if ($stateParams.filters !== null) {
