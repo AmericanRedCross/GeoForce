@@ -346,8 +346,16 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         && LayerConfig[overlayName].type.toLowerCase() === 'pbf') {
 
         var vecRes = VectorProvider.createResource(overlayName);
-        var layer = vecRes.getLayer();
-        layer.overlayName = overlayName;
+        if (vecRes) {
+          var layer = vecRes.getLayer();
+          layer.overlayName = overlayName;
+        }
+        else {
+          //Not a valid layer.
+          console.log(overlayName + " is not a layer specified in layerConfig.js");
+          continue;
+        }
+
 
       }
 
@@ -357,12 +365,24 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         && LayerConfig[overlayName].type.toLowerCase() === 'wms') {
 
         var cfg = LayerConfig[overlayName];
-        var layer = L.tileLayer.wms(cfg.url, {
-          format: cfg.format || 'image/png',
-          transparent: cfg.transparent || true,
-          layers: cfg.layers
-        });
+
+        if (cfg) {
+
+
+          var layer = L.tileLayer.wms(cfg.url, {
+            format: cfg.format || 'image/png',
+            transparent: cfg.transparent || true,
+            layers: cfg.layers
+          });
+
+        }
+        else {
+          //Not a valid layer.
+          console.log(overlayName + " is not a layer specified in layerConfig.js");
+          continue;
+        }
       }
+
 
       /**
        * Tiles that are an overlay. OSM / Google / Mapnik tend to make tiles in this format.
@@ -371,9 +391,19 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         && LayerConfig[overlayName].type.toLowerCase() === 'xyz') {
 
         var cfg = LayerConfig[overlayName];
-        var layer = L.tileLayer(cfg.url, {
-          opacity: cfg.opacity || 0.5
-        });
+        if (cfg) {
+
+
+          var layer = L.tileLayer(cfg.url, {
+            opacity: cfg.opacity || 0.5
+          });
+        }
+
+        else {
+          //Not a valid layer.
+          console.log(overlayName + " is not a layer specified in layerConfig.js");
+          continue;
+        }
       }
 
       /**
@@ -382,28 +412,46 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       else if (typeof LayerConfig[overlayName] === 'object'
         && LayerConfig[overlayName].type.toLowerCase() === 'tms') {
         var cfg = LayerConfig[overlayName];
-        var layer = L.tileLayer(cfg.url, {
-          opacity: cfg.opacity || 0.5,
-          tms: true
-        });
+
+        if (cfg) {
+          var layer = L.tileLayer(cfg.url, {
+            opacity: cfg.opacity || 0.5,
+            tms: true
+          });
+        }
+
+        else {
+          //Not a valid layer.
+          console.log(overlayName + " is not a layer specified in layerConfig.js");
+          continue;
+        }
       }
 
       // if its not wms, its a vector layer
       else {
         var vecRes = VectorProvider.createResource(overlayName);
-        var layer = vecRes.getLayer();
+        if (vecRes) {
+          var layer = vecRes.getLayer();
+        }
+        else {
+          //Not a valid layer.
+          console.log(overlayName + " is not a layer specified in layerConfig.js");
+          continue;
+        }
       }
 
-      layer.overlayName = overlayName;
-      layer.addTo(map);
-      overlays[i] = layer;
-      overlays_dictionary[overlayName] = layer; //keep a dictionary reference for faster fetching in UpdateECOSData
+      if(layer){
+        layer.overlayName = overlayName;
+        layer.addTo(map);
+        overlays[i] = layer;
+        overlays_dictionary[overlayName] = layer; //keep a dictionary reference for faster fetching in UpdateECOSData
 
-      //See which GADM level is currently loaded and store it in rootScope (assumes one at a time, which might go away at some point)
-      if (LayerConfig.themeLayers.indexOf(overlayName) > -1) {
-        //We have one of the theme layers (GADM), parse the name and find out which level we're dealing with as opposed to storing a seaprate level state param
-        var level = overlayName.substring(overlayName.length - 1, overlayName.length);
-        $rootScope.level = level; //Store in rootscope
+        //See which GADM level is currently loaded and store it in rootScope (assumes one at a time, which might go away at some point)
+        if (LayerConfig.themeLayers.indexOf(overlayName) > -1) {
+          //We have one of the theme layers (GADM), parse the name and find out which level we're dealing with as opposed to storing a seaprate level state param
+          var level = overlayName.substring(overlayName.length - 1, overlayName.length);
+          $rootScope.level = level; //Store in rootscope
+        }
       }
     }
 

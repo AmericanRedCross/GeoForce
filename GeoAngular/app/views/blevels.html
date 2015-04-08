@@ -7,9 +7,10 @@
     <ul class="nav navbar-nav">
       <li class="dropdown">
         <span class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleBLevelMenu()">
-          ARC
           <div class="glyphicon glyphicon-chevron-up pull-right"></div>
-          <div class="mini-label">(American Red Cross Regions)</div>
+
+          <div class="text-center" ng-show="gadmLevel=='0'">{{gadm0Label}}</div>
+          <div class="text-center" ng-show="gadmLevel=='1'">{{gadm1Label}}</div>
 
         </span>
         <ul id="BLevelMenu" class="dropdown-menu">

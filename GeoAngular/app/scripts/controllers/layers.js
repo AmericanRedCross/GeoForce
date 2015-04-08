@@ -8,6 +8,13 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   $scope.zoom = parseInt($stateParams.zoom);
   $scope.navTab = 'contextual';
 
+  $scope.gists = []; //initialize as empty
+  $scope.mapLayers = []; //initialize as empty
+
+  $scope.gadm0Label = '0. Countries';
+  $scope.gadm1Label = '1. State / Province';
+
+
   debug.LayerConfig = LayerConfig;
   debug.setGadmLevel = VectorProvider.setGadmLevel;
 
@@ -20,7 +27,12 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   $scope.themeLayer = LayerConfig.theme;
 
   $scope.updateGadm = function (level) {
-    $scope.gadmLevel = level || 0;
+    if(level !== $scope.gadmLevel) {
+      $scope.closeParam('details-panel');
+      $scope.gadmLevel = level.toString() || "0";
+      console.log($scope.gadmLevel);
+    };
+
   };
 
   $scope.updateThemeLabel = function() {
@@ -48,9 +60,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
       return;
     }
 
-
     if ($scope.theme.isChecked === true) {
-
 
       //Remove all GADM layers.
       angular.forEach(layersArray, function (value, key) {
@@ -207,9 +217,11 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
     var theme = $stateParams.theme;
 
+
     //force gadm0 on disaster themes when user changes gadm level
     if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){
-      var layersArray;
+
+      var layersArray = [];
 
       if($stateParams.layers){
         layersArray = $stateParams.layers.split(",");
@@ -228,7 +240,8 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     }
 
 
-    $scope.mapLayers = layersArray;
+    $scope.mapLayers = $stateParams.layers.split(",");
+
     // skip the first layer, the basemap
     for (var i = 1, len = layers.length; i < len; i++) {
       var l = layers[i];
@@ -237,7 +250,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
         LayerConfig[l].active = true;
       }
       // layer is a github gist
-      else if ($scope.gists[l]) {
+      else if ($scope.gists && $scope.gists[l]) {
         $scope.gists[l].active = true;
       }
       // layer is a not in the layer config. it's nomadic.
@@ -251,7 +264,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     }
 
     var state = $state.current.name || 'main';
-    $state.go(state, $stateParams);
+    //$state.go(state, $stateParams);
   });
 
   $scope.$on('route-update', function() {

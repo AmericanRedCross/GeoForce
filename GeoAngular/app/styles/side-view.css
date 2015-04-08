@@ -68,6 +68,9 @@
     padding: 10px 26px;
     background-color: white;
 }
+.side-view .tab-content.disaster {
+  padding:0px;
+}
 
 .side-view .disabled-radio-label {
     color: #A0A0A0;

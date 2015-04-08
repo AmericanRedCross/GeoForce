@@ -80,6 +80,7 @@
               ng-click="toggleParam('stories')"
               ng-class="{on: isParam('stories')}">
         <i class="icon-2_stories"></i>
+
         <div class="icon_title">Stories</div>
       </button>
       <button type="button" class="btn btn-default" ng-mouseenter="isLayersActive = isNotParam('layers-panel')"
@@ -87,6 +88,7 @@
               ng-click="toggleParam('layers-panel')"
               ng-class="{on: isParam('layers-panel')}">
         <i class="icon-3_map_layers"></i>
+
         <div class="icon_title">Layers</div>
       </button>
       <button type="button" class="btn btn-default" ng-mouseenter="isFiltersActive = isNotParam('filters-panel')"
@@ -94,19 +96,21 @@
               ng-click="toggleParam('filters-panel')"
               ng-class="{on: isParam('filters-panel'), disabled: ((params.theme !== 'project' && params.theme !== 'disaster' && params.theme !== 'disasterType') && params.theme !== null) }">
         <i class="icon-4_filters"></i>
+
         <div class="icon_title">Filters</div>
       </button>
       <!--<button type="button" class="btn btn-default" ng-mouseenter="isLegendActive = isNotParam('legend')"-->
-              <!--ng-mouseleave="isLegendActive=false"-->
-              <!--ng-click="toggleParam('legend')"-->
-              <!--ng-class="{on: isParam('legend')}">-->
-        <!--<i class="icon-5_legend"></i>-->
+      <!--ng-mouseleave="isLegendActive=false"-->
+      <!--ng-click="toggleParam('legend')"-->
+      <!--ng-class="{on: isParam('legend')}">-->
+      <!--<i class="icon-5_legend"></i>-->
       <!--</button>-->
       <button type="button" class="btn btn-default" ng-mouseenter="isBasemapsActive = isNotParam('basemaps')"
               ng-mouseleave="isBasemapsActive=false"
               ng-click="toggleParam('basemaps')"
               ng-class="{on: isParam('basemaps')}">
         <i class="icon-6_basemaps"></i>
+
         <div class="icon_title">Basemaps</div>
       </button>
     </div>
@@ -115,19 +119,19 @@
       <!-- the container for the sliding nav button tooltips -->
       <div class="NavFlyoutGroup">
         <!--<div class="flyout" ng-class="{on: isStoriesActive}">-->
-          <!--Stories-->
+        <!--Stories-->
         <!--</div>-->
         <!--<div class="flyout" ng-class="{on: isLayersActive}">-->
-          <!--Layers-->
+        <!--Layers-->
         <!--</div>-->
         <!--<div class="flyout" ng-class="{on: isFiltersActive}">-->
-          <!--Filters-->
+        <!--Filters-->
         <!--</div>-->
         <!--<div class="flyout" ng-class="{on: isLegendActive}">-->
-          <!--Legend-->
+        <!--Legend-->
         <!--</div>-->
         <!--<div class="flyout" ng-class="{on: isBasemapsActive}">-->
-          <!--Basemaps-->
+        <!--Basemaps-->
         <!--</div>-->
       </div>
 
@@ -138,13 +142,14 @@
               ng-click="toggleParam('info')"
               ng-class="{on: isParam('info')}">
         <i class="icon-1_info"></i>
+
         <div class="icon_title">Info</div>
       </button>
     </div>
     <div class="NavigationTooltipContainer bottom">
       <div class="NavFlyoutGroup">
         <!--<div class="flyout" ng-class="{on: isInfoActive}">-->
-          <!--Info-->
+        <!--Info-->
         <!--</div>-->
       </div>
     </div>
@@ -315,61 +320,66 @@
           <div class="tab-content scrollable">
             <div ng-class="{active: navTab==='contextual'}" class="tab-pane">
 
-                                    <h4 class="title">ECOS layer:</h4>
-                                    <label class="checkbox">
-                                      <input type="checkbox" ng-model="themeLabels.isChecked" ng-disabled="!theme.isChecked" ng-change="updateThemeLabel()">
-                                      ECOS Count Bubbles
-                                    </label>
-                                    <label class="checkbox">
-                                      <input type="checkbox" ng-model="theme.isChecked" ng-change="updateTheme()">
-                                      ECOS Overlay
-                                    </label>
+              <h4 class="title">ECOS layer:</h4>
+              <label class="checkbox">
+                <input type="checkbox" ng-model="themeLabels.isChecked" ng-disabled="!theme.isChecked"
+                       ng-change="updateThemeLabel()">
+                ECOS Count Bubbles
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" ng-model="theme.isChecked" ng-change="updateTheme()">
+                ECOS Overlay
+              </label>
 
-                                    <h4 class="title">Administrative boundary levels:</h4>
+              <h4 class="title">Administrative boundary levels:</h4>
 
-                                    <!--<div class="radio">-->
-                                        <!--<label>-->
-                                            <!--<input type="radio" ng-model="gadmLevel" value="-1">-->
-                                            <!--ARC - American Red Cross Regions-->
-                                        <!--</label>-->
-                                    <!--</div>-->
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" ng-model="gadmLevel" value="0">
-                                            0. Countries
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
-                                            <input ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"
-                                                   type="radio" ng-model="gadmLevel" value="1">
-                                            1. State / Province
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
-                                            <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1" value="2">
-                                            2. County
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
-                                            <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1" value="3">
-                                            3. Level 3
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
-                                            <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1" value="4">
-                                            4. Level 4
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
-                                            <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1" value="5">
-                                            5. Level 5
-                                        </label>
-                                    </div>
+              <!--<div class="radio">-->
+              <!--<label>-->
+              <!--<input type="radio" ng-model="gadmLevel" value="-1">-->
+              <!--ARC - American Red Cross Regions-->
+              <!--</label>-->
+              <!--</div>-->
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-model="gadmLevel" value="0">
+                  0. Countries
+                </label>
+              </div>
+              <div class="radio">
+                <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
+                  <input ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"
+                         type="radio" ng-model="gadmLevel" value="1">
+                  1. State / Province
+                </label>
+              </div>
+              <div class="radio">
+                <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
+                  <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"
+                         value="2">
+                  2. County
+                </label>
+              </div>
+              <div class="radio">
+                <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
+                  <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"
+                         value="3">
+                  3. Level 3
+                </label>
+              </div>
+              <div class="radio">
+                <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
+                  <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"
+                         value="4">
+                  4. Level 4
+                </label>
+              </div>
+              <div class="radio">
+                <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
+                  <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"
+                         value="5">
+                  5. Level 5
+                </label>
+              </div>
 
               <div ng-repeat="(panelName, panel) in layersPanels">
                 <h4 class="title">{{panelName}}</h4>
@@ -535,7 +545,9 @@
                 <h4 class="title">Filter WHERE Clause</h4>
                 <textarea class="form-control" rows="6" placeholder="Create a custom where clause..."
                           ng-model="whereClause"></textarea>
-                <div ng-click="submitFilter()" type="button" class="btn btn-danger btn-footer pull-right custom-filter-submit">
+
+                <div ng-click="submitFilter()" type="button"
+                     class="btn btn-danger btn-footer pull-right custom-filter-submit">
                   Submit
                 </div>
               </div>
@@ -550,15 +562,14 @@
             </div>
             <div class="col-md-10 side-view-title-wrapper">
               <div class="uppertitle">Disaster Filters</div>
-              <a class="clear-all" ng-click="clearAllFilters()">Clear All Filters</a>
             </div>
           </div>
           <div class="row">
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs">
-              <li class="active"><a class="a-nav-tab" ng-click="navTab='disasterType'" data-toggle="tab">Disaster
-                Type</a></li>
+              <!--<li class="active"><a class="a-nav-tab" ng-click="navTab='disasterType'" data-toggle="tab">Disaster-->
+              <!--Type</a></li>-->
               <!--<li><a class="a-nav-tab" ng-click="navTab='date'" data-toggle="tab">Date</a></li>-->
               <!--<li><a class="a-nav-tab" ng-click="navTab='status'" data-toggle="tab">Status</a></li>-->
               <!--<li><a class="a-nav-tab" ng-click="navTab='budget'" data-toggle="tab">Budget</a></li>-->
@@ -566,36 +577,42 @@
             </ul>
 
             <!-- Tab panes -->
-            <div class="tab-content scrollable">
-              <div ng-class="{active: navTab==='disasterType' || navTab==='disaster'}" class="tab-pane" id="disasterType-filter">
-                <a ng-click="clearDisasterTypeFilter()">Clear All Disaster Filters</a>
+            <div class="tab-content disaster scrollable">
+              <div id="disasterType-filter">
+                <div class="disaster-padding">
+                  <a class="pull-right disaster-clearfilter" ng-click="clearDisasterTypeFilter()">Clear All Disaster Filters</a>
 
-                <input type="text" class="form-control" placeholder="Enter search term" ng-model="searchText">
+                  <input type="text" class="form-control" placeholder="Enter search term" ng-model="searchText">
 
-                <div ng-hide="!searchText.length || selected" class="searchLayerContainer">
-                  <div class="item" ng-repeat="val in searchList | filter:searchText">
-                    <div ng-click="handleSearch(val.name);highlightLayer(val.name);">
-                      {{val.name}}
+                  <div ng-hide="!searchText.length || selected" class="searchLayerContainer disaster-searchresult">
+                    <div class="item" ng-repeat="val in searchList | filter:searchText">
+                      <div ng-click="handleSearch(val.name);highlightLayer(val.name);">
+                        {{val.name}}
+                      </div>
                     </div>
                   </div>
+
                 </div>
 
-                <div ng-repeat="(key,val) in disasterTypescategory">
+                <div class="category-title" ng-repeat="(key,val) in disasterTypescategory">
                   <div ng-click="putCategoryURL(key);" class="category">{{key}}</div>
-                  <div ng-repeat="types in val">
+                  <div ng-class="{'disaster-filtertypes': $stateParams.category == key}">
+                    <div ng-repeat="types in val">
                     <div ng-show="$stateParams.category == key">
-                      <label class="checkbox label-disaster" style="color: black;">
+                      <label class="checkbox label-disaster">
                         <input type="checkbox" ng-model="types.checked" ng-change="disasterTypesFilter()">
                         <i class="icon-{{types.name.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i>
                         <span class="sector-name" ng-class="{highlight: types.isSearchActive}">{{types.name}}</span>
                       </label>
-                      <hr/>
                     </div>
+                  </div>
                   </div>
                 </div>
                 <br/>
                 <br/>
               </div>
+
+
               <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
                 <a ng-click="clearDateFilter()">Clear All Date Filters</a>
 
@@ -687,22 +704,22 @@
 
       <!--Legend Panel-->
       <!--<div ng-controller="LegendCtrl" ng-class="{on: isParam('legend')}" class="navpanel container legend-container">-->
-        <!--<div class="row">-->
-          <!--<button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('legend')"><span-->
-            <!--class="glyphicon glyphicon-chevron-left"></span></button>-->
-          <!--<div class="col-md-8 side-view-title-wrapper">-->
-            <!--<div class="title">Legend</div>-->
-            <!--<div class="description"></div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row scrollable">-->
-          <!--<ul class="list-group legend-list">-->
-            <!--<li class="list-group-item" ng-repeat="layer in layers">-->
-              <!--<div class="legendTitle">{{layer.name}}</div>-->
-              <!--<div class="legendIcon" ng-bind-html="layer.activeLegend"></div>-->
-            <!--</li>-->
-          <!--</ul>-->
-        <!--</div>-->
+      <!--<div class="row">-->
+      <!--<button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('legend')"><span-->
+      <!--class="glyphicon glyphicon-chevron-left"></span></button>-->
+      <!--<div class="col-md-8 side-view-title-wrapper">-->
+      <!--<div class="title">Legend</div>-->
+      <!--<div class="description"></div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--<div class="row scrollable">-->
+      <!--<ul class="list-group legend-list">-->
+      <!--<li class="list-group-item" ng-repeat="layer in layers">-->
+      <!--<div class="legendTitle">{{layer.name}}</div>-->
+      <!--<div class="legendIcon" ng-bind-html="layer.activeLegend"></div>-->
+      <!--</li>-->
+      <!--</ul>-->
+      <!--</div>-->
       <!--</div>-->
       <!--End Legend Panel-->
 
@@ -774,7 +791,7 @@
     <div class="windowEffects" ng-class="{grayout: isParam('zoom-extent')}"></div>
     <!-- Use this window to gray out the map -->
 
-    <div id="map"  class="ui-layout-center"></div>
+    <div id="map" class="ui-layout-center"></div>
 
     <!-- Upper Right Toolbar in Map -->
     <div id="MapUpperRightToolbarWrapper">
@@ -875,7 +892,10 @@
 
     <div ui-view="blevels"></div>
 
+    <!--<div ui-view="details-panel"></div>-->
+
     <!-- Right Hand Details Panel -->
+    <!--<div ui-view="details-panel"></div>-->
     <div ng-controller="DetailsCtrl" id="DetailsWrapper" ng-class="{on: isParam('details-panel')}">
       <div id="DetailsButtonWrapper">
         <div id="DetailsNub" class="btn btn-lg btn-red icon-11_infobox" ng-click="toggleParam('details-panel')">
@@ -1091,8 +1111,9 @@
               </div>
               <div class="svgcontainer">
                 <div ng-repeat="c in dataset" class="inline">
-                  <svg ng-mouseenter="updateSectorLegend(c.alias,c.color,c.count)" ng-attr-width="{{c.width}}" height="20">
-                    <rect ng-attr-width="{{c.width}}" height="20" fill="{{c.color}}"> </rect>
+                  <svg ng-mouseenter="updateSectorLegend(c.alias,c.color,c.count)" ng-attr-width="{{c.width}}"
+                       height="20">
+                    <rect ng-attr-width="{{c.width}}" height="20" fill="{{c.color}}"></rect>
                   </svg>
                 </div>
               </div>
@@ -1109,66 +1130,71 @@
           </div>
 
           <div class="details-bottom-buttons pull-right" ng-show="!contextualLayer && !itemsList">
-            <div type="button" class="btn btn-default btn-xs btnless" ng-click="toggleMoreLess()">Show {{moreLess}} Details
+            <div type="button" class="btn btn-default btn-xs btnless" ng-click="toggleMoreLess()">Show {{moreLess}}
+              Details
             </div>
             <a href="{{salesforceUrl}}/{{details.sf_id}}" target="_blank" class="btn btn-default btn-xs btnless">View in
               ECOS</a>
           </div>
 
-          <div ui-view="details"></div>
 
         </div>
       </div>
     </div>
 
-  <div ng-controller="LegendCtrl" class="ui-layout-south" style="background-color: #43484a;">
-    <!--<div class="list-group legend-list">-->
+    <div ui-view="details"></div>
+
+
+    <div ng-controller="LegendCtrl" class="ui-layout-south" style="background-color: #43484a;">
+      <!--<div class="list-group legend-list">-->
       <!--<div class="list-group-item ng-scope">-->
       <!--<div class="legendTitle ng-binding">Legend:</div>-->
       <!--<div class="legendIcon ng-binding"></div>-->
-    <!--</div>-->
-    <div class="list-group legend-list" ng-cloak>
-      <div class="list-group-item class-list" ng-repeat="layer in layers">
-        <div class="legend-title">Legend:</div>
-        <div ng-repeat="layerClass in legendObject" class="legend-class">
+      <!--</div>-->
+      <div class="list-group legend-list" ng-cloak>
+        <div class="list-group-item class-list" ng-repeat="layer in layers">
+          <div class="legend-title">Legend:</div>
+          <div ng-repeat="layerClass in legendObject" class="legend-class">
 
-          <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
-          <div class="legend-swatch" ng-style="{backgroundColor: '{{layerClass.color}}'}" ng-show="!layerClass.gradient"> </div>
+            <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
+            <div class="legend-swatch" ng-style="{backgroundColor: '{{layerClass.color}}'}"
+                 ng-show="!layerClass.gradient"></div>
 
-          <!-- Legend Color swatch label for PBF THEME Layer.  Set in Config/VectorTiles.js -->
-          <div class="legend-swatch-label">
-            {{layerClass.legendLabel}}
-          </div>
-
-          <div ng-show="layerClass.gradient.length > 0">
-            <div class="gradient-label">
-              Fewer
-              </div>
-            <div class="gradient-legend" ng-style="{background : 'linear-gradient(to right, {{layerClass.gradient[0]}}, {{layerClass.gradient[1]}})'}">
-
+            <!-- Legend Color swatch label for PBF THEME Layer.  Set in Config/VectorTiles.js -->
+            <div class="legend-swatch-label">
+              {{layerClass.legendLabel}}
             </div>
-            <div class="gradient-label">
-              More
+
+            <div ng-show="layerClass.gradient.length > 0">
+              <div class="gradient-label">
+                Fewer
               </div>
+              <div class="gradient-legend"
+                   ng-style="{background : 'linear-gradient(to right, {{layerClass.gradient[0]}}, {{layerClass.gradient[1]}})'}">
+
+              </div>
+              <div class="gradient-label">
+                More
+              </div>
+            </div>
+
+          </div>
+
+          <div ng-show="singleBubbleObject && themeLabelsChecked" class="single-bubble-class">
+            <div ng-bind-html="singleBubbleObject" class="legend-swatch singleIcon">
+            </div>
+            <div class="legend-swatch-label">
+              Counts
+            </div>
           </div>
 
         </div>
-
-        <div ng-show="singleBubbleObject && themeLabelsChecked" class="single-bubble-class">
-          <div ng-bind-html="singleBubbleObject" class="legend-swatch singleIcon">
-          </div>
-          <div class="legend-swatch-label">
-             Counts
-          </div>
-        </div>
-
       </div>
     </div>
-    </div>
   </div>
-  </div>
-  <div ui-view="upload"></div>
-  <div ui-view="export"></div>
+</div>
+<div ui-view="upload"></div>
+<div ui-view="export"></div>
 </div>
 
 <!--[if lt IE 9]>

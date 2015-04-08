@@ -12,6 +12,11 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
       var layer = {};
       var lcfg = LayerConfig.find(l);
 
+      if(!lcfg){
+        //exit if layer name is not in config.
+        return;
+      }
+
       layer.alias = l;
       layer.name = lcfg.name;
       if(l === 'gadm0' || l === 'theme'){

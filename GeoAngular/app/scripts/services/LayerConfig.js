@@ -297,45 +297,6 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
   };
 
 
-  this.boundaries = {
-    name: 'Boundaries',
-    type: 'bboxgeojson',
-    theme: 'all',
-    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
-    properties: {
-      "stroke": 'white',
-      "stroke-width": 1.3,
-      "stroke-opacity": 1,
-      "fill-opacity": 0,
-      "labelProperty": "name",
-      "onSelect": 'showFeatureProperties',
-      "onDeselect": 'closeDetails',
-      "legend": '<svg class="leaflet-zoom-animated" width="48" height="48"><g><path stroke-linejoin="round" stroke-linecap="round" fill-rule="evenodd" stroke="white" stroke-opacity="1" stroke-width="1.3" fill="#555555" fill-opacity="0" class="leaflet-clickable" d="M-1890 -409L-1896 -404L-1899 -404L-1907 -395L-1919 -394L-1921 -404L-1924 -408L-1922 -411L-1899 -421L-1894 -420L-1891 -414L-1888 -413z"></path></g></svg>'
-    }
-
-  };
-
-  /**
-   * Shows badges with numbers on them. This is for testing and demo purposes.
-   * Demonstrates the label w/ badge feature.
-   */
-  this.fakecount = {
-    name: 'Fake Count',
-    type: 'bboxgeojson',
-    url: config.chubbsPath('services/custom/custom_operation?name=getfeaturesbyid&format=geojson&gadm_level=:level&ids=:ids'),
-    properties: {
-      "stroke": 'white',
-      "stroke-width": 2,
-      "stroke-opacity": 1,
-      "fill": "green",
-      "fill-opacity": 0,
-      "labelProperty": function () {
-        return Math.floor(Math.random() * (50 - 1 + 1)) + 1;
-      }
-    }
-
-  };
-
   //GADM country extents, level 0
   this.countryextents = {
     type: 'geojson',
