@@ -217,7 +217,7 @@ app.get('/services', function(req, res) {
 function ensureAuthenticated(req, res, next) {
 
   //Allow /services/namesearch to proceed without login.
-  if(settings.enableSecurity && (req.path.indexOf("/services/nameSearch") == 0 && req.path.indexOf("services/getAdminStack") == 0)){
+  if(settings.enableSecurity && (req.path.indexOf("/services/nameSearch") == 0 || req.path.indexOf("services/getAdminStack") == 0)){
     return next();
   }
 
