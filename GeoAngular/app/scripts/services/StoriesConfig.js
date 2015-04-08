@@ -31,20 +31,18 @@ module.exports = angular.module('GeoAngular').service('StoriesConfig', function 
    */
 
   this.haiyan = {
-    url: '/mapfolio/index.html#/map@12.768946,122.486572,6(ortho,gadm0,gdacs)?theme=disaster&details-panel=open&sf_id=a0Ed000000qZntUEAS',
+    url: '/mapfolio/index.html#/map@12.768946,122.486572,6(ortho,gadm0,gdacs),disaster?details-panel=open&sf_id=a0Ed000000qZntUEAS',
     name: 'Typhoon Haiyan Response',
     date: '2013-10-12',
     thumbnail: 'images/stories/haiyan.png',
     keywords: 'Typhoon, Disaster Response, Haiyan, Disaster, AMEE'
   };
-  this.ebola = {
-    url: '/mapfolio/index.html#/map@15.072124,-3.460693,6(ortho,gadm0,gdacs)?theme=disaster',
-    name: 'Ebola Outbreak Resopnse',
-    date: '2014-15-5',
-    thumbnail: 'images/stories/ebola.png',
-    keywords: 'Ebola, Disaster Response, Guinea, Disease, Mali, Africa'
-
-
+  this.pam = {
+    url: '/mapfolio/index.html#/map@-16.551962,168.085327,7(ortho,gdacs,gadm0),disaster',
+    name: 'Cyclone Pam Resopnse',
+    date: '2015-15-3',
+    thumbnail: 'images/stories/pam.png',
+    keywords: 'Cyclone, Disaster Response, Vanuatu, Africa'
   };
 
   /**

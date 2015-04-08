@@ -359,27 +359,27 @@
                   2. County
                 </label>
               </div>
-              <div class="radio">
-                <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
-                  <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"
-                         value="3">
-                  3. Level 3
-                </label>
-              </div>
-              <div class="radio">
-                <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
-                  <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"
-                         value="4">
-                  4. Level 4
-                </label>
-              </div>
-              <div class="radio">
-                <label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">
-                  <input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"
-                         value="5">
-                  5. Level 5
-                </label>
-              </div>
+              <!--<div class="radio">-->
+                <!--<label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">-->
+                  <!--<input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"-->
+                         <!--value="3">-->
+                  <!--3. Level 3-->
+                <!--</label>-->
+              <!--</div>-->
+              <!--<div class="radio">-->
+                <!--<label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">-->
+                  <!--<input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"-->
+                         <!--value="4">-->
+                  <!--4. Level 4-->
+                <!--</label>-->
+              <!--</div>-->
+              <!--<div class="radio">-->
+                <!--<label ng-class="{'disabled-radio-label': $stateParams.theme.indexOf('disaster')!==-1}">-->
+                  <!--<input type="radio" ng-model="gadmLevel" ng-disabled="$stateParams.theme.indexOf('disaster')!==-1"-->
+                         <!--value="5">-->
+                  <!--5. Level 5-->
+                <!--</label>-->
+              <!--</div>-->
 
               <div ng-repeat="(panelName, panel) in layersPanels">
                 <h4 class="title">{{panelName}}</h4>
@@ -794,10 +794,10 @@
     <div id="map" class="ui-layout-center"></div>
 
     <!-- Upper Right Toolbar in Map -->
-    <div id="MapUpperRightToolbarWrapper">
+    <div id="MapUpperRightToolbarWrapper" ng-cloak>
       <div class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('zoom-extent')"><span
         class="glyphicon glyphicon-chevron-down"></span></div>
-      <div ng-controller="BreadcrumbsCtrl" class="breadcrumbs-container">
+      <div  ng-controller="BreadcrumbsCtrl" class="breadcrumbs-container">
         <div class="world">
           <div class="bc" ng-click="zoomToWorld()">World</div>
         </div>
