@@ -1151,6 +1151,7 @@
       <!--</div>-->
       <div class="list-group legend-list" ng-cloak>
         <div class="list-group-item class-list" ng-repeat="layer in layers">
+          <div ng-class="{'legend-info':$stateParams.theme == 'project'}">
           <div class="legend-title">Legend:</div>
           <div ng-repeat="layerClass in legendObject" class="legend-class">
 
@@ -1159,16 +1160,33 @@
                  ng-show="!layerClass.gradient"></div>
 
             <!-- Legend Color swatch label for PBF THEME Layer.  Set in Config/VectorTiles.js -->
-            <div class="legend-swatch-label">
+            <div ng-show="$stateParams.theme!=='project' && $stateParams.theme!=='disasterType' && $stateParams.theme!=='none'"
+                 class="legend-swatch-label">
               {{layerClass.legendLabel}}
             </div>
 
-            <div ng-show="layerClass.gradient.length > 0">
+            <div class="legend-swatch-label" ng-show="$stateParams.theme == 'disasterType' && $stateParams.theme!=='none'">
+              {{layerClass.legendLabel[0]}}
+            </div>
+
+
+
+            <div class="gradient" ng-show="layerClass.gradient.length > 0">
               <div class="gradient-label">
                 Fewer
               </div>
-              <div class="gradient-legend"
-                   ng-style="{background : 'linear-gradient(to right, {{layerClass.gradient[0]}}, {{layerClass.gradient[1]}})'}">
+              <div class="gradient-legend">
+
+                <svg height="20" width="70">
+                  <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="120%" y2="0%">
+                      <stop offset="0%" ng-attr-style="stop-color:{{layerClass.gradient[0]}}" />
+                      <stop offset="65%" ng-attr-style="stop-color:{{layerClass.gradient[1]}}" />
+                    </linearGradient>
+                  </defs>
+                  <rect width="70" height="20" fill="url(#grad1)"/>
+                </svg>
+
 
               </div>
               <div class="gradient-label">
@@ -1177,7 +1195,7 @@
             </div>
 
           </div>
-
+          </div>
           <div ng-show="singleBubbleObject && themeLabelsChecked" class="single-bubble-class">
             <div ng-bind-html="singleBubbleObject" class="legend-swatch singleIcon">
             </div>

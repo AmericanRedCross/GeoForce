@@ -576,6 +576,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         if(legendObject){
           //set it equal to the scope
           $scope.legendObject = legendObject;
+          $scope.themeLabel = $rootScope.themeNameHash[$stateParams.theme];
+
+          //$scope.legendObjectLabel = legendObject[Object.keys(legendObject)[0]].legendLabel.replace("#",""); //remove '#'
         }
       }
 

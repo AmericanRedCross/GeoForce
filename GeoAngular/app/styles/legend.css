@@ -36,13 +36,23 @@
   display: inline-block;
 }
 
-.gradient-legend{
-   width: 50px;
-  height: 20px;
+.gradient {
+  transform: translateY(-3px);
+  -webkit-transform: translateY(-3px);
 }
 
-.gradient-label{
-  font-size: 10px;
+.gradient .gradient-legend{
+  transform: translateY(5px);
+  -webkit-transform: translateY(5px);
+}
+
+.gradient .gradient-label{
+  font-size: 11px;
+}
+
+.gradient .gradient-legend.gradient {
+  transform: translateY(5px);
+  -webkit-transform:translateY(5px);
 }
 
 .legend-swatch{
@@ -52,16 +62,55 @@
 
 .legend-swatch-label{
   transform: translateY(-25%);
-  transform: translateY(-25%);
-  font-size: 11px;
+  -webkit-transform:translateY(-25%);
   font-size: 11px;
   font-family: "Open Sans";
   color: rgb(35, 35, 35);
 }
 
+.list-group-item.project{
+  /*padding: 6px 15px 10px;*/
+}
+
+.theme-label{
+  margin-left: 20px;
+}
+
+.theme-label .theme-circle{
+  transform: translateY(6px);
+  -webkit-transform: translateY(6px);
+}
+
+.theme-label .legend-theme{
+  transform: none;
+}
+
+.legend-info{
+   transform: translateY(-4px);
+  -webkit-transform: translateY(-4px);
+
+}
+
+.list-group-item{
+  height:43px;
+}
+
 .legend-class{
   transform: translateY(3px);
+  -webkit-transform: translateY(3px);
   margin-right: 20px;
+}
+
+.legend-class.project{
+  transform: none;
+  -webkit-transform: none;
+  margin-right: 0px;
+
+}
+
+.legend-swatch-label.project{
+  transform: none;
+  -webkit-transform: none;
 }
 
 .legend-title{
@@ -84,8 +133,10 @@
 
 .single-bubble-class .legend-swatch-label{
   transform: translateY(0);
+  -webkit-transform: translateY(0);
 }
 
 .single-bubble-class{
   transform: translateY(-1px);
+  -webkit-transform: translateY(-1px);
 }
