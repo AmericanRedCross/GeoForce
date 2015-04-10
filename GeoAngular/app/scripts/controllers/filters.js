@@ -119,7 +119,8 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       i = i + 1;
     }
 
-    if ($stateParams.filters !== null && $stateParams.filters !== "" && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined'){
+    if ($stateParams.filters !== null && $stateParams.filters !== ""
+      && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined'){
       var disasters = $scope.disasterTypes;
       $scope.sectorClause = null;
       var first = true;
@@ -138,9 +139,6 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
           }
         }
       }
-
-    } else {
-      $scope.clearAllFilters();
     }
   };
 
@@ -157,7 +155,8 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       i = i + 1;
     }
 
-    if ($stateParams.filters !== null && $stateParams.filters !== "" && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined'){
+    if ($stateParams.filters !== null && $stateParams.filters !== ""
+      && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined'){
       var sectors = $scope.sectors;
       $scope.sectorClause = null;
       var first = true;
@@ -176,9 +175,6 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
           }
         }
       }
-
-    } else {
-      $scope.clearAllFilters();
     }
   };
 
@@ -289,7 +285,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
 
     $stateParams.category = null;
-    $state.go($state.current.name, $stateParams);
+    $stateParams.filters = null;
   };
 
   $scope.clearDisasterFilter = function () {
