@@ -13,6 +13,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
   $scope.gadm0Label = '0. Countries';
   $scope.gadm1Label = '1. State / Province';
+  $scope.gadm2Label = '2. County / District';
 
 
   debug.LayerConfig = LayerConfig;

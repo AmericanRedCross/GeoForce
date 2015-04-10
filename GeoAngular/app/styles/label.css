@@ -87,10 +87,10 @@
 }
 
 /* For Disaster Type UNOCHA icons*/
-.large-label .label-icon-number-100percent i{
-  font-size: 9px;
-  line-height: 16px;
-}
+/*.large-label .label-icon-number-100percent i{*/
+  /*font-size: 9px;*/
+  /*line-height: 16px;*/
+/*}*/
 
 /*.label-icon-number-40percent:hover {*/
   /*filter: alpha(opacity=100);*/

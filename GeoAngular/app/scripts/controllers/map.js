@@ -290,19 +290,16 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
     //When zoom ends, swap css class on map div, so the labels will change size
     //remove old classes, just in case
-    $("#map").removeClass("small-label");
+
     $("#map").removeClass("medium-label");
     $("#map").removeClass("large-label");
 
 
     //Add appropriate class basd on zoom
-    if (zoom >= 0 && zoom <= 5) {
-      $("#map").addClass("small-label");
-    }
-    else if (zoom > 5 && zoom <= 9) {
+    if (zoom >= 0 && zoom <= 7) {
       $("#map").addClass("medium-label");
     }
-    else if (zoom > 10 && zoom <= 13) {
+    else if (zoom > 8 && zoom <= 13) {
       $("#map").addClass("large-label");
     }
 

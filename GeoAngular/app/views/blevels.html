@@ -11,11 +11,13 @@
 
           <div class="text-center" ng-show="gadmLevel=='0'">{{gadm0Label}}</div>
           <div class="text-center" ng-show="gadmLevel=='1'">{{gadm1Label}}</div>
+          <div class="text-center" ng-show="gadmLevel=='2'">{{gadm2Label}}</div>
 
         </span>
         <ul id="BLevelMenu" class="dropdown-menu">
           <li ng-click="updateGadm(0);closePanels()">0. Countries</li>
           <li ng-click="updateGadm(1);closePanels()" ng-hide="$stateParams.theme.indexOf('disaster')!==-1">1. State / Province</li>
+          <li ng-click="updateGadm(2);closePanels()" ng-hide="$stateParams.theme.indexOf('disaster')!==-1">2. County / District</li>
         </ul>
       </li>
     </ul>
