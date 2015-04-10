@@ -59,16 +59,24 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
     }
   }
 
+  $scope.closePanels = function (){
+    for (var param in $stateParams) {
+      if ($stateParams[param] === 'open') {
+        $stateParams[param] = null;
+      }
+    }
+  };
+
   $scope.setThemeQueryParam = function (theme) {
-    //debugger;
-    $stateParams.theme = theme;
 
     //close details panel on theme change
     if($scope.isParam('details-panel') == true){
       if($stateParams.theme !== theme){
-        $scope.closeParam('details-panel');
+        $scope.closePanels();
       }
     }
+
+    $stateParams.theme = theme;
 
     //force gadm0 on disaster and disasterType
     if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){

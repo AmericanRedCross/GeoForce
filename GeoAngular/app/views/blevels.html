@@ -14,8 +14,8 @@
 
         </span>
         <ul id="BLevelMenu" class="dropdown-menu">
-          <li ng-click="closePanels();updateGadm(0)">0. Countries</li>
-          <li ng-click="closePanels();updateGadm(1)" ng-hide="$stateParams.theme.indexOf('disaster')!==-1">1. State / Province</li>
+          <li ng-click="updateGadm(0);closePanels()">0. Countries</li>
+          <li ng-click="updateGadm(1);closePanels()" ng-hide="$stateParams.theme.indexOf('disaster')!==-1">1. State / Province</li>
         </ul>
       </li>
     </ul>
