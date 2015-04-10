@@ -596,7 +596,7 @@
 
                 <div class="category-title" ng-repeat="(key,val) in disasterTypescategory">
                   <div  ng-class="{on: $stateParams.category == key}" ng-click="putCategoryURL(key);" class="category">{{key}}</div>
-                  <div class="show-categories" ng-class="{'on': $stateParams.category == key}" ng-show="$stateParams.category == key">
+                  <div class="show-categories" ng-class="{'on': $stateParams.category == key}">
                     <div ng-repeat="types in val">
                     <div>
                       <label class="checkbox label-disaster">
@@ -978,8 +978,11 @@
                   </div>
                   <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'"
                        class="details-body">
-                    {{label(key)}}: <span ng-bind-html="value" class="details-value"></span><i class="unavailable"
-                                                                                               ng-if="!value">Unavailable</i>
+                    {{label(key)}}:
+                    <span ng-bind-html="value" class="details-value"></span>
+                    <i class="unavailable" ng-if="!value">
+                      Unavailable
+                    </i>
                   </div>
                 </li>
               </ul>
@@ -1150,7 +1153,7 @@
       <!--<div class="legendIcon ng-binding"></div>-->
       <!--</div>-->
       <div class="list-group legend-list" ng-cloak>
-        <div class="list-group-item class-list" ng-repeat="layer in layers">
+        <div class="list-group-item class-list">
           <div ng-class="{'legend-info':$stateParams.theme == 'project'}">
           <div class="legend-title">Legend:</div>
           <div ng-repeat="layerClass in legendObject" class="legend-class">

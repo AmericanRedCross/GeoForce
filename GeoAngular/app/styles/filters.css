@@ -77,14 +77,17 @@
 }
 
 #disasterType-filter .show-categories{
-  -moz-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
-  -webkit-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
-  -ms-transition: all .5s ease; /* This is the animation DOWN for the country selector wrapper */
-  height:auto;
+  overflow:hidden;
+  max-height:0;
+  -webkit-transition: max-height .2s ease;
+  -moz-transition: max-height .2s ease;
+  transition: max-height .2s ease;
 }
 
 #disasterType-filter .show-categories.on{
-  min-height: 190px;
+  max-height:550px;
+  padding-bottom: 10px;
+
 }
 
 #disasterType-filter {
