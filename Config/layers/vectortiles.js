@@ -13,8 +13,9 @@ var gadm0 = {
   //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year",
 
   //url: "../services/vector-tiles/gadm0_labels_2014/{z}/{x}/{y}.pbf",
-  //url: "https://s3-us-west-2.amazonaws.com/gadm0-labels/tiles/{z}/{x}/{y}.pbf",
-  url: "http://{s}.spatialdevtiles.com/tiles/{z}/{x}/{y}.pbf",
+  url: "https://s3-us-west-2.amazonaws.com/vector-tiles/gadm0/{z}/{x}/{y}.pbf",
+  //url: "http://{s}.spatialdevtiles.com/tiles/{z}/{x}/{y}.pbf",
+  //url: "http://{s}.spatialdevtiles.com/gadm0/{z}/{x}/{y}.pbf",
   detailsUrl: 'services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=:level&filters=:filters',
   debug: false,
   clickableLayers: ["GADM_2014"],
@@ -84,7 +85,7 @@ var gadm1 = {
   //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year&labelpoints=true",
   //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year",
 
-  url: "https://s3-us-west-2.amazonaws.com/gadm1-labels/tiles/{z}/{x}/{y}.pbf",
+  url: "https://s3-us-west-2.amazonaws.com/vector-tiles/gadm1/{z}/{x}/{y}.pbf",
   detailsUrl: 'services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=1&filters=:filters',
   debug: false,
   clickableLayers: ["GADM_2014"],
@@ -152,7 +153,79 @@ var gadm1 = {
   }
 }
 
+var gadm2 = {
+  type: 'pbf',
+  name: 'GADM2',
+  //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year&labelpoints=true",
+  //url: "http://localhost:3000/services/postgis/gadm0/geom_simplify_med/vector-tiles/{z}/{x}/{y}.pbf?fields=guid::character varying,name_0,year",
 
+  url: "https://s3-us-west-2.amazonaws.com/vector-tiles/gadm2/{z}/{x}/{y}.pbf",
+  detailsUrl: 'services/custom/custom_operation?name=get:themebyguid&format=json&guids=:guids&gadm_level=1&filters=:filters',
+  debug: false,
+  clickableLayers: ["GADM_2014"],
+
+  getIDForLayerFeature: function (feature) {
+    return feature.properties.guid;
+  },
+  mutexToggle: true,
+
+  /**
+   * The filter function gets called when iterating though each vector tile feature (vtf). You have access
+   * to every property associated with a given feature (the feature, and the layer). You can also filter
+   * based of the context (each tile that the feature is drawn onto).
+   *
+   * Returning false skips over the feature and it is not drawn.
+   *
+   * @param feature
+   * @returns {boolean}
+   */
+  filter: function(vtf, $rootScope){
+    var data = $rootScope.vtData;
+
+    if(data && data[vtf.properties.guid]){
+      var theme = $rootScope.$stateParams.theme;
+      vtf.properties.theme = theme;
+      vtf.properties.ecos_properties = {};
+      vtf.properties.ecos_properties[theme] = data[vtf.properties.guid];
+      //return true;
+    }
+
+    return true;
+  },
+
+  /**
+   * When we want to link events between layers, like clicking on a label and a
+   * corresponding polygon freature, this will return the corresponding mapping
+   * between layers. This provides knowledge of which other feature a given feature
+   * is linked to.
+   *
+   * @param layerName  the layer we want to know the linked layer from
+   * @returns {string} returns corresponding linked layer
+   */
+  layerLink: function (layerName) {
+    if (layerName.indexOf('_label') > -1) {
+      return layerName.replace('_label', '');
+    }
+    return layerName + '_label';
+  },
+
+  style: getThemeStyle,
+
+  onClick: function(evt, $http, $rootScope, PBFObject) {
+
+    if(evt && evt.feature && evt.feature.id){
+      //Do the onclick thing
+      PBFObject.fetchFeatureDetails(evt.feature.id, 0, evt.feature.properties.name_2 + ", " + evt.feature.properties.name_1 + ", " + evt.feature.properties.name_0);
+    }
+  },
+  onSelect: function(vtf, PBFObject){
+    //When a selection has changed (likey when a label was clicked and the corresponding feature selected)
+    if(vtf && vtf.id){
+      //Do the onclick thing
+      PBFObject.fetchFeatureDetails(vtf.id, 0, vtf.properties.name_2 + ", " + vtf.properties.name_1 + ", " + vtf.properties.name_0);
+    }
+  }
+}
 //var hatchDesign;
 
 function getThemeStyle(vtf, $rootScope){
@@ -593,5 +666,6 @@ function getImageRef(url){
 module.exports = {
   gadm0 : gadm0,
   gadm1 : gadm1,
-  themeLayers: ["gadm0", "gadm1"] //a list of the theme layers - used to determine whether or not one is currently loaded or not.
+  gadm2 : gadm2,
+  themeLayers: ["gadm0", "gadm1", "gadm2"] //a list of the theme layers - used to determine whether or not one is currently loaded or not.
 };
