@@ -128,9 +128,9 @@ a {
 /* Theme Selector Menu */
 #ThemeSelectorMenu {
   position: absolute;
-  z-index: 2000;
   right: 275px;
   bottom: 5px;
+  height:50px;
   left: auto;
   font-family: oswaldregular;
   z-index: 2001;
@@ -202,7 +202,7 @@ a {
 #ThemeSelectorMenu .dropdown-toggle {
   min-width: 120px;
   text-align: center;
-  height: 50px;
+  height: 49px;
 }
 
 /* End Theme Selector Menu */

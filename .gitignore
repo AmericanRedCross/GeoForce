@@ -56,7 +56,7 @@ Chubbs/settings.prod.js
 Chubbs/private/*
 
 # This is the data that gets written nightly into the web app's assets by Succubus
-GeoAngular/app/succubus_gitignore/*
+# GeoAngular/app/succubus_gitignore/*
 
 # This data is also written within the succubus itself for debug purposes, this too should be ignored.
 Succubus/meta-data/*
