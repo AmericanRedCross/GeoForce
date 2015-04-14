@@ -230,10 +230,11 @@ var gadm2 = {
 
 function getThemeStyle(vtf, $rootScope){
 
-
+  var ecos_border_thickness = 1; //px - this is the thickness of boundaries that have ecos data associated
+  var ecos_border_color = "rgba(140,140,140,1)";
 
   var style = {};
-  //Default style - make hollow
+  //Default style for all boundaries - make hollow, with a thin outline.
   style.color = 'rgba(0,0,0,0.1)';
   style.outline = {
     color: 'rgba(20,20,20,0.5)',
@@ -272,22 +273,22 @@ function getThemeStyle(vtf, $rootScope){
           case "active":
             style.color = 'rgba(204,0,51,' + opacity + ')';
             style.outline = {
-              color: 'rgb(20,20,20)',
-              size: 2
+              color: ecos_border_color,
+              size: ecos_border_thickness
             }
             break;
           case "monitoring":
             style.color = 'rgba(204,153,0,' + opacity + ')';
             style.outline = {
-              color: 'rgb(20,20,20)',
-              size: 2
+              color: ecos_border_color,
+              size: ecos_border_thickness
             }
             break;
           case "inactive":
             style.color = 'rgba(255,255,255,' + opacity + ')';
             style.outline = {
-              color: 'rgb(20,20,20)',
-              size: 2
+              color: ecos_border_color,
+              size: ecos_border_thickness
             }
             break;
         }
@@ -306,17 +307,19 @@ function getThemeStyle(vtf, $rootScope){
       style.color = UNOCHAIconLookup[ecosProperties.disaster_type__c[0]].color;
       //Use the same outline
       style.outline = {
-        color: 'rgb(20,20,20)',
-        size: 2
+        color: ecos_border_color,
+        size: ecos_border_thickness
       }
 
 
 
       if(checked == 'true'){
         //Disaster Type should use OCHA icons
+        //But replace the opacity with solid fill for the bubble
+        var bubble_fill = style.color.replace("," + opacity + ")", ",1)");
         style.staticLabel = function () {
           var labelStyle = {
-            html: (ecosProperties && ecosProperties.disaster_type__c[0] ? buildDisasterTypeLabel(ecosProperties.disaster_type__c[0], style.color, style.outline) : ""),
+            html: (ecosProperties && ecosProperties.disaster_type__c[0] ? buildDisasterTypeLabel(ecosProperties.disaster_type__c[0], bubble_fill, style.outline) : ""),
             iconSize: [42, 42],
             cssClass: 'noclass'
           };
@@ -337,29 +340,29 @@ function getThemeStyle(vtf, $rootScope){
         case "critical":
           style.color = 'rgba(255,0,0,' + opacity + ')';
           style.outline = {
-            color: 'rgb(20,20,20)',
-            size: 2
+            color: ecos_border_color,
+            size: ecos_border_thickness
           }
           break;
         case "high":
           style.color = 'rgba(255,127,0,' + opacity + ')';
           style.outline = {
-            color: 'rgb(20,20,20)',
-            size: 2
+            color: ecos_border_color,
+            size: ecos_border_thickness
           }
           break;
         case "medium":
           style.color = 'rgba(255,255,0,' + opacity + ')';
           style.outline = {
-            color: 'rgb(20,20,20)',
-            size: 2
+            color: ecos_border_color,
+            size: ecos_border_thickness
           }
           break;
         case "low":
           style.color = 'rgba(0,255,0,' + opacity + ')';
           style.outline = {
-            color: 'rgb(20,20,20)',
-            size: 2
+            color: ecos_border_color,
+            size: ecos_border_thickness
           }
           break;
       }
@@ -375,29 +378,29 @@ function getThemeStyle(vtf, $rootScope){
         case "red":
           style.color = 'rgba(255,0,0,' + opacity + ')';
           style.outline = {
-            color: 'rgb(20,20,20)',
-            size: 2
+            color: ecos_border_color,
+            size: ecos_border_thickness
           }
           break;
         case "yellow":
           style.color = 'rgba(255,255,0,' + opacity + ')';
           style.outline = {
-            color: 'rgb(20,20,20)',
-            size: 2
+            color: ecos_border_color,
+            size: ecos_border_thickness
           }
           break;
         case "green":
           style.color = 'rgba(0,255,0,' + opacity + ')';
           style.outline = {
-            color: 'rgb(20,20,20)',
-            size: 2
+            color: ecos_border_color,
+            size: ecos_border_thickness
           }
           break;
         case "white":
           style.color = 'rgba(255,255,255,' + opacity + ')';
           style.outline = {
-            color: 'rgb(20,20,20)',
-            size: 2
+            color: ecos_border_color,
+            size: ecos_border_thickness
           }
           break;
       }
@@ -423,48 +426,48 @@ function getThemeStyle(vtf, $rootScope){
         //make hollow
         style.color = 'rgba(0,0,0,' + opacity + ')';
         style.outline = {
-          color: 'rgb(20,20,20)',
-          size: 2
+          color: ecos_border_color,
+          size: ecos_border_thickness
         }
       }
       else if(count > 0 && count <= 2) {
         //make hollow
         style.color = 'rgba(229,255,235,' + opacity + ')';
         style.outline = {
-          color: 'rgb(20,20,20)',
-          size: 2
+          color: ecos_border_color,
+          size: ecos_border_thickness
         }
       }
       else if(count > 2 && count <= 5) {
         //make hollow
         style.color = 'rgba(169,255,189,' + opacity + ')';
         style.outline = {
-          color: 'rgb(20,20,20)',
-          size: 2
+          color: ecos_border_color,
+          size: ecos_border_thickness
         }
       }
       else if(count > 5 && count <= 8) {
         //make hollow
         style.color = 'rgba(169,255,125,' + opacity + ')';
         style.outline = {
-          color: 'rgb(20,20,20)',
-          size: 2
+          color: ecos_border_color,
+          size: ecos_border_thickness
         }
       }
       else if(count > 8 && count <= 10) {
         //make hollow
         style.color = 'rgba(41,255,90,' + opacity + ')';
         style.outline = {
-          color: 'rgb(20,20,20)',
-          size: 2
+          color: ecos_border_color,
+          size: ecos_border_thickness
         }
       }
       else if(count > 10) {
         //make hollow
         style.color = 'rgba(0,255,59,' + opacity + ')';
         style.outline = {
-          color: 'rgb(20,20,20)',
-          size: 2
+          color: ecos_border_color,
+          size: ecos_border_thickness
         }
       }
 
@@ -473,8 +476,8 @@ function getThemeStyle(vtf, $rootScope){
       //make hollow
       style.color = 'rgba(0,0,0,' + opacity + ')';
       style.outline = {
-        color: 'rgb(20,20,20)',
-        size: 2
+        color: ecos_border_color,
+        size: ecos_border_thickness
       }
     }
   }
@@ -599,18 +602,18 @@ var UNOCHAIconLookup = {
 
 function buildDisasterTypeLabel(disasterType, color) {
 
-  var color = "";
+  var backColor = "";
   var labelColor = "";
   if (disasterType) {
 
-    color = color || "rgba(204,0,51,0.4)";
+    backColor = color || "rgba(204,0,51,0.4)";
     labelColor = "#fff";
 
   }
 
   var icon = UNOCHAIconLookup[disasterType].icon || 'icon-other_cluster_other';
 
-  return '<div class="label-icon-number-100percent"' + (color ? ' style="font-family: humanitarian_icons; background-color: ' + color + ';color: ' + labelColor + '"' : '') + '><i class="un ' + icon + '"></i></div>';
+  return '<div class="label-icon-number-100percent"' + (backColor ? ' style="font-family: humanitarian_icons; background-color: ' + backColor + ';color: ' + labelColor + '"' : '') + '><i class="un ' + icon + '"></i></div>';
 
 }
 

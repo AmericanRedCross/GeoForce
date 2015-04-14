@@ -64,24 +64,31 @@
 
 /* medium labels */
 .medium-label .label-icon-number-40percent, .medium-label .label-icon-number-100percent {
-  font-size: 11px;
+  font-size: 12px;
   line-height:22px;
   box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
-  height: 22px;
-  width: 22px;
+  height: 27px;
+  width: 27px;
 }
 
 /* For Disaster Type UNOCHA icons*/
 .medium-label .label-icon-number-100percent i{
-  font-size: 9px;
-  line-height: 16px;
+  font-size: 17px;
+  line-height: 25px;
+  margin-left: -3px;
+}
+
+.large-label .label-icon-number-100percent i{
+  font-size: 26px;
+  line-height: 36px;
+  margin-left: -3px;
 }
 
 /* large labels */
 .large-label .label-icon-number-40percent, .large-label .label-icon-number-100percent {
   font-size: 14px;
   line-height: 41px;
-  box-shadow: 0px 0px 0px 5px rgba(255,255,255,1);
+  box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
   height: 42px;
   width:42px;
 }

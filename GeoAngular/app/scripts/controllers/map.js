@@ -296,10 +296,10 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
 
     //Add appropriate class basd on zoom
-    if (zoom >= 0 && zoom <= 7) {
+    if (zoom >= 0 && zoom <= 5) {
       $("#map").addClass("medium-label");
     }
-    else if (zoom > 8 && zoom <= 13) {
+    else if (zoom > 5 && zoom <= 13) {
       $("#map").addClass("large-label");
     }
 
