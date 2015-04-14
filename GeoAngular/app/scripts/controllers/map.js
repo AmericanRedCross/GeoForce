@@ -455,11 +455,12 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     // there are more overlays left in the list, less layers specified in route
     // we need to remove those too.
     for (var len2 = overlays.length; i < len2; ++i) {
-      if (overlays[i].destroyResource) overlays[i].destroyResource();
-      map.removeLayer(overlays[i]);
-      delete overlays_dictionary[overlays[i].overlayName]; //delete dictionary reference for faster fetching in UpdateECOSData
-      delete overlays[i];
-
+      if (overlays[i] && overlays[i].destroyResource) {
+        overlays[i].destroyResource();
+        map.removeLayer(overlays[i]);
+        delete overlays_dictionary[overlays[i].overlayName]; //delete dictionary reference for faster fetching in UpdateECOSData
+        delete overlays[i];
+      }
     }
   }
 

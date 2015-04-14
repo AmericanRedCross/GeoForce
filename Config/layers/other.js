@@ -5,16 +5,6 @@
 
 module.exports = {
 
-  landcover: {
-    name: 'MODIS Landcover 2009',
-    type: 'wms',
-    theme: 'other',
-    url: 'http://ags.servirlabs.net/ArcGIS/services/ReferenceNode/MODIS_Landcover_Type1_2009/MapServer/WMSServer',
-    layers: '0',
-    properties: {
-      legend: ""
-    }
-  },
 
   snow: {
     name: 'Snow',
