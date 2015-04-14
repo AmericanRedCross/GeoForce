@@ -60,6 +60,10 @@
     border-right: 0px;
 }
 
+.NavButtonGroup button:hover{
+  color: #ed1b2e;
+}
+
 .NavButtonGroup button.disabled{
     color: gray;
     cursor: default;
