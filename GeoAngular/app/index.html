@@ -319,6 +319,7 @@
           <div class="tab-content scrollable">
             <div ng-class="{active: navTab==='contextual'}" class="tab-pane">
 
+              <div class="section-spacing">
               <h4 class="title">ECOS layer:</h4>
               <label class="checkbox">
                 <input type="checkbox" ng-model="themeLabels.isChecked" ng-disabled="!theme.isChecked"
@@ -329,7 +330,9 @@
                 <input type="checkbox" ng-model="theme.isChecked" ng-change="updateTheme()">
                 ECOS Overlay
               </label>
+              </div>
 
+              <div class="section-spacing">
               <h4 class="title">Administrative boundary levels:</h4>
 
               <!--<div class="radio">-->
@@ -379,6 +382,7 @@
               <!--5. Level 5-->
               <!--</label>-->
               <!--</div>-->
+                </div>
 
               <div ng-repeat="(panelName, panel) in layersPanels">
                 <h4 class="title">{{panelName}}</h4>
@@ -600,14 +604,12 @@
                   </div>
                   <div class="show-categories" ng-class="{'on': $stateParams.category == key}">
                     <div ng-repeat="types in val">
-                      <div>
                         <label class="checkbox label-disaster">
-                          <input type="checkbox" ng-model="types.checked" ng-change="disasterTypesFilter()">
+                          <input class="disaster-checkbox" type="checkbox" ng-model="types.checked" ng-change="disasterTypesFilter()">
                           <i
                             class="icon-{{types.name.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i>
                           <span class="sector-name" ng-class="{highlight: types.isSearchActive}">{{types.name}}</span>
                         </label>
-                      </div>
                     </div>
                   </div>
                 </div>

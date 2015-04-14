@@ -203,6 +203,10 @@
     cursor:pointer;
 }
 
+#DetailsPanel a:hover {
+  text-decoration: none;
+}
+
 #DetailsPanel .nav-tabs a {
     cursor: pointer;
     font-size: 12px;
