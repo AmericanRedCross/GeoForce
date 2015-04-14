@@ -573,8 +573,16 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         if(legendObject){
           //set it equal to the scope
           $scope.legendObject = legendObject;
-          $scope.themeLabel = $rootScope.themeNameHash[$stateParams.theme];
 
+          // broadcast legend width for resize
+          if($stateParams.theme == 'disasterType'){
+            $scope.firstObject = legendObject[Object.keys(legendObject)[0]];
+            var legendWidth = {width: document.getElementById('legend').offsetWidth};
+            legendWidth.fold = (Object.keys(legendObject).length > 2);
+            $rootScope.$broadcast('legend-width', legendWidth);
+          }
+
+          $scope.themeLabel = $rootScope.themeNameHash[$stateParams.theme];
           //$scope.legendObjectLabel = legendObject[Object.keys(legendObject)[0]].legendLabel.replace("#",""); //remove '#'
         }
       }

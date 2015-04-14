@@ -102,7 +102,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('main', {
-      url: '/map@:lat,:lng,:zoom(*layers),:theme?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels&category',
+      url: '/map@:lat,:lng,:zoom(*layers),:theme?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels&category&legend-panel',
       views: {
         'details': {
           template: ' ',
@@ -119,7 +119,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('upload', {
-      url: '/map@:lat,:lng,:zoom(*layers),:theme/upload?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels&category',
+      url: '/map@:lat,:lng,:zoom(*layers),:theme/upload?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels&category&legend-panel',
       views: {
         'details': {
           template: ' ',
@@ -132,7 +132,7 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('export', {
-      url: '/map@:lat,:lng,:zoom(*layers),:theme/export?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels&category',
+      url: '/map@:lat,:lng,:zoom(*layers),:theme/export?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels&category&legend-panel',
       views: {
         'details': {
           template: ' ',

@@ -1,7 +1,7 @@
 
 #BLevelSelectorMenu {
   position: absolute;
-  right: 5px;
+  right: 10px;
   height:50px;
   width: 230px;
   bottom: 5px;
@@ -51,7 +51,7 @@
   -webkit-transition: all .15s ease;
   background-color: #fff;
   padding: 13px;
-  min-width: 170px;
+  min-width: 146px;
 }
 
 /* Unfurl Up */

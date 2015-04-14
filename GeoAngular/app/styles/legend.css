@@ -5,6 +5,19 @@
 .legend-list {
   padding: 7px 10px 0px 10px;
   float: left;
+  max-width: 435px;
+  min-width: 235px;
+}
+
+.legend-list-min {
+  padding: 7px 10px 0px 10px;
+  float: left;
+  max-width: 335px;
+}
+
+.legend-caption {
+  -webkit-transform: translateY(5px);
+  transform: translateY(5px);
 }
 
 .legendIcon div, .legendIcon {
@@ -155,3 +168,120 @@
   transform: translateY(-1px);
   -webkit-transform: translateY(-1px);
 }
+
+
+#LegendMenu {
+  position: absolute;
+  bottom: 39px;
+  left: -1px;
+  font-family: oswaldregular;
+  z-index: 2001;
+  padding: 0px;
+  display: none;
+  border: 1px solid #dddddd;
+  border-bottom-width: 0px;
+  min-width: 200px;
+}
+
+#LegendMenu .ind-legend{
+  padding: 5px;
+  width: 100%;
+  text-align: left;
+}
+
+#LegendMenu .navbar-brand {
+  font-size: 15px;
+  font-family: oswaldregular;
+  color: rgb(63, 63, 63);
+  max-width: 84px;
+  padding: 4px 10px 5px 10px;
+}
+
+#LegendMenu .dropdown-toggle {
+  display: block;
+  padding: 3px 6px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+}
+
+#LegendMenu.dropdown-menu-legend {
+  background-color: #ffffff;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-clip: padding-box;
+  list-style: none;
+  display: none;
+}
+
+.arrow {
+  cursor: pointer;
+  margin: 0px 0px 0px 7px;
+}
+
+#LegendMenu.dropdown-menu-legend.on{
+  display: block;
+}
+
+
+#LegendMenu .dropdown-menu-legend > li, #LegendMenu .dropdown-toggle {
+  text-transform: uppercase;
+  font-size: 16px;
+  color: #3f3f3f;
+}
+
+#LegendMenu .dropdown-menu-legend > li:hover, #LegendMenu .dropdown-menu-legend > li > a:focus, #LegendMenu .dropdown-toggle {
+  color: rgb(35, 35, 35);
+  text-decoration: none;
+  background-color: #fff;
+}
+
+#LegendMenu .legend-swatch.icon {
+  margin: 0px 5px 0px 0px;
+}
+
+#LegendMenu .dropdown-menu-legend > li {
+  border: 1px solid #d3d3d3;
+  -webkit-transform: translateY(50%) rotateX(90deg);
+  -webkit-transition: all .15s ease;
+  background-color: #fff;
+  padding: 13px;
+  min-width: 146px;
+}
+
+/* Unfurl Up */
+#LegendMenu li.theme-selector-li-on {
+  -webkit-transform: translateY(0%) rotateX(0deg);
+}
+
+#LegendMenu .dropdown-menu-legend {
+  border: 0px;
+  border-radius: 0px -webkit-box-shadow : 0 0 0;
+  box-shadow: 0 0 0;
+}
+
+#LegendMenu {
+  text-align: center;
+  background-color: transparent;
+}
+
+#LegendMenu .menu-selection {
+  float: left;
+  cursor: pointer;
+}
+
+#LegendMenu .dropdown-toggle {
+  width: 146px;
+  text-align: left;
+  padding-top: 14px;
+  height: 49px;
+}
+
+#LegendMenu .mini-label{
+  display: block;
+  font-size: 10px;
+  background-color: #fff;
+}
+

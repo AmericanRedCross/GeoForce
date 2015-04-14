@@ -43,12 +43,9 @@
     color: #ed1b2e!important;
 }
 
-
-
 .NavButtonGroup button.on {
     background-color: #fff;
 }
-
 
 .NavButtonGroup button {
     padding: 13px 16px 10px 16px;
@@ -150,6 +147,14 @@
   -moz-transform: matrix( 0.83490566037736,0,0,0.84313725490196,0,0);
   -webkit-transform: matrix( 0.83490566037736,0,0,0.84313725490196,0,0);
   -ms-transform: matrix( 0.83490566037736,0,0,0.84313725490196,0,0);
+}
+
+.icon_title:hover{
+  color: #ed1b2e;
+}
+
+.nav-hover:hover{
+  color: #ed1b2e;
 }
 
 /* The Flyout for the info panel */
