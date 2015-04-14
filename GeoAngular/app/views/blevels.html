@@ -1,9 +1,16 @@
 <nav ng-controller="LayersCtrl" id="BLevelSelectorMenu" class="navbar navbar-default navbar-fixed-bottom"
      role="navigation">
-  <div class="navbar-header">
-    <a class="navbar-brand" href="javascript: return false;">Boundary Levels:</a>
+  <div class="warning" ng-show="$stateParams.layers.indexOf('gadm2')!==-1 && $stateParams.zoom < 5">
+    <div class="warning-icon">
+      <i class="icon-icon_alert pull-left"></i>
+    </div>
+    <div class="warning-label">District boundary level is unavailable at this zoom level</div>
   </div>
-  <div class="menu-selection">
+  <div>
+    <div class="navbar-header">
+      <a class="navbar-brand" href="javascript: return false;">Boundary Levels:</a>
+    </div>
+    <div class="menu-selection">
     <ul class="nav navbar-nav">
       <li class="dropdown">
         <span class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleBLevelMenu()">
@@ -21,5 +28,6 @@
         </ul>
       </li>
     </ul>
+  </div>
   </div>
 </nav>
