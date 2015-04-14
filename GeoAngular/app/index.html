@@ -1168,7 +1168,7 @@
 
                 <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
                 <div ng-show="$stateParams.theme !== 'disasterType' && !layerClass.gradient" class="legend-swatch"
-                     ng-style="{backgroundColor: '{{layerClass.color}}'}"></div>
+                     ng-style="{backgroundColor: '{{layerClass.color}}'}" ng-class="{'white-background':layerClass.color=='rgba(255,255,255,0.5)'}"></div>
 
                 <div ng-show="$stateParams.theme == 'disasterType'" class="disaster-icons">
                   <i class="un {{UNOCHAIconLookup[firstObject.legendLabel[0]].icon}}"></i>

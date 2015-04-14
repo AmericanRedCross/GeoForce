@@ -226,6 +226,12 @@
   padding: 0px 5px 0px 5px;
 }
 
+#legend .white-background{
+  border-color: black;
+  border-style: solid;
+  border-width: thin;
+}
+
 #LegendMenu.dropdown-menu-legend {
   background-color: #ffffff;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
