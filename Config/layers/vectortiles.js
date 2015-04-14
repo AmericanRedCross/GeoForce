@@ -618,7 +618,6 @@ function buildDisasterTypeLabel(disasterType, color) {
 }
 
 
-
 //**********************************************************************
 // function waitfor - Wait until a condition is met
 //
