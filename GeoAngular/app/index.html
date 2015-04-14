@@ -1154,7 +1154,8 @@
       <!--</div>-->
       <div class="list-group legend-list" ng-cloak>
         <div class="list-group-item class-list">
-          <div ng-class="{'legend-info':$stateParams.theme == 'project'}">
+          <div ng-class="{'legend-info-project':$stateParams.theme == 'project',
+          'legend-info-projectHR': $stateParams.theme == 'projectHealth' || $stateParams.theme == 'projectRisk'}">
           <div class="legend-title">Legend:</div>
           <div ng-repeat="layerClass in legendObject" class="legend-class">
 
@@ -1199,13 +1200,13 @@
 
           </div>
           </div>
-          <div ng-show="singleBubbleObject && themeLabelsChecked" class="single-bubble-class">
-            <div ng-bind-html="singleBubbleObject" class="legend-swatch singleIcon">
-            </div>
-            <div class="legend-swatch-label">
-              Counts
-            </div>
-          </div>
+          <!--<div ng-show="singleBubbleObject && themeLabelsChecked" class="single-bubble-class">-->
+            <!--<div ng-bind-html="singleBubbleObject" class="legend-swatch singleIcon">-->
+            <!--</div>-->
+            <!--<div class="legend-swatch-label">-->
+              <!--Counts-->
+            <!--</div>-->
+          <!--</div>-->
 
         </div>
       </div>
