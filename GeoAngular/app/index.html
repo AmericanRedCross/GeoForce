@@ -1167,8 +1167,12 @@
               <div ng-repeat="layerClass in legendObject" class="legend-class">
 
                 <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
-                <div class="legend-swatch" ng-style="{backgroundColor: '{{layerClass.color}}'}"
-                     ng-show="!layerClass.gradient"></div>
+                <div ng-show="$stateParams.theme !== 'disasterType' && !layerClass.gradient" class="legend-swatch"
+                     ng-style="{backgroundColor: '{{layerClass.color}}'}"></div>
+
+                <div ng-show="$stateParams.theme == 'disasterType'" class="disaster-icons">
+                  <i class="un {{UNOCHAIconLookup[firstObject.legendLabel[0]].icon}}"></i>
+                </div>
 
                 <!-- Legend Color swatch label for PBF THEME Layer.  Set in Config/VectorTiles.js -->
                 <div
@@ -1214,25 +1218,30 @@
 
             <div class="legend-caption">
             <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
-            <div class="legend-swatch" style="background-color: {{firstObject.color}}"
-                 ng-show="!firstObject.gradient"></div>
+            <div>
+              <div class="disaster-icons">
+                <i class="un {{UNOCHAIconLookup[firstObject.legendLabel[0]].icon}}"></i>
+              </div>
+            </div>
             <div class="legend-swatch-label">
-              {{firstObject.legendLabel[0];}}
+              {{firstObject.legendLabel[0]}}
             </div>
             </div>
 
             <div ng-show="fold == true">
-            <div ng-click="toggleParam('legend-panel')" class="glyphicon glyphicon-chevron-up pull-right arrow"></div>
+              <div ng-click="toggleParam('legend-panel')" class="glyphicon glyphicon-chevron-up pull-right arrow"></div>
+            </div>
               <!-- Legend dropdown menu start-->
                 <ul id="LegendMenu" class="dropdown-menu-legend" ng-class="{on:isParam('legend-panel')}">
                   <div class="ind-legend" ng-repeat="layerClass in legendObject">
                     <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
-                    <div class="legend-swatch icon pull-left" ng-style="{backgroundColor: '{{layerClass.color}}'}"
-                         ng-show="!layerClass.gradient"></div>
+                    <div class="disaster-icons">
+                      <i class="un {{UNOCHAIconLookup[layerClass.legendLabel[0]].icon}}"></i>
+                    </div>
                     <li class="theme-selector-li-on pull-left">{{layerClass.legendLabel[0]}}</li>
                   </div>
                 </ul>
-            </div>
+
             <!-- Legend dropdown menu end -->
 
             <!--<div ng-show="singleBubbleObject && themeLabelsChecked" class="single-bubble-class">-->

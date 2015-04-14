@@ -207,6 +207,25 @@
   white-space: nowrap;
 }
 
+#LegendMenu .disaster-icons{
+  font-family: humanitarian_icons;
+  background-color: rgba(255,0,0,1);
+  color: #fff;
+  float: left;
+}
+
+#legend .disaster-icons{
+  font-family: humanitarian_icons;
+  background-color: rgba(255,0,0,1);
+  color: #fff;
+  float: left;
+  margin-right: 5px;
+}
+
+#legend .disaster-icons i{
+  padding: 0px 5px 0px 5px;
+}
+
 #LegendMenu.dropdown-menu-legend {
   background-color: #ffffff;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
