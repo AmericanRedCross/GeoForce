@@ -52,6 +52,7 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
 
   $scope.$on('legend-width', function (evt,lw){
     $scope.width = lw.width;
+    $scope.fold = lw.fold;
     if(lw.width>=435 || lw.fold == true){
       $scope.fold = true;
       console.log("fold");
@@ -61,7 +62,6 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
   /*
    Set the dictionary used to look up UNOCHA icons for disaster types
    */
-
   var opacity = "0.5"
   $scope.UNOCHAIconLookup = {
 

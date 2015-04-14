@@ -25,17 +25,17 @@
 }
 
 #exportModal .redbtn {
-    font-size: 16px;
-    font-family: oswaldregular;
-    color: rgb(255, 255, 255);
-    background-color: #ed1b2e;
-    padding: 6px 25px;
-    border-radius: 0px;
-    text-transform: uppercase;
-    display: inline-block;
-    cursor:pointer;
-    margin-top: 15px;
-    margin-left: 26px;
+  font-size: 16px;
+  font-family: oswaldregular;
+  color: rgb(255, 255, 255);
+  background-color: #ed1b2e;
+  padding: 6px 25px;
+  border-radius: 0px;
+  text-transform: uppercase;
+  display: inline-block;
+  cursor:pointer;
+  margin-top: 15px;
+  margin-left: 38px;
 }
 
 #exportModal .redbtn .arrow {
@@ -103,9 +103,10 @@
   font-family: oswaldregular;
   color: rgb(63, 63, 63);
   margin: 0px;
+  padding-left: 12px;
 }
 
 #exportModal .permalinkdesc {
-  margin-left: 26px;
+  margin-left: 37px;
   margin-bottom: 5px;
 }
