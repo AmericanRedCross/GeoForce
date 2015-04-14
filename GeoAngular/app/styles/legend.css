@@ -6,13 +6,13 @@
   padding: 7px 10px 0px 10px;
   float: left;
   max-width: 435px;
-  min-width: 235px;
 }
 
 .legend-list-min {
   padding: 7px 10px 0px 10px;
   float: left;
   max-width: 335px;
+  min-width: 235px;
 }
 
 .legend-caption {
