@@ -31,7 +31,7 @@
   font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="iconmoon-"], [class*=" iconmoon-"] {
   font-family: 'icomoon';
   speak: none;
   font-style: normal;
@@ -40,12 +40,12 @@
   text-transform: none;
   line-height: 1;
 
-  /* Better Font Rendering =========== */
+  /*Better Font Rendering ===========*/
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-icon_alert:before {
+.iconmoon-icon_alert:before {
   content: "\e600";
 }
 
