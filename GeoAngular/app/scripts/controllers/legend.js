@@ -5,6 +5,8 @@
 
 module.exports = angular.module('GeoAngular').controller('LegendCtrl', function($scope, LayerConfig, $stateParams) {
 
+  $scope.fold = false;
+
   $scope.$on('layers-update', function (evt, layers) {
     $scope.layers = [];
     for (var i = layers.length - 1; i >= 1; i--){
@@ -45,6 +47,14 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
       }
 
       $scope.layers.push(layer);
+    }
+  });
+
+  $scope.$on('legend-width', function (evt,lw){
+    $scope.width = lw.width;
+    if(lw.width>=435 || lw.fold == true){
+      $scope.fold = true;
+      console.log("fold");
     }
   });
 

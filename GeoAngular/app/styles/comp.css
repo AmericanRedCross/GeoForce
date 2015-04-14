@@ -129,6 +129,7 @@ a {
 #ThemeSelectorMenu {
   position: absolute;
   right: 275px;
+  width: 230px;
   bottom: 5px;
   height:50px;
   left: auto;
@@ -149,11 +150,6 @@ a {
   line-height: 1.42857143;
   color: #333;
   white-space: nowrap;
-}
-
-#ThemeSelectorMenu .dropdown-menu {
-  padding: 0;
-  min-width: 120px;
 }
 
 #ThemeSelectorMenu .dropdown-menu > li, #ThemeSelectorMenu .dropdown-toggle {
@@ -183,10 +179,18 @@ a {
   -webkit-transform: translateY(0%) rotateX(0deg);
 }
 
+#ThemeSelectorMenu .glyphicon {
+  color: rgb(63, 63, 63);
+  cursor: pointer;
+  margin-right: 5px;
+}
+
 #ThemeSelectorMenu .dropdown-menu {
   border: 0px;
   border-radius: 0px -webkit-box-shadow : 0 0 0;
   box-shadow: 0 0 0;
+  padding-bottom: 0px;
+  min-width: 152px;
 }
 
 #ThemeMenu {
@@ -200,7 +204,7 @@ a {
 }
 
 #ThemeSelectorMenu .dropdown-toggle {
-  min-width: 120px;
+  min-width: 151px;
   text-align: center;
   height: 49px;
 }
