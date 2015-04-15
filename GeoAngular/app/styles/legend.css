@@ -74,8 +74,8 @@
 }
 
 .legend-swatch-label{
-  /*transform: translateY(-5px);*/
-  /*-webkit-transform: translateY(-5px);*/
+  transform: translateY(-5px);
+  -webkit-transform: translateY(-5px);
   font-size: 10px;
   font-family: "Open Sans";
   color: rgb(35, 35, 35);
@@ -177,6 +177,11 @@
   -webkit-transform: translateY(-1px);
 }
 
+.legend-swatch-label.none{
+  transform: translateY(0);
+  -webkit-transform: translateY(0);
+}
+
 
 #LegendMenu {
   position: absolute;
@@ -188,7 +193,7 @@
   display: none;
   border: 1px solid #dddddd;
   border-bottom-width: 0px;
-  min-width: 200px;
+  min-width: 215px;
 }
 
 #LegendMenu .ind-legend{
@@ -225,6 +230,12 @@
 #legend .disaster-icons{
   font-family: humanitarian_icons;
   background-color: rgba(255,0,0,1);
+  color: #fff;
+  float: left;
+  margin-right: 5px;
+}
+
+#legend .themelabel-off{
   color: #fff;
   float: left;
   margin-right: 5px;
