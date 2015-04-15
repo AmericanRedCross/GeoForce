@@ -74,11 +74,19 @@
 }
 
 .legend-swatch-label{
-  transform: translateY(-25%);
-  -webkit-transform:translateY(-25%);
+  /*transform: translateY(-5px);*/
+  /*-webkit-transform: translateY(-5px);*/
   font-size: 10px;
   font-family: "Open Sans";
   color: rgb(35, 35, 35);
+}
+
+.legend-swatch-label-fold{
+  font-size: 10px;
+  font-family: "Open Sans";
+  color: rgb(35, 35, 35);
+  transform: translateY(-5px);
+  -webkit-transform: translateY(-5px);
 }
 
 .list-group-item.project{
@@ -279,6 +287,7 @@
 /* Unfurl Up */
 #LegendMenu li.theme-selector-li-on {
   -webkit-transform: translateY(0%) rotateX(0deg);
+  font-size: 13px;
 }
 
 #LegendMenu .dropdown-menu-legend {

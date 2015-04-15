@@ -313,7 +313,6 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       }
 
       $scope.hideLegend = false;
-
       // end sector legend
 
     } else { // standard geojson, show properties as details
@@ -556,7 +555,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   function lessDetails(details) {
     var lessDetails = [];
-    if ($stateParams.theme === 'disaster') {
+    if ($stateParams.theme.indexOf('disaster')!==-1) {
       for (var i = 0, len = config.disasterDetailsShortList.length; i < len; i++) {
         var key = config.disasterDetailsShortList[i];
         lessDetails.push({
