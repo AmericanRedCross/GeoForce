@@ -128,9 +128,6 @@ app.use(utilities.app(passport));
 var vectortiles = require('./endpoints/vectortiles');
 app.use(vectortiles.app(passport));
 
-var print = require('./endpoints/print');
-app.use(print.app(passport));
-
 var mapnik;
 try {
 	mapnik = require('./endpoints/mapnik');
@@ -218,6 +215,13 @@ app.get('/services', function(req, res) {
 //   login page.
 
 function ensureAuthenticated(req, res, next) {
+
+    //Short circuit this check if the print server is contacting the page.
+    //Check the referrer header to see if we should allow access to printing.
+    console.log("Ensure Authenticated Host Check: " + req.headers.host)
+    if(req.headers && req.headers.host && req.headers.host == "") { //geo.recross.org
+      return next();
+    }
 
     //If the request is for index.html, then lock it down.
     if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" || req.path.indexOf("/services/") == 0 || req.path.indexOf("/search") == 0 || req.path.indexOf("/placesearch") == 0)) {
