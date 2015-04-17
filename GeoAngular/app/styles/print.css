@@ -79,3 +79,7 @@ div.breadcrumbs-container {
 .leaflet-control-zoom{
     display:none;
 }
+
+#DetailsPanel .details-bottom-buttons {
+  display: none;
+}
