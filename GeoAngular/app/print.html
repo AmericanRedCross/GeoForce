@@ -44,6 +44,8 @@
     <link rel="stylesheet" href="styles/upload.css">
     <link rel="stylesheet" href="styles/export.css">
     <link rel="stylesheet" href="styles/search.css">
+    <link rel="stylesheet" href="styles/label.css">
+    <link rel="stylesheet" href="styles/blevels.css">
     <!-- endbuild -->
 
     <link rel="stylesheet" href="lib/featurelabel/featurelabel.css">
@@ -66,7 +68,11 @@
 <!-- AppContainer is a dummy div in the print view to satisfy the angular app logic. -->
 <div id="AppContainer" style="">
     <div class="ui-layout-west"></div>
-    <div class="ui-layout-center"></div>
+    <div class="ui-layout-center">
+
+      <!--<div id="map" class="ui-layout-center"></div>-->
+
+    </div>
 </div>
 <!-- NavBar is the vertical & left-hand (west) panel controlled by the jQuery Layout plugin. -->
 <div id="NavBar" style="display:none;" ng-controller="NavBarCtrl">
@@ -145,6 +151,7 @@
         </div>
     </div>
 </div>
+
 <!-- MapCtrl is the center (center) panel controlled by the jQuery Layout plugin, and is also where the map lives. -->
 <!-- Upper Right Toolbar in Map -->
 <div id="MapUpperRightToolbarWrapper">
@@ -187,7 +194,14 @@
 
 <div ng-controller="MapCtrl" id="MapCtrl" >
 
-<div ui-view="leftmenu"></div>
+  <div id="map"></div>
+
+  <!-- Dummy layout divs to satisfy jQuery UI-->
+  <div class="ui-layout-center"></div>
+  <div class="ui-layout-south"></div>
+
+
+  <div ui-view="leftmenu"></div>
 
 <!--Side View-->
 <div ng-controller="SideViewCtrl" class="side-view">
@@ -760,107 +774,243 @@
              ng-click="nextThemeItem()">
         </div>
     </div>
-    <div id="DetailsPanel">
-        <div class="container auto">
-            <button class="side-view-close btn btn-lg btn-danger" ng-click="closeParam('details-panel')"><span
-                    class="glyphicon glyphicon-chevron-right"></span></button>
-                                <span ng-show="details && feature.properties.salesforce">
-                                    <a ng-click="showList()" class="back-link">< Back to List</a> ({{activeThemeItemIdx+1}} of {{activeThemeItemsList.length}})
-                                </span>
+  <div id="DetailsPanel">
+    <div class="container auto">
+      <button class="side-view-close btn btn-lg btn-red btn-danger" ng-click="closeParam('details-panel')"><span
+        class="glyphicon glyphicon-chevron-right"></span></button>
+                            <span ng-show="details && feature.properties.salesforce">
+                                <a ng-click="showList()" class="back-link">< Back to List</a> ({{activeThemeItemIdx+1}} of {{activeThemeItemsList.length}})
+                            </span>
 
-            <div class="title">
-                {{title}}
-            </div>
+      <div class="title">
+        {{title}}
+      </div>
 
-            <ul ng-show="details.requestsForAssistance" class="nav nav-tabs">
-                <li class="active"><a class="a-nav-tab" ng-click="navTab='details'" data-toggle="tab">Details</a></li>
-                <li><a class="a-nav-tab" ng-click="navTab='request'" data-toggle="tab">Requests For Assistance</a></li>
-                <li><a class="a-nav-tab" ng-show="false" ng-click="navTab='indicators'" data-toggle="tab">Indicators</a>
-                </li>
+      <ul ng-show="details.requestsForAssistance || details.indicators || details.risks || details.statuses"
+          class="nav nav-tabs">
+        <li class="active"><a class="a-nav-tab" ng-click="navTab='details'" data-toggle="tab">Details</a></li>
+        <li><a class="a-nav-tab" ng-show="details.requestsForAssistance" ng-click="navTab='request'"
+               data-toggle="tab">Requests For Assistance</a></li>
+        <li><a class="a-nav-tab" ng-show="details.indicators" ng-click="navTab='indicator'" data-toggle="tab">Indicators</a>
+        </li>
+        <li><a class="a-nav-tab" ng-show="details.risks" ng-click="navTab='risk'" data-toggle="tab">Risks</a></li>
+        <li><a class="a-nav-tab" ng-show="details.statuses" ng-click="navTab='status'" data-toggle="tab">Health</a>
+        </li>
+      </ul>
+
+      <div class="InnerContainer scrollable">
+        <div class="heading" ng-show="alertUserToClick">
+          Please click on a badge or feature to see details...
+        </div>
+        <!-- Repeater Here to List out Headings and List Items -->
+        <div class="section scrollable" my-show="itemsList" after-show="createDonuts()"
+             ng-repeat="(themeName, themeItems) in groupings">
+
+          <div class="heading">{{themeName}}</div>
+          <div class="list">
+            <ul>
+              <li ng-repeat="item in themeItems">
+                    <span ng-show="theme==='disaster'" class="label"
+                          ng-class="{'label-white': item.iroc_status__c.toLowerCase() === 'inactive', 'label-warning': item.iroc_status__c.toLowerCase() === 'monitoring', 'label-danger': item.iroc_status__c.toLowerCase() === 'active'}">{{item.iroc_status__c}}</span>
+                    <span ng-show="theme==='projectRisk'" class="label"
+                          ng-class="{'label-red': item.overall_assessment__c.toLowerCase() === 'critical', 'label-orange': item.overall_assessment__c.toLowerCase() === 'high', 'label-yellow': item.overall_assessment__c.toLowerCase() === 'medium', 'label-green': item.overall_assessment__c.toLowerCase() === 'low'}">{{item.overall_assessment__c}}</span>
+                    <span ng-show="theme==='projectHealth'" class="label"
+                          ng-class="{'label-white': item.overall_status__c.toLowerCase() === 'white', 'label-red': item.overall_status__c.toLowerCase() === 'red', 'label-yellow': item.overall_status__c.toLowerCase() === 'yellow', 'label-green': item.overall_status__c.toLowerCase() === 'green'}">{{item.overall_status__c}}</span>
+                <a class="details-li" ng-click="showDetails(item, themeItems, $index)">{{item.name}}</a>
+              </li>
             </ul>
-
-            <div class="InnerContainer scrollable">
-                <div class="heading" ng-show="alertUserToClick">
-                    Please click on a badge or feature to see details...
-                </div>
-                <!-- Repeater Here to List out Headings and List Items -->
-                <div class="section scrollable" my-show="itemsList" after-show="createDonuts()"
-                     ng-repeat="(themeName, themeItems) in groupings">
-
-
-                    <div id="details-donut">
-
-                    </div>
-
-                    <div class="heading">{{themeName}}</div>
-                    <div class="list">
-                        <ul>
-                            <li ng-repeat="item in themeItems">
-                                <a class="details-li" ng-click="showDetails(item, themeItems, $index)">{{item.name}}</a>
-                                <!--<div class="MapIt" ng-click="">Map It</div>-->
-                            </li>
-                        </ul>
-                    </div>
-                    <button type="button" class="btn btn-default btn-xs" ng-show="feature"
-                            ng-click="save(feature, title + '.geojson')">Download Feature as GeoJSON
-                    </button>
-                </div>
-
-                <div class="section scrollable"
-                     ng-show="details && !(navTab && (navTab==='request' || navTab==='indicator'))">
-
-                    <ul ng-show="!contextualLayer && moreLess==='More'">
-                        <li ng-repeat="(key, value) in lessDetails">
-                            <div class="details-key"><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a>
-                            </div>
-                            <div ng-bind-html="value" class="details-value"></div>
-                            <i class="unavailable" ng-if="!value">Unavailable</i>
-                        </li>
-                    </ul>
-                    <ul ng-show="contextualLayer || moreLess==='Less'">
-                        <li ng-repeat="(key, value) in details">
-                            <div class="details-key"><a tooltip="{{tooltip(key)}}" tooltip-trigger="click">{{label(key)}}</a>
-                            </div>
-                            <div ng-bind-html="value" class="details-value"></div>
-                            <i class="unavailable" ng-if="!value">Unavailable</i>
-                        </li>
-                    </ul>
-
-                    <div class="btn-group" ng-show="!contextualLayer">
-                        <button type="button" class="btn btn-default btn-sm" ng-click="toggleMoreLess()">Show
-                            {{moreLess}} Details
-                        </button>
-                        <a href="https://cs18.salesforce.com/{{details.sf_id}}" target="_blank"
-                           class="btn btn-default btn-sm">View in ECOS</a>
-                    </div>
-                </div>
-
-                <div class="section scrollable" ng-show="details && (navTab && navTab==='request')">
-                    <ul>
-                        <li ng-repeat="(key, value) in details.requestsForAssistance">
-                            <h4>{{value.name}}</h4>
-
-                            <ul>
-                                <li ng-repeat="(key2, value2) in value">
-                                    <div class="details-key"><a tooltip="{{tooltip(key2)}}" tooltip-trigger="click">{{label(key2)}}</a>
-                                    </div>
-                                    <div ng-bind-html="value2" class="details-value"></div>
-                                    <i class="unavailable" ng-show="!value2">Unavailable</i>
-                                </li>
-                            </ul>
-
-                            <hr/>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <div ui-view="details"></div>
+          </div>
 
         </div>
+
+        <div class="section scrollable">
+
+          <ul ng-show="moreLess==='More'">
+            <li ng-repeat="detail in lessDetails">
+              <div class="details-info">
+                <!--<a tooltip="{{tooltip(detail.key)}}"><i class="icon-1_info"></i></a>-->
+              </div>
+              <div class="details-body">
+                {{label(detail.key)}}: <span ng-bind-html="detail.value" class="details-value"></span><i
+                class="unavailable" ng-if="!detail.value">Unavailable</i>
+              </div>
+            </li>
+          </ul>
+          <ul ng-show="contextualLayer || moreLess==='Less'">
+            <li ng-repeat="(key, value) in details">
+              <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'"
+                   class="details-info">
+                <!--<a tooltip="{{tooltip(key)}}"><i class="icon-1_info"></i></a>-->
+              </div>
+
+              <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'"
+                   class="details-body">
+                {{label(key)}}:
+                <span ng-bind-html="value" class="details-value"></span>
+                <i class="unavailable" ng-if="!value">
+                  Unavailable
+                </i>
+              </div>
+            </li>
+          </ul>
+
+        </div>
+
+        <div class="section scrollable" ng-show="details && (navTab && navTab==='request')">
+          <p ng-show="details.requestsForAssistance === 'none'">
+            There are currently <b>no requests for assistance</b> for this disaster...
+          </p>
+          <ul>
+            <li ng-repeat="(key, value) in details.requestsForAssistance">
+              <a ng-show="!details.showRfa" ng-click="showRfa(details, value)">{{value.name}}</a>
+
+              <div ng-show="value.showRfa">
+                <a ng-click="hideRfa(details, value)">< Back to RFA List</a>
+                <h4>{{value.name}}</h4>
+                <ul>
+                  <li ng-repeat="(key2, value2) in value" ng-if="key2!='showRfa' && key2!='name' && key2!='sf_id'">
+                    <div class="details-info">
+                      <!--<a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>-->
+                    </div>
+                    <div class="details-body">
+                      {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i
+                      class="unavailable" ng-show="!value2">Unavailable</i>
+                    </div>
+                  </li>
+                </ul>
+                <a href="{{salesforceUrl}}/{{value.sf_id}}" target="_blank" class="btn btn-default btn-sm">View RFA
+                  in ECOS</a>
+              </div>
+
+            </li>
+          </ul>
+        </div>
+
+        <div class="section scrollable" ng-show="details && (navTab && navTab==='indicator')">
+          <p ng-show="details.indicators === 'none'">
+            There are currently <b>no indicators</b> for this project...
+          </p>
+          <ul ng-show="details.indicators !== 'none'">
+            <li ng-repeat="(_key, _value) in details.indicators">
+              <a ng-show="!details.showIndicators" ng-click="showIndicators(details, _value)">{{_value.name}}</a>
+
+              <div ng-show="_value.showIndicators">
+                <a ng-click="hideIndicators(details, _value)">< Back To Indicators List</a>
+                <h4>{{_value.name}}</h4>
+                <ul>
+                  <li ng-repeat="(key2, value2) in _value" ng-if="key2!='showIndicators' && key2!='name'">
+                    <div class="details-info">
+                      <!--<a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>-->
+                    </div>
+                    <div class="details-body">
+                      {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i
+                      class="unavailable" ng-show="!value2">Unavailable</i>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+            </li>
+          </ul>
+        </div>
+
+        <div class="section scrollable" ng-show="details && (navTab && navTab==='risk')">
+          <p ng-show="details.risks === 'none'">
+            There are currently <b>no risks</b> for this project...
+          </p>
+          <ul ng-show="details.risks !== 'none'">
+            <li ng-repeat="(key_, value_) in details.risks" ng-if="key2!='showRisks' && key2!='name'">
+              <a ng-show="!details.showRisks" ng-click="showRisks(details, value_)">{{value_.name}}</a>
+
+              <div ng-show="value_.showRisks">
+                <a ng-click="hideRisks(details, value_)">< Back To Risk List</a>
+                <h4>{{value_.name}}</h4>
+                <ul>
+                  <li ng-repeat="(key2, value2) in value_">
+                    <div class="details-info">
+                      <!--<a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>-->
+                    </div>
+                    <div class="details-body">
+                      {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i
+                      class="unavailable" ng-show="!value2">Unavailable</i>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+            </li>
+          </ul>
+        </div>
+
+        <div class="section scrollable" ng-show="details && (navTab && navTab==='status')">
+          <p ng-show="details.statuses === 'none'">
+            There are currently no <b>health statuses</b> for this project...
+          </p>
+          <ul ng-show="details.statuses !== 'none'">
+            <li ng-repeat="(key_, value_) in details.statuses" ng-if="key2!='showStatuses' && key2!='name'">
+              <a ng-show="!details.showStatuses" ng-click="showStatuses(details, value_)">{{value_.name}}</a>
+
+              <div ng-show="value_.showStatuses">
+                <a ng-click="hideStatuses(details, value_)">< Back To Health List</a>
+                <h4>{{value_.name}}</h4>
+                <ul>
+                  <li ng-repeat="(key2, value2) in value_">
+                    <div class="details-info">
+                      <!--<a tooltip="{{tooltip(key2)}}"><i class="icon-1_info"></i></a>-->
+                    </div>
+                    <div class="details-body">
+                      {{label(key2)}}: <span ng-bind-html="value2" class="details-value"></span><i
+                      class="unavailable" ng-show="!value2">Unavailable</i>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div ng-show="hideLegend == false && $stateParams.theme == 'project' && dataset.length>1">
+        <div class="sectorsvg">
+          <div class="title">
+            Sectors:
+          </div>
+          <div class="svgcontainer">
+            <div ng-repeat="c in dataset" class="inline">
+              <svg ng-mouseenter="updateSectorLegend(c.alias,c.color,c.count)" ng-attr-width="{{c.width}}"
+                   height="20">
+                <rect ng-attr-width="{{c.width}}" height="20" fill="{{c.color}}"></rect>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div id="sectorlegend">
+          <div class="title">
+            <svg height="25" width="25">
+              <circle cx="15" cy="15" r="7.5" fill="{{datasetColor}}"></circle>
+            </svg>
+            {{datasetTitle}} ({{datasetCount}})
+          </div>
+        </div>
+      </div>
+
+      <div class="details-bottom-buttons pull-right" ng-show="!contextualLayer && !itemsList">
+        <div type="button" class="btn btn-default btn-xs btnless" ng-click="toggleMoreLess()">Show {{moreLess}}
+          Details
+        </div>
+        <a href="{{salesforceUrl}}/{{details.sf_id}}" target="_blank" class="btn btn-default btn-xs btnless">View in
+          ECOS</a>
+      </div>
+
+
     </div>
+  </div>
 </div>
+
+<div ui-view="details"></div>
 
 <div id="printFooter">
     <div class="print-logo">
@@ -910,14 +1060,8 @@
 <script src="lib/togeojson.js"></script>
 <script src="lib/mapbox.standalone.uncompressed.js"></script>
 <script src="lib/jquery.layout-latest.min.js"></script>
-<script src="lib/ui-bootstrap-tpls-0.11.0.min.js"></script>
+<script src="lib/ui-bootstrap-no-dropdown-tpls-0.11.0.js"></script>
 <script src="lib/jquery.csv-0.71.min.js"></script>
-<script src="lib/featurelabel/leaflet-patch.js"></script>
-<!--<script src="lib/featurelabel/leaflet-patch-dev.js"></script>-->
-<script src="lib/featurelabel/featurelabel.js"></script>
-<script src="lib/featurelabel/Label.js"></script>
-<!--<script src="lib/featurelabel/Label-dev.js"></script>-->
-<script src="lib/featurelabel/FeatureSet.js"></script>
 <script src="scripts/global.js"></script>
 <script src="scripts/config.js"></script>
 <script src="scripts/geo-angular.js"></script>
