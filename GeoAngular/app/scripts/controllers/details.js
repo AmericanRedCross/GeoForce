@@ -299,7 +299,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
         dc = dc + $scope.dataset[i].count;
       }
       for(var i=0;i<$scope.dataset.length;i++){
-        $scope.dataset[i].width = Math.round((278 * ($scope.dataset[i].count/dc))); // percentage of div (250px)
+        $scope.dataset[i].width = Math.round((277 * ($scope.dataset[i].count/dc))); // percentage of div (250px)
       }
       // Sort sector array by count
       $scope.dataset.sort(function (a, b) {
@@ -320,6 +320,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       $scope.contextualLayer = (properties.sf_id ? false : true);
       $scope.showDetails(properties);
       $scope.openParam('details-panel');
+      $scope.numThemeItems = 1; //non sales force features
     }
     $scope.resizeDetailsPanel();
   });
@@ -417,7 +418,9 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
     $scope.itemsList = false;
 
-    $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+    $scope.$apply(function(){
+      $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+    });
 
     if (!$scope.contextualLayer) {
       $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item, $stateParams.theme)), $stateParams.theme);

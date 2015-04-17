@@ -983,6 +983,7 @@
                        class="details-info">
                     <!--<a tooltip="{{tooltip(key)}}"><i class="icon-1_info"></i></a>-->
                   </div>
+
                   <div ng-if="key != 'requestsForAssistance' && key != 'indicators' && key != 'risk' && key != 'status'"
                        class="details-body">
                     {{label(key)}}:
@@ -1177,7 +1178,7 @@
                 <div ng-show="$stateParams.theme == 'disasterType' && $stateParams.themelabels == 'false'" class="legend-swatch"
                      style="background-color: {{layerClass.color}}"></div>
 
-                <div ng-show="$stateParams.theme == 'disasterType' && $stateParams.themelabels == 'true'" class="disaster-icons">
+                <div ng-show="$stateParams.theme == 'disasterType' && $stateParams.themelabels !== 'false'" class="disaster-icons">
                   <i class="un {{UNOCHAIconLookup[layerClass.legendLabel[0]].icon}}"></i>
                 </div>
 
@@ -1189,7 +1190,7 @@
                 </div>
 
                 <div ng-show="$stateParams.theme == 'disasterType'"
-                     class="legend-swatch-label" ng-class="{none: $stateParams.themelabels=='true'}">
+                     class="legend-swatch-label" ng-class="{none: $stateParams.themelabels!=='false'}">
                   {{layerClass.legendLabel[0]}}
                 </div>
 
@@ -1230,7 +1231,7 @@
                 <div ng-show="$stateParams.themelabels == 'false'" class="legend-swatch"
                      style="background-color: {{firstObject.color}}"></div>
 
-                <div ng-show="$stateParams.themelabels == 'true'" class="disaster-icons">
+                <div ng-show="$stateParams.themelabels !== 'false'" class="disaster-icons">
                   <i class="un {{UNOCHAIconLookup[firstObject.legendLabel[0]].icon}}"></i>
                 </div>
               </div>
@@ -1249,7 +1250,7 @@
                 <div ng-show="$stateParams.themelabels == 'false'" class="themelabel-off legend-swatch"
                      style="background-color: {{layerClass.color}}"></div>
                 <div class="disaster-icons">
-                  <i ng-show="$stateParams.themelabels == 'true'" class="un {{UNOCHAIconLookup[layerClass.legendLabel[0]].icon}}"></i>
+                  <i ng-show="$stateParams.themelabels !== 'false'" class="un {{UNOCHAIconLookup[layerClass.legendLabel[0]].icon}}"></i>
                 </div>
                 <li class="theme-selector-li-on pull-left">{{layerClass.legendLabel[0]}}</li>
               </div>

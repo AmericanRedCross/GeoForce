@@ -308,7 +308,7 @@
 
 .sectorsvg .inline {
   display:inline;
-  margin: -3px;
+  margin-right: -4px;
 }
 
 
@@ -362,3 +362,6 @@ rect:hover {
   z-index: 122;
 }
 
+.svgcontainer{
+  width: 280px;
+}
