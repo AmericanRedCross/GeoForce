@@ -630,19 +630,19 @@
 <!--End Filters Panel-->
 
 <!--Legend Panel-->
-<div ng-controller="LegendCtrl" ng-class="{on: isParam('legend')}" class="navpanel container legend-container">
-    <div class="row">
-        <button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('legend')"><span
-                class="glyphicon glyphicon-chevron-left"></span></button>
-        <div class="col-md-8 side-view-title-wrapper">
-            <div class="title">Legend</div>
-            <div class="description"></div>
-        </div>
-    </div>
-    <div class="row scrollable">
-        LegendCtrl
-    </div>
-</div>
+<!--<div ng-controller="LegendCtrl" ng-class="{on: isParam('legend')}" class="navpanel container legend-container">-->
+    <!--<div class="row">-->
+        <!--<button class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('legend')"><span-->
+                <!--class="glyphicon glyphicon-chevron-left"></span></button>-->
+        <!--<div class="col-md-8 side-view-title-wrapper">-->
+            <!--<div class="title">Legend</div>-->
+            <!--<div class="description"></div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row scrollable">-->
+        <!--LegendCtrl-->
+    <!--</div>-->
+<!--</div>-->
 <!--End Legend Panel-->
 
 <!--Basemaps Panel-->
@@ -755,9 +755,127 @@
 <div ui-view="theme"></div>
 
 
-<!-- Right Hand Details Panel -->
+  <!-- Legend Control. Needs to be a child of MapCtrl -->
+  <div ng-controller="LegendCtrl" style="position: absolute;bottom: 0px;z-index: 10;">
+    <!--<div class="list-group legend-list">-->
+    <!--<div class="list-group-item ng-scope">-->
+    <!--<div class="legendTitle ng-binding">Legend:</div>-->
+    <!--<div class="legendIcon ng-binding"></div>-->
+    <!--</div>-->
+    <div class="list-group legend-list" ng-cloak
+         ng-class="{'legend-list-min':fold && $stateParams.theme == 'disasterType'}">
+      <div ng-show="$stateParams.theme !== 'none'" id="legend" class="list-group-item class-list">
+        <div ng-class="{'legend-info-project':$stateParams.theme == 'project',
+          'legend-info-projectHR': $stateParams.theme == 'projectHealth' || $stateParams.theme == 'projectRisk'
+          || $stateParams.theme.indexOf('disaster') !== -1}">
+          <div class="legend-title">Legend:</div>
+          <div ng-hide="fold == true && $stateParams.theme == 'disasterType'">
+            <div ng-repeat="layerClass in legendObject" class="legend-class">
+
+              <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
+              <div ng-show="$stateParams.theme !== 'disasterType' && !layerClass.gradient" class="legend-swatch"
+                   ng-style="{backgroundColor: '{{layerClass.color}}'}"
+                   ng-class="{'white-background':layerClass.color=='rgba(255,255,255,0.5)'}"></div>
+
+              <div ng-show="$stateParams.theme == 'disasterType'" class="legend-swatch"
+                   style="background-color: {{layerClass.color}}"></div>
+
+              <div ng-show="$stateParams.theme == 'disasterType'" class="disaster-icons">
+                <i class="un {{UNOCHAIconLookup[layerClass.legendLabel[0]].icon}}"></i>
+              </div>
+
+              <!-- Legend Color swatch label for PBF THEME Layer.  Set in Config/VectorTiles.js -->
+              <div ng-show="$stateParams.theme!=='project' && $stateParams.theme!=='disasterType' && $stateParams.theme!=='none'"
+                   class="legend-swatch-label">
+                {{layerClass.legendLabel}}
+              </div>
+
+              <div ng-show="$stateParams.theme == 'disasterType'"
+                   class="legend-swatch-label">
+                {{layerClass.legendLabel[0]}}
+              </div>
 
 
+              <div class="gradient" ng-show="layerClass.gradient.length > 0">
+                <div class="gradient-label">
+                  Fewer
+                </div>
+                <div class="gradient-legend">
+
+                  <svg height="20" width="70">
+                    <defs>
+                      <linearGradient id="grad1" x1="0%" y1="0%" x2="120%" y2="0%">
+                        <stop offset="0%" ng-attr-style="stop-color:{{layerClass.gradient[0]}}"/>
+                        <stop offset="65%" ng-attr-style="stop-color:{{layerClass.gradient[1]}}"/>
+                      </linearGradient>
+                    </defs>
+                    <rect width="70" height="20" fill="url(#grad1)"/>
+                  </svg>
+
+
+                </div>
+                <div class="gradient-label">
+                  More
+                </div>
+
+              </div>
+            </div>
+            <div class="bubble-label" ng-show="$stateParams.theme !== 'disasterType' && $stateParams.theme !== 'none'">
+              <div ng-class="{'disaster-background':$stateParams.theme == 'disaster'}" class="label-icon-number-40percent"><span>1</span></div>
+              # of {{themeLabel}}
+            </div>
+          </div>
+        </div>
+
+        <!-- show when legend width is too large; fold into clickable pop up menu -->
+        <div ng-show="fold == true && $stateParams.theme == 'disasterType'">
+
+          <div class="legend-caption">
+            <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
+            <div>
+              <div class="legend-swatch"
+                   style="background-color: {{firstObject.color}}"></div>
+
+              <div class="disaster-icons">
+                <i class="un {{UNOCHAIconLookup[firstObject.legendLabel[0]].icon}}"></i>
+              </div>
+            </div>
+            <div class="legend-swatch-label-fold">
+              {{firstObject.legendLabel[0]}}
+            </div>
+          </div>
+
+          <div ng-show="fold == true">
+            <div ng-click="toggleParam('legend-panel')" class="glyphicon glyphicon-chevron-up pull-right arrow"></div>
+          </div>
+          <!-- Legend dropdown menu start-->
+          <ul id="LegendMenu" class="dropdown-menu-legend" ng-class="{on:isParam('legend-panel')}">
+            <div class="ind-legend" ng-repeat="layerClass in legendObject">
+              <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
+              <div class="themelabel-off legend-swatch"
+                   style="background-color: {{layerClass.color}}"></div>
+              <div class="disaster-icons">
+                <i class="un {{UNOCHAIconLookup[layerClass.legendLabel[0]].icon}}"></i>
+              </div>
+              <li class="theme-selector-li-on pull-left">{{layerClass.legendLabel[0]}}</li>
+            </div>
+          </ul>
+
+          <!-- Legend dropdown menu end -->
+
+          <!--<div ng-show="singleBubbleObject && themeLabelsChecked" class="single-bubble-class">-->
+          <!--<div ng-bind-html="singleBubbleObject" class="legend-swatch singleIcon">-->
+          <!--</div>-->
+          <!--<div class="legend-swatch-label">-->
+          <!--Counts-->
+          <!--</div>-->
+          <!--</div>-->
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -1009,6 +1127,7 @@
     </div>
   </div>
 </div>
+
 
 <div ui-view="details"></div>
 

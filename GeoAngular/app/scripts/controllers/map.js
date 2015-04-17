@@ -569,11 +569,17 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
     //Fetch the legend after redraw
     //need to wait until all tiles finish drawing
     layer.options.onTilesLoaded = function(){
+
+
+
       if(vtLayer){
         var legendObject = vtLayer.getLegendObject();
         if(legendObject){
           //set it equal to the scope
-          $scope.legendObject = legendObject;
+
+          $scope.$apply(function() {
+            $scope.legendObject = legendObject;
+          })
 
           // broadcast legend width for resize
           if($stateParams.theme == 'disasterType'){
@@ -606,6 +612,8 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
           }
         }
       }
+
+
     }
   }
 
