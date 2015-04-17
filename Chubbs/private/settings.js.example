@@ -17,6 +17,9 @@ process.env.NODE_ENV = 'development';
 settings.application.port = 3001;
 settings.application.ip = "localhost";
 
+//allow for print service to access
+settings.application.referrerHeaderCheck = "1.2.3.4";
+
 //Enable Security?
 settings.enableSecurity = false;
 

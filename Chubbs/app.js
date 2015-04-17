@@ -218,8 +218,7 @@ function ensureAuthenticated(req, res, next) {
 
     //Short circuit this check if the print server is contacting the page.
     //Check the referrer header to see if we should allow access to printing.
-    console.log("Ensure Authenticated Host Check: " + req.headers.host)
-    if(req.headers && req.headers.host && req.headers.host == "") { //geo.recross.org
+    if(req.headers && req.header['x-forwarded-for'] && req.headers['x-forwarded-for'] == settings.application.referrerHeaderCheck) {
       return next();
     }
 
