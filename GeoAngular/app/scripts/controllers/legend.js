@@ -55,8 +55,11 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
     $scope.fold = lw.fold;
     if(lw.width>=435 || lw.fold == true){
       $scope.fold = true;
-      console.log("fold");
     }
+  });
+
+  $scope.$on('theme-update', function(){
+    if($stateParams.theme !== null) $scope.themeLabel = $stateParams.theme.capitalize();
   });
 
   /*
@@ -89,6 +92,5 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
     "Landslide;Hydrological - Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0," + opacity + ")"}
 
   }
-
 
 });
