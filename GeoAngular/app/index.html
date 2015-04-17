@@ -1162,7 +1162,7 @@
       <!--</div>-->
       <div class="list-group legend-list" ng-cloak
            ng-class="{'legend-list-min':fold && $stateParams.theme == 'disasterType'}">
-        <div id="legend" class="list-group-item class-list">
+        <div ng-show="$stateParams.theme !== 'none'" id="legend" class="list-group-item class-list">
           <div ng-class="{'legend-info-project':$stateParams.theme == 'project',
           'legend-info-projectHR': $stateParams.theme == 'projectHealth' || $stateParams.theme == 'projectRisk'
           || $stateParams.theme.indexOf('disaster') !== -1}">
@@ -1219,7 +1219,7 @@
 
                 </div>
               </div>
-              <div class="bubble-label">
+              <div class="bubble-label" ng-show="$stateParams.theme !== 'disasterType' && $stateParams.theme !== 'none'">
                 <div ng-class="{'disaster-background':$stateParams.theme == 'disaster'}" class="label-icon-number-40percent"><span>1</span></div>
                   # of {{themeLabel}}
               </div>

@@ -7,6 +7,14 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
 
   $scope.fold = false;
 
+  var themeLookup = {
+    disaster:'Disasters',
+    project:'Projects',
+    projectHealth:'Project Health',
+    projectRisk: 'Project Risk',
+    disasterType: 'Disaster Type'
+  };
+
   $scope.$on('layers-update', function (evt, layers) {
     $scope.layers = [];
     for (var i = layers.length - 1; i >= 1; i--){
@@ -59,7 +67,10 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
   });
 
   $scope.$on('theme-update', function(){
-    if($stateParams.theme !== null) $scope.themeLabel = $stateParams.theme.capitalize();
+    $scope.themeLabel = '';
+    if($stateParams.theme !== null) {
+      $scope.themeLabel = themeLookup[$stateParams.theme];
+    }
   });
 
   /*
