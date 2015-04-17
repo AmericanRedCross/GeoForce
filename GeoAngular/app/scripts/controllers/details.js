@@ -320,7 +320,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       $scope.contextualLayer = (properties.sf_id ? false : true);
       $scope.showDetails(properties);
       $scope.openParam('details-panel');
-      $scope.numThemeItems = 1; //non sales force features
+      //$scope.numThemeItems = 1; //non sales force features
     }
     $scope.resizeDetailsPanel();
   });
@@ -417,10 +417,17 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (themeItems) $scope.activeThemeItemsList = themeItems;
 
     $scope.itemsList = false;
-
-    $scope.$apply(function(){
+    //
+    if(!$scope.$$phase) {
+      $scope.$apply(function(){
+        $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+      });
+    } else {
       $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
-    });
+    }
+
+      //$scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+
 
     if (!$scope.contextualLayer) {
       $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item, $stateParams.theme)), $stateParams.theme);
