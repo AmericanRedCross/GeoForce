@@ -7,12 +7,14 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
 
   $scope.fold = false;
 
+  //themeLookup is used to display the label in the map legend in the bottom left.
+  //So the label will deviate from the actual name of the theme.  For project risk, for example, we want the label to say Circle = # of projects, not # of project risk.
   var themeLookup = {
-    disaster:'Disasters',
-    project:'Projects',
-    projectHealth:'Project Health',
-    projectRisk: 'Project Risk',
-    disasterType: 'Disaster Type'
+    disaster: { name: 'Disasters', label: '# of Disasters'},
+    project: { name: 'Projects', label: '# of Projects'},
+    projectHealth: { name: 'Project Health', label: '# of Projects'},
+    projectRisk: { name: 'Project Risk', label: '# of Projects'},
+    disasterType: { name: 'Disaster Type', label: '# of Disasters'}
   };
 
   $scope.$on('layers-update', function (evt, layers) {
@@ -69,7 +71,7 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
   $scope.$on('theme-update', function(){
     $scope.themeLabel = '';
     if($stateParams.theme !== null) {
-      $scope.themeLabel = themeLookup[$stateParams.theme];
+      $scope.themeLabel = themeLookup[$stateParams.theme].label;
     }
   });
 
