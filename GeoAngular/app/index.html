@@ -956,7 +956,7 @@
                           ng-class="{'label-red': item.overall_assessment__c.toLowerCase() === 'critical', 'label-orange': item.overall_assessment__c.toLowerCase() === 'high', 'label-yellow': item.overall_assessment__c.toLowerCase() === 'medium', 'label-green': item.overall_assessment__c.toLowerCase() === 'low'}">{{item.overall_assessment__c}}</span>
                     <span ng-show="theme==='projectHealth'" class="label"
                           ng-class="{'label-white': item.overall_status__c.toLowerCase() === 'white', 'label-red': item.overall_status__c.toLowerCase() === 'red', 'label-yellow': item.overall_status__c.toLowerCase() === 'yellow', 'label-green': item.overall_status__c.toLowerCase() === 'green'}">{{item.overall_status__c}}</span>
-                    <a class="details-li" ng-click="showDetails(item, themeItems, $index)">{{item.name}}</a>
+                    <a class="details-li" ng-click="showDetails(item, themeItems, $index); navTab='details'">{{item.name}}</a>
                   </li>
                 </ul>
               </div>
@@ -1139,9 +1139,9 @@
           </div>
 
           <div class="details-bottom-buttons pull-right" ng-show="!contextualLayer && !itemsList">
-            <div type="button" class="btn btn-default btn-xs btnless" ng-click="toggleMoreLess()">Show {{moreLess}}
+            <button ng-disabled="navTab!=='details'" type="button" class="btn btn-default btn-xs btnless" ng-click="toggleMoreLess()">Show {{moreLess}}
               Details
-            </div>
+            </button>
             <a href="{{salesforceUrl}}/{{details.sf_id}}" target="_blank" class="btn btn-default btn-xs btnless">View in
               ECOS</a>
           </div>
