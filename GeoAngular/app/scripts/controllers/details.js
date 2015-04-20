@@ -58,7 +58,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     var desc = key;
 
     // disaster
-    if ($stateParams.theme === 'disaster') {
+    if ($stateParams.theme.indexOf('disaster') !== -1) {
 
       if ($scope.sfFieldHash.Disaster__c[key]) {
         desc = $scope.sfFieldHash.Disaster__c[key].label || key;
@@ -643,6 +643,5 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     $scope.datasetColor = color;
     $scope.datasetCount = count;
   }
-
 
 });
