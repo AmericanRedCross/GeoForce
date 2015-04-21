@@ -573,8 +573,8 @@
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs">
-              <li class="active"><a class="a-nav-tab" ng-click="navTab='disasterType'" data-toggle="tab">Type</a></li>
-              <li><a class="a-nav-tab" ng-click="navTab='status'" data-toggle="tab">Status</a></li>
+              <li ng-class="{active:navTab=='disasterType'}"><a class="a-nav-tab" ng-click="navTab='disasterType'" data-toggle="tab">Type</a></li>
+              <li ng-class="{active:navTab=='status'}"><a class="a-nav-tab" ng-click="navTab='status'" data-toggle="tab">Status</a></li>
             </ul>
 
             <!-- Tab panes -->

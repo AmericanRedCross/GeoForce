@@ -34,6 +34,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     angular.extend($scope, data);
     debug.filtersScope = $scope;
     $scope.categorizeDisasterFilters();
+    $scope.defaultStatus(); // check Monitoring and Active in Status object
   }).error(function () {
     console.error("Unable to fetch project filter meta data");
   });
@@ -89,7 +90,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
           $state.go(state, $stateParams);
         }
 
-      if($stateParams.theme.indexOf('project')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("disaster_type__c")!==-1)) {
+      if($stateParams.theme.indexOf('project')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("iroc_status__c")!==-1)) {
         delete $stateParams.filters;
         var state = $state.current.name || 'main';
         $state.go(state, $stateParams);
@@ -179,10 +180,8 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   };
 
   $scope.$on('filters-update', function () {
-
     if($stateParams.theme.indexOf('disaster')!==-1) decodeDisasterFiltersURL();
     if($stateParams.theme == 'project') decodeProjectFiltersURL();
-
   });
 
 
@@ -297,6 +296,14 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
+  $scope.defaultStatus = function() {
+    for (var i=0;i<$scope.status.length;i++){
+      if($scope.status[i].name !== "Inactive"){
+        $scope.status[i].checked = true;
+      }
+    }
+  };
+
   $scope.statusFilter = function () {
     var status = $scope.status;
     $scope.statusClause = null;
@@ -323,6 +330,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.statusClause = null;
     $scope.composeWhereClause();
   };
+
 
   $scope.dateFilter = function () {
     $scope.dateClause = null;
@@ -521,6 +529,18 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       $scope.searchText = '';
       $scope.selected = false;
     },2000);
-  }
+  };
+
+  $scope.$on('route-update', function() {
+
+    //Set default filter status to Monitoring and Active on page load
+    if($stateParams.filters == null && $stateParams.filters !== undefined){
+      if($stateParams.theme.indexOf('disaster')!== -1){
+        $scope.statusFilter();
+      }
+    }
+
+  });
+
 
 });
