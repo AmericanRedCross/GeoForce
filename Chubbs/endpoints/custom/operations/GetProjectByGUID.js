@@ -62,10 +62,6 @@ operation.execute = flow.define(
         AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
     }
 
-
-    //operation.IndicatorQuery = "SELECT * FROM sf_indicator, sf_indicator_value " +
-    //  "WHERE sf_indicator.project__c = {{guid}} AND sf_indicator_value.indicator__c = sf_indicator.sf_id; ";
-
     operation.IndicatorQuery = "SELECT sf_indicator.*, " +
       "val.actual__c, val.collection_period__c, val.effective_date__c, val.overlap__c, val.period__c, val.subjective__c, " +
       "val.target_percent__c, val.target__c, val.variance__c, val.period_actual_sum__c, val.period_actuals_max__c, " +

@@ -36,6 +36,7 @@ operation.outputImage = false;
 
 operation.inputs["guids"] = {}; //comma separated list of guids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
+operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
 operation.RequestForAssistanceQuery =
 "SELECT * FROM sf_request_for_assistance \
@@ -53,13 +54,13 @@ operation.execute = flow.define(
       RIGHT JOIN sf_disaster as dis ON loc.disaster__r_id = dis.sf_id \
       INNER JOIN sf_aggregated_gadm_disaster_counts ON dis.sf_id = sf_aggregated_gadm_disaster_counts.sf_id \
       AND sf_aggregated_gadm_disaster_counts.guid{{gadm_level}}::text = loc.location__r_gis_geo_id__c \
-      WHERE guid{{gadm_level}} = ({{guids}});";
+      WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
 
     operation.DisasterARCQuery =
       "SELECT dis.*, dis.sf_id as disaster__r_id, null as location__r_admin_0__c, null as location__r_admin_1__c, null as location__r_admin_2__c, null as location__r_admin_3__c, null as location__r_admin_4__c, null as location__r_admin_5__c \
       FROM sf_disaster dis \
       INNER JOIN sf_aggregated_gadm_disaster_counts ON dis.sf_id = sf_aggregated_gadm_disaster_counts.sf_id \
-      WHERE guid{{gadm_level}} = ({{guids}});";
+      WHERE guid{{gadm_level}} = ({{guids}}) {{filters}};";
 
     //Generate UniqueID for this Task
     operation.id = shortid.generate();
@@ -69,19 +70,37 @@ operation.execute = flow.define(
       //prepare bbox string as WKT
       operation.inputs["guids"] = args.guids;
       operation.inputs["gadm_level"] = args.gadm_level;
+      operation.inputs["filters"] = args.filters;
+
+      var filters = '';
+
 
       if(operation.inputs["gadm_level"] == -1) {
           operation.inputs["gadm_level"] = "arc";
       }
 
+      if (operation.inputs["filters"] && operation.inputs["filters"] !== 'null') {
+        var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g, '%').replace(/%27/g, "'");
+        filters = " AND sf_aggregated_gadm_disaster_counts.id IN (SELECT id from sf_aggregated_gadm_disaster_counts WHERE " + inputFilters + ")";
+      }
+
+
       //need to wrap ids in single quotes
       //Execute the query
       var disasterQuery;
       if(operation.inputs["gadm_level"] == "arc"){
-        disasterQuery = { text: operation.DisasterARCQuery.split("{{guids}}").join(operation.wrapIdsInQuotes(operation.inputs["guids"])).split("{{gadm_level}}").join(operation.inputs["gadm_level"]) };
+        disasterQuery = { text: operation.DisasterARCQuery.split("{{guids}}")
+          .join(operation.wrapIdsInQuotes(operation.inputs["guids"]))
+          .split("{{gadm_level}}").join(operation.inputs["gadm_level"])
+          .split("{{filters}}").join(filters)
+        };
       }
       else{
-        disasterQuery = { text: operation.DisasterQuery.split("{{guids}}").join(operation.wrapIdsInQuotes(operation.inputs["guids"])).split("{{gadm_level}}").join(operation.inputs["gadm_level"]) };
+        disasterQuery = { text: operation.DisasterQuery.split("{{guids}}")
+          .join(operation.wrapIdsInQuotes(operation.inputs["guids"]))
+          .split("{{gadm_level}}").join(operation.inputs["gadm_level"])
+          .split("{{filters}}").join(filters)
+        };
       }
       common.executePgQuery(disasterQuery, this);//Flow to next function when done.
     }
@@ -98,12 +117,23 @@ operation.execute = flow.define(
     }
     //Step 2 - do the request for assistance query
     var disasters = this.disasters = results.rows;
-    for (var i = 0, len = disasters.length; i < len; ++i) {
-      var disaster = disasters[i];
-      var id = disaster.disaster__r_id;
-      var requestForAssistanceQuery = { text: operation.RequestForAssistanceQuery.replace("{{guid}}", operation.wrapIdsInQuotes(id)) };
-      common.executePgQuery(requestForAssistanceQuery, this.MULTI(id));
+
+    if(!disasters || disasters.length == 0){
+      //No properties for this GUID
+      this({});
     }
+
+    if(disasters && disasters.length > 0){
+      for (var i = 0, len = disasters.length; i < len; ++i) {
+        var disaster = disasters[i];
+        var id = disaster.disaster__r_id;
+        var requestForAssistanceQuery = { text: operation.RequestForAssistanceQuery.replace("{{guid}}", operation.wrapIdsInQuotes(id)) };
+        common.executePgQuery(requestForAssistanceQuery, this.MULTI(id));
+      }
+    }
+
+
+
   },
   function (args) {
     //Step 3 - get the results and pass back to calling function
