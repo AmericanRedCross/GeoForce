@@ -69,8 +69,6 @@ operation.execute = flow.define(
 
             var activeProjectWhereClause = " AND (phase__c LIKE '%2%' OR phase__c LIKE '%3%' OR phase__c LIKE '%4%')";
 
-            var activeDisasterWhereClause = " AND iroc_status__c != 'Inactive'";
-
 
             //need to wrap ids in single quotes
             //Execute the query
@@ -86,18 +84,11 @@ operation.execute = flow.define(
                 if (operation.inputs["theme"].toLowerCase() == 'project' || operation.inputs["theme"].toLowerCase() == 'projectrisk' || operation.inputs["theme"].toLowerCase() == 'projecthealth') {
                     filters += activeProjectWhereClause;
                 }
-                else if (operation.inputs["theme"].toLowerCase() == 'disaster' || operation.inputs["theme"].toLowerCase() == 'disastertype' ) {
-                    filters += activeDisasterWhereClause;
-                }
-
             }
             else {
                 //Add where clause to only show active projects
                 if (operation.inputs["theme"].toLowerCase() == 'project' || operation.inputs["theme"].toLowerCase() == 'projectrisk' || operation.inputs["theme"].toLowerCase() == 'projecthealth') {
                     filters = activeProjectWhereClause;
-                }
-                else if (operation.inputs["theme"].toLowerCase() == 'disaster' || operation.inputs["theme"].toLowerCase() == 'disastertype' ) {
-                    filters = activeDisasterWhereClause;
                 }
             }
             if (operation.inputs["theme"].toLowerCase() == 'disaster') {

@@ -305,10 +305,10 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       var stat = status[i];
       if (stat.checked) {
         if (first) {
-          $scope.statusClause = "status__c LIKE '%" + stat.name + "%' ";
+          $scope.statusClause = "iroc_status__c LIKE '%" + stat.name + "%' ";
           first = false;
         } else {
-          $scope.statusClause += "OR status__c LIKE '%" + stat.name + "%' ";
+          $scope.statusClause += "OR iroc_status__c LIKE '%" + stat.name + "%' ";
         }
       }
     }
@@ -465,7 +465,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $scope.submitFilter = function () {
 
     if($stateParams.theme.indexOf('project')!==-1)$stateParams.filters = $scope.whereClause;
-    if($stateParams.theme.indexOf('disaster')!==-1)$stateParams.filters = $scope.sectorClause;
+    if($stateParams.theme.indexOf('disaster')!==-1)$stateParams.filters = $scope.whereClause;
 
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
