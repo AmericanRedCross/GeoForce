@@ -11,9 +11,10 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
   $scope.gists = []; //initialize as empty
   $scope.mapLayers = []; //initialize as empty
 
-  $scope.gadm0Label = '0. Countries';
-  $scope.gadm1Label = '1. State / Province';
-  $scope.gadm2Label = '2. County / District';
+  $scope.arcregionsLabel = 'ARC Regions';
+  $scope.gadm0Label = 'Countries';
+  $scope.gadm1Label = 'State / Province';
+  $scope.gadm2Label = 'County / District';
 
 
   debug.LayerConfig = LayerConfig;
@@ -79,7 +80,13 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
       });
 
       //Add in the gadm layer to the layers list in the stateparams.
-      layersArray.push("gadm" + $scope.gadmLevel);
+      if($scope.gadmLevel == -1){
+        layersArray.push("arcregions");
+      }
+      else{
+        layersArray.push("gadm" + $scope.gadmLevel)
+      }
+
       $stateParams.layers = layersArray.join(",");
 
     }
@@ -97,8 +104,6 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
-
-    //$scope.closeParam('details-panel');
 
   };
 

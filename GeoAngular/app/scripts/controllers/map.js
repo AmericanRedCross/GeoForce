@@ -446,7 +446,14 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
         //See which GADM level is currently loaded and store it in rootScope (assumes one at a time, which might go away at some point)
         if (LayerConfig.themeLayers.indexOf(overlayName) > -1) {
           //We have one of the theme layers (GADM), parse the name and find out which level we're dealing with as opposed to storing a seaprate level state param
-          var level = overlayName.substring(overlayName.length - 1, overlayName.length);
+          //If arcregions, then level is -1
+          var level;
+          if(overlayName === 'arcregions'){
+            level = -1;
+          }
+          else{
+            level = overlayName.substring(overlayName.length - 1, overlayName.length);
+          }
           $rootScope.level = level; //Store in rootscope
         }
       }
@@ -499,7 +506,17 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
     if (!level) return; //no theme
 
-    var layer = overlays_dictionary["gadm" + level];
+    var layer;
+
+    if(level == -1){
+      //Arc Regions
+      layer = overlays_dictionary["arcregions"];
+    }
+    else{
+      //Gadm
+      layer = overlays_dictionary["gadm" + level];
+    }
+
 
     if (layer) {
 
@@ -631,29 +648,29 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
    * @param theme
    */
   function forceGadm0(){
-    var theme = $stateParams.theme;
-
-    if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){
-      var layersArray;
-
-      if($stateParams.layers){
-        layersArray = $stateParams.layers.split(",");
-      }
-
-      //Remove all GADM layers.
-      layersArray.forEach(function (value, key) {
-        if (LayerConfig.themeLayers.indexOf(value) > -1) {
-          layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
-        }
-      });
-
-      //Add in the gadm layer to the layers list in the stateparams.
-      layersArray.push("gadm0");
-      $stateParams.layers = layersArray.join(",");
-
-      var state = $state.current.name || 'main';
-      $state.go(state, $stateParams);
-    }
+    //var theme = $stateParams.theme;
+    //
+    //if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){
+    //  var layersArray;
+    //
+    //  if($stateParams.layers){
+    //    layersArray = $stateParams.layers.split(",");
+    //  }
+    //
+    //  //Remove all GADM layers.
+    //  layersArray.forEach(function (value, key) {
+    //    if (LayerConfig.themeLayers.indexOf(value) > -1) {
+    //      layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+    //    }
+    //  });
+    //
+    //  //Add in the gadm layer to the layers list in the stateparams.
+    //  layersArray.push("gadm0");
+    //  $stateParams.layers = layersArray.join(",");
+    //
+    //  var state = $state.current.name || 'main';
+    //  $state.go(state, $stateParams);
+    //}
 
   }
 

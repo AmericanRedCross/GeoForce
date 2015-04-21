@@ -3,11 +3,12 @@
   <div class="warning"
        ng-show="($stateParams.layers.indexOf('gadm2')!==-1 && $stateParams.zoom < 5) ||
                 ($stateParams.layers.indexOf('gadm0')!==-1 && $stateParams.zoom > 9) ||
-                ($stateParams.layers.indexOf('gadm1')!==-1 && $stateParams.zoom > 11)">
+                ($stateParams.layers.indexOf('gadm1')!==-1 && $stateParams.zoom > 11) ||
+                ($stateParams.layers.indexOf('arcregions')!==-1 && $stateParams.zoom > 6)">
     <div class="warning-icon">
       <i class="iconmoon-icon_alert pull-left"></i>
     </div>
-    <div class="warning-label">District boundary level is unavailable at this zoom level.</div>
+    <div class="warning-label">Boundary level is unavailable at this zoom level.</div>
   </div>
   <div>
     <div class="navbar-header">
@@ -19,15 +20,17 @@
         <span class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleBLevelMenu()">
           <div class="glyphicon glyphicon-chevron-up pull-right"></div>
 
+          <div class="text-center" ng-show="gadmLevel=='-1'">{{arcregionsLabel}}</div>
           <div class="text-center" ng-show="gadmLevel=='0'">{{gadm0Label}}</div>
           <div class="text-center" ng-show="gadmLevel=='1'">{{gadm1Label}}</div>
           <div class="text-center" ng-show="gadmLevel=='2'">{{gadm2Label}}</div>
 
         </span>
         <ul id="BLevelMenu" class="dropdown-menu">
-          <li ng-click="updateGadm(0);closePanels()">0. Countries</li>
-          <li ng-click="updateGadm(1);closePanels()" ng-hide="$stateParams.theme.indexOf('disaster')!==-1">1. State / Province</li>
-          <li ng-click="updateGadm(2);closePanels()" ng-hide="$stateParams.theme.indexOf('disaster')!==-1">2. County / District</li>
+          <li ng-click="updateGadm(-1);closePanels()">ARC Regions</li>
+          <li ng-click="updateGadm(0);closePanels()">Countries</li>
+          <li ng-click="updateGadm(1);closePanels()" ng-hide="$stateParams.theme.indexOf('disaster')!==-1">State / Province</li>
+          <li ng-click="updateGadm(2);closePanels()" ng-hide="$stateParams.theme.indexOf('disaster')!==-1">County / District</li>
         </ul>
       </li>
     </ul>
