@@ -90,7 +90,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
           $state.go(state, $stateParams);
         }
 
-      if($stateParams.theme.indexOf('project')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("disaster_type__c")!==-1)) {
+      if($stateParams.theme.indexOf('project')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("iroc_status__c")!==-1)) {
         delete $stateParams.filters;
         var state = $state.current.name || 'main';
         $state.go(state, $stateParams);
@@ -534,8 +534,10 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $scope.$on('route-update', function() {
 
     //Set default filter status to Monitoring and Active on page load
-    if($stateParams.filters !== undefined && $stateParams.theme.indexOf('disaster')!== -1){
+    if($stateParams.filters == null && $stateParams.filters !== undefined){
+      if($stateParams.theme.indexOf('disaster')!== -1){
         $scope.statusFilter();
+      }
     }
 
   });
