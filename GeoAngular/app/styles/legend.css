@@ -299,6 +299,8 @@
 
 #LegendMenu.dropdown-menu-legend.on{
   display: block;
+  max-height: 252px;
+  overflow-y: auto;
 }
 
 
