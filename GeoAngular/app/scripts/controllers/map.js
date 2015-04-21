@@ -594,7 +594,42 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
           $scope.$apply(function() {
             $scope.legendObject = legendObject;
-          })
+          });
+
+          var newLegendObject = {};
+          var ONA = $scope.UNOCHAIconLookup;
+
+          // loop through lengend objcet
+          // add to new legend object if:
+          //    1. legend object has ONA lookup icon
+          //    2. new legend object doesn't have same ONA lookup icon
+
+
+          for(var i=0;i<Object.keys(legendObject).length;i++){
+            if(typeof ONA[Object.keys(legendObject)[i]] !== 'undefined'){
+              legendObject[Object.keys(legendObject)[i]].icon = ONA[Object.keys(legendObject)[i]].icon;
+            }
+            if(typeof legendObject[Object.keys(legendObject)[i]].icon !== 'undefined') {
+
+              if(Object.keys(newLegendObject).length==0){
+                newLegendObject[Object.keys(legendObject)[i]] = legendObject[Object.keys(legendObject)[i]];
+              } else{
+
+                for(var x=0;x<Object.keys(newLegendObject).length;x++){
+                  Object.keys(legendObject).forEach(function(val){
+                    if(newLegendObject[Object.keys(newLegendObject)[x]].icon.indexOf(legendObject[val].icon)==-1){
+                      newLegendObject[Object.keys(legendObject)[i]] = legendObject[Object.keys(legendObject)[i]];
+                    }
+                  });
+                }
+              }
+
+            }
+          }
+
+
+
+          $scope.newLegendObject = newLegendObject;
 
           // broadcast legend width for resize
           if($stateParams.theme == 'disasterType'){
@@ -806,6 +841,35 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       vtf.removeLabel();
 
     });
+
+  }
+
+
+  var opacity = 0.5;
+  $scope.UNOCHAIconLookup = {
+
+    "Meteorological - Tropical Cyclone": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0," + opacity + ")"},
+    "Floods": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + opacity + ")"},
+    "Tsunami, Volcano": {icon: "icon-disaster_tsunami", color: "rgba(255,0,0," + opacity + ")"},
+    "Floods, Storm": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + opacity + ")"},
+    "Tsunami": {icon: "icon-disaster_tsunami", color: "rgba(255,0,0," + opacity + ")"},
+    "Famine / Food Insecurity": {icon: "icon-cluster_food_security", color: "rgba(255,0,0," + opacity + ")"},
+    "Drought": {icon: "icon-disaster_drought", color: "rgba(255,0,0," + opacity + ")"},
+    "Meteorological - Tropical Cyclone;Hydrological - Floods": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0," + opacity + ")"},
+    "Food Insecurity": {icon: "icon-cluster_food_security", color: "rgba(255,0,0," + opacity + ")"},
+    "Civil Unrest": {icon: "icon-people_rebel", color: "rgba(255,0,0," + opacity + ")"},
+    "Floods, Tropical Storm": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + opacity + ")"},
+    "Complex Emergency": {icon: "icon-crisis_conflict", color: "rgba(255,0,0," + opacity + ")"},
+    "Epidemic": {icon: "icon-disaster_epidemic", color: "rgba(255,0,0," + opacity + ")"},
+    "Population Movement": {icon: "icon-crisis_population_displacement", color: "rgba(255,0,0," + opacity + ")"},
+    "Climatological - Drought": {icon: "icon-disaster_drought", color: "rgba(255,0,0," + opacity + ")"},
+    "Winter Storm": {icon: "icon-disaster_snowfall", color: "rgba(255,0,0," + opacity + ")"},
+    "Tropical Storm": {icon: "icon-disaster_heavy_rain", color: "rgba(255,0,0," + opacity + ")"},
+    "Earthquake, Tsunami": {icon: "icon-disaster_earthquake", color: "rgba(255,0,0," + opacity + ")"},
+    "Hydrological - Floods": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + opacity + ")"},
+    "Landslide;Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0," + opacity + ")"},
+    "Earthquake": {icon: "icon-disaster_earthquake", color: "rgba(255,0,0," + opacity + ")"},
+    "Landslide;Hydrological - Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0," + opacity + ")"}
 
   }
 

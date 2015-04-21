@@ -584,7 +584,7 @@
               <div ng-show="navTab=='disasterType'" ng-class="{active:navTab=='disasterType'}">
                 <div class="disaster-padding">
 
-                  <input type="text" class="form-control" placeholder="Enter search term" ng-model="searchText">
+                  <input type="text" class="disaster-search form-control" placeholder="Enter search term" ng-model="searchText">
 
                   <div ng-hide="!searchText.length || selected" class="searchLayerContainer disaster-searchresult">
                     <div class="item" ng-repeat="val in searchList | filter:searchText">
@@ -603,9 +603,14 @@
                   <div class="show-categories" ng-class="{'on': $stateParams.category == key}">
                     <div ng-repeat="types in val">
                       <label class="checkbox label-disaster">
+
                         <div class="type">
                           <input class="disaster-checkbox" type="checkbox" ng-model="types.checked"
                                  ng-change="disasterTypesFilter()">
+                        </div>
+
+                        <div ng-show="UNOCHAIconLookup[types.name]" class="disaster-icons" id="disaster-type-icons">
+                          <i class="un {{UNOCHAIconLookup[types.name].icon}}"></i>
                         </div>
 
                         <i
@@ -1247,7 +1252,7 @@
             </div>
             <!-- Legend dropdown menu start-->
             <ul id="LegendMenu" class="dropdown-menu-legend" ng-class="{on:isParam('legend-panel')}">
-              <div class="ind-legend" ng-repeat="layerClass in legendObject">
+              <div class="ind-legend" ng-repeat="layerClass in newLegendObject">
                 <!-- Legend Color swatch for PBF THEME Layer.  Set in Config/VectorTiles.js -->
                 <div ng-show="$stateParams.themelabels == 'false'" class="themelabel-off legend-swatch"
                      style="background-color: {{layerClass.color}}"></div>

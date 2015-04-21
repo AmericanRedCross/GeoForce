@@ -96,7 +96,6 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
         $state.go(state, $stateParams);
 
       }
-
       //else {
       //  //delete $stateParams.filters;
       //  ////$stateParams.filters = null; //clear theme filters
@@ -257,9 +256,15 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       if (disaster.checked) {
         if (first) {
           $scope.sectorClause = "disaster_type__c LIKE '%" + disaster.name + "%' ";
+          if($scope.statusClause !== null){
+            $scope.sectorClause = $scope.sectorClause + 'AND ' + "(" + $scope.statusClause + ")";
+          }
           first = false;
         } else {
           $scope.sectorClause += "OR disaster_type__c LIKE '%" + disaster.name + "%' ";
+          if($scope.statusClause !== null){
+            $scope.sectorClause = $scope.sectorClause + 'AND ' + $scope.statusClause;
+          }
         }
       }
     }
@@ -280,11 +285,14 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     for (var i = 0, len = disasters.length; i < len; ++i) {
       disasters[i].checked = false;
     }
+
+    for (var i=0;i<$scope.status.length;i++){
+      $scope.status[i].checked = false;
+    }
+
+    $scope.statusClause = null;
     $scope.sectorClause = null;
     $scope.composeWhereClause();
-
-    $stateParams.category = null;
-    $stateParams.filters = null;
   };
 
   $scope.clearDisasterFilter = function () {
@@ -312,7 +320,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       var stat = status[i];
       if (stat.checked) {
         if (first) {
-          $scope.statusClause = "iroc_status__c LIKE '%" + stat.name + "%' ";
+          $scope.statusClause = "iroc_status__c LIKE '%" + stat.name + "%'";
           first = false;
         } else {
           $scope.statusClause += "OR iroc_status__c LIKE '%" + stat.name + "%' ";
@@ -453,7 +461,16 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
   $scope.composeWhereClause = function () {
     $scope.whereClause = null;
-    var parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause];
+    var parts = [];
+    if($stateParams.theme.indexOf('disaster')!==-1){
+      if($scope.sectorClause == null){
+        parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause];
+      }else {
+        parts = [$scope.sectorClause, $scope.dateClause, $scope.budgetClause];
+      }
+    } else {
+      parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause];
+    }
     var first = true;
     for (var i = 0, len = parts.length; i < len; ++i) {
       var part = parts[i];
@@ -534,7 +551,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $scope.$on('route-update', function() {
 
     //Set default filter status to Monitoring and Active on page load
-    if($stateParams.filters == null && $stateParams.filters !== undefined){
+    if(($stateParams.filters == null || $stateParams.filters == 'null') && $stateParams.filters !== undefined){
       if($stateParams.theme.indexOf('disaster')!== -1){
         $scope.statusFilter();
       }
@@ -542,5 +559,108 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
   });
 
+  var opacity = "0.5";
+  $scope.UNOCHAIconLookup={
+    "Meteorological - Tropical Cyclone": {
+      icon: "icon-disaster_cyclone",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Floods": {
+      icon: "icon-disaster_flood",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Volcano": {
+      icon: "icon-disaster_tsunami",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Meteorological - Local Storm": {
+      icon: "icon-disaster_flood",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Tsunami": {
+      icon: "icon-disaster_tsunami",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Famine / Food Insecurity": {
+      icon: "icon-cluster_food_security",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Drought": {
+      icon: "icon-disaster_drought",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Hydrological - Floods": {
+      icon: "icon-disaster_cyclone",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Meteorological - Tropical Cyclone":{
+      icon: "icon-disaster_cyclone",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Food Insecurity": {
+      icon: "icon-cluster_food_security",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Civil Unrest": {
+      icon: "icon-people_rebel",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Floods, Tropical Storm": {
+      icon: "icon-disaster_flood",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Complex Emergency": {
+      icon: "icon-crisis_conflict",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Conflict": {
+      icon: "icon-crisis_conflict",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Epidemic": {
+      icon: "icon-disaster_epidemic",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Population Movement": {
+      icon: "icon-crisis_population_displacement",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Climatological - Drought": {
+      icon: "icon-disaster_drought",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Winter Storm": {
+      icon: "icon-disaster_snowfall",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Tropical Storm": {
+      icon: "icon-disaster_heavy_rain",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Earthquake, Tsunami": {
+      icon: "icon-disaster_earthquake",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Hydrological - Floods": {
+      icon: "icon-disaster_flood",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Hydrological - Landslide": {
+      icon: "icon-disaster_landslide",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Earthquake": {
+      icon: "icon-disaster_earthquake",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Landslide": {
+      icon: "icon-disaster_landslide",
+      color: "rgba(255,0,0,"+opacity+")"
+    },
+    "Avalanche": {
+      icon: "icon-disaster_snow_avalanche",
+      color: "rgba(255,0,0,"+opacity+")"
+    }
+  };
 
 });
