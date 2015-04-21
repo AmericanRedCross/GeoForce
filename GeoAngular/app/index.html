@@ -94,7 +94,7 @@
       <button type="button" class="btn btn-default" ng-mouseenter="isFiltersActive = isNotParam('filters-panel')"
               ng-mouseleave="isFiltersActive=false"
               ng-click="toggleParam('filters-panel')"
-              ng-class="{on: isParam('filters-panel'), disabled: ((params.theme !== 'project' && params.theme !== 'disaster' && params.theme !== 'disasterType') && params.theme !== null) }">
+              ng-class="{on: isParam('filters-panel'), disabled: (params.theme == 'none' || params.theme == null) }">
         <i class="icon-4_filters"></i>
 
         <div class="icon_title">Filters</div>
@@ -433,7 +433,7 @@
       <div ng-controller="FiltersCtrl" ng-class="{on: isParam('filters-panel')}"
            class="navpanel container filters-container">
 
-        <div ng-show="$stateParams.theme == 'project'">
+        <div ng-show="$stateParams.theme == 'project' || $stateParams.theme == 'projectRisk' || $stateParams.theme == 'projectHealth'">
           <div class="row">
             <div class="side-view-close btn btn-lg btn-danger" ng-click="toggleParam('filters-panel')"><span
               class="glyphicon glyphicon-chevron-left"></span>

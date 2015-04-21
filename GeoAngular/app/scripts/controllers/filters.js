@@ -73,7 +73,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     if ($stateParams.theme == 'disaster' || $stateParams.theme == 'disasterType') {
       $scope.navTab = 'disasterType';
     };
-    if ($stateParams.theme == 'project') {
+    if ($stateParams.theme == 'project' || $stateParams.theme == 'projectHealth' || $stateParams.theme == 'projectRisk') {
       $scope.navTab = 'sectors';
     };
 

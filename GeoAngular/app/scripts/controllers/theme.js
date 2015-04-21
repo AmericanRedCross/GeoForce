@@ -16,48 +16,34 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
 
   $scope.project = function () {
     $scope.themeName = themeNameHash.project;
-    //ensureThemeCount();
     $scope.setThemeQueryParam('project');
   };
 
   $scope.disaster = function () {
     $scope.themeName = themeNameHash.disaster;
-    //ensureThemeCount();
     $scope.setThemeQueryParam('disaster');
   };
 
   $scope.projectRisk = function () {
       $scope.themeName = themeNameHash.projectRisk;
-      //ensureThemeCount();
       $scope.setThemeQueryParam('projectRisk');
   };
 
   $scope.projectHealth = function () {
       $scope.themeName = themeNameHash.projectHealth;
-      //ensureThemeCount();
       $scope.setThemeQueryParam('projectHealth');
   };
 
   $scope.disasterType = function () {
     $scope.themeName = themeNameHash.disasterType;
-    //ensureThemeCount();
     $scope.setThemeQueryParam('disasterType');
   };
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
-    //var layersArr = $.grep($stateParams.layers.split(','), function(routeLayer){
-    //  return routeLayer !== 'gadm0' && routeLayer !== 'theme';
-    //});
-    //$stateParams.layers = layersArr.join(',');
     $scope.setThemeQueryParam('none');
   };
 
-  function ensureThemeCount() {
-    if ($stateParams.layers.indexOf('gadm0') === -1 && $stateParams.layers.indexOf('theme') === -1) {
-      $stateParams.layers += ',gadm0';
-    }
-  }
 
   $scope.closePanels = function (){
     for (var param in $stateParams) {
@@ -98,8 +84,8 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
       $stateParams.layers = layersArray.join(",");
     }
 
-    //close filters panel if theme is Project Risk/Health or None
-    if((($stateParams.theme !== 'project' && $stateParams.theme !== 'disaster') && $stateParams.theme !== null)){
+    //close filters panel if theme is  None
+    if($stateParams.theme == 'none' || $stateParams.theme !== null) {
       $scope.closeParam('filters-panel');
     }
 
