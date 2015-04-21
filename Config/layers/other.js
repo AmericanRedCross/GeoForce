@@ -13,18 +13,6 @@ module.exports = {
     url: 'http://{s}.tile.openweathermap.org/map/snow/{z}/{x}/{y}.png'
   },
 
-  airtemp: {
-    name: 'NOAA Air Temperature',
-    type: 'wms',
-    theme: 'other',
-    url: 'http://nowcoast.noaa.gov/wms/com.esri.wms.Esrimap/obs',
-    transparent: true,      // default true
-    format: 'image/png',    // default 'image/png'
-    layers: 'OBS_MET_TEMP',
-    properties: {
-      legend: ""
-    }
-  },
 
   pressurecontour: {
     name: 'Pressure Contour',

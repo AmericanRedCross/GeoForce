@@ -127,10 +127,13 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     var layer = LayerConfig[k];
 
     // We don't want to show layers that are basemaps, and we don't want to show the find func.
-      if (  typeof layer === 'function'
+    if (typeof layer === 'function'
       || k === 'basemaps'
       || k === 'bbox'
-      || layer.type === 'basemap' ) {
+      || k === 'themeLayers'
+      || k === 'countryextents'
+      || k === 'arcregionextents'
+      || layer.type === 'basemap') {
 
       continue;
     }
