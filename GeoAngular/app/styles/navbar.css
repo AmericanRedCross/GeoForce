@@ -11,6 +11,15 @@
     margin-top: 9px;
 }
 
+#ARCLogo{
+  display:block;
+  height: 48px;
+}
+
+#ARCLogo:hover{
+  cursor:pointer;
+}
+
 
 /*End Logo*/
 
@@ -18,9 +27,18 @@
 #NavBar{
     background: url(../images/navbar_stripes.png) repeat-y;
     overflow: visible;
-    z-index: 1 !important;
+    z-index: 2005 !important;
     box-shadow: 1px 0 5px #777;
     min-height: 532px;
+    width: 59px;
+    height: 100%;
+    position: absolute;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
 }
 
 .NavButtonGroup, .NavFlyoutGroup{

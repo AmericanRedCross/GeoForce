@@ -11,7 +11,7 @@
 }
 
 .side-view .navpanel.on {
-    left: 0px;
+    left: 59px;
     -webkit-transition: all .5s ease;
     -moz-transition: all .5s ease;
     -ms-transition: all .5s ease;

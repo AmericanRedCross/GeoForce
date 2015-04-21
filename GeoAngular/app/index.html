@@ -47,6 +47,8 @@
   <link rel="stylesheet" href="styles/search.css">
   <link rel="stylesheet" href="styles/label.css">
   <link rel="stylesheet" href="styles/blevels.css">
+  <link rel="stylesheet" href="styles/fullscreen.css">
+
   <!-- endbuild -->
 
   <link rel="stylesheet" href="lib/featurelabel/featurelabel.css">
@@ -57,7 +59,7 @@
     rel='stylesheet' type='text/css'>
 
 </head>
-<body ng-app="GeoAngular">
+<body ng-app="GeoAngular" ng-class="{fullscreen: $stateParams.fullscreen == 'true'}">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
@@ -68,10 +70,10 @@
 <!-- AppContainer is the wrapper for the jQuery Layout plugin. -->
 <div id="AppContainer">
   <!-- NavBar is the vertical & left-hand (west) panel controlled by the jQuery Layout plugin. -->
-  <div id="NavBar" class="ui-layout-west" ng-controller="NavBarCtrl">
-    <a href="/mapfolio/#/default">
-      <div id="ARCLogo"></div>
-    </a>
+  <div id="NavBar"  ng-controller="NavBarCtrl">
+
+    <span ng-click="toggleFullScreen()" id="ARCLogo" tooltip="Toggle Full Screen Mode" tooltip-placement="right"></span>
+
 
     <div class="NavButtonGroup btn-group">
       <button type="button" class="btn btn-default" ng-mouseenter="isStoriesActive = isNotParam('stories')"
@@ -156,7 +158,7 @@
   </div>
   <!-- MapCtrl is the center (center) panel controlled by the jQuery Layout plugin, and is also where the map lives. -->
 
-  <div ng-controller="MapCtrl" id="MapCtrl" class="ui-layout-center">
+  <div ng-controller="MapCtrl" id="MapCtrl">
 
     <div ui-view="leftmenu"></div>
 
@@ -796,7 +798,7 @@
     <div class="windowEffects" ng-class="{grayout: isParam('zoom-extent')}"></div>
     <!-- Use this window to gray out the map -->
 
-    <div id="map" class="ui-layout-center"></div>
+    <div id="map"></div>
 
     <!-- Upper Right Toolbar in Map -->
     <div id="MapUpperRightToolbarWrapper" ng-cloak>
@@ -892,10 +894,7 @@
       </div>
     </div>
 
-    <!-- Bottom Right Theme Selector -->
-    <div ui-view="theme"></div>
 
-    <div ui-view="blevels"></div>
 
     <!--<div ui-view="details-panel"></div>-->
 
@@ -1154,7 +1153,7 @@
     <div ui-view="details"></div>
 
 
-    <div ng-controller="LegendCtrl" class="ui-layout-south" style="background-color: #43484a;">
+    <div ng-controller="LegendCtrl" id="LegendCtrl">
       <!--<div class="list-group legend-list">-->
       <!--<div class="list-group-item ng-scope">-->
       <!--<div class="legendTitle ng-binding">Legend:</div>-->
@@ -1274,10 +1273,15 @@
 
         </div>
       </div>
+
+      <!-- Bottom Right Theme Selector -->
+      <div ui-view="theme"></div>
+
+      <div ui-view="blevels"></div>
     </div>
   </div>
-  <div ui-view="upload"></div>
-  <div ui-view="export"></div>
+  <div ui-view="upload" id="uploadView"></div>
+  <div ui-view="export" id="exportView"></div>
 </div>
 
 <!--[if lt IE 9]>
@@ -1313,7 +1317,6 @@
 <script src="lib/d3.min.js"></script>
 <script src="lib/togeojson.js"></script>
 <script src="lib/mapbox.standalone.uncompressed.js"></script>
-<script src="lib/jquery.layout-latest.min.js"></script>
 <script src="lib/ui-bootstrap-no-dropdown-tpls-0.11.0.js"></script>
 <script src="lib/jquery.csv-0.71.min.js"></script>
 <script src="scripts/global.js"></script>

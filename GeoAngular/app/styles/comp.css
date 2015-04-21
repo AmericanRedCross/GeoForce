@@ -3,6 +3,7 @@ html, body {
   height: 100%;
   width: 100%;
   min-width: 960px;
+  overflow: hidden;
 }
 
 /*
@@ -21,6 +22,31 @@ a {
 #map {
   width: 100%;
   height: 100%;
+}
+
+#MapCtrl{
+  margin-left: 59px;
+  height: 100%;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
+}
+
+#LegendCtrl{
+  height: 62px;
+  background-color: #43484a;
+  position: absolute;
+  bottom: 0px;
+  width: calc(100% - 59px);
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
 }
 
 #AppContainer {
@@ -75,6 +101,12 @@ a {
   top: 0;
   right: 0;
   z-index: 2002;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
 }
 
 #MapUpperRightToolbarWrapper > div {

@@ -1,0 +1,84 @@
+/*
+Fullscreen mode CSS
+*/
+
+.fullscreen #NavBar{
+  height: 63px;
+  min-height: 63px;
+  position: absolute;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
+}
+
+.fullscreen #NavBar > div{
+  display:none;
+}
+
+.fullscreen #MapCtrl{
+  margin-left: 0px;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
+}
+
+.fullscreen #LegendCtrl{
+  bottom: -62px;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
+}
+
+/*
+Fly it out to the right
+*/
+.fullscreen #MapUpperRightToolbarWrapper{
+   right: -2000px;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
+}
+
+
+.fullscreen #DetailsWrapper{
+  right: -400px;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
+}
+
+
+.fullscreen .leaflet-control-zoom{
+   display:none;
+}
+
+.fullscreen .side-view {
+   left: -800px;
+}
+
+.fullscreen #CountrySelectorPanelWrapper{
+  top: -1000px;
+}
+
+.fullscreen .grayout, .fullscreen #uploadView, .fullscreen #exportView, .fullscreen .modal-backdrop{
+  display:none;
+}
+
+.fullscreen #SearchPanelWrapper{
+  top: -1000px;
+}

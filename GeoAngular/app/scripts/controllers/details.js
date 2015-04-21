@@ -622,10 +622,11 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     $('#DetailsPanel .InnerContainer ').css("max-height", height - innerTop - bottomHeight);
   };
 
-	//Connect the layout onresize end event
-	window.layout.panes.center.bind("layoutpaneonresize_end", $scope.resizeDetailsPanel);
+	//Connect the window onresize end event
+  window.addEventListener("resize", $scope.resizeDetailsPanel);
 
-	//For Init.
+
+  //For Init.
 	$scope.resizeDetailsPanel();
 
   $scope.save = function (data, name) {

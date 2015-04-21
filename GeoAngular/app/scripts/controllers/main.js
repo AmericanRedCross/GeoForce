@@ -11,6 +11,7 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   var filtersStr = $stateParams.filters;
   var categoryStr = $stateParams.category; // layer category open
   var themeLabelStr = $stateParams.themelabels; // themelabels (bubbles)
+  var fullscreen = $stateParams.fullscreen; //whether or not the app is in fullscreen mode
 
   var levelStr = $stateParams.level;
   var zoomStr = $stateParams.zoom;
@@ -55,6 +56,12 @@ module.exports = angular.module('GeoAngular').controller('MainCtrl', function($s
   if(window.themeLabelStr != themeLabelStr) {
     window.themeLabelStr = themeLabelStr;
     $rootScope.$broadcast('themelabels-update', themeLabelStr);
+  }
+
+  // if the fullscreen attribute has changed broadcast fullscreen has changed
+  if(window.fullscreen != fullscreen) {
+    window.fullscreen = fullscreen;
+    $rootScope.$broadcast('fullscreen-changed', fullscreen);
   }
 
 });

@@ -312,9 +312,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   //Connect the layout onresize end event
   try {
-    window.layout.panes.center.bind("layoutpaneonresize_end", function () {
-      map.invalidateSize();
-    });
+    window.addEventListener("resize", map.invalidateSize);
   } catch (e) {
     //Nothing
   }
