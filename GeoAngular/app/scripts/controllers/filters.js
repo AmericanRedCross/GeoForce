@@ -534,7 +534,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $scope.$on('route-update', function() {
 
     //Set default filter status to Monitoring and Active on page load
-    if($stateParams.filters == null && $stateParams.filters !== undefined && $stateParams.theme.indexOf('disaster')!== -1){
+    if($stateParams.filters !== undefined && $stateParams.theme.indexOf('disaster')!== -1){
         $scope.statusFilter();
     }
 
