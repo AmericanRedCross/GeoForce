@@ -637,8 +637,8 @@
 
               <div ng-show="navTab==='status'" ng-class="{active: navTab==='status'}" >
                 <div class="disaster-padding">
-                <label ng-repeat="stat in status" class="checkbox">
-                  <input class="disaster-checkbox" type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
+                <label ng-repeat="stat in disasterStatus" class="checkbox">
+                  <input class="disaster-checkbox" type="checkbox" ng-model="stat.checked" ng-change="disasterStatusFilter()">
                   <span class="sector-name" >{{stat.name}}</span>
                 </label>
                 </div>
@@ -1048,7 +1048,7 @@
                 There are currently <b>no indicators</b> for this project...
               </p>
               <ul ng-show="details.indicators !== 'none'">
-                <li ng-repeat="(_key, _value) in details.indicators">
+                <li ng-repeat="(_key, _value) in details.indicators track by $index">
                   <a ng-show="!details.showIndicators" ng-click="showIndicators(details, _value)">{{_value.name}}</a>
 
                   <div ng-show="_value.showIndicators">

@@ -123,7 +123,7 @@ function createProjectFilterCheckboxes() {
 function createDisasterFilterCheckboxes() {
   var checkboxes = {
     disasterTypes: [],
-    status: []
+    disasterStatus: []
   };
 
   var colors = ['#e65552',	'#f18432',	'#f4d746',	'#6d7c58',	'#b9c03e',	'#0f4e60',	'#01aa95',	'#a1b1cc',	'#ff859a',	'#b3b091',	'#8d2725',	'#a37654',	'#baa749',	'#75bb18',	'#dddfb3',	'#39b4d7',	'#87d8ce',	'#4876c3',	'#db1739',	'#8d8105',	'#d08484',	'#fdd5b7',	'#f4f7d4',	'#d8efb9',	'#eef758',	'#d6f4fd',	'#abbebc',	'#847cd1',	'#ebb8d4',	'#e9ce84',	'#d0a6a6',	'#615549',	'#99692b',	'#adbf95',	'#15e5c5',	'#5bb7d2',	'#4a8c84',	'#d18cfd',	'#fc173e',	'#fbf3a5',	'#9b5c5c',	'#fbebde',	'#ddb903',	'#cbcbcb',	'#464646',	'#287084',	'#b2f7ee',	'#9e9e9e',	'#eeeeee',	'#ae1fa9']
@@ -133,7 +133,7 @@ function createDisasterFilterCheckboxes() {
     var field = fields[key];
     if (field.name === "IROC_Status__c") {
       for (var key2 in field.picklistValues) {
-        checkboxes.status.push({name: field.picklistValues[key2].value, checked: false});
+        checkboxes.disasterStatus.push({name: field.picklistValues[key2].value, checked: false});
       }
       continue;
     }
