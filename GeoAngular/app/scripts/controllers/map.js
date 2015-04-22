@@ -4,7 +4,7 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($scope, $rootScope, $state, $stateParams, LayerConfig, VectorProvider, $http, $sce) {
-  var map = L.map('map');
+  var map = L.map('map', {worldCopyJump: true});
   var firstLoad = true;
 
   $scope.params = $stateParams;
