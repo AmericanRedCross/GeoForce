@@ -450,6 +450,7 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs">
               <li class="active"><a class="a-nav-tab" ng-click="navTab='sectors'" data-toggle="tab">Sectors</a></li>
+              <li><a class="a-nav-tab" ng-click="navTab='bunits'" data-toggle="tab">Business Units</a></li>
               <li><a class="a-nav-tab" ng-click="navTab='date'" data-toggle="tab">Date</a></li>
               <li><a class="a-nav-tab" ng-click="navTab='status'" data-toggle="tab">Status</a></li>
               <li><a class="a-nav-tab" ng-click="navTab='budget'" data-toggle="tab">Budget</a></li>
@@ -472,6 +473,18 @@
                 </div>
                 <br/>
                 <br/>
+              </div>
+              <div ng-class="{active: navTab==='bunits'}" class="tab-pane" id="bunits-filter">
+                <div ng-repeat="unit in BusinessUnitTypes">
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="unit.checked" ng-change="businessUnitsFilter()">
+                    <i
+                      class="icon-{{unit.label.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i>
+                    <span class="sector-name">{{unit.label}}</span>
+                  </label>
+                  <hr/>
+                </div>
+
               </div>
               <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
                 <a ng-click="clearDateFilter()">Clear All Date Filters</a>

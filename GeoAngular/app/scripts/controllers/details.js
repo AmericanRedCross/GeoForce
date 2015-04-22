@@ -11,6 +11,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   $http.get('succubus_gitignore/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
     $scope.sfFieldHash = sfFieldHash;
+    $scope.ProjectBusinessUnit = sfFieldHash["Project__c"]["business_unit__c"]["picklistValues"];
   });
 
   $scope.showRfa = function (details, value) {
