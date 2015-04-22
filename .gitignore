@@ -63,6 +63,8 @@ Succubus/meta-data/*
 
 GeoAngular/app/succubus_gitignore/sf-object-field-hash.json
 GeoAngular/app/succubus_gitignore/sf-project-filter-checkboxes.json
+GeoAngular/app/succubus_gitignore/sf-disaster-filter-checkboxes.json
+
 Succubus/meta-data/sf-object-field-hash.json
 Succubus/meta-data/sf-objects.json
 Succubus/meta-data/sf-project-filter-checkboxes.json
