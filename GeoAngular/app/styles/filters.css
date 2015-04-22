@@ -2,6 +2,10 @@
     width: 390px;
 }
 
+.filters-container.project {
+  width: 466px;
+}
+
 .custom-filter-submit {
     margin: 7px;
 }
