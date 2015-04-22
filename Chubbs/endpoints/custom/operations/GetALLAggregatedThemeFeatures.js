@@ -24,6 +24,9 @@ var theme_details = {
     disasterType: ["array_agg(disaster_type__c) as disaster_type__c"]
 };
 
+//Push disaster status SQL into the disasterType SQL so we can color code the regions appropriately
+theme_details.disasterType.push(theme_details.disaster[0]);
+
 operation.outputImage = false;
 
 operation.execute = flow.define(

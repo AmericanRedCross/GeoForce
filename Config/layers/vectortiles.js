@@ -384,15 +384,43 @@ function getThemeStyle(vtf, $rootScope){
       //Keep track of the property name for the sake of legend display
       style.legendLabel = ecosProperties.disaster_type__c;
 
-      //Look up the color in the dictionary
-      style.color = UNOCHAIconLookup[ecosProperties.disaster_type__c[0]].color;
-      //Use the same outline
-      style.outline = {
-        color: ecos_border_color,
-        size: ecos_border_thickness
+      //Use the status to color the regions by status.
+      if (ecosProperties.iroc_status__c) {
+
+        switch (ecosProperties.iroc_status__c.toLowerCase()) {
+          case "active":
+            style.color = 'rgba(204,0,51,' + opacity + ')';
+            style.outline = {
+              color: ecos_border_color,
+              size: ecos_border_thickness
+            }
+            break;
+          case "monitoring":
+            style.color = 'rgba(204,153,0,' + opacity + ')';
+            style.outline = {
+              color: ecos_border_color,
+              size: ecos_border_thickness
+            }
+            break;
+          case "inactive":
+            style.color = 'rgba(255,255,255,' + opacity + ')';
+            style.outline = {
+              color: ecos_border_color,
+              size: ecos_border_thickness
+            }
+            break;
+        }
       }
+      else{
+        //Look up the color in the dictionary, if status property is not around
+        style.color = UNOCHAIconLookup[ecosProperties.disaster_type__c[0]].color;
 
-
+        //Use the same outline
+        style.outline = {
+          color: ecos_border_color,
+          size: ecos_border_thickness
+        }
+      }
 
       if(checked == 'true'){
         //Disaster Type should use OCHA icons
@@ -688,8 +716,14 @@ function buildDisasterTypeLabel(disasterType, color) {
   if (disasterType) {
 
     backColor = color || "rgba(204,0,51,0.4)";
-    labelColor = "#fff";
 
+    if(color.indexOf("255,255,255") > -1){
+      //if the label is white, make the text black
+      labelColor = "#000";
+    }
+    else{
+      labelColor = "#fff";
+    }
   }
 
   var icon = UNOCHAIconLookup[disasterType].icon || 'icon-other_cluster_other';
