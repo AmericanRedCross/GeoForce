@@ -432,7 +432,7 @@
       <!--End Layers Panel-->
 
       <!--Filters Panel-->
-      <div ng-controller="FiltersCtrl" ng-class="{on: isParam('filters-panel')}"
+      <div ng-controller="FiltersCtrl" ng-class="{on: isParam('filters-panel'),project:$stateParams.theme.indexOf('project')!==-1}"
            class="navpanel container filters-container">
 
         <div ng-show="$stateParams.theme == 'project' || $stateParams.theme == 'projectRisk' || $stateParams.theme == 'projectHealth'">
