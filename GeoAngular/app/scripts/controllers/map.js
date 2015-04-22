@@ -18,6 +18,7 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   };
 
   var lastLayersStr = '';
+  var layerDifference; //an object that stores whether or not new layers are added, or have been removed, and what their names are
   var lastBasemapUrl = null;
   var basemapLayer = null;
   var layersStr = null;
@@ -58,10 +59,24 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
     }
 
-
+    //Layers have changed.  Do something about it.
     if (lastLayersStr !== layersStr) {
 
-      drawOverlays();
+      //See if new layers are added or if layers need to be removed.
+      var lastLayersArray = lastLayersStr.split(',');
+      var currentLayersArray = layersStr.split(',');
+
+      if(lastLayersArray.length > currentLayersArray.length){
+        //One or more layers has been removed.
+        layerDifference = { type: 'removed', list: $(lastLayersArray).not(currentLayersArray).get()};
+      }
+      else{
+        //One or more layers has been added
+        layerDifference = { type: 'added', list: $(currentLayersArray).not(lastLayersArray).get()};
+
+      }
+
+      drawOverlays(layerDifference);
 
       $scope.defaults = {
         scrollWheelZoom: true
@@ -318,7 +333,8 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   }
 
 
-  function drawOverlays() {
+  //Difference object tells us whether new items have been added, or if layers have been removed.
+  function drawOverlays(differenceObject) {
 
     for (var i = 0, len = overlayNames.length; i < len; ++i) {
       var overlayName = overlayNames[i];
@@ -350,8 +366,6 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
           console.log(overlayName + " is not a layer specified in layerConfig.js");
           continue;
         }
-
-
       }
 
       // try for WMS (not a vector layer)
@@ -457,14 +471,19 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
       }
     }
 
-    // there are more overlays left in the list, less layers specified in route
-    // we need to remove those too.
-    for (var len2 = overlays.length; i < len2; ++i) {
-      if (overlays[i] && overlays[i].destroyResource) {
-        overlays[i].destroyResource();
-        map.removeLayer(overlays[i]);
-        delete overlays_dictionary[overlays[i].overlayName]; //delete dictionary reference for faster fetching in UpdateECOSData
-        delete overlays[i];
+
+    if(differenceObject && differenceObject.type == 'removed'){
+      // there are more overlays left in the list, less layers specified in route
+      // we need to remove those too.
+      var i = 0;
+      for (var len2 = overlays.length; i < len2; ++i) {
+        //If the overlay name exists in the list of layers to be removed, then remove it.
+        if (overlays[i] && overlays[i].overlayName && differenceObject.list.indexOf(overlays[i].overlayName) > -1) {
+          if(overlays[i].destroyResource) overlays[i].destroyResource();
+          map.removeLayer(overlays[i]);
+          delete overlays_dictionary[overlays[i].overlayName]; //delete dictionary reference for faster fetching in UpdateECOSData
+          delete overlays[i];
+        }
       }
     }
   }

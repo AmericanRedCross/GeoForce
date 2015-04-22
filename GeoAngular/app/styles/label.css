@@ -177,25 +177,25 @@
 }
 
 /*  force the size and offset here */
-.small-label .leaflet-marker-icon{
-   height: 16px !important;
-   width: 16px !important;
-   margin-top: -8px !important;
-   margin-left: -8px !important;
-}
+/*.small-label .leaflet-marker-icon{*/
+   /*height: 16px !important;*/
+   /*width: 16px !important;*/
+   /*margin-top: -8px !important;*/
+   /*margin-left: -8px !important;*/
+/*}*/
 
 /*  force the size and offset here */
-.medium-label .leaflet-marker-icon{
-  height: 22px !important;
-  width: 22px !important;
-  margin-top: -11px  !important;
-  margin-left: -11px !important;
-}
+/*.medium-label .leaflet-marker-icon{*/
+  /*height: 22px !important;*/
+  /*width: 22px !important;*/
+  /*margin-top: -11px  !important;*/
+  /*margin-left: -11px !important;*/
+/*}*/
 
 /*  force the size and offset here */
-.large-label .leaflet-marker-icon{
-  height: 42px !important;
-  width: 42px !important;
-  margin-top: -21px !important;
-  margin-left: -21px !important;
-}
+/*.large-label .leaflet-marker-icon{*/
+  /*height: 42px !important;*/
+  /*width: 42px !important;*/
+  /*margin-top: -21px !important;*/
+  /*margin-left: -21px !important;*/
+/*}*/

@@ -1975,7 +1975,7 @@ URI.prototype.setPath = function (newPath) {
 URI.prototype.setRawPath = function (newPath) {
   if (newPath) {
     newPath = String(newPath);
-    this.path_ = 
+    this.path_ =
       // Paths must start with '/' unless this is a path-relative URL.
       (!this.domain_ || /^\//.test(newPath)) ? newPath : '/' + newPath;
   } else {
@@ -5498,7 +5498,7 @@ var defaults = {
     stroke: '#555555',
     'stroke-width': 2,
     'stroke-opacity': 1,
-    fill: '#555555',
+    fill: '#ee0000',
     'fill-opacity': 0.5
 };
 
