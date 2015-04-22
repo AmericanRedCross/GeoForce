@@ -12,6 +12,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $scope.selected = false;
   $scope.disasterTypes = [];
   $scope.status = [];
+  $scope.businessUnits = [];
   $scope.disasterTypescategory = {};
   debug.budget = $scope.budget = {
     slider: [2000, 8000],
@@ -26,7 +27,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $http.get('succubus_gitignore/sf-project-filter-checkboxes.json', {cache: true}).success(function (data, status) {
     angular.extend($scope, data);
     debug.filtersScope = $scope;
-  }).error(function () {
+9  }).error(function () {
     console.error("Unable to fetch project filter meta data");
   });
 
@@ -36,7 +37,15 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.categorizeDisasterFilters();
     $scope.defaultStatus(); // check Monitoring and Active in Status object
   }).error(function () {
-    console.error("Unable to fetch project filter meta data");
+    console.error("Unable to fetch disaster filter meta data");
+  });
+
+  $http.get('succubus_gitignore/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
+    $scope.sfFieldHash = sfFieldHash;
+    $scope.businessUnits = sfFieldHash["Project__c"]["business_unit__c"]["picklistValues"];
+    getBusinessUnitTypes();
+  }).error(function(){
+    console.error("Unable to fetch object field meta data");
   });
 
   // take array of disaster types and create a new object that separates by category
@@ -105,6 +114,18 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
     }
   });
+
+  var getBusinessUnitTypes = function () {
+    var BusinessUnitTypes = [];
+
+    $scope.businessUnits.forEach(function(val,idx){
+      BusinessUnitTypes.push(val);
+      BusinessUnitTypes[idx].checked = false;
+    });
+    $scope.BusinessUnitTypes = BusinessUnitTypes;
+
+    console.log(BusinessUnitTypes);
+  };
 
   var decodeDisasterFiltersURL = function () {
     var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
@@ -246,6 +267,25 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     }
     $scope.composeWhereClause();
   };
+
+  $scope.businessUnitsFilter = function () {
+    var bunits = $scope.BusinessUnitTypes;
+    $scope.businessUnitsClause = null;
+    var first = true;
+    for (var i = 0, len = bunits.length; i < len; ++i) {
+      var bunit = bunits[i];
+      if (bunit.checked) {
+        if (first) {
+          $scope.businessUnitsClause = "business_unit__c LIKE '%" + bunit.label + "%' ";
+          first = false;
+        } else {
+          $scope.businessUnitsClause += "OR business_unit__c LIKE '%" + bunit.label + "%' ";
+        }
+      }
+    }
+    $scope.composeWhereClause();
+  };
+
 
   $scope.disasterTypesFilter = function () {
     var disasters = $scope.disasterTypes;
@@ -469,7 +509,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
         parts = [$scope.sectorClause, $scope.dateClause, $scope.budgetClause];
       }
     } else {
-      parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause];
+      parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause, $scope.businessUnitsClause];
     }
     var first = true;
     for (var i = 0, len = parts.length; i < len; ++i) {
