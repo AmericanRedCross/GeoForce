@@ -80,14 +80,13 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   };
 
   $scope.$on('theme-update', function () {
-    if ($stateParams.theme == 'disaster' || $stateParams.theme == 'disasterType') {
+    if ($stateParams.theme.indexOf('disaster')!==-1) {
       $scope.navTab = 'disasterType';
     };
-    if ($stateParams.theme == 'project' || $stateParams.theme == 'projectHealth' || $stateParams.theme == 'projectRisk') {
+
+    if ($stateParams.theme.indexOf('project')!== -1) {
       $scope.navTab = 'sectors';
     };
-
-    //$scope.closePanels(); // close all panels on theme change
 
     //clear theme filters
     if ($stateParams.filters !== null) {
@@ -105,26 +104,25 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
         $state.go(state, $stateParams);
 
       }
-      //else {
-      //  //delete $stateParams.filters;
-      //  ////$stateParams.filters = null; //clear theme filters
-      //  //var state = $state.current.name || 'main';
-      //  //$state.go(state, $stateParams);
-      //}
-
     }
   });
 
   var getBusinessUnitTypes = function () {
     var BusinessUnitTypes = [];
 
+    // temporarily remove all business unit types with an '&' in the label
     $scope.businessUnits.forEach(function(val,idx){
-      BusinessUnitTypes.push(val);
-      BusinessUnitTypes[idx].checked = false;
+      if(val.label.indexOf('&')!==-1) {
+        $scope.businessUnits.splice(idx,1)
+      }
     });
-    $scope.BusinessUnitTypes = BusinessUnitTypes;
 
-    console.log(BusinessUnitTypes);
+    $scope.businessUnits.forEach(function(val,idx){
+        BusinessUnitTypes.push(val);
+        BusinessUnitTypes[idx].checked = false;
+    });
+
+    $scope.BusinessUnitTypes = BusinessUnitTypes;
   };
 
   var decodeDisasterFiltersURL = function () {
@@ -204,7 +202,6 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     if($stateParams.theme == 'project') decodeProjectFiltersURL();
   });
 
-
   /**
    * Get budget stats from Chubbs - dynamic from PostGIS.
    */
@@ -276,16 +273,21 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       var bunit = bunits[i];
       if (bunit.checked) {
         if (first) {
+          //if(bunit.label.indexOf('&')!==-1){
+          //  bunit.label = decodeAmpersand(bunit.label);
+          //}
           $scope.businessUnitsClause = "business_unit__c LIKE '%" + bunit.label + "%' ";
           first = false;
         } else {
+          if(bunit.label.indexOf('&')!==-1){
+            bunit.label = decodeAmpersand(bunit.label);
+          }
           $scope.businessUnitsClause += "OR business_unit__c LIKE '%" + bunit.label + "%' ";
         }
       }
     }
     $scope.composeWhereClause();
   };
-
 
   $scope.disasterTypesFilter = function () {
     var disasters = $scope.disasterTypes;
@@ -317,6 +319,16 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       sectors[i].checked = false;
     }
     $scope.sectorClause = null;
+    $scope.composeWhereClause();
+  };
+
+  $scope.clearBusinessUnitFilter = function () {
+    var bunits = $scope.BusinessUnitTypes;
+    for (var i = 0, len = bunits.length; i < len; ++i) {
+      bunits[i].checked = false;
+    }
+    $scope.businessUnitsClause = null;
+
     $scope.composeWhereClause();
   };
 
@@ -542,6 +554,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.clearDateFilter();
     $scope.clearBudgetFilter();
     $scope.clearDisasterTypeFilter();
+    $scope.clearBusinessUnitFilter();
   };
 
   // puts the category in URL
