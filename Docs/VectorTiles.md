@@ -10,12 +10,13 @@ Install.
 
 ##Step 2 - Get your data right
 Using Mapbox Studio to bake vector tiles can be time and resource intensive.  Choosing to bake from Shapefiles has proven to perform better then connecting to PostgreSQL, for example.
+
 Anyway, if using a shapefile, minimize the number of 'extra' attributes included.
-I used QGIS to connect to the Red Cross RDS instance, and load each GADM level.
-I then exported each layer as a local shapefile.
-The export process tacks on extra fields which I then deleted.
-For GADM0 (for example), I kept the fields name_0, id_0 and guid.
-For GADM2, I kept the fields name_0, id_0, name_1, id_1, name_2, id_2, guid.
+* I used QGIS to connect to the Red Cross RDS instance, and load each GADM level.
+* I then exported each layer as a local shapefile.
+* The export process tacks on extra fields which I then deleted.
+* For GADM0 (for example), I kept the fields name_0, id_0 and guid.
+* For GADM2, I kept the fields name_0, id_0, name_1, id_1, name_2, id_2, guid.
 
 Next, for each GADM level, I used the QGIS create centroids operation to create a layer of centroids for each polygon.
 For points that were obviously outside of the boundaries of the polygon (like Vietnam), I manually moved them back into the polygon they belong to.
@@ -47,6 +48,7 @@ Now!  We're almost ready to export the .mbtiles vector tiles.  We need to tell M
 In the top left of the screen, choose 'settings'.  At the bottom of the panel that slides out, adjust the Minzoom and Maxzoom sliders.  For GADM0, we choose 0 thru 9 (or so).
 
 Levels for each Vector Tile Level
+
 * ArcRegions - 0 - 6
 * GADM0 - 0 - 9
 * GADM1 - 0 - 11
@@ -68,18 +70,18 @@ When the export process finishes, download/save the output .mbtiles file.
 ##Hosting the .mbtiles.
 There are multiple options for hosting and serving the vector tiles contained within the .mbtiles file.
 
-1) Host them yourself - Copy the .mbtiles file into /Chubbs/data/pbf_mbtiles and restart the node app.  New endpoints will be craeted that will serve the vector tiles from the .mbtiles files.
+1) *Host them yourself* - Copy the .mbtiles file into /Chubbs/data/pbf_mbtiles and restart the node app.  New endpoints will be craeted that will serve the vector tiles from the .mbtiles files.
    The URL will look similar to the following
     
     http://localhost:3001/services/vector-tiles/GAUL_2014_Lvl10/{z}/{x}/{y}.pbf
     
 Where the name 'GAUL_2014_Lv10' is the name of the .mbtiles file you dropped into the pbf_mbtiles folder.
 
-2) Host them on Mapbox - Upload and host on on Mapbox.
+2) *Host them on Mapbox* - Upload and host on on Mapbox.
 
-3) Host them on S3 with a Cloudfront CDN - Copy the .mbtiles file to a temporary EC2 machine, explode the .mbtiles file using MBUtil, then copy the files to S3 with a gzip header and serve them statically from S3. (this is what we're doing)
+3) *Host them on S3 with a Cloudfront CDN* - Copy the .mbtiles file to a temporary EC2 machine, explode the .mbtiles file using MBUtil, then copy the files to S3 with a gzip header and serve them statically from S3. (this is what we're doing)
 
-Steps to explode and upload tiles to S3 (from https://gist.github.com/apollolm/cfe7e2da4ac9fd385059)
+###Steps to explode and upload tiles to S3 (from https://gist.github.com/apollolm/cfe7e2da4ac9fd385059)
  
 Goal: We want to get the vector tile data as a directory of pbf data instead of being stored in a mbtiles file.
 Prerequisites: Get Dane’s mbutil at https://github.com/mapbox/mbutil
@@ -87,13 +89,12 @@ Prerequisites: Get Dane’s mbutil at https://github.com/mapbox/mbutil
 Export your mbtiles as exploded pbf and associated directory structure
     $ mb-util —image_format=pbf your.mbtiles targetFolder
  
-Next: Create S3 Bucket
+####Next: Create S3 Bucket
  
 Goal: Set up your target S3 bucket.  All of this can be automated with an AWS SDK of choice.  Here is the manual workflow for now.
  
 1. create a s3 bucket in a region of interest.
 2. add bucket policy 
-
 
     {
         "Version": "2008-10-17",
@@ -114,7 +115,7 @@ Goal: Set up your target S3 bucket.  All of this can be automated with an AWS SD
 4. Enable website hosting.  Add the index.html and error.html
 5. create a root folder for your pbf folders (e.g. pbfs). Right-click and make public.
 
-Next: Upload to S3 with gzip content-encoding
+####Next: Upload to S3 with gzip content-encoding
  
 Goal: add the exploded vector tile to your target S3 bucket.
 Prerequisites:  get S3cmd at https://github.com/s3tools/s3cmd
@@ -132,7 +133,7 @@ follow prompts to enter access key and secret key
  
     $ s3cmd sync gadm0/* --acl-public --no-preserve --add-header="Content-Encoding:gzip" s3://vector-tiles/gadm0/
  
-Add CloudFront CDN:
+####Add CloudFront CDN:
 
 1. In AWS Console, choose Cloudfront.
 2. Choose 'New Distribution'.
