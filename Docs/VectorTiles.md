@@ -96,6 +96,7 @@ Goal: Set up your target S3 bucket.  All of this can be automated with an AWS SD
 1. create a s3 bucket in a region of interest.
 2. add bucket policy 
 
+
     {
         "Version": "2008-10-17",
         "Statement": [
@@ -106,14 +107,14 @@ Goal: Set up your target S3 bucket.  All of this can be automated with an AWS SD
                     "AWS": "*"
                 },
                 "Action": "s3:GetObject",
-                "Resource": "arn:aws:s3:::<name of bucket>/*”
+                "Resource": "arn:aws:s3:::bucket_name/*”
             }
         ]
     }
     
 3. click on the Add CORS Configuration
 4. Enable website hosting.  Add the index.html and error.html
-5. create a root folder for your pbf folders (e.g. pbfs). Right-click and make public.
+5. create subfolders for each of your data sources (e.g. gadm0, gdam1, gadm2, gadm3). Right-click and make public.
 
 ####Next: Upload to S3 with gzip content-encoding
  
@@ -130,8 +131,7 @@ follow prompts to enter access key and secret key
  
 2. cd into the location of your exploded pbf files and upload to S3 (adding gzip content encoding)
  
- 
-    $ s3cmd sync gadm0/* --acl-public --no-preserve --add-header="Content-Encoding:gzip" s3://vector-tiles/gadm0/
+    $ s3cmd sync gadm0/* --acl-public --no-preserve --add-header="Content-Encoding:gzip" s3://bucket_name/gadm0/
  
 ####Add CloudFront CDN:
 
