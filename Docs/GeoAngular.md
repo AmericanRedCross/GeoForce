@@ -6,6 +6,9 @@ It contains all of the client-side logic for displaying the Mapfolio applicaton.
 
 The GeoAngular Project is located at /GeoAngular/app
 
+![GeoAngular UI](docs-images/geoangular.png "GeoAngular")
+GeoAngular UI.
+
 ##Orientation
 
 Getting around the project might seem a little daunting at first, so here's an introduction.

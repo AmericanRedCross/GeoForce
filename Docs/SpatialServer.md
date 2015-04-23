@@ -6,6 +6,10 @@ It is a Node.js application that has many features.  Find out more about the fea
 Several differences exist between the main branch and this version, notably the OAuth Integration for security.
 There is also custom logic specific to this project that has been added.
 
+
+![Server UI](docs-images/server.png "Server")
+SpatialServer UI.
+
 ##Installation
 See either [this](Docs/installation.md) or [this](https://github.com/spatialdev/PGRestAPI#installation) for installation instructions.
 Note that the 2nd link is for general installation instructions for Spatial Server, not this specific Red Cross instance.
