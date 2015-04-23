@@ -49,6 +49,22 @@ This file arranges a wide table that starts at the lowest level (5), and begins 
 This is the main table used for map display, map label display, and filtering operations.  If a new filter is desired for a particular column, the column will nee to be added to this .sql file so it becomes available in the aggregation table definition.
 
 
+##Setting up Cron to run the ETL every night
 
+Setting up cron to run succubus nightly on Ubuntu 14.04 machine
+    
+    crontab -e
+
+opens chooser for editor.
+    
+    2
+    
+At the bottom, enter:
+
+    01 01 * * * cd ~/Mapfolio/GeoForce/Succubus && nodejs index.js
+
+This specifies at 1:01 AM every day, run node and point to succubus’ index.js
+    
+Note that although it saves this to a temporary directory, the changes are indeed made with the cron system service.
 
 

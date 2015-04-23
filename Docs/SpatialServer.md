@@ -78,3 +78,64 @@ Navigating to IP:3001 (or your port) should open the mapfolio web application.
 
 On a production server, we use either [Forever](https://github.com/foreverjs/forever) or [PM2](https://github.com/Unitech/pm2).
 
+On the staging and production machines, we are currently using forever.
+
+To start the app with forever (so you can log off and have the app still run), after everything is installed and configured, first test the app:
+
+In /Chubbs,
+
+    npm app.js
+    
+If you see any errors, address them (I know that's not very helpful) and run again until you see lists of tables and routes being written out to the console.
+
+If the test run works, then kill it (Ctrl + C) and start app.js with forever:
+
+    sudo forever start app.js
+    
+    
+    
+## Configuring NGINX as a reverse proxy
+Typical Node.js installations run on a port greater than 3000.  In order to allow people to connect to the server on the default HTTP port (80), we install and configure NGINX to act as a reverse proxy.
+This means that requests to the URL on port 80 will be read by NGINX and forwarded to port 3001 (or whatever it says in /Chubbs/private/settings.js).
+
+I won't try to explain how to intall NGINX, or talk about what it is. 
+
+I'll show you the config running on the staging server:
+
+    # the IP(s) on which your node server is running. I chose port 3001.
+    upstream app_geoforce {
+        server 127.0.0.1:3001;
+    }
+    
+    server {
+        listen 0.0.0.0:80;
+        server_name 54.187.215.30;
+        access_log /var/log/nginx/geoforce.log;
+    
+        # pass the request to the node.js server with the correct headers and much more can be added, see nginx config options
+        location / {
+          #auth_basic "Restricted";
+          #auth_basic_user_file /home/ubuntu/Mapfolio/GeoForce/GeoAngular/app/.htpasswd;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host $http_host;
+          proxy_set_header X-NginX-Proxy true;
+    
+          proxy_pass http://app_geoforce;
+          proxy_redirect off;
+        }
+    }
+
+
+The upstream block says that we've got an app running locally on 3001, and we'll alias it app_geoforce.
+
+The server block says to listen on port 80 for incoming requests to the ip 54.187.215.30 (if we have a domain name tied to this IP, use the domain name instead).
+
+The location / block says that for all requests to any route on port 80, we will set some headers, and then pass the request off to app_geoforce.
+
+Optionally, to put in place basic NGINX authentication, uncomment the auth_basic and auth_basic_user_file lines.
+
+For more information about installing NGINX, and how to create the .htpasswd file for simple authentication, see [Installation](installation.md)
+
+To see how NGINX is setup on the prod machine, [see this](InstallAndSetupNotes/nginx_ssl_setup.txt)
+
