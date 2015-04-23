@@ -110,3 +110,23 @@
   margin-left: 37px;
   margin-bottom: 5px;
 }
+
+#exportModal #exportHelp{
+  display: inline-block;
+  margin-left: 15px;
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+  color: #2C2C2C;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
+}
+
+#exportModal #exportHelp:hover{
+  font-size: 20px;
+  color: #000;
+}
