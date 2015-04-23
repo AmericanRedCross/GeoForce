@@ -638,7 +638,7 @@
               <div ng-show="navTab==='status'" ng-class="{active: navTab==='status'}" >
                 <div class="disaster-padding">
                 <label ng-repeat="stat in disasterStatus" class="checkbox">
-                  <input class="disaster-checkbox" type="checkbox" ng-model="stat.checked" ng-change="disasterStatusFilter()">
+                  <input class="disaster-checkbox" type="checkbox" ng-model="stat.checked" ng-change="disasterStatusFilter();disasterTypesFilter()">
                   <span class="sector-name" >{{stat.name}}</span>
                 </label>
                 </div>

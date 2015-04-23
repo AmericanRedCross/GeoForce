@@ -3,7 +3,7 @@
  *       on 3/27/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function ($scope, $http, $state, $stateParams,$timeout) {
+module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function ($scope, $http, $state, $stateParams, $timeout) {
   $scope.filterMode = "project"; //Which theme are we filtering?
   $scope.params = $stateParams;
   $scope.searchText = '';
@@ -27,7 +27,8 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $http.get('succubus_gitignore/sf-project-filter-checkboxes.json', {cache: true}).success(function (data, status) {
     angular.extend($scope, data);
     debug.filtersScope = $scope;
-9  }).error(function () {
+    9
+  }).error(function () {
     console.error("Unable to fetch project filter meta data");
   });
 
@@ -35,16 +36,16 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     angular.extend($scope, data);
     debug.filtersScope = $scope;
     $scope.categorizeDisasterFilters();
-    $scope.defaultStatus(); // check Monitoring and Active in Status object
+    //$scope.defaultStatus(); // check Monitoring and Active in Status object
   }).error(function () {
     console.error("Unable to fetch disaster filter meta data");
   });
 
-  $http.get('succubus_gitignore/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
+  $http.get('succubus_gitignore/sf-object-field-hash.json', {cached: true}).success(function (sfFieldHash) {
     $scope.sfFieldHash = sfFieldHash;
     $scope.businessUnits = sfFieldHash["Project__c"]["business_unit__c"]["picklistValues"];
     getBusinessUnitTypes();
-  }).error(function(){
+  }).error(function () {
     console.error("Unable to fetch object field meta data");
   });
 
@@ -71,7 +72,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.disasterTypescategory = cTypes;
   };
 
-  $scope.closePanels = function (){
+  $scope.closePanels = function () {
     for (var param in $stateParams) {
       if ($stateParams[param] === 'open') {
         $stateParams[param] = null;
@@ -80,6 +81,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   };
 
   $scope.$on('theme-update', function () {
+
     if ($stateParams.theme.indexOf('disaster')!==-1) {
       $scope.navTab = 'disasterType';
     };
@@ -88,43 +90,36 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       $scope.navTab = 'sectors';
     };
 
-    //clear theme filters
-    if ($stateParams.filters !== null) {
-
-      // only clear filters when switching from project to disaster; and vice versa
-      if(($stateParams.theme.indexOf('disaster')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("sector__c")!==-1))) {
-          delete $stateParams.filters;
-          var state = $state.current.name || 'main';
-          $state.go(state, $stateParams);
-        }
-
-      if($stateParams.theme.indexOf('project')!==-1 && ($stateParams.filters && $stateParams.filters.indexOf("iroc_status__c")!==-1)) {
-        delete $stateParams.filters;
-        var state = $state.current.name || 'main';
-        $state.go(state, $stateParams);
-
-      }
+    if ($stateParams.theme.indexOf('disaster') !== -1 && ($stateParams.filters)) {
+      decodeDisasterFiltersURL();
     }
+
+    if ($stateParams.theme.indexOf('project') !== -1 && ($stateParams.filters)) {
+      decodeProjectFiltersURL();
+    }
+
   });
 
   var getBusinessUnitTypes = function () {
     var BusinessUnitTypes = [];
 
     // temporarily remove all business unit types with an '&' in the label
-    $scope.businessUnits.forEach(function(val,idx){
-      if(val.label.indexOf('&')!==-1) {
-        $scope.businessUnits.splice(idx,1)
+    $scope.businessUnits.forEach(function (val, idx) {
+      if (val.label.indexOf('&') !== -1) {
+        $scope.businessUnits.splice(idx, 1)
       }
     });
 
-    $scope.businessUnits.forEach(function(val,idx){
-        BusinessUnitTypes.push(val);
-        BusinessUnitTypes[idx].checked = false;
+    $scope.businessUnits.forEach(function (val, idx) {
+      BusinessUnitTypes.push(val);
+      BusinessUnitTypes[idx].checked = false;
     });
 
     $scope.BusinessUnitTypes = BusinessUnitTypes;
   };
 
+  // the two decode methods read the url and update the filter panel
+  // checkboxes (disastertype, projecttype, businesstype & status) accordingly
 
   var decodeDisasterFiltersURL = function () {
     var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
@@ -140,8 +135,11 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     }
 
     if ($stateParams.filters !== null && $stateParams.filters !== ""
-      && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined'){
+      && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined') {
+
       var disasters = $scope.disasterTypes;
+      var statuses = $scope.disasterStatus;
+
       $scope.sectorClause = null;
       var first = true;
       for (var s = 0; s < arr.length; s++) {
@@ -158,13 +156,27 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
             }
           }
         }
+
+        if ($stateParams.filters.indexOf('iroc_status__c') !== -1) {
+          for (var i = 0, len = statuses.length; i < len; ++i) {
+            var status = statuses[i];
+            if (arr[s].indexOf(status.name) !== -1) {
+              status.checked = true;
+            }
+          }
+        }
       }
+    }
+    else {
+      $scope.clearAllFilters();
     }
   };
 
   var decodeProjectFiltersURL = function () {
     var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
     var index = [];
+
+    //loop through string and remove '%'
     for (var i = 0; i < str.length; i++) {
       if (str[i] === "%") index.push(i);
     }
@@ -176,9 +188,14 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     }
 
     if ($stateParams.filters !== null && $stateParams.filters !== ""
-      && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined'){
+      && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined') {
+
       var sectors = $scope.sectors;
       $scope.sectorClause = null;
+      var bunits = $scope.BusinessUnitTypes;
+      var bunit = bunits[i];
+
+
       var first = true;
       for (var s = 0; s < arr.length; s++) {
         for (var i = 0, len = sectors.length; i < len; ++i) {
@@ -194,13 +211,25 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
             }
           }
         }
+        if ($stateParams.filters.indexOf('business_unit__c') !== -1) {
+          for (var i = 0, len = bunits.length; i < len; ++i) {
+            if (arr[s].indexOf(bunit.label) !== -1) {
+              bunit.checked = true;
+            }
+          }
+        }
+
       }
+    }
+    else {
+      //uncheck all filters
+      $scope.clearAllFilters();
     }
   };
 
   $scope.$on('filters-update', function () {
-    if($stateParams.theme.indexOf('disaster')!==-1) decodeDisasterFiltersURL();
-    if($stateParams.theme == 'project') decodeProjectFiltersURL();
+    if ($stateParams.theme.indexOf('disaster') !== -1) decodeDisasterFiltersURL();
+    if ($stateParams.theme == 'project') decodeProjectFiltersURL();
   });
 
   /**
@@ -280,9 +309,9 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
           $scope.businessUnitsClause = "business_unit__c LIKE '%" + bunit.label + "%' ";
           first = false;
         } else {
-          if(bunit.label.indexOf('&')!==-1){
-            bunit.label = decodeAmpersand(bunit.label);
-          }
+          //if(bunit.label.indexOf('&')!==-1){
+          //  bunit.label = decodeAmpersand(bunit.label);
+          //}
           $scope.businessUnitsClause += "OR business_unit__c LIKE '%" + bunit.label + "%' ";
         }
       }
@@ -299,14 +328,14 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       if (disaster.checked) {
         if (first) {
           $scope.sectorClause = "disaster_type__c LIKE '%" + disaster.name + "%' ";
-          if($scope.statusClause !== null){
+          if ($scope.statusClause !== null) {
             $scope.sectorClause = $scope.sectorClause + 'AND ' + "(" + $scope.statusClause + ")";
           }
           first = false;
         } else {
           $scope.sectorClause += "OR disaster_type__c LIKE '%" + disaster.name + "%' ";
-          if($scope.statusClause !== null){
-            $scope.sectorClause = $scope.sectorClause + 'AND ' + $scope.statusClause;
+          if ($scope.statusClause !== null) {
+            $scope.sectorClause = $scope.sectorClause + 'AND' + "(" + $scope.statusClause + ")";
           }
         }
       }
@@ -339,8 +368,8 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       disasters[i].checked = false;
     }
 
-    for (var i=0;i<$scope.status.length;i++){
-      $scope.status[i].checked = false;
+    for (var i = 0; i < $scope.disasterStatus.length; i++) {
+      $scope.disasterStatus[i].checked = false;
     }
 
     $scope.statusClause = null;
@@ -357,9 +386,9 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
-  $scope.defaultStatus = function() {
-    for (var i=0;i<$scope.disasterStatus.length;i++){
-      if($scope.disasterStatus[i].name !== "Inactive"){
+  $scope.defaultStatus = function () {
+    for (var i = 0; i < $scope.disasterStatus.length; i++) {
+      if ($scope.disasterStatus[i].name !== "Inactive") {
         $scope.disasterStatus[i].checked = true;
       }
     }
@@ -398,7 +427,6 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
         }
       }
     }
-    $scope.composeWhereClause();
   };
 
 
@@ -534,15 +562,17 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $scope.composeWhereClause = function () {
     $scope.whereClause = null;
     var parts = [];
-    if($stateParams.theme.indexOf('disaster')!==-1){
-      if($scope.sectorClause == null){
+
+    if ($stateParams.theme.indexOf('disaster') !== -1) {
+      if ($scope.sectorClause == null) {
         parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause];
-      }else {
+      } else {
         parts = [$scope.sectorClause, $scope.dateClause, $scope.budgetClause];
       }
     } else {
       parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause, $scope.businessUnitsClause];
     }
+
     var first = true;
     for (var i = 0, len = parts.length; i < len; ++i) {
       var part = parts[i];
@@ -561,8 +591,8 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
   $scope.submitFilter = function () {
 
-    if($stateParams.theme.indexOf('project')!==-1)$stateParams.filters = $scope.whereClause;
-    if($stateParams.theme.indexOf('disaster')!==-1)$stateParams.filters = $scope.whereClause;
+    if ($stateParams.theme.indexOf('project') !== -1)$stateParams.filters = $scope.whereClause;
+    if ($stateParams.theme.indexOf('disaster') !== -1)$stateParams.filters = $scope.whereClause;
 
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
@@ -579,22 +609,22 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
   // puts the category in URL
   $scope.putCategoryURL = function (categoryName) {
-      if ($stateParams.category == categoryName){
-        $stateParams.category = null;
-        $state.go($state.current.name, $stateParams);
-      }else{
-        $stateParams.category = categoryName;
-        $state.go($state.current.name, $stateParams);
-      }
+    if ($stateParams.category == categoryName) {
+      $stateParams.category = null;
+      $state.go($state.current.name, $stateParams);
+    } else {
+      $stateParams.category = categoryName;
+      $state.go($state.current.name, $stateParams);
+    }
   };
 
-  $scope.handleSearch = function(val){
+  $scope.handleSearch = function (val) {
     var dt = $scope.disasterTypescategory;
     $scope.searchText = val;
-    for(var i=0;i<Object.keys(dt).length;i++){
+    for (var i = 0; i < Object.keys(dt).length; i++) {
       var arr = dt[Object.keys(dt)[i]];
-      for(var z=0;z<arr.length;z++){
-        if(arr[z].name.indexOf(val)!==-1){
+      for (var z = 0; z < arr.length; z++) {
+        if (arr[z].name.indexOf(val) !== -1) {
           $stateParams.category = Object.keys(dt)[i];
           $scope.disasterTypescategory[Object.keys(dt)[i]][z].isSearchActive = true;
         }
@@ -604,135 +634,124 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $state.go(state, $stateParams);
   };
 
-  $scope.highlightLayer = function (val){
+  $scope.highlightLayer = function (val) {
     $scope.selected = true;
-    $timeout(function(){
+    $timeout(function () {
       var dt = $scope.disasterTypescategory;
-      for(var i=0;i<Object.keys(dt).length;i++){
+      for (var i = 0; i < Object.keys(dt).length; i++) {
         var arr = dt[Object.keys(dt)[i]];
-        for(var z=0;z<arr.length;z++){
-          if(arr[z].name.indexOf(val)!==-1){
+        for (var z = 0; z < arr.length; z++) {
+          if (arr[z].name.indexOf(val) !== -1) {
             $scope.disasterTypescategory[Object.keys(dt)[i]][z].isSearchActive = false;
           }
         }
       }
       $scope.searchText = '';
       $scope.selected = false;
-    },2000);
+    }, 2000);
   };
 
-  $scope.$on('route-update', function() {
-
-    //Set default filter status to Monitoring and Active on page load
-    if(($stateParams.filters == null || $stateParams.filters == 'null') && $stateParams.filters !== undefined){
-      if($stateParams.theme.indexOf('disaster')!== -1){
-        $scope.disasterStatusFilter();
-      }
-    }
-
-  });
-
   var opacity = "0.5";
-  $scope.UNOCHAIconLookup={
+  $scope.UNOCHAIconLookup = {
     "Meteorological - Tropical Cyclone": {
       icon: "icon-disaster_cyclone",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Floods": {
       icon: "icon-disaster_flood",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Volcano": {
       icon: "icon-disaster_tsunami",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Meteorological - Local Storm": {
       icon: "icon-disaster_flood",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Tsunami": {
       icon: "icon-disaster_tsunami",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Famine / Food Insecurity": {
       icon: "icon-cluster_food_security",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Drought": {
       icon: "icon-disaster_drought",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Hydrological - Floods": {
       icon: "icon-disaster_cyclone",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
-    "Meteorological - Tropical Cyclone":{
+    "Meteorological - Tropical Cyclone": {
       icon: "icon-disaster_cyclone",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Food Insecurity": {
       icon: "icon-cluster_food_security",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Civil Unrest": {
       icon: "icon-people_rebel",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Floods, Tropical Storm": {
       icon: "icon-disaster_flood",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Complex Emergency": {
       icon: "icon-crisis_conflict",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Conflict": {
       icon: "icon-crisis_conflict",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Epidemic": {
       icon: "icon-disaster_epidemic",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Population Movement": {
       icon: "icon-crisis_population_displacement",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Climatological - Drought": {
       icon: "icon-disaster_drought",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Winter Storm": {
       icon: "icon-disaster_snowfall",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Tropical Storm": {
       icon: "icon-disaster_heavy_rain",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Earthquake, Tsunami": {
       icon: "icon-disaster_earthquake",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Hydrological - Floods": {
       icon: "icon-disaster_flood",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Hydrological - Landslide": {
       icon: "icon-disaster_landslide",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Earthquake": {
       icon: "icon-disaster_earthquake",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Landslide": {
       icon: "icon-disaster_landslide",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     },
     "Avalanche": {
       icon: "icon-disaster_snow_avalanche",
-      color: "rgba(255,0,0,"+opacity+")"
+      color: "rgba(255,0,0," + opacity + ")"
     }
   };
 

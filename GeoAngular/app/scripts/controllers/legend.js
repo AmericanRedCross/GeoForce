@@ -70,7 +70,7 @@ module.exports = angular.module('GeoAngular').controller('LegendCtrl', function(
 
   $scope.$on('theme-update', function(){
     $scope.themeLabel = '';
-    if($stateParams.theme !== null) {
+    if($stateParams.theme !== null && $stateParams.theme !== "") {
       $scope.themeLabel = themeLookup[$stateParams.theme].label;
     }
   });

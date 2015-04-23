@@ -62,6 +62,17 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
       }
     }
 
+
+    //append the default disaster filter when switching from project to disaster
+    if(theme.indexOf('disaster') !== -1 && $stateParams.theme.indexOf('project') !== -1){
+      $stateParams.filters = "iroc_status__c LIKE '%Monitoring%'OR iroc_status__c LIKE '%Active%'";
+    }
+
+    //remove all filters when switching from disaster to project
+    if(theme.indexOf('project')!==-1 && $stateParams.theme.indexOf('disaster')!== -1 ){
+      delete $stateParams.filters;
+    }
+
     $stateParams.theme = theme;
 
     //force gadm0 on disaster and disasterType
@@ -88,6 +99,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
     if($stateParams.theme == 'none' || $stateParams.theme !== null) {
       $scope.closeParam('filters-panel');
     }
+
 
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
