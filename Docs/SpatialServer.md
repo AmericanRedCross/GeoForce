@@ -98,7 +98,7 @@ If the test run works, then kill it (Ctrl + C) and start app.js with forever:
 Typical Node.js installations run on a port greater than 3000.  In order to allow people to connect to the server on the default HTTP port (80), we install and configure NGINX to act as a reverse proxy.
 This means that requests to the URL on port 80 will be read by NGINX and forwarded to port 3001 (or whatever it says in /Chubbs/private/settings.js).
 
-I won't try to explain how to intall NGINX, or talk about what it is. 
+I won't try to explain how to install NGINX, or talk about what it is.  There's some of that [here](installation.md).
 
 I'll show you the config running on the staging server:
 
