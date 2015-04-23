@@ -72,9 +72,9 @@ exports.app = function (passport) {
     });
 
     //Show specific GP operation
-// NH TURNED OFF CACHE
-//    app.all('/services/custom/custom_operation', cacher.cache('days', 3), flow.define(function (req, res) {
-    app.all('/services/custom/custom_operation', flow.define(function (req, res) {
+    //Cacher will use in-memory cache for 1 day.
+    app.all('/services/custom/custom_operation', cacher.cache('days', 1), flow.define(function (req, res) {
+    //app.all('/services/custom/custom_operation', flow.define(function (req, res) {
         this.args = {};
         this.req = req;
         this.res = res;

@@ -34,6 +34,7 @@ module.exports = angular.module('GeoAngular').controller('BreadcrumbsCtrl', func
 			var url = fullStackURL.replace(':adminlevel', featObj.level).replace(':guid', featObj.guid);
 			var self = this;
 
+
 			// Fetch from the server only if we don't have it in the hash
 			$http.get(url).success(function (result, status) {
 
