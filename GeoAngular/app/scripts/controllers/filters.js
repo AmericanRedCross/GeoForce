@@ -125,6 +125,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.BusinessUnitTypes = BusinessUnitTypes;
   };
 
+
   var decodeDisasterFiltersURL = function () {
     var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
     var index = [];
@@ -357,15 +358,33 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   };
 
   $scope.defaultStatus = function() {
-    for (var i=0;i<$scope.status.length;i++){
-      if($scope.status[i].name !== "Inactive"){
-        $scope.status[i].checked = true;
+    for (var i=0;i<$scope.disasterStatus.length;i++){
+      if($scope.disasterStatus[i].name !== "Inactive"){
+        $scope.disasterStatus[i].checked = true;
       }
     }
   };
 
   $scope.statusFilter = function () {
     var status = $scope.status;
+    $scope.statusClause = null;
+    var first = true;
+    for (var i = 0, len = status.length; i < len; ++i) {
+      var stat = status[i];
+      if (stat.checked) {
+        if (first) {
+          $scope.statusClause = "status__c LIKE '%" + stat.name + "%'";
+          first = false;
+        } else {
+          $scope.statusClause += "OR status__c LIKE '%" + stat.name + "%' ";
+        }
+      }
+    }
+    $scope.composeWhereClause();
+  };
+
+  $scope.disasterStatusFilter = function () {
+    var status = $scope.disasterStatus;
     $scope.statusClause = null;
     var first = true;
     for (var i = 0, len = status.length; i < len; ++i) {
@@ -381,6 +400,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     }
     $scope.composeWhereClause();
   };
+
 
   $scope.clearStatusFilter = function () {
     var status = $scope.status;
@@ -606,7 +626,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     //Set default filter status to Monitoring and Active on page load
     if(($stateParams.filters == null || $stateParams.filters == 'null') && $stateParams.filters !== undefined){
       if($stateParams.theme.indexOf('disaster')!== -1){
-        $scope.statusFilter();
+        $scope.disasterStatusFilter();
       }
     }
 

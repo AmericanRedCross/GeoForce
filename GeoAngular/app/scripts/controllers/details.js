@@ -6,6 +6,7 @@
 module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http, Donuts, $filter) {
 
   $scope.details = {};
+  $scope.navTab = 'details';
 
   $scope.salesforceUrl = config.salesforceUrl;
 
@@ -428,7 +429,6 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     }
 
       //$scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
-
 
     if (!$scope.contextualLayer) {
       $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item, $stateParams.theme)), $stateParams.theme);
