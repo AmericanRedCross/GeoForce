@@ -36,7 +36,6 @@ var gadm0 = {
       vtf.properties.theme = theme;
       vtf.properties.ecos_properties = {};
       vtf.properties.ecos_properties[theme] = data[vtf.properties.guid];
-      //return true;
     }
 
     return true; //draw feature

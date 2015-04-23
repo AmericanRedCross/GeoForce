@@ -12,7 +12,7 @@ data is massaged into a format that is well suited for map display.
 
 ##Main Components
 
-There are 3 main components that make up the Mapfolio project:
+There are 4 main components that make up the Mapfolio project:
 
 
 ###Spatial Server (Node.js API and app host)
@@ -43,5 +43,11 @@ These queries in turn have their own table in PostGIS. These are referred to as 
 created and updated by Succubus have the prefix `sf_` in the PostGIS database.
 
 [More About the Red Cross ETL](Docs/ETL.md)
+
+
+###Vector Tiles
+Version 2.0 of Mapfolio uses Mapbox Vector Tiles [on top of Leaflet](https://github.com/SpatialServer/Leaflet.MapboxVectorTile) for global boundary rendering.
+To find out more about making and hosting these vector tiles, [read this](Docs/VectorTiles.md).
+More about styling vector tiles in the Leaflet.MapboxVectorTile plugin [here](Docs/VectorTiles_Style.md).
 
 
