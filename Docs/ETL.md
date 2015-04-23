@@ -4,6 +4,10 @@ The Salesforce ETL process (/Succubus) is a Node.js project that connects to a S
 
 Once in the PostgreSQL instance, postprocessing operations are done to calculate aggregations of project counts/disaster counts per boundary, and also creates tables that store the the relationships between various boundary levels.
 
+![ETL](docs-images/etl.png "ETL")
+ETL console output.
+
+
 ##Main Components
 
 In general, there are 3 main steps:

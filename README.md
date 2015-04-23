@@ -18,7 +18,12 @@ There are 4 main components that make up the Mapfolio project:
 ###Spatial Server (Node.js API and app host)
 
 Spatial Server is the NodeJS Server that acts as the API from which the web application consumes data. This
-consumes data from the PostGIS database. This is currently a read-only tool. Specific SQL queries to perform the
+consumes data from the PostGIS database. This is currently a read-only tool. 
+
+![Server UI](Docs/docs-images/server.png "Server")
+SpatialServer UI.
+
+Specific SQL queries to perform the
 logic we need is done by creating an SQL view. This view in turn automatically becomes an endpoint in Spatial Server.
 Spatial Server also hosts the GeoAngular web app as static files.
 
@@ -26,8 +31,12 @@ Spatial Server also hosts the GeoAngular web app as static files.
 
 ###GeoAngular (Angular.js Web App)
 
-This is the front-end JavaScript application that utilizes AngularJS, Leaflet, and Bootstrap. The core of the architecture
-in GeoAngular is the use of AngularJS' `ngRouter` to reflect all states of the application--both the map as well as
+This is the front-end JavaScript application that utilizes AngularJS, Leaflet, and Bootstrap. 
+
+![GeoAngular UI](Docs/docs-images/geoangular.png "GeoAngular")
+GeoAngular UI.
+
+The core feature of the architecture in GeoAngular is the use of AngularJS' `ngRouter` to reflect all states of the application--both the map as well as
 the stories and other applicable views.
 
 [More About the Red Cross GeoAngular/Mapfolio App](Docs/GeoAngular.md)
@@ -37,6 +46,9 @@ the stories and other applicable views.
 
 This is our custum ETL (Extract, Transform, Load) tool that consumes data from Salesforce and inserts it into
 our PostGIS database.
+
+![ETL](Docs/docs-images/etl.png "ETL")
+ETL console output.
 
 The basic idea behind this tool is that we have a set of queries that gets us all of what we need from Salesforce.
 These queries in turn have their own table in PostGIS. These are referred to as "Query Tables." All of the tables
