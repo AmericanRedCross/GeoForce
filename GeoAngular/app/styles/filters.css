@@ -1,5 +1,5 @@
 .filters-container {
-    width: 390px;
+    width:425px;
 }
 
 .filters-container.project {
@@ -64,16 +64,21 @@
   margin: 0px;
   padding-left: 26px;
   font-size: 16px;
+  height: 40px;
   font-family: "Open Sans";
   color: rgb(109, 110, 112);
 }
 
 #disasterType-filter .sector-name {
-  line-height: 10px;
+  line-height: 18px;
   -webkit-transition: all 0.30s ease-in-out;
   -moz-transition: all 0.30s ease-in-out;
   -ms-transition: all 0.30s ease-in-out;
   -o-transition: all 0.30s ease-in-out;
+  display: inline-block;
+  float: left;
+  margin-top: 12px;
+  margin-left: 7px;
 }
 
 #disasterType-filter .disaster-filtertypes {
@@ -89,9 +94,9 @@
 }
 
 #disasterType-filter .show-categories.on{
-  max-height:550px;
-  padding-bottom: 10px;
-
+  max-height: 400px;
+  padding-bottom: 20px;
+  overflow-y: auto;
 }
 
 #disasterType-filter {
@@ -169,10 +174,8 @@
 
 #disaster-type-icons.disaster-icons {
   font-family: humanitarian_icons;
-  background-color: rgba(255,0,0,1);
-  color: #fff;
+  color: #000;
   float: left;
-  margin: 10px 2px 0px 5px;
 }
 
 #disasterType-filter .no-icons{
@@ -180,7 +183,7 @@
 }
 
 #disaster-type-icons i {
-  font-size: 16px;
+  font-size: 25px;
   padding: 0px 8px 0px 6px;
 }
 
@@ -200,4 +203,8 @@
   font-size: 12px;
   font-family: "Open Sans";
   color: rgb(60, 127, 173);
+}
+
+.disaster-status .disaster-padding .sector-name{
+  margin-top: 0px !important;
 }

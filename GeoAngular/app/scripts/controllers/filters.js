@@ -124,6 +124,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   var decodeDisasterFiltersURL = function () {
     //var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
     var str = unescape($stateParams.filters);
+
     var index = [];
     for (var i = 0; i < str.length; i++) {
       if (str[i] === "%") index.push(i);
@@ -654,108 +655,6 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     }, 2000);
   };
 
-  var opacity = "0.5";
-  $scope.UNOCHAIconLookup = {
-    "Meteorological - Tropical Cyclone": {
-      icon: "icon-disaster_cyclone",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Floods": {
-      icon: "icon-disaster_flood",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Volcano": {
-      icon: "icon-disaster_tsunami",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Meteorological - Local Storm": {
-      icon: "icon-disaster_flood",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Tsunami": {
-      icon: "icon-disaster_tsunami",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Famine / Food Insecurity": {
-      icon: "icon-cluster_food_security",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Drought": {
-      icon: "icon-disaster_drought",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Hydrological - Floods": {
-      icon: "icon-disaster_cyclone",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Meteorological - Tropical Cyclone": {
-      icon: "icon-disaster_cyclone",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Food Insecurity": {
-      icon: "icon-cluster_food_security",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Civil Unrest": {
-      icon: "icon-people_rebel",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Floods, Tropical Storm": {
-      icon: "icon-disaster_flood",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Complex Emergency": {
-      icon: "icon-crisis_conflict",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Conflict": {
-      icon: "icon-crisis_conflict",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Epidemic": {
-      icon: "icon-disaster_epidemic",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Population Movement": {
-      icon: "icon-crisis_population_displacement",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Climatological - Drought": {
-      icon: "icon-disaster_drought",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Winter Storm": {
-      icon: "icon-disaster_snowfall",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Tropical Storm": {
-      icon: "icon-disaster_heavy_rain",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Earthquake, Tsunami": {
-      icon: "icon-disaster_earthquake",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Hydrological - Floods": {
-      icon: "icon-disaster_flood",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Hydrological - Landslide": {
-      icon: "icon-disaster_landslide",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Earthquake": {
-      icon: "icon-disaster_earthquake",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Landslide": {
-      icon: "icon-disaster_landslide",
-      color: "rgba(255,0,0," + opacity + ")"
-    },
-    "Avalanche": {
-      icon: "icon-disaster_snow_avalanche",
-      color: "rgba(255,0,0," + opacity + ")"
-    }
-  };
+  $scope.UNOCHAIconLookup = config.UNOCHAIconLookup;
 
 });

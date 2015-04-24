@@ -17,6 +17,58 @@ config.salesforceUrl = "https://na14.salesforce.com";
 
 config.defaultTheme = 'disaster';
 
+
+config.UNOCHAOpacity = "0.5";
+
+/*
+ECOS Disaster Type to UNOCHA Icon Mapping Here
+Keys in this dictionary are ECOS Disaster Types, coming out of the DB.
+The icon property references the UNOCHA web font class names. See a list here: (http://54.187.215.30/mapfolio/styles/UNOCHA-Humanitarian-Icons-WebFont/demo.html)
+These are referenced by the Disaster Type theme (to show icons on the map that tie to disaster type), and also in the legend, and in the disaster type filters panel
+ */
+config.UNOCHAIconLookup = {
+
+  "Meteorological - Tropical Cyclone": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Floods": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Tsunami, Volcano": {icon: "icon-disaster_tsunami", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Floods, Storm": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Tsunami": {icon: "icon-disaster_tsunami", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Famine / Food Insecurity": {icon: "icon-cluster_food_security", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Drought": {icon: "icon-disaster_drought", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Meteorological - Tropical Cyclone;Hydrological - Floods": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Food Insecurity": {icon: "icon-cluster_food_security", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Civil Unrest": {icon: "icon-people_rebel", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Floods, Tropical Storm": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Complex Emergency": {icon: "icon-crisis_conflict", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Epidemic": {icon: "icon-disaster_epidemic", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Population Movement": {icon: "icon-crisis_population_displacement", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Climatological - Drought": {icon: "icon-disaster_drought", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Winter Storm": {icon: "icon-disaster_snowfall", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Tropical Storm": {icon: "icon-disaster_heavy_rain", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Earthquake, Tsunami": {icon: "icon-disaster_earthquake", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Hydrological - Floods": {icon: "icon-disaster_flood", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Landslide;Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Earthquake": {icon: "icon-disaster_earthquake", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Landslide;Hydrological - Floods": {icon: "icon-disaster_landslide", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Locusts": {icon: "icon-disaster_locust_infestation", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Grasshoppers": {icon: "icon-disaster_locust_infestation", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Conflict": {icon: "icon-crisis_conflict", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Terrorism": {icon: "icon-security_dangerous_area", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Climatological - Heat Wave": {icon: "icon-disaster_heatwave", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Climatological - Cold Wave": {icon: "icon-disaster_cold_wave", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Climatological - Wildfire": {icon: "icon-disaster_fire", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Volcano": {icon: "icon-disaster_volcano", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Rockfall": {icon: "icon-disaster_landslide", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Landslide": {icon: "icon-disaster_landslide", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Avalanche": {icon: "icon-disaster_snow_avalanche", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Meteorological - Local Storm": {icon: "icon-disaster_heavy_rain", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Meteorological - Extra Tropical Cyclone": {icon: "icon-disaster_cyclone", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Hydrological - Flash Flood": {icon: "icon-disaster_flash_flood", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"},
+  "Hydrological - Storm Surge": {icon: "icon-disaster_storm_surge", color: "rgba(255,0,0," + config.UNOCHAOpacity + ")"}
+
+
+}
+
 /**
  * These are the details initially shown for projects.
  * Clicking on the Show More Details button will show the rest.
