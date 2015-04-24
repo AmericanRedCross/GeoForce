@@ -12,6 +12,9 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
   $scope.grayout = ''; //use this class to gray out the map, such as when the country selector menu is active
   $scope.legendObject = {}; //When PBF layers are drawn, grab the legendObject out of it so we know what classes are being drawn on the map
 
+  //Add refresh mapp control
+  addRefreshMapControl();
+
   $scope.toggleState = function (stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
     $state.go(state, $stateParams);
@@ -892,17 +895,18 @@ module.exports = angular.module('GeoAngular').controller('MapCtrl', function ($s
 
   }
 
-  //Take a legend dicionary from MVTLayer and format it for display in HTML land.
-  //function formatLegend(legendObject){
-  //  var html = "";
-  //
-  //  for(var styleClass in legendObject){
-  //
-  //
-  //
-  //  }
-  //
-  //  return "";
-  //}
+
+  //Add a leaflet control to the map container that refreshes the state of the app
+  function addRefreshMapControl(){
+
+    L.easyButton('glyphicon glyphicon-refresh', //Css class
+      function (){ }, //onClick function
+      'Reset App', //Title
+      map, //map control ref
+      'btnResetMap', //id
+      '/mapfolio/#/default' //a href (optional)
+    )
+
+  }
 
 });
