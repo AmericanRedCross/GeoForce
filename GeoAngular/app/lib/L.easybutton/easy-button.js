@@ -7,7 +7,7 @@ L.Control.EasyButtons = L.Control.extend({
   },
 
   onAdd: function () {
-    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control custom-reset');
 
     this.link = L.DomUtil.create('a', 'leaflet-bar-part', container);
     this._addImage()

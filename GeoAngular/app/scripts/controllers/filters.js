@@ -173,7 +173,9 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   };
 
   var decodeProjectFiltersURL = function () {
-    var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
+    //var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
+    var str = unescape($stateParams.filters);
+
     var index = [];
 
     //loop through string and remove '%'
@@ -591,8 +593,8 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
   $scope.submitFilter = function () {
 
-    if ($stateParams.theme.indexOf('project') !== -1)$stateParams.filters = $scope.whereClause;
-    if ($stateParams.theme.indexOf('disaster') !== -1)$stateParams.filters = $scope.whereClause;
+    if ($stateParams.theme.indexOf('project') !== -1)$stateParams.filters = escape($scope.whereClause);
+    if ($stateParams.theme.indexOf('disaster') !== -1)$stateParams.filters = escape($scope.whereClause);
 
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
