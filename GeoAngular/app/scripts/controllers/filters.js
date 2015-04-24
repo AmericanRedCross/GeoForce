@@ -122,7 +122,8 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   // checkboxes (disastertype, projecttype, businesstype & status) accordingly
 
   var decodeDisasterFiltersURL = function () {
-    var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
+    //var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
+    var str = unescape($stateParams.filters);
     var index = [];
     for (var i = 0; i < str.length; i++) {
       if (str[i] === "%") index.push(i);
