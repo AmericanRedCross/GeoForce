@@ -595,7 +595,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.clearStatusFilter();
     $scope.clearDateFilter();
     $scope.clearBudgetFilter();
-    if($stateParams.theme.indexOf('disaster')!==-1) $scope.clearDisasterTypeFilter();
+    $scope.clearDisasterTypeFilter();
     $scope.clearBusinessUnitFilter();
   };
 
