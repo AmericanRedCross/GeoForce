@@ -193,18 +193,21 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
       var first = true;
       for (var s = 0; s < arr.length; s++) {
-        for (var i = 0, len = sectors.length; i < len; ++i) {
-          var sector = sectors[i];
-          if (arr[s].indexOf(sector.name) !== -1) {
-            if (first) {
-              sector.checked = true;
-              $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
-              first = false;
-            } else {
-              sector.checked = true;
-              $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
+        if ($stateParams.filters.indexOf('sector__c') !== -1){
+          for (var i = 0, len = sectors.length; i < len; ++i) {
+            var sector = sectors[i];
+            if (arr[s] == sector.name) {
+              if (first) {
+                sector.checked = true;
+                $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
+                first = false;
+              } else {
+                sector.checked = true;
+                $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
+              }
             }
           }
+
         }
         if ($stateParams.filters.indexOf('business_unit__c') !== -1) {
           for (var i = 0, len = bunits.length; i < len; ++i) {
@@ -298,15 +301,9 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       var bunit = bunits[i];
       if (bunit.checked) {
         if (first) {
-          //if(bunit.label.indexOf('&')!==-1){
-          //  bunit.label = decodeAmpersand(bunit.label);
-          //}
           $scope.businessUnitsClause = "business_unit__c LIKE '%" + bunit.label + "%' ";
           first = false;
         } else {
-          //if(bunit.label.indexOf('&')!==-1){
-          //  bunit.label = decodeAmpersand(bunit.label);
-          //}
           $scope.businessUnitsClause += "OR business_unit__c LIKE '%" + bunit.label + "%' ";
         }
       }
