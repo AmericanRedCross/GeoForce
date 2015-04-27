@@ -182,9 +182,9 @@
   margin-left: 37px;
 }
 
-#disaster-type-icons i {
+#disaster-type-icons .uno-icons {
   font-size: 25px;
-  padding: 0px 8px 0px 6px;
+  padding: 0px 2px 0px 10px;
 }
 
 .disaster-padding{
