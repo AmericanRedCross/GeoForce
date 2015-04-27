@@ -114,7 +114,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
   var decodeDisasterFiltersURL = function () {
     //var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
-    var str = unescape($stateParams.filters);
+    var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
 
     var index = [];
     for (var i = 0; i < str.length; i++) {
@@ -158,16 +158,17 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
             }
           }
         }
+        $scope.disasterStatusFilter();
       }
     }
     else {
-      $scope.clearAllFilters();
+      $scope.clearDisasterTypeFilter();
     }
   };
 
   var decodeProjectFiltersURL = function () {
     //var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
-    var str = unescape($stateParams.filters);
+    var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
 
     var index = [];
 
@@ -224,6 +225,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       $scope.clearAllFilters();
     }
   };
+
 
   $scope.$on('filters-update', function () {
     if ($stateParams.theme.indexOf('disaster') !== -1) decodeDisasterFiltersURL();
