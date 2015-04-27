@@ -27,7 +27,6 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $http.get('succubus_gitignore/sf-project-filter-checkboxes.json', {cache: true}).success(function (data, status) {
     angular.extend($scope, data);
     debug.filtersScope = $scope;
-    9
   }).error(function () {
     console.error("Unable to fetch project filter meta data");
   });
@@ -599,7 +598,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.clearStatusFilter();
     $scope.clearDateFilter();
     $scope.clearBudgetFilter();
-    $scope.clearDisasterTypeFilter();
+    if($stateParams.theme.indexOf('disaster')!==-1) $scope.clearDisasterTypeFilter();
     $scope.clearBusinessUnitFilter();
   };
 
