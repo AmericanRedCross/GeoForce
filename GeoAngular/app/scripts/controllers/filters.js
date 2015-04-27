@@ -97,18 +97,10 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     if ($stateParams.theme.indexOf('project') !== -1 && ($stateParams.filters)) {
       decodeProjectFiltersURL();
     }
-
   });
 
   var getBusinessUnitTypes = function () {
     var BusinessUnitTypes = [];
-
-    // temporarily remove all business unit types with an '&' in the label
-    $scope.businessUnits.forEach(function (val, idx) {
-      if (val.label.indexOf('&') !== -1) {
-        $scope.businessUnits.splice(idx, 1)
-      }
-    });
 
     $scope.businessUnits.forEach(function (val, idx) {
       BusinessUnitTypes.push(val);
