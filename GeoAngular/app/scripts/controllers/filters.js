@@ -27,7 +27,6 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $http.get('succubus_gitignore/sf-project-filter-checkboxes.json', {cache: true}).success(function (data, status) {
     angular.extend($scope, data);
     debug.filtersScope = $scope;
-    9
   }).error(function () {
     console.error("Unable to fetch project filter meta data");
   });
@@ -97,18 +96,10 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     if ($stateParams.theme.indexOf('project') !== -1 && ($stateParams.filters)) {
       decodeProjectFiltersURL();
     }
-
   });
 
   var getBusinessUnitTypes = function () {
     var BusinessUnitTypes = [];
-
-    // temporarily remove all business unit types with an '&' in the label
-    $scope.businessUnits.forEach(function (val, idx) {
-      if (val.label.indexOf('&') !== -1) {
-        $scope.businessUnits.splice(idx, 1)
-      }
-    });
 
     $scope.businessUnits.forEach(function (val, idx) {
       BusinessUnitTypes.push(val);
@@ -123,7 +114,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
   var decodeDisasterFiltersURL = function () {
     //var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
-    var str = unescape($stateParams.filters);
+    var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
 
     var index = [];
     for (var i = 0; i < str.length; i++) {
@@ -167,16 +158,17 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
             }
           }
         }
+        $scope.disasterStatusFilter();
       }
     }
     else {
-      $scope.clearAllFilters();
+      $scope.clearDisasterTypeFilter();
     }
   };
 
   var decodeProjectFiltersURL = function () {
     //var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
-    var str = unescape($stateParams.filters);
+    var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
 
     var index = [];
 
@@ -202,18 +194,21 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
       var first = true;
       for (var s = 0; s < arr.length; s++) {
-        for (var i = 0, len = sectors.length; i < len; ++i) {
-          var sector = sectors[i];
-          if (arr[s].indexOf(sector.name) !== -1) {
-            if (first) {
-              sector.checked = true;
-              $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
-              first = false;
-            } else {
-              sector.checked = true;
-              $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
+        if ($stateParams.filters.indexOf('sector__c') !== -1){
+          for (var i = 0, len = sectors.length; i < len; ++i) {
+            var sector = sectors[i];
+            if (arr[s] == sector.name) {
+              if (first) {
+                sector.checked = true;
+                $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
+                first = false;
+              } else {
+                sector.checked = true;
+                $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
+              }
             }
           }
+
         }
         if ($stateParams.filters.indexOf('business_unit__c') !== -1) {
           for (var i = 0, len = bunits.length; i < len; ++i) {
@@ -230,6 +225,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       $scope.clearAllFilters();
     }
   };
+
 
   $scope.$on('filters-update', function () {
     if ($stateParams.theme.indexOf('disaster') !== -1) decodeDisasterFiltersURL();
@@ -307,15 +303,9 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       var bunit = bunits[i];
       if (bunit.checked) {
         if (first) {
-          //if(bunit.label.indexOf('&')!==-1){
-          //  bunit.label = decodeAmpersand(bunit.label);
-          //}
           $scope.businessUnitsClause = "business_unit__c LIKE '%" + bunit.label + "%' ";
           first = false;
         } else {
-          //if(bunit.label.indexOf('&')!==-1){
-          //  bunit.label = decodeAmpersand(bunit.label);
-          //}
           $scope.businessUnitsClause += "OR business_unit__c LIKE '%" + bunit.label + "%' ";
         }
       }
