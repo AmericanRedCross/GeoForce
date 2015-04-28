@@ -62,6 +62,8 @@ exports.app = function(passport) {
 		if (req.method.toLowerCase() == "post") {
 			//If a post, then arguments will be members of the this.req.body property
 			this.args = req.body;
+			//Add in req.files if present
+			if(req.files) this.args.files = req.files;
 		} else if (req.method.toLowerCase() == "get") {
 			//If request is a get, then args will be members of the this.req.query property
 			this.args = req.query;
@@ -126,21 +128,27 @@ exports.app = function(passport) {
 					}
 				}
 
-				//Now get other args (if any) and process them
-				if (this.args.formfields.length == this.args._input_arguments.length) {
-					//We've got all of the required arguments
-					this.gpOperation.execute(this.args, this);
-					//Flow to next bloc when done
+			  //Copy to use as an argument list for the page
+				this.args.all_inputs = this.gpOperation.inputs;
 
-				} else if (this.args._input_arguments.length > 0) {
-					//they provided some of the arguments, but not all.
-					//Render HTML page with results at bottom
-					common.respond(this.req, this.res, this.args);
-				} else {
-					//They provided no arguments, so just load the empty page
-					//Render HTML page with results at bottom
-					common.respond(this.req, this.res, this.args);
-				}
+				//Now get other args (if any) and process them
+				//if (this.args.formfields.length == this.args._input_arguments.length) {
+				//We've got all of the required arguments
+
+				//TODO: Let the operation decide how to handle missing arguments.
+				this.gpOperation.execute(this.args, this);
+				//Flow to next bloc when done
+
+				//} else if (this.args._input_arguments.length > 0) {
+				//	//they provided some of the arguments, but not all.
+				//	//Render HTML page with results at bottom
+				//	this.args.errorMessage = "Missing some required arguments.";
+				//	common.respond(this.req, this.res, this.args);
+				//} else {
+				//	//They provided no arguments, so just load the empty page
+				//	//Render HTML page with results at bottom
+				//	common.respond(this.req, this.res, this.args);
+				//}
 
 			} else {
 				//Render HTML page with results at bottom
@@ -163,12 +171,12 @@ exports.app = function(passport) {
 			common.respond(this.req, this.res, this.args);
 
 		}
-	}, function(result) {
+	}, function(err, result) {
 		//Flowing from gpOperation.execute
 		//check for error
-		if (result.status == "error") {
+		if (err) {
 			//Report error and exit.
-			this.args.errorMessage = result.message;
+			this.args.errorMessage = err.message;
 		} else {
 			//success
 			//Write out results to page
@@ -185,6 +193,10 @@ exports.app = function(passport) {
 			} else if (this.args.format && this.args.format.toLowerCase() == "esrijson") {
 				//Respond with esriJSON
 				features = common.formatters.ESRIFeatureSetJSONFormatter(result.rows, this.args.geom_fields_array);
+			} else if (this.args.format && this.args.format.toLowerCase() == "csv") {
+				//CSV
+				if(!this.args.geom_fields_array) this.args.geom_fields_array = [];
+				features = common.formatters.CSVFormatter(result.rows, common.unEscapePostGresColumns(this.args.geom_fields_array));
 			}
 
 			this.args.featureCollection = features;

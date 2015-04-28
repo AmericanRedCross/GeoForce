@@ -18,7 +18,8 @@ var app = express();
 
 var routes = [];
 
-//PostGres Connection String
+//PostGres Connection Strings
+//For Mapfolio DB
 global.conString = "postgres://" + settings.pg.username + ":" + settings.pg.password + "@" + settings.pg.server + ":" + settings.pg.port + "/" + settings.pg.database;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //Hopefully fixes stream.js:94 UNABLE_TO_VERIFY_LEAF_SIGNATURE problem

@@ -239,6 +239,9 @@ exports.app = function (passport) {
             } else if (this.args.format && this.args.format.toLowerCase() == "esrijson") {
                 //Respond with esriJSON
                 features = common.formatters.ESRIFeatureSetJSONFormatter(result.rows, this.args.geom_fields_array);
+            } else if (this.args.format && this.args.format.toLowerCase() == "csv") {
+                //CSV
+                features = common.formatters.CSVFormatter(result.rows, common.unEscapePostGresColumns(this.args.geom_fields_array));
             }
 
             this.args.featureCollection = features;
