@@ -512,7 +512,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     var formattedDetails = {};
     var formattingDictionary = config.projectDetailsFormatting;
 
-    if (type === 'disaster') {
+    if (type.indexOf('disaster') !== -1) {
       formattingDictionary = config.disasterDetailsFormatting;
     }
     else if (type === 'project') {
