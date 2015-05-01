@@ -1,6 +1,6 @@
 module.exports = angular.module('GeoAngular').controller('MainCtrl', function($scope, $rootScope, $state, $stateParams, $location) {
   debug.$location = $location;
-  localStorage.setItem('defaultRoute', $location.path());
+  localStorage.setItem('mapfolioRoute', $location.path());
 
   // NH TODO: See if this is also the case with ui-router?
   // weird bug where redirect peels out '://{s' when ':' is there
