@@ -766,6 +766,12 @@ exports.app = function (passport) {
         //build up the query to be executed for getting Admin Stacks
 
         var table = datasource.toLowerCase() + level; //gadm, gaul, naturalearth, local, custom
+
+        //In rare cases, users are looking at ARC Regions
+        if(level == "-1"){
+            table = "arc_regions_dissolved";
+        }
+
         var queryObj = {};
         try {
             queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + " FROM " + table + " WHERE guid = $1";
@@ -785,22 +791,28 @@ exports.app = function (passport) {
     }
 
     function buildAdminStackSpatialQuery(wkt, datasource, level, returnGeometry) {
-      //build the spatial query for getting Admin Stacks by WKT geometry intersect
-      var table = datasource.toLowerCase() + level; //gadm, gaul, naturalearth, local, custom
-      var queryObj = {};
+        //build the spatial query for getting Admin Stacks by WKT geometry intersect
+        var table = datasource.toLowerCase() + level; //gadm, gaul, naturalearth, local, custom
 
-      queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + " FROM " + table + " WHERE ST_Intersects(ST_GeomFromText($1, 4326), geom)";
+        //In rare cases, users are looking at ARC Regions
+        if (level == "-1") {
+            table = "arc_regions_dissolved";
+        }
 
-      //If we're asking for Extents, then we need to include other columns in group by clause
-      if (settings.dsColumns[table].geometry.toLowerCase().indexOf("extent")) {
-        queryObj.text += " GROUP BY " + settings.dsColumns[table].columns.split(",").map(function (item) {
-          return (item.split("as ").length > 0 ? item.split("as ")[1] : item.split("as ")[0] )
-        }).join(",");
-      }
+        var queryObj = {};
 
-      queryObj.values = [wkt];
+        queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + " FROM " + table + " WHERE ST_Intersects(ST_GeomFromText($1, 4326), geom)";
 
-      return queryObj;
+        //If we're asking for Extents, then we need to include other columns in group by clause
+        if (settings.dsColumns[table].geometry.toLowerCase().indexOf("extent")) {
+            queryObj.text += " GROUP BY " + settings.dsColumns[table].columns.split(",").map(function (item) {
+                return (item.split("as ").length > 0 ? item.split("as ")[1] : item.split("as ")[0] )
+            }).join(",");
+        }
+
+        queryObj.values = [wkt];
+
+        return queryObj;
     }
 
     return app;
