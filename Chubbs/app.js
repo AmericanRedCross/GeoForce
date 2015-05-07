@@ -217,28 +217,34 @@ app.get('/services', function(req, res) {
 
 function ensureAuthenticated(req, res, next) {
 
-    //Short circuit this check if the print server is contacting the page.
-    //Check the referrer header to see if we should allow access to printing.
-    if(req.headers && req.header['x-forwarded-for'] && req.headers['x-forwarded-for'] == settings.application.referrerHeaderCheck) {
+  //Short circuit this check if the print server is contacting the page.
+  //Check the referrer header to see if we should allow access to printing.
+  if (req.headers && req.header['x-forwarded-for'] && req.headers['x-forwarded-for'] == settings.application.referrerHeaderCheck) {
+    return next();
+  }
+
+  //Allow placeSearch endpoints to be public
+  if (settings.enableSecurity && ( req.path.indexOf("/services/nameSearch") == 0 || req.path.indexOf("/services/getAdminStack") == 0 )) {
+    //requests should be allowed.
+    return next();
+  }
+
+  //If the request is for index.html, then lock it down.
+  if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" || req.path.indexOf("/services/") == 0 || req.path.indexOf("/search") == 0 || req.path.indexOf("/placesearch") == 0)) {
+    //All other requests to the mapfolio folder should be allowed.
+
+    //check for authentication
+    //req.isAuthenticated() - always returns false.
+    if (req.session && req.session.passport && req.session.passport.user) {
       return next();
     }
-
-    //If the request is for index.html, then lock it down.
-    if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" || req.path.indexOf("/services/") == 0 || req.path.indexOf("/search") == 0 || req.path.indexOf("/placesearch") == 0)) {
-        //All other requests to the mapfolio folder should be allowed.
-
-        //check for authentication
-        //req.isAuthenticated() - always returns false.
-        if(req.session && req.session.passport && req.session.passport.user) {
-            return next();
-        }
-        else{
-            res.redirect('/mapfolio/login.html');
-            return;
-        }
+    else {
+      res.redirect('/mapfolio/login.html');
+      return;
     }
+  }
 
-    return next();
+  return next();
 }
 
 
