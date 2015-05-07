@@ -312,6 +312,7 @@
         }).fail(function (jqxhr, textStatus, error) {
             var err = textStatus + ', ' + error;
             console.log("Request Failed: " + err);
+            $("#result").html("There is a problem with the search service.");
         }).always(function () {
             loading.kill();
         });
@@ -321,7 +322,7 @@
     var _geoJSON = ""; //Store the GeoJSON of IRC Data
     var _geoJSONLayer; //the leaflet layer to hold GeoJSON admin objects
     function handleNameSearchResponse(data) {
-        $("#result").html(""); //clear name result panel
+        $("#result").html('<div style="padding: 5px;margin-bottom: 10px;">Click on a match below to see a preview of the location.</div>'); //clear name result panel
         $("#adminResult").html(""); //clear admin panel
         $("#stackWrapper").hide(); // hide admin title and choose location button
 
