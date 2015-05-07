@@ -323,16 +323,20 @@
     var _geoJSONLayer; //the leaflet layer to hold GeoJSON admin objects
     function handleNameSearchResponse(data) {
 
+        $("#result").html(""); //clear name result panel
+        $("#adminResult").html(""); //clear admin panel
+        $("#stackWrapper").hide(); // hide admin title and choose location button
+
         if(data && data.features){
             if(data.features.length == 0){
+                //Let user know there are no matches
                 $("#result").html("No matches found. Please try another search term.");
                 return;
             }
         }
 
+        //Let user know they can click on results.
         $("#result").html('<div style="padding: 5px;margin-bottom: 10px;">Click on a match below to see a preview of the location.</div>'); //clear name result panel
-        $("#adminResult").html(""); //clear admin panel
-        $("#stackWrapper").hide(); // hide admin title and choose location button
 
         //Build result table
         var table = $("<table><thead><tr><th>Name</th><th>Level</th><th>Source</th></tr></thead></table>").appendTo("#result");
