@@ -322,6 +322,14 @@
     var _geoJSON = ""; //Store the GeoJSON of IRC Data
     var _geoJSONLayer; //the leaflet layer to hold GeoJSON admin objects
     function handleNameSearchResponse(data) {
+
+        if(data && data.features){
+            if(data.features.length == 0){
+                $("#result").html("No matches found. Please try another search term.");
+                return;
+            }
+        }
+
         $("#result").html('<div style="padding: 5px;margin-bottom: 10px;">Click on a match below to see a preview of the location.</div>'); //clear name result panel
         $("#adminResult").html(""); //clear admin panel
         $("#stackWrapper").hide(); // hide admin title and choose location button
