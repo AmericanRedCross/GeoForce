@@ -52,6 +52,8 @@ operation.execute = flow.define(
     //In SalesForce, the phase__c column is text and has delimited values in the cells.  So, we'll do a 'like' operator instead of =
     var activeProjectWhereClause = " AND (sf_project.phase__c LIKE '%2%' OR sf_project.phase__c LIKE '%3%' OR sf_project.phase__c LIKE '%4%')";
 
+    //Do not display projects or disasters that have TEST as the first word in the project name.
+    var removeTESTProjects = " AND name NOT ILIKE 'test%'";
 
     //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
     if (operation.isInputValid(args) === true) {
@@ -69,10 +71,12 @@ operation.execute = flow.define(
         var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g,'%').replace(/%27/g,"'");
         filters = " AND (" + inputFilters + ")";
         filters += activeProjectWhereClause;
+        filters += removeTESTProjects;
       }
       else{
         //Add where clause to only show active projects
         filters = activeProjectWhereClause;
+        filters += removeTESTProjects;
       }
 
       //need to wrap ids in single quotes

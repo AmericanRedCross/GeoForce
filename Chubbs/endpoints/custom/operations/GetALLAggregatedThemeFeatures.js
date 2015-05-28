@@ -67,10 +67,13 @@ operation.execute = flow.define(
                 }
             }
 
-            //If theme is project, projectRisk, or projectHealth, add to the filters where phase is 2 - 5, which equates to Active projects.
+            //If theme is project, projectRisk, or projectHealth, add to the filters where phase is 2 - 4, which equates to Active projects.
             //In Salesforce, the phase__c column is text and has delimited values in the cells.  So, we'll do a 'like' operator instead of =
-
+            //This will need to be moved from being hard-coded to being the default when a status
             var activeProjectWhereClause = " AND (phase__c LIKE '%2%' OR phase__c LIKE '%3%' OR phase__c LIKE '%4%')";
+
+            //Do not display projects or disasters that have TEST as the first word in the project name.
+            var removeTESTProjects = " AND name NOT ILIKE 'test%'";
 
 
             //need to wrap ids in single quotes
@@ -86,12 +89,14 @@ operation.execute = flow.define(
                 //Add where clause to only show active projects
                 if (operation.inputs["theme"].toLowerCase() == 'project' || operation.inputs["theme"].toLowerCase() == 'projectrisk' || operation.inputs["theme"].toLowerCase() == 'projecthealth') {
                     filters += activeProjectWhereClause;
+                    filters += removeTESTProjects;
                 }
             }
             else {
                 //Add where clause to only show active projects
                 if (operation.inputs["theme"].toLowerCase() == 'project' || operation.inputs["theme"].toLowerCase() == 'projectrisk' || operation.inputs["theme"].toLowerCase() == 'projecthealth') {
                     filters = activeProjectWhereClause;
+                    filters += removeTESTProjects;
                 }
             }
             if (operation.inputs["theme"].toLowerCase() == 'disaster') {

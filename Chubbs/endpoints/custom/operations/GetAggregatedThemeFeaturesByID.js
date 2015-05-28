@@ -68,6 +68,8 @@ operation.execute = flow.define(
 
       var activeProjectWhereClause = " AND (phase__c LIKE '%2%' OR phase__c LIKE '%3%' OR phase__c LIKE '%4%')";
 
+      //Do not display projects or disasters that have TEST as the first word in the project name.
+      var removeTESTProjects = " AND name NOT ILIKE 'test%'";
 
       //need to wrap ids in single quotes
       //Execute the query
@@ -82,12 +84,14 @@ operation.execute = flow.define(
         //Add where clause to only show active projects
         if (operation.inputs["theme"].toLowerCase() == 'project' || operation.inputs["theme"].toLowerCase() == 'projectrisk' || operation.inputs["theme"].toLowerCase() == 'projecthealth') {
           filters += activeProjectWhereClause;
+          filters += removeTESTProjects;
         }
       }
       else {
         //Add where clause to only show active projects
         if (operation.inputs["theme"].toLowerCase() == 'project' || operation.inputs["theme"].toLowerCase() == 'projectrisk' || operation.inputs["theme"].toLowerCase() == 'projecthealth') {
           filters = activeProjectWhereClause;
+          filters += removeTESTProjects;
         }
       }
       if (operation.inputs["theme"].toLowerCase() == 'disaster') {
