@@ -1,8 +1,3 @@
-/**
- * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
- *       on 8/6/14.
- */
-
 module.exports = {
 
   //Note - as of April 12, 2015, this is returning empty images
