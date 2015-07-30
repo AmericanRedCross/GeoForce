@@ -176,8 +176,6 @@
 <script type="text/javascript">
     var map = L.map('map').setView([0,0], 7);
     map.locate({setView: true, maxZoom: 10});
-    //var _server = "http://localhost:3001";
-    var _server = "https://webviz.redcross.org";
 
     L.tileLayer('https://a.tiles.mapbox.com/v3/americanredcross.map-dn70q0vb/{z}/{x}/{y}.png').addTo(map);
 
@@ -249,7 +247,6 @@
                 return null;
         }
     }
-
 
     //Set 'enter' click trigger for button
     $('#uxSearchterm').keypress(function (e) {
@@ -560,29 +557,26 @@
         // $("#uxChooseThis").prop("disabled", false); //enabled the second option box
     });
 
-function showThisLayer(name, guid, cb) {
-    if(pbfSource) map.removeLayer(pbfSource);
-    pbfSource = null;
-    pbfSource = createGADMVecorTileLayer(name, guid);
-    pbfSource.style = pbfStyle;
-
-    map.addLayer(pbfSource);
-
-    //Callback when layer is added to map
-    if(cb) cb();
-}
-
-function createGADMVecorTileLayer(name, guid){
-    return new L.TileLayer.MVTSource({
-        //url: "../services/vector-tiles/GADM/{z}/{x}/{y}.pbf",
-        url: "../services/postgis/" + name + "/vector-tiles/{z}/{x}/{y}.pbf?fields=guid" + (guid ? "&where=guid%3D%27" + guid + "%27" : ""), //filter by guid if present
-        debug: false,
-        clickableLayers: [],
-        getIDForLayerFeature: function(feature) {
-            return feature.properties.guid;
-        }
-    });
-}
+    function showThisLayer(name, guid, cb) {
+        if(pbfSource) map.removeLayer(pbfSource);
+        pbfSource = null;
+        pbfSource = createGADMVecorTileLayer(name, guid);
+        pbfSource.style = pbfStyle;
+        map.addLayer(pbfSource);
+        //Callback when layer is added to map
+        if(cb) cb();
+    }
+    function createGADMVecorTileLayer(name, guid){
+        return new L.TileLayer.MVTSource({
+            //url: "../services/vector-tiles/GADM/{z}/{x}/{y}.pbf",
+            url: "../services/postgis/" + name + "/vector-tiles/{z}/{x}/{y}.pbf?fields=guid" + (guid ? "&where=guid%3D%27" + guid + "%27" : ""), //filter by guid if present
+            debug: false,
+            clickableLayers: [],
+            getIDForLayerFeature: function(feature) {
+                return feature.properties.guid;
+            }
+        });
+    }
 </script>
 <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

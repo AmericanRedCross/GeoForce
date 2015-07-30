@@ -1,10 +1,4 @@
-/**
- * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
- *       on 8/6/14.
- */
-
 module.exports = {
-
 
   snow: {
     name: 'Snow',
@@ -71,6 +65,20 @@ module.exports = {
     type: 'geojson',
     theme: 'other',
     url: 'https://gist.githubusercontent.com/anonymous/d58e51d612add6483257/raw/LAC_Communities_styled.geojson'
+  },
+
+  rflinstructors: {
+    name: 'RFL Instructors',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://gist.githubusercontent.com/danbjoseph/711f92bfae1b11eee1e9/raw/rfl-instructors.geojson'
+  },
+
+  missingmaps_mapathons: {
+    name: 'Missing Maps Mapathons',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://raw.githubusercontent.com/MissingMaps/missingmaps.github.io/master/data/events.json'
   }
 
 };

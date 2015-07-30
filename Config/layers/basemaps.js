@@ -1,8 +1,3 @@
-/**
- * Created by Nicholas Hallahan <nhallahan@spatialdev.com>
- *       on 8/6/14.
- */
-
 module.exports = {
 
   /**
@@ -16,20 +11,12 @@ module.exports = {
     'osmhot',
     'osm',
     'satellite',
-    'ortho',
     'toner',
     'dark',
     'github',
-    'mozilla',
-    'green',
-    'osmcycle',
-    'osmtransport',
-    'osmmapquest',
     'natgeo',
     'usgstopo',
     'esritopo',
-    'ocean',
-    'lightgray',
     'watercolor'
   ],
 
@@ -49,11 +36,11 @@ module.exports = {
     type: 'basemap'
   },
 
-  redcross: {
-    url: 'https://{s}.tiles.mapbox.com/v3/americanredcross.hcji22de/{z}/{x}/{y}.png',
-    name: 'Red Cross',
-    type: 'basemap'
-  },
+  // redcross: {
+  //   url: 'https://{s}.tiles.mapbox.com/v3/americanredcross.hcji22de/{z}/{x}/{y}.png',
+  //   name: 'Red Cross',
+  //   type: 'basemap'
+  // },
 
   satellite: {
     url: 'https://{s}.tiles.mapbox.com/v3/examples.map-qfyrx5r8/{z}/{x}/{y}.png',
@@ -61,21 +48,9 @@ module.exports = {
     type: 'basemap'
   },
 
-  mozilla: {
-    url: 'http://{s}.tiles.mapbox.com/v3/mozilla-webprod.e91ef8b3/{z}/{x}/{y}.png',
-    name: 'Mozilla',
-    type: 'basemap'
-  },
-
   github: {
     url: 'http://{s}.tiles.mapbox.com/v3/github.map-xgq2svrz/{z}/{x}/{y}.png',
     name: 'Github',
-    type: 'basemap'
-  },
-
-  green: {
-    url: 'http://{s}.tiles.mapbox.com/v3/examples.map-3gisupiu/{z}/{x}/{y}.png',
-    name: 'Green Theme',
     type: 'basemap'
   },
 
@@ -88,24 +63,6 @@ module.exports = {
   osm: {
     url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
     name: 'Standard OpenStreetMap',
-    type: 'basemap'
-  },
-
-  osmcycle: {
-    url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-    name: 'Cycle OpenStreetMap',
-    type: 'basemap'
-  },
-
-  osmtransport: {
-    url: 'http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png',
-    name: 'Transport OpenStreetMap',
-    type: 'basemap'
-  },
-
-  osmmapquest: {
-    url: 'http://otile3.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',
-    name: 'MapQuest OpenStreetMap',
     type: 'basemap'
   },
 
@@ -124,18 +81,6 @@ module.exports = {
   ortho: {
     url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     name: 'Orthographic',
-    type: 'basemap'
-  },
-
-  ocean: {
-    url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}',
-    name: 'Ocean Bathymetric',
-    type: 'basemap'
-  },
-
-  lightgray: {
-    url: 'http://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-    name: 'Light Gray',
     type: 'basemap'
   },
 
