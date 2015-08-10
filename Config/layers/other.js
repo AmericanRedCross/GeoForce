@@ -97,6 +97,12 @@ module.exports = {
     type: 'geojson',
     theme: 'other',
     url: 'https://raw.githubusercontent.com/AmericanRedCross/risklayers/master/inform/INFORM_world_index_topline_metrics.geojson'
+  },
+  wri_risk2014: {
+    name: 'World Risk Index 2014',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://raw.githubusercontent.com/AmericanRedCross/risklayers/master/WRI_risk2014.geojson'
   }
 
 };
