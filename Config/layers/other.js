@@ -7,7 +7,6 @@ module.exports = {
     url: 'http://{s}.tile.openweathermap.org/map/snow/{z}/{x}/{y}.png'
   },
 
-
   pressurecontour: {
     name: 'Pressure Contour',
     type: 'xyz',
@@ -79,6 +78,31 @@ module.exports = {
     type: 'geojson',
     theme: 'other',
     url: 'https://raw.githubusercontent.com/MissingMaps/missingmaps.github.io/master/data/events.json'
+  },
+  //Infrom Risk Layers
+  inform_world_index: {
+    name: 'Inform World Risk Index',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://raw.githubusercontent.com/AmericanRedCross/risklayers/master/inform/INFORM_world_index.geojson'
+  },
+  inform_world_index_natural_hazards: {
+    name: 'Inform Natural Hazards',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://raw.githubusercontent.com/AmericanRedCross/risklayers/master/inform/INFORM_world_index_natural_hazard.geojson'
+  },
+  inform_world_index_topline: {
+    name: 'Inform Risk Top Line',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://raw.githubusercontent.com/AmericanRedCross/risklayers/master/inform/INFORM_world_index_topline_metrics.geojson'
+  },
+  wri_risk2014: {
+    name: 'World Risk Index 2014',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://raw.githubusercontent.com/AmericanRedCross/risklayers/master/WRI_risk2014.geojson'
   }
 
 };
