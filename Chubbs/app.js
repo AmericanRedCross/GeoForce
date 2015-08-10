@@ -245,25 +245,8 @@ function ensureAuthenticated(req, res, next) {
   }
 
   return next();
-  }
-
-  //If the request is for index.html, then lock it down.
-  if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" || req.path.indexOf("/services/") == 0 || req.path.indexOf("/search") == 0 || req.path.indexOf("/placesearch") == 0)) {
-    //All other requests to the mapfolio folder should be allowed.
-
-    //check for authentication
-    //req.isAuthenticated() - always returns false.
-    if (req.session && req.session.passport && req.session.passport.user) {
-      return next();
-    }
-    else {
-      res.redirect('/mapfolio/login.html');
-      return;
-    }
-  }
-
-  return next();
 }
+
 
 
 //Look for any errors (this signature is for error handling), this is generally defined after all other app.uses.
