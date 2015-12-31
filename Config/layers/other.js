@@ -103,6 +103,12 @@ module.exports = {
     type: 'geojson',
     theme: 'other',
     url: 'https://raw.githubusercontent.com/AmericanRedCross/risklayers/master/WRI_risk2014.geojson'
+  },
+  active_hurricane: {
+    name: 'Active Hurricanes',
+    type: 'kml',
+    theme: 'other',
+    url: 'http://www.nhc.noaa.gov/gis/kml/nhc_active.kml'
   }
 
 };
