@@ -121,7 +121,7 @@ module.exports = angular.module('GeoAngular').service('StoriesConfig', function 
     name: 'RFL Projects',
     date: '2015-30-12',
     thumbnail: 'images/stories/rfl.jpg',
-    keywords: 'Africa, Programs, Projects'
+    keywords: 'RFL, Restoring Family Links, Programs, Projects'
   };
 
   /**
