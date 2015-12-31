@@ -17,7 +17,16 @@ module.exports = angular.module('GeoAngular').service('StoriesConfig', function 
    */
   this.stories = [
     'haiyan',
-    'ebola'
+    'ebola',
+    'gis',
+    'disasters',
+    'popmovement',
+    'currentprojects',
+    'haitiprojects',
+    'gdpc',
+    'lacprojects',
+    'ameeprojects',
+    'africaprojects'
   ];
 
 
@@ -43,6 +52,69 @@ module.exports = angular.module('GeoAngular').service('StoriesConfig', function 
     date: '2015-15-3',
     thumbnail: 'images/stories/pam.png',
     keywords: 'Cyclone, Disaster Response, Vanuatu, Africa'
+  };
+  this.gis = {
+    url: 'mapfolio/#/map@13.496473,10.458984,3(satellite,gadm0),project/export?filters=sector__c%2520LIKE%2520%2527%2525GIS%2520%2526%2520Information%2520Management%2525%2527%2520',
+    name: 'GIS Projects',
+    date: '2015-30-12',
+    thumbnail: 'images/stories/gis.png',
+    keywords: 'GIS, Missing Maps, Map'
+  };
+  this.disasters = {
+    url: 'mapfolio/#/map@19.145168,41.660156,2(satellite,gadm0),disasterType?filters=iroc_status__c%2520LIKE%2520%2527%2525Monitoring%2525%2527OR%2520iroc_status__c%2520LIKE%2520%2527%2525Active%2525%2527%2520&category=Human%20Related',
+    name: 'Active Responses',
+    date: '2015-30-12',
+    thumbnail: 'images/stories/disasters.png',
+    keywords: 'IROC, Response, Disaster'
+  };
+  this.popmovement = {
+    url: 'mapfolio/#/map@45.475540,15.754395,5(satellite,gadm0),disasterType?filters=disaster_type__c%2520LIKE%2520%2527%2525Population%2520Movement%2525%2527%2520AND%2520%2528iroc_status__c%2520LIKE%2520%2527%2525Monitoring%2525%2527OR%2520iroc_status__c%2520LIKE%2520%2527%2525Active%2525%2527%2520%2529&category=Human%20Related',
+    name: 'European Pop Movement',
+    date: '2015-30-12',
+    thumbnail: 'images/stories/popmovement.png',
+    keywords: 'IROC, Response, Disaster, Population Movement'
+  };
+  this.currentprojects = {
+    url: 'mapfolio/#/map@24.686952,27.246094,2(satellite,gadm0),project',
+    name: 'Current Projects',
+    date: '2015-30-12',
+    thumbnail: 'images/stories/projects.png',
+    keywords: 'IRP, Africa, AMEE, LAC, World, Programs, Projects'
+  };
+  this.haitiprojects = {
+    url:'mapfolio/#/map@18.940062,-71.650085,8(satellite,gadm0),project?filters=null&details-panel=open',
+    name: 'HAP Projects',
+    date: '2015-30-12',
+    thumbnail: 'images/stories/hap.png',
+    keywords: 'LAC, HAP, Haiti, Programs, Projects'
+  };
+  this.gdpc = {
+    url:'mapfolio/#/map@6.489983,18.105469,2(satellite,gadm0),project?filters=business_unit__c%2520LIKE%2520%2527%2525GDPC%2525%2527%2520',
+    name: 'GDPC Projects',
+    date: '2015-30-12',
+    thumbnail: 'images/stories/gdpc.png',
+    keywords: 'GDPC, Programs, Projects'
+  };
+  this.lacprojects = {
+    url:'mapfolio/#/map@-12.382928,-64.028320,4(satellite,gadm0),project?filters=business_unit__c%2520LIKE%2520%2527%2525LAC%2525%2527%2520',
+    name: 'GDPC Projects',
+    date: '2015-30-12',
+    thumbnail: 'images/stories/lac.png',
+    keywords: 'LAC, Programs, Projects'
+  };
+  this.ameeprojects = {
+    url:'mapfolio/#/map@6.489983,18.105469,2(satellite,gadm0),project?filters=business_unit__c%2520LIKE%2520%2527%2525GDPC%2525%2527%2520',
+    name: 'GDPC Projects',
+    date: '2015-30-12',
+    thumbnail: 'images/stories/amee.png',
+    keywords: 'AMEE, Programs, Projects'
+  };
+  this.africaprojects = {
+    url:'mapfolio/#/map@-1.581830,23.598633,4(satellite,gadm0),project',
+    name: 'Africa Projects',
+    date: '2015-30-12',
+    thumbnail: 'images/stories/africa.png',
+    keywords: 'Africa, Programs, Projects'
   };
 
   /**
