@@ -116,6 +116,13 @@ module.exports = angular.module('GeoAngular').service('StoriesConfig', function 
     thumbnail: 'images/stories/africa.jpg',
     keywords: 'Africa, Programs, Projects'
   };
+  this.rfl = {
+    url:'mapfolio/#/map@37.405074,-94.020996,5(satellite,gadm1),project?filters=business_unit__c%2520LIKE%2520%2527%2525IHL%2525%2527%2520OR%2520business_unit__c%2520LIKE%2520%2527%2525RFL%2525%2527%2520&details-panel=open',
+    name: 'RFL Projects',
+    date: '2015-30-12',
+    thumbnail: 'images/stories/rfl.jpg',
+    keywords: 'Africa, Programs, Projects'
+  };
 
   /**
    * For layers, we try and get an alias for everything, so if it's a URL that
