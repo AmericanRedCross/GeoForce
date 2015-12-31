@@ -109,6 +109,23 @@ module.exports = {
     type: 'kml',
     theme: 'other',
     url: 'http://www.nhc.noaa.gov/gis/kml/nhc_active.kml'
+  },
+  arc_offices: {
+    name: 'ISD Offices',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://gist.githubusercontent.com/dalekunce/eaa40f314ad5a6d28a6e/raw/arc_offices.geojson'
+  },
+  redcross_offices: {
+    name: 'Red Cross Offices World Wide',
+    type: 'geojson',
+    theme: 'other',
+    url: 'arc_offices: {
+      name: 'ISD Offices',
+      type: 'geojson',
+      theme: 'other',
+      url: 'https://gist.githubusercontent.com/dalekunce/eaa40f314ad5a6d28a6e/raw/arc_offices.geojson'
+    }'
   }
 
 };
