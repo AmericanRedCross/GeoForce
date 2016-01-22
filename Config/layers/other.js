@@ -103,6 +103,24 @@ module.exports = {
     type: 'geojson',
     theme: 'other',
     url: 'https://raw.githubusercontent.com/AmericanRedCross/risklayers/master/WRI_risk2014.geojson'
+  },
+  active_hurricane: {
+    name: 'Active Hurricanes',
+    type: 'kml',
+    theme: 'other',
+    url: 'http://www.nhc.noaa.gov/gis/kml/nhc_active.kml'
+  },
+  arc_offices: {
+    name: 'ISD Offices',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://gist.githubusercontent.com/dalekunce/eaa40f314ad5a6d28a6e/raw/arc_offices.geojson'
+  },
+  redcross_offices: {
+    name: 'Red Cross Offices World Wide',
+    type: 'geojson',
+    theme: 'other',
+    url: 'https://gist.githubusercontent.com/dalekunce/5fb2a4b37cd86e7cb82e/raw/9c41579bfedf5a0a50c9a7afea06d16dc3ca9eb2/rcrc_locations.geojson'
   }
 
 };
