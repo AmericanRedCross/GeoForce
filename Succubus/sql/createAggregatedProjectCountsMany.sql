@@ -46,10 +46,8 @@ SELECT  0 as countARC,
     vw_sf_project.sub_sector__c,
     vw_sf_project.name,
     vw_sf_project.summary__c,
-    vw_sf_project.total_budget__c,
     vw_sf_project.sf_id,
     vw_sf_project.overall_assessment__c,
-    vw_sf_project.overall_status__c,
     vw_sf_project.phase__c
 
 INTO    sf_aggregated_gadm_project_counts_many
@@ -120,10 +118,8 @@ INSERT INTO sf_aggregated_gadm_project_counts_many
     vw_sf_project.sub_sector__c,
     vw_sf_project.name,
     vw_sf_project.summary__c,
-    vw_sf_project.total_budget__c,
     vw_sf_project.sf_id,
     vw_sf_project.overall_assessment__c,
-    vw_sf_project.overall_status__c,
     vw_sf_project.phase__c
 
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, vw_sf_project
@@ -187,10 +183,8 @@ INSERT INTO sf_aggregated_gadm_project_counts_many
     vw_sf_project.sub_sector__c,
     vw_sf_project.name,
     vw_sf_project.summary__c,
-    vw_sf_project.total_budget__c,
     vw_sf_project.sf_id,
     vw_sf_project.overall_assessment__c,
-    vw_sf_project.overall_status__c,
     vw_sf_project.phase__c
 
 FROM    gadm0, gadm1, gadm2, gadm3, vw_sf_project
@@ -250,10 +244,8 @@ INSERT INTO sf_aggregated_gadm_project_counts_many
     vw_sf_project.sub_sector__c,
     vw_sf_project.name,
     vw_sf_project.summary__c,
-    vw_sf_project.total_budget__c,
     vw_sf_project.sf_id,
     vw_sf_project.overall_assessment__c,
-    vw_sf_project.overall_status__c,
     vw_sf_project.phase__c
 
 FROM  gadm0, gadm1, gadm2, vw_sf_project
@@ -311,10 +303,8 @@ INSERT INTO sf_aggregated_gadm_project_counts_many
     vw_sf_project.sub_sector__c,
     vw_sf_project.name,
     vw_sf_project.summary__c,
-    vw_sf_project.total_budget__c,
     vw_sf_project.sf_id,
     vw_sf_project.overall_assessment__c,
-    vw_sf_project.overall_status__c,
     vw_sf_project.phase__c
 
 FROM  gadm1, gadm0, vw_sf_project
@@ -369,10 +359,8 @@ INSERT INTO sf_aggregated_gadm_project_counts_many
     vw_sf_project.sub_sector__c,
     vw_sf_project.name,
     vw_sf_project.summary__c,
-    vw_sf_project.total_budget__c,
     vw_sf_project.sf_id,
     vw_sf_project.overall_assessment__c,
-    vw_sf_project.overall_status__c,
     vw_sf_project.phase__c
 
 FROM gadm0, vw_sf_project

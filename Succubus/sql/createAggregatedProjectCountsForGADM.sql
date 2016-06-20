@@ -42,10 +42,8 @@ SELECT  0 as countARC,
     sf_project.sub_sector__c,
     sf_project.name,
     sf_project.summary__c,
-    sf_project.total_budget__c,
     sf_project.sf_id,
     sf_project.overall_assessment__c,
-    sf_project.overall_status__c,
     sf_project.phase__c
 INTO    sf_aggregated_gadm_project_counts
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, gadm5, sf_project
@@ -113,10 +111,8 @@ INSERT INTO sf_aggregated_gadm_project_counts
     sf_project.sub_sector__c,
     sf_project.name,
     sf_project.summary__c,
-    sf_project.total_budget__c,
     sf_project.sf_id,
     sf_project.overall_assessment__c,
-    sf_project.overall_status__c,
     sf_project.phase__c
 FROM    gadm0, gadm1, gadm2, gadm3, gadm4, sf_project
 WHERE   gadm0.id_0 = gadm1.id_0
@@ -176,10 +172,8 @@ INSERT INTO sf_aggregated_gadm_project_counts
     sf_project.sub_sector__c,
     sf_project.name,
     sf_project.summary__c,
-    sf_project.total_budget__c,
     sf_project.sf_id,
     sf_project.overall_assessment__c,
-    sf_project.overall_status__c,
     sf_project.phase__c
 FROM    gadm0, gadm1, gadm2, gadm3, sf_project
 WHERE   gadm0.id_0 = gadm1.id_0
@@ -236,10 +230,8 @@ INSERT INTO sf_aggregated_gadm_project_counts
     sf_project.sub_sector__c,
     sf_project.name,
     sf_project.summary__c,
-    sf_project.total_budget__c,
     sf_project.sf_id,
     sf_project.overall_assessment__c,
-    sf_project.overall_status__c,
     sf_project.phase__c
 FROM  gadm0, gadm1, gadm2, sf_project
 WHERE gadm0.id_0 = gadm1.id_0
@@ -292,10 +284,8 @@ INSERT INTO sf_aggregated_gadm_project_counts
     sf_project.sub_sector__c,
     sf_project.name,
     sf_project.summary__c,
-    sf_project.total_budget__c,
     sf_project.sf_id,
     sf_project.overall_assessment__c,
-    sf_project.overall_status__c,
     sf_project.phase__c
 FROM  gadm1, gadm0, sf_project
 WHERE gadm0.id_0 = gadm1.id_0
@@ -347,10 +337,8 @@ INSERT INTO sf_aggregated_gadm_project_counts
     sf_project.sub_sector__c,
     sf_project.name,
     sf_project.summary__c,
-    sf_project.total_budget__c,
     sf_project.sf_id,
     sf_project.overall_assessment__c,
-    sf_project.overall_status__c,
     sf_project.phase__c
 FROM gadm0, sf_project
 WHERE gadm0.guid::text = sf_project.location__r_gis_geo_id__c

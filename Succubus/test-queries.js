@@ -21,11 +21,15 @@ conn.login(settings.user, settings.password+settings.token, function(err, userIn
     console.log("Org ID: " + userInfo.organizationId);
     console.log("");
 
+    var success = 0, fail = 0;
+    var numQueries = Object.keys(salesforceQueries).length;
+
     function testQuery(queryStr, fileName) {
         var str = queryStr;
         var name = fileName;
         conn.query(str, function(err, result) {
             if (err) {
+                fail++;
                 return console.error('QUERY FAILED: ' + queryStr + '\nDESCRIPTION: ' + name + '\n' + err + '\n');
             } else {
                 console.log("=== Query Successful ===");
@@ -34,12 +38,14 @@ conn.login(settings.user, settings.password+settings.token, function(err, userIn
                 console.log("total: " + result.totalSize);
                 console.log("fetched: " + result.records.length);
                 console.log("results path: " + 'test-queries/' + name + '.json');
-
+                success++;
             }
 
             var json = JSON.stringify(result.records, null, 2);
             fs.writeFile('test-queries/' + name + '.json', json, function(err) {
                 if (err) console.log('err: test-queries/' + name + '.json  ' + err);
+                console.log('Passed:' + success);
+                console.log('Failed:' + fail);
             });
             if (!result.done) {
                 // you can use the locator to fetch next records set.

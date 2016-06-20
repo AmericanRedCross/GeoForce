@@ -26,12 +26,12 @@ function addRiskToSFProjectTable() {
     return str;
 }
 
-function addStatusToSFProjectTable() {
-    //overall_status__c already exists in sf_project table, but is empty.  Let's fill it.
-    //var str = "ALTER TABLE sf_project ADD COLUMN overall_status__c character varying;";
-    var str = "WITH status as (SELECT project__c, CASE WHEN array_agg(lower(overall_status__c)) @> ARRAY['red'] THEN 'Red' WHEN array_agg(lower(overall_status__c)) @> ARRAY['yellow'] THEN 'Yellow' WHEN array_agg(lower(overall_status__c)) @> ARRAY['green'] THEN 'Green' WHEN array_agg(lower(overall_status__c)) @> ARRAY['white'] THEN 'White' END as overall_status__c FROM sf_project_status GROUP BY project__C) UPDATE sf_project SET overall_status__c = status.overall_status__c FROM status WHERE status.project__c = sf_project.sf_id;";
-    return str;
-}
+//function addStatusToSFProjectTable() {
+//    //overall_status__c already exists in sf_project table, but is empty.  Let's fill it.
+//    //var str = "ALTER TABLE sf_project ADD COLUMN overall_status__c character varying;";
+//    var str = "WITH status as (SELECT project__c, CASE WHEN array_agg(lower(overall_status__c)) @> ARRAY['red'] THEN 'Red' WHEN array_agg(lower(overall_status__c)) @> ARRAY['yellow'] THEN 'Yellow' WHEN array_agg(lower(overall_status__c)) @> ARRAY['green'] THEN 'Green' WHEN array_agg(lower(overall_status__c)) @> ARRAY['white'] THEN 'White' END as overall_status__c FROM sf_project_status GROUP BY project__C) UPDATE sf_project SET overall_status__c = status.overall_status__c FROM status WHERE status.project__c = sf_project.sf_id;";
+//    return str;
+//}
 
 function addLevelToSFDisasterTable() {
     var str = "ALTER TABLE sf_disaster ADD COLUMN level character varying;";
@@ -54,7 +54,7 @@ operations.addLevelToSFDisasterTable = addLevelToSFDisasterTable();
 operations.addRiskToSFProjectTable = addRiskToSFProjectTable();
 
 //Add 'status' to sf_project
-operations.addStatusToSFProjectTable = addStatusToSFProjectTable();
+//operations.addStatusToSFProjectTable = addStatusToSFProjectTable();
 
 //Create the aggregated project counts by all gadm levels, with counts rolled up to parents
 operations.createAggregateProjectCountsForGADM = fs.readFileSync('./sql/createAggregatedProjectCountsForGADM.sql', 'utf8');

@@ -37,7 +37,6 @@ SELECT  0 as countARC,
 	sf_project.sub_sector__c,
 	sf_project.name,
 	sf_project.summary__c,
-	sf_project.total_budget__c,
 	sf_project.sf_id
 
 	
@@ -101,7 +100,6 @@ INSERT INTO sf_aggregated_gadm_project_counts
 	sf_project.sub_sector__c,
 	sf_project.name,
 	sf_project.summary__c,
-	sf_project.total_budget__c,
 	sf_project.sf_id
 	
     FROM    gadm0, gadm1, gadm2, gadm3, gadm4, sf_project
@@ -156,7 +154,6 @@ INSERT INTO sf_aggregated_gadm_project_counts
 	sf_project.sub_sector__c,
 	sf_project.name,
 	sf_project.summary__c,
-	sf_project.total_budget__c,
 	sf_project.sf_id
             
     FROM    gadm0, gadm1, gadm2, gadm3, sf_project
@@ -209,7 +206,6 @@ INSERT INTO sf_aggregated_gadm_project_counts
 	sf_project.sub_sector__c,
 	sf_project.name,
 	sf_project.summary__c,
-	sf_project.total_budget__c,
 	sf_project.sf_id
           
     FROM  gadm0, gadm1, gadm2, sf_project
@@ -258,7 +254,6 @@ INSERT INTO sf_aggregated_gadm_project_counts
 	sf_project.sub_sector__c,
 	sf_project.name,
 	sf_project.summary__c,
-	sf_project.total_budget__c,
 	sf_project.sf_id
 	
     FROM  gadm1, gadm0, sf_project
@@ -306,7 +301,6 @@ INSERT INTO sf_aggregated_gadm_project_counts
 	sf_project.sub_sector__c,
 	sf_project.name,
 	sf_project.summary__c,
-	sf_project.total_budget__c,
 	sf_project.sf_id
 
 
