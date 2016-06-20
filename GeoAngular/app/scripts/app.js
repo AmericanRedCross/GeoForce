@@ -96,8 +96,8 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
 
 GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider
-    .when('/default', '/map@0.1,0.1,2(osmtransport,gadm0),project')
-    .otherwise(localStorage.getItem('mapfolioRoute') || '/map@1,1,2(osmtransport,gadm0),project');
+    .when('/default', '/map@0.1,0.1,2(osmhot,gadm0),project')
+    .otherwise(localStorage.getItem('mapfolioRoute') || '/map@1,1,2(osmhot,gadm0),project');
 
   $stateProvider
     .state('main', {
