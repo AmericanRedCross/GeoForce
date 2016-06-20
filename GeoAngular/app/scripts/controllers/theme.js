@@ -9,7 +9,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
     project: 'Projects',
     disaster: 'Disasters',
     projectRisk: 'Project Risk',
-    projectHealth: 'Project Health',
+    //projectHealth: 'Project Health',
     disasterType: 'Disaster Type',
     none: 'None'
   };

@@ -70,7 +70,7 @@ operation.execute = flow.define(
 
             //If theme is project, projectRisk, or projectHealth, add to the filters where phase is 2 - 5, which equates to Active projects.
             //In Salesforce, the phase__c column is text and has delimited values in the cells.  So, we'll do a 'like' operator instead of =
-            var activeProjectWhereClause = " AND (phase__c LIKE '%2%' OR phase__c LIKE '%3%' OR phase__c LIKE '%4%')";
+            var activeProjectWhereClause = " AND (phase__c LIKE '%1%' OR phase__c LIKE '%2%' OR phase__c LIKE '%3%' OR phase__c LIKE '%4%' OR phase__c LIKE '%5%' OR phase__c LIKE '%6%')";
 
             //Do not display projects or disasters that have TEST as the first word in the project name.
             var removeTESTProjects = " AND name NOT ILIKE 'test%'";

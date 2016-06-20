@@ -14,7 +14,7 @@ module.exports = angular.module('GeoAngular').service('LayerConfig', function ()
     require('../../../../Config/layers/disaster.js'),
     require('../../../../Config/layers/other.js'),
     require('../../../../Config/layers/project.js'),
-    require('../../../../Config/layers/projecthealth.js'),
+    //require('../../../../Config/layers/projecthealth.js'),
     require('../../../../Config/layers/projectrisk.js'),
     require('../../../../Config/layers/vectortiles.js')
 

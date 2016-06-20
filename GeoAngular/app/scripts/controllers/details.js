@@ -105,22 +105,22 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     }
 
 
-    if ($stateParams.theme === 'projectHealth') {
-      // project
-      if ($scope.sfFieldHash.Project__c[key]) {
-        desc = $scope.sfFieldHash.Project__c[key].label || key;
-      }
-
-      if ($scope.sfFieldHash.Location__c[key]) {
-        desc = $scope.sfFieldHash.Location__c[key].label || key;
-      }
-
-      if ($scope.sfFieldHash.Project_Evaluation__c[key]) {
-        desc = $scope.sfFieldHash.Project_Evaluation__c[key].label || key;
-      }
-
-      return desc;
-    }
+    //if ($stateParams.theme === 'projectHealth') {
+    //  // project
+    //  if ($scope.sfFieldHash.Project__c[key]) {
+    //    desc = $scope.sfFieldHash.Project__c[key].label || key;
+    //  }
+    //
+    //  if ($scope.sfFieldHash.Location__c[key]) {
+    //    desc = $scope.sfFieldHash.Location__c[key].label || key;
+    //  }
+    //
+    //  if ($scope.sfFieldHash.Project_Evaluation__c[key]) {
+    //    desc = $scope.sfFieldHash.Project_Evaluation__c[key].label || key;
+    //  }
+    //
+    //  return desc;
+    //}
 
     // project
     if ($scope.sfFieldHash.Project__c[key]) {
@@ -195,20 +195,20 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
       return desc + ' FieldName: ' + key;
     }
 
-    if ($stateParams.theme === 'projectHealth') {
-      if ($scope.sfFieldHash.Project__c[key]) {
-        desc = $scope.sfFieldHash.Project__c[key].inlineHelpText || '';
-      }
-
-      if ($scope.sfFieldHash.Location__c[key]) {
-        desc = $scope.sfFieldHash.Location__c[key].inlineHelpText || '';
-      }
-
-      if ($scope.sfFieldHash.Project_Evaluation__c[key]) {
-        desc = $scope.sfFieldHash.Project_Evaluation__c[key].inlineHelpText || '';
-      }
-      return desc + ' FieldName: ' + key;
-    }
+    //if ($stateParams.theme === 'projectHealth') {
+    //  if ($scope.sfFieldHash.Project__c[key]) {
+    //    desc = $scope.sfFieldHash.Project__c[key].inlineHelpText || '';
+    //  }
+    //
+    //  if ($scope.sfFieldHash.Location__c[key]) {
+    //    desc = $scope.sfFieldHash.Location__c[key].inlineHelpText || '';
+    //  }
+    //
+    //  if ($scope.sfFieldHash.Project_Evaluation__c[key]) {
+    //    desc = $scope.sfFieldHash.Project_Evaluation__c[key].inlineHelpText || '';
+    //  }
+    //  return desc + ' FieldName: ' + key;
+    //}
 
     // project
     if ($scope.sfFieldHash.Project__c[key]) {
@@ -489,9 +489,9 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     else if (type === 'projectRisk' || type === 'risk') {
       blacklistDictionary = config.unwantedProjectRiskDetails;
     }
-    else if (type === 'projectHealth' || type === 'status') {
-      blacklistDictionary = config.unwantedProjectHealthDetails;
-    }
+    //else if (type === 'projectHealth' || type === 'status') {
+    //  blacklistDictionary = config.unwantedProjectHealthDetails;
+    //}
 
     for (var key in details) {
       var blacklisted = blacklistDictionary[key];
@@ -527,9 +527,9 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     else if (type === 'projectRisk' || type === 'risk') {
       formattingDictionary = config.projectRiskDetailsFormatting;
     }
-    else if (type === 'projectHealth' || type === 'status') {
-      formattingDictionary = config.projectHealthDetailsFormatting;
-    }
+    //else if (type === 'projectHealth' || type === 'status') {
+    //  formattingDictionary = config.projectHealthDetailsFormatting;
+    //}
 
     for (var key in details) {
       var formatter = formattingDictionary[key];
