@@ -1,8 +1,9 @@
+#!/usr/bin/env bash
 echo !!! INSTALLING MAPFOLIO SERVER PRODUCTION !!!
 echo CLONING GIT REPOSITORY FROM GITHUB
 rm -rf GeoForce
 git clone https://github.com/AmericanRedCross/GeoForce.git
-git checkout origin prod
+git checkout origin master
 echo COPYING SETTINGS FILES AND SSL CERTIFICATES
 cp settings/chubbs_settings_prod.js GeoForce/Chubbs/private/settings.js
 cp settings/succubus_settings_prod.js GeoForce/Succubus/settings.js
