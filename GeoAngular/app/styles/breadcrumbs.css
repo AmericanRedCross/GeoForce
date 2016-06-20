@@ -8,8 +8,8 @@ div.breadcrumbs-container {
 }
 
 div.breadcrumbs-container div {
-     float: left;
-     padding: 0 10px;
+  float: left;
+  padding: 0px 5px 0px 5px;
  }
 
 div.breadcrumbs-container div.stack {
@@ -17,7 +17,8 @@ div.breadcrumbs-container div.stack {
 }
 
 div.breadcrumbs-container .bc:hover{
-    text-decoration: underline;
+    text-decoration: none;
+  color:#efefef;
 }
 
 #MapUpperRightToolbarWrapper .btn:focus {

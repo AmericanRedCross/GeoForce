@@ -1985,17 +1985,17 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
            keep++, state = toPath[keep]) {
         locals = toLocals[keep] = state.locals;
       }
-      // NH TODO: Fix this issue in the main ui-router repo.
+
       // If we're going to the same state and all locals are kept, we've got nothing to do.
       // But clear 'transition', as we still want to cancel any other pending transitions.
       // TODO: We may not want to bump 'transition' if we're called from a location change that we've initiated ourselves,
       // because we might accidentally abort a legitimate transition initiated from code?
-//      if (shouldTriggerReload(to, from, locals, options) ) {
-//        if ( to.self.reloadOnSearch !== false )
-//          syncUrl();
-//        $state.transition = null;
-//        return $q.when($state.current);
-//      }
+      if (shouldTriggerReload(to, from, locals, options) ) {
+        if ( to.self.reloadOnSearch !== false )
+          syncUrl();
+        $state.transition = null;
+        return $q.when($state.current);
+      }
 
       // Normalize/filter parameters before we pass them to event handlers etc.
       toParams = normalize(to.params, toParams || {});

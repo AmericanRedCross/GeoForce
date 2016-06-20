@@ -96,13 +96,12 @@ GeoAngular.run(function ($rootScope, $state, $stateParams) {
 
 GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider
-    .when('/default', '/map@0.1,0.1,2(satellite,gadm0)')
-    .when('/phl', '/map@11.759815,121.893311,6(redcross,phl)')
-    .otherwise(localStorage.getItem('defaultRoute') || '/map@0,0,2(satellite,gadm0)');
+    .when('/default', '/map@0.1,0.1,2(osmtransport,gadm0),project')
+    .otherwise(localStorage.getItem('mapfolioRoute') || '/map@1,1,2(osmtransport,gadm0),project');
 
   $stateProvider
     .state('main', {
-      url: '/map@:lat,:lng,:zoom(*layers)?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id&level',
+      url: '/map@:lat,:lng,:zoom(*layers),:theme?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels&category&legend-panel&fullscreen',
       views: {
         'details': {
           template: ' ',
@@ -111,11 +110,15 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
         'theme': {
           templateUrl: 'views/theme.html',
           controller: 'ThemeCtrl'
+        },
+        'blevels':{
+          templateUrl: 'views/blevels.html',
+          controller: 'LayersCtrl'
         }
       }
     })
     .state('upload', {
-      url: '/map@:lat,:lng,:zoom(*layers)/upload?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id&level',
+      url: '/map@:lat,:lng,:zoom(*layers),:theme/upload?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels&category&legend-panel&fullscreen',
       views: {
         'details': {
           template: ' ',
@@ -128,18 +131,18 @@ GeoAngular.config(function ($stateProvider, $urlRouterProvider) {
       }
     })
     .state('export', {
-          url: '/map@:lat,:lng,:zoom(*layers)/export?title&zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&theme&details-panel&search-panel&sf_id&level',
-          views: {
-              'details': {
-                  template: ' ',
-                  controller: 'MainCtrl'
-              },
-              'export': {
-                  templateUrl: 'views/export.html',
-                  controller: 'ExportCtrl'
-              }
-          }
-     });
+      url: '/map@:lat,:lng,:zoom(*layers),:theme/export?zoom-extent&stories&layers-panel&filters-panel&filters&legend&basemaps&info&title&details-panel&search-panel&sf_id&level&themelabels&category&legend-panel&fullscreen',
+      views: {
+        'details': {
+          template: ' ',
+          controller: 'MainCtrl'
+        },
+        'export': {
+          templateUrl: 'views/export.html',
+          controller: 'ExportCtrl'
+        }
+      }
+    });
 
 });
 

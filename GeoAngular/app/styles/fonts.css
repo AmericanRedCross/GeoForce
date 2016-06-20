@@ -11,3 +11,42 @@
     font-style: normal;
 }
 /* End Oswald Font */
+
+
+
+/*  Leaflet marker OCHA WebFont */
+.leaflet-marker-icon .un{
+  font-size: 24px;
+  line-height: 34px;
+}
+
+@font-face {
+  font-family: 'icomoon';
+  src:url('fonts/icomoon.eot?-7042vp');
+  src:url('fonts/icomoon.eot?#iefix-7042vp') format('embedded-opentype'),
+  url('fonts/icomoon.woff?-7042vp') format('woff'),
+  url('fonts/icomoon.ttf?-7042vp') format('truetype'),
+  url('fonts/icomoon.svg?-7042vp#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="iconmoon-"], [class*=" iconmoon-"] {
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /*Better Font Rendering ===========*/
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.iconmoon-icon_alert:before {
+  content: "\e600";
+}
+
+

@@ -104,11 +104,13 @@
 }
 
 #DetailsNub {
-    color: #ed1b2e;
-    padding: 20px;
-    background-color: #fff;
-    cursor:pointer;
-    border-radius: 0px;
+  color: #ed1b2e;
+  cursor: pointer;
+  border-radius: 0px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #d3d3d3;
+  background-color: rgb(255, 255, 255);
 }
 
 .on #DetailsNub {
@@ -167,8 +169,9 @@
 }
 
 #DetailsPanel .title {
-    margin: 5px 0;
-    font-size: 15px;
+  margin: 5px 0;
+  font-size: 15px;
+  max-width: 250px;
 }
 
 #DetailsPanel .InnerContainer .heading {
@@ -188,7 +191,7 @@
 }
 
 #DetailsPanel .InnerContainer .section {
-    margin-bottom: 15px;
+    /*margin-bottom: 15px;*/
 }
 
 .details-li {
@@ -198,6 +201,10 @@
 
 #DetailsPanel a {
     cursor:pointer;
+}
+
+#DetailsPanel a:hover {
+  text-decoration: none;
 }
 
 #DetailsPanel .nav-tabs a {
@@ -282,5 +289,79 @@
 }
 
 #DetailsPanel .details-bottom-buttons {
-    margin-top: 5px;
+  width: 100%;
+  text-align: center;
+  padding: 10px 0px 10px 0px;
+  background-color: rgb(255, 255, 255);
+}
+
+.sectorsvg{
+  max-height: 100px;
+}
+
+.sectorsvg .title {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-family: oswaldregular;
+  color: rgb(63, 63, 63);
+}
+
+.sectorsvg .inline {
+  display:inline;
+  margin-right: -4px;
+}
+
+
+#sectorlegend {
+  height: 37px;
+  margin-top: 10px;
+
+}
+
+#sectorlegend .title{
+  display: inline;
+  font-size: 12px;
+  font-family: oswaldregular;
+  color: rgb(37, 37, 37);
+  border-width: 1px;
+  border-color: rgb(172, 172, 172);
+  border-style: solid;
+  background-color: rgb(255, 255, 255);
+  padding: 3px 7px 3px 0px;
+}
+
+#sectorlegend svg{
+  margin-bottom: -4px;
+}
+
+.svgcontainer svg{
+  cursor: pointer;
+}
+
+#sectorlegend .svgcontainer{
+  margin:0px;
+}
+
+rect:hover {
+  opacity: 0.5;
+}
+
+.btnless {
+  padding:8px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(220, 219, 219);
+  border-radius: 1px;
+  background-image: -moz-linear-gradient( 90deg, rgb(244,244,244) 0%, rgb(255,255,255) 100%);
+  background-image: -webkit-linear-gradient( 90deg, rgb(244,244,244) 0%, rgb(255,255,255) 100%);
+  background-image: -ms-linear-gradient( 90deg, rgb(244,244,244) 0%, rgb(255,255,255) 100%);
+  font-size: 11px;
+  font-family: oswaldregular;
+  color: rgb(63, 63, 63);
+  width: 106px;
+  z-index: 122;
+}
+
+.svgcontainer{
+  width: 280px;
 }

@@ -17,32 +17,37 @@ operation.inputs["guids"] = {}; //comma separated list of guids
 operation.inputs["gadm_level"] = {}; //gadm_level to search thru
 operation.inputs["filters"] = ""; //string - sql WHERE clause, minus the 'WHERE'
 
-// Newer schema where we can have many-to-many locations per project.
-if (settings.projectsManyToMany) {
-  operation.ProjectQuery =
-    "SELECT sf_project.* \
-    FROM sf_project \
-    WHERE sf_id = (SELECT DISTINCT sf_id from sf_aggregated_gadm_project_counts_many where sf_project.sf_id = sf_id and guid{{gadm_level}} = {{guids}}) \
-     {{filters}};";
-}
-// Original project query where we have 1 location per project.
-else {
-  operation.ProjectQuery =
-    "SELECT sf_project.* \
-    FROM sf_aggregated_gadm_project_counts, sf_project \
-    WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id \
-      AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
-}
 
-operation.RiskQuery = "SELECT * " +
-  "FROM sf_project_risk " +
-  "WHERE project__c = {{guid}}; " ;
+
+
 
 operation.execute = flow.define(
   function (args, callback) {
     this.args = args;
     this.callback = callback;
+
     //Step 1
+
+    // Newer schema where we can have many-to-many locations per project.
+    if (settings.projectsManyToMany) {
+      operation.ProjectQuery =
+        "SELECT sf_project.* \
+        FROM sf_project \
+        WHERE sf_id = (SELECT DISTINCT sf_id from sf_aggregated_gadm_project_counts_many where sf_project.sf_id = sf_id and guid{{gadm_level}} = {{guids}}) \
+         {{filters}};";
+    }
+// Original project query where we have 1 location per project.
+    else {
+      operation.ProjectQuery =
+        "SELECT sf_project.* \
+        FROM sf_aggregated_gadm_project_counts, sf_project \
+        WHERE sf_aggregated_gadm_project_counts.sf_id = sf_project.sf_id \
+          AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
+    }
+
+    operation.RiskQuery = "SELECT * " +
+    "FROM sf_project_risk " +
+    "WHERE project__c = {{guid}}; " ;
 
     //Generate UniqueID for this Task
     operation.id = shortid.generate();
@@ -51,6 +56,8 @@ operation.execute = flow.define(
     //In SalesForce, the phase__c column is text and has delimited values in the cells.  So, we'll do a 'like' operator instead of =
     var activeProjectWhereClause = " AND (sf_project.phase__c LIKE '%2%' OR sf_project.phase__c LIKE '%3%' OR sf_project.phase__c LIKE '%4%')";
 
+    //Do not display projects or disasters that have TEST as the first word in the project name.
+    var removeTESTProjects = " AND name NOT ILIKE 'test%'";
 
     //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
     if (operation.isInputValid(args) === true) {
@@ -68,10 +75,12 @@ operation.execute = flow.define(
         var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g,'%').replace(/%27/g,"'");
         filters = " AND (" + inputFilters + ")";
         filters += activeProjectWhereClause;
+        filters += removeTESTProjects;
       }
       else{
         //Add where clause to only show active projects
         filters = activeProjectWhereClause;
+        filters += removeTESTProjects;
       }
 
       //need to wrap ids in single quotes

@@ -9,7 +9,7 @@ var defaults = {
   stroke: '#555555',
   'stroke-width': 2,
   'stroke-opacity': 1,
-  fill: '#555555',
+  fill: '#ee0000',
   'fill-opacity': 0.5
 };
 

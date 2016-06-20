@@ -17,6 +17,9 @@ process.env.NODE_ENV = 'development';
 settings.application.port = 3001;
 settings.application.ip = "localhost";
 
+//allow for print service to access
+settings.application.referrerHeaderCheck = "1.2.3.4";
+
 //Enable Security?
 settings.enableSecurity = false;
 
@@ -89,12 +92,14 @@ settings.dsLevels["local"] = 2;
 //Used to define how to query DB for admin stack
 //Columns aliased to be consistent between data sources.
 //GADM
-settings.dsColumns["gadm0"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, ST_AsText(ST_Centroid(geom)) as centroid, 0 as level" };
-settings.dsColumns["gadm1"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, ST_AsText(ST_Centroid(geom)) as centroid, 1 as level" };
-settings.dsColumns["gadm2"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, ST_AsText(ST_Centroid(geom)) as centroid, 2 as level" };
-settings.dsColumns["gadm3"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, ST_AsText(ST_Centroid(geom)) as centroid, 3 as level" };
-settings.dsColumns["gadm4"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, id_4 as adm4_code, name_4 as adm4_name, ST_AsText(ST_Centroid(geom)) as centroid, 4 as level" };
-settings.dsColumns["gadm5"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, id_4 as adm4_code, name_4 as adm4_name, id_5 as adm5_code, name_5 as adm5_name, ST_AsText(ST_Centroid(geom)) as centroid, 5 as level" };
+settings.dsColumns["gadm0"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, arc_region as isd_region, id_0 as adm0_code, name_0 as adm0_name, ST_AsText(ST_Centroid(geom)) as centroid, 0 as level" };
+settings.dsColumns["gadm1"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, arc_region as isd_region, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, ST_AsText(ST_Centroid(geom)) as centroid, 1 as level" };
+settings.dsColumns["gadm2"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, arc_region as isd_region, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, ST_AsText(ST_Centroid(geom)) as centroid, 2 as level" };
+settings.dsColumns["gadm3"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, arc_region as isd_region, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, ST_AsText(ST_Centroid(geom)) as centroid, 3 as level" };
+settings.dsColumns["gadm4"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, arc_region as isd_region, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, id_4 as adm4_code, name_4 as adm4_name, ST_AsText(ST_Centroid(geom)) as centroid, 4 as level" };
+settings.dsColumns["gadm5"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, arc_region as isd_region, id_0 as adm0_code, name_0 as adm0_name, id_1 as adm1_code, name_1 as adm1_name, id_2 as adm2_code, name_2 as adm2_name, id_3 as adm3_code, name_3 as adm3_name, id_4 as adm4_code, name_4 as adm4_name, id_5 as adm5_code, name_5 as adm5_name, ST_AsText(ST_Centroid(geom)) as centroid, 5 as level" };
+settings.dsColumns["arc_regions_dissolved"] = { geometry: "ST_AsGeoJSON(ST_Extent(geom)) as geom,", columns: "guid as stack_guid, ST_AsText(ST_Centroid(geom)) as centroid, region as isd_region, -1 as level" };
+
 
 //settings for geonames API
 settings.geonames = {};

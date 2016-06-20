@@ -3,46 +3,124 @@
  *       on 3/27/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig, VectorProvider) {
+module.exports = angular.module('GeoAngular').controller('LayersCtrl', function($scope, $state, $stateParams, LayerConfig, VectorProvider, $rootScope) {
   $scope.params = $stateParams;
   $scope.zoom = parseInt($stateParams.zoom);
   $scope.navTab = 'contextual';
 
+  $scope.gists = []; //initialize as empty
+  $scope.mapLayers = []; //initialize as empty
+
+  $scope.arcregionsLabel = 'ARC Regions';
+  $scope.gadm0Label = 'Countries';
+  $scope.gadm1Label = 'State / Province';
+  $scope.gadm2Label = 'County / District';
+
+
   debug.LayerConfig = LayerConfig;
   debug.setGadmLevel = VectorProvider.setGadmLevel;
 
-  $scope.gadmLevel = $stateParams.level || 'auto';
+  $scope.gadmLevel = $rootScope.level || 0;
+
+  $scope.themeLabels = { isChecked: $stateParams.themelabels || true };
+
+  $scope.theme = { isChecked: true };
 
   $scope.themeLayer = LayerConfig.theme;
-  //$scope.themecountLayer = LayerConfig.themecount;
 
-  $scope.setBadges = function(bool) {
-    //RW - TODO - Implement this option for vector tiles.
-    //if (bool) {
-    //  $scope.themeLayer.active = false;
-    //} else {
-    //  $scope.themeLayer.active = true;
-    //}
-    //$scope.toggleMapLayer('themecount', $scope.themecountLayer);
-    //$scope.toggleMapLayer('theme', $scope.themeLayer);
+  $scope.updateGadm = function (level) {
+    $scope.level = level.toString();
+    if(level.toString() !== $scope.gadmLevel) {
+      $scope.gadmLevel = level.toString() || "0";
+      console.log($scope.gadmLevel);
+    };
 
   };
 
-  $scope.$watch('gadmLevel', function (newValue) {
-    $stateParams.level = newValue;
+  $scope.closePanels = function (){
+    for (var param in $stateParams) {
+      if ($stateParams[param] === 'open') {
+        $stateParams[param] = null;
+      }
+    }
+  };
+
+  $scope.updateThemeLabel = function() {
+    if ($scope.themeLabels.isChecked === true) {
+      $stateParams.themelabels = 'true';
+    }
+    else {
+      //remove from stateparams
+      $stateParams.themelabels = 'false';
+    }
+
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
+  };
+
+  //Toggle ECOS Layer - if off, then turn on and vice versa.
+  $scope.updateTheme = function() {
+
+    var layersArray;
+
+    if($stateParams.layers){
+      layersArray = $stateParams.layers.split(",");
+    }
+    else{
+      return;
+    }
+
+    if ($scope.theme.isChecked === true) {
+
+      //Remove all GADM layers.
+      angular.forEach(layersArray, function (value, key) {
+        if (LayerConfig.themeLayers.indexOf(value) > -1) {
+          layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+        }
+      });
+
+      //Add in the gadm layer to the layers list in the stateparams.
+      if($scope.gadmLevel == -1){
+        layersArray.push("arcregions");
+      }
+      else{
+        layersArray.push("gadm" + $scope.gadmLevel)
+      }
+
+      $stateParams.layers = layersArray.join(",");
+
+    }
+    else {
+      //remove from stateparams
+      //Remove all GADM layers.
+      angular.forEach(layersArray, function (value, key) {
+        if (LayerConfig.themeLayers.indexOf(value) > -1) {
+          layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+        }
+      });
+
+      $stateParams.layers = layersArray.join(",");
+    }
+
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+
+  };
+
+
+  $scope.$watch('gadmLevel', function (newValue) {
+    $scope.updateTheme();
   });
 
-  $scope.$on('level-update', function () {
-    VectorProvider.setGadmLevel($stateParams.level);
-    $scope.gadmLevel = $stateParams.level
-  });
+  //$scope.$on('level-update', function () {
+  //  VectorProvider.setGadmLevel($stateParams.level);
+  //  $scope.gadmLevel = $stateParams.level
+  //});
 
   $scope.$on('zoom-update', function () {
-    console.log("zoom: " + $stateParams.zoom);
     $scope.zoom = parseInt($stateParams.zoom);
   });
+
 
   /**
    * This is the collection of all of the layers we have.
@@ -54,10 +132,13 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     var layer = LayerConfig[k];
 
     // We don't want to show layers that are basemaps, and we don't want to show the find func.
-      if (  typeof layer === 'function'
+    if (typeof layer === 'function'
       || k === 'basemaps'
       || k === 'bbox'
-      || layer.type === 'basemap' ) {
+      || k === 'themeLayers'
+      || k === 'countryextents'
+      || k === 'arcregionextents'
+      || layer.type === 'basemap') {
 
       continue;
     }
@@ -149,8 +230,36 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
 
     /**
      * Check if the layer is active in map layers
+     * Force gadm0 on disaster themes
      */
-    $scope.mapLayers = layers;
+
+    var theme = $stateParams.theme;
+
+
+    //force gadm0 on disaster themes when user changes gadm level
+    if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){
+
+      var layersArray = [];
+
+      if($stateParams.layers){
+        layersArray = $stateParams.layers.split(",");
+      }
+
+      //Remove all GADM layers.
+      layersArray.forEach(function (value, key) {
+        if (LayerConfig.themeLayers.indexOf(value) > -1) {
+          layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+        }
+      });
+
+      //Add in the gadm layer to the layers list in the stateparams.
+      layersArray.push("gadm0");
+      $stateParams.layers = layersArray.join(",");
+    }
+
+
+    $scope.mapLayers = $stateParams.layers.split(",");
+
     // skip the first layer, the basemap
     for (var i = 1, len = layers.length; i < len; i++) {
       var l = layers[i];
@@ -159,7 +268,7 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
         LayerConfig[l].active = true;
       }
       // layer is a github gist
-      else if ($scope.gists[l]) {
+      else if ($scope.gists && $scope.gists[l]) {
         $scope.gists[l].active = true;
       }
       // layer is a not in the layer config. it's nomadic.
@@ -171,6 +280,31 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
         }
       }
     }
+
+  });
+
+  $scope.$on('route-update', function() {
+    //Check the stateParams
+    //Specifically, see about the label properties being checked.
+
+    var checked;
+
+    //See if we should show theme badges/bubbles or not
+    if($stateParams.themelabels !== null && $stateParams.themelabels !== undefined){
+      checked = $stateParams.themelabels;
+    }
+    else{
+      //if not present, default to true
+      checked = 'true';
+    }
+
+    $scope.themeLabels = { isChecked: (checked == 'true' ? true : false) };
+
+    //See which, if any, gadm levels is active
+    if($rootScope.level){
+      $scope.gadmLevel = $rootScope.level;
+    }
+
   });
 
 
@@ -238,6 +372,42 @@ module.exports = angular.module('GeoAngular').controller('LayersCtrl', function(
     }
     $scope.searchLayers = searchLayers;
   };
+
+  /*
+   Handling Theme Menu Animations
+   */
+
+  $scope.toggleBLevelMenu = function(){
+    var flippedOut = $(".menu-selection .dropdown").hasClass("open");
+
+    if(flippedOut == false){
+      $scope.unfurlThemes();
+    }
+    else{
+      $scope.refurlThemes();
+    }
+  };
+
+  $scope.unfurlThemes = function(){
+    $scope.refurlThemes();
+    //Try jQuery to add an 'on' class to each of the theme LI elements on a timer.
+    $($('#BLevelMenu li').get().reverse()).each(function(index){
+      var self = this;
+      setTimeout(function () {
+        $(self).addClass("theme-selector-li-on");
+      }, index*100);
+    });
+  };
+
+  //Refurl?
+  $scope.refurlThemes = function(){
+    //Try jQuery to remove the 'on' class to each of the theme LI elements on a timer.
+    $('#BLevelSelectorMenu .dropdown-menu li').removeClass("theme-selector-li-on");
+  };
+
+  /*
+   End Theme Menu Animations
+   */
 
 });
 

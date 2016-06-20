@@ -18,7 +18,8 @@ var app = express();
 
 var routes = [];
 
-//PostGres Connection String
+//PostGres Connection Strings
+//For Mapfolio DB
 global.conString = "postgres://" + settings.pg.username + ":" + settings.pg.password + "@" + settings.pg.server + ":" + settings.pg.port + "/" + settings.pg.database;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //Hopefully fixes stream.js:94 UNABLE_TO_VERIFY_LEAF_SIGNATURE problem
@@ -30,7 +31,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.set('trust proxy', true);
 app.enable("jsonp callback"); //TODO: Remove this if not needed because of CORS
-app.use(express.favicon(path.join(__dirname, 'public/img/favicon_rc.jpg')));
+app.use(express.favicon(path.join(__dirname, 'public/img/favicon_rc.png')));
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.cookieParser());
@@ -41,7 +42,7 @@ var passport = require('./endpoints/authentication').passport();
 
 //express app.get can be passed an array of intermediate functions before rendering.
 //If passport isn't installed or user hasn't enabled security, then leave the following array empty, otherwise load one or more middleware functions in there.
-var authenticationFunctions = []; 
+var authenticationFunctions = [];
 
 //Load up passport for security, if it's around, and if the settings ask for it
 if (passport && settings.enableSecurity && settings.enableSecurity === true) {
@@ -49,12 +50,12 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
 	app.use(express.session({
 	    secret : settings.expressSessionSecret
 	}));
-	
+
 	app.use(passport.initialize());
 	app.use(passport.session()); //TODO:  I keep reading that express sessions aren't needed if using passport with authentication followed by token bearer strategy
 
     authenticationFunctions.push(passport.authenticate('forcedotcom'));
-	
+
 	//For now, just cram this object into the passport object as a stowaway so it can be passed into all of the external route definitions
 	//passport.authenticationFunctions = authenticationFunctions;
 
@@ -80,7 +81,7 @@ if (passport && settings.enableSecurity && settings.enableSecurity === true) {
 }
 else{
 	//keep an empty authentication functions property here
-	passport = { authenticationFunctions: []}; 
+	passport = { authenticationFunctions: []};
 }
 
 //Set up a public folder.
@@ -127,9 +128,6 @@ app.use(utilities.app(passport));
 
 var vectortiles = require('./endpoints/vectortiles');
 app.use(vectortiles.app(passport));
-
-var print = require('./endpoints/print');
-app.use(print.app(passport));
 
 var mapnik;
 try {
@@ -219,23 +217,36 @@ app.get('/services', function(req, res) {
 
 function ensureAuthenticated(req, res, next) {
 
-    //If the request is for index.html, then lock it down.
-    if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" || req.path.indexOf("/services/") == 0)) {
-        //All other requests to the mapfolio folder should be allowed.
-
-        //check for authentication
-        //req.isAuthenticated() - always returns false.
-        if(req.session && req.session.passport && req.session.passport.user) {
-            return next();
-        }
-        else{
-            res.redirect('/mapfolio/login.html');
-            return;
-        }
-    }
-
+  //Short circuit this check if the print server is contacting the page.
+  //Check the referrer header to see if we should allow access to printing.
+  if (req.headers && req.header['x-forwarded-for'] && req.headers['x-forwarded-for'] == settings.application.referrerHeaderCheck) {
     return next();
+  }
+
+  //Allow placeSearch endpoints to be public
+  if (settings.enableSecurity && ( req.path.indexOf("/services/nameSearch") == 0 || req.path.indexOf("/services/getAdminStack") == 0 )) {
+    //requests should be allowed.
+    return next();
+  }
+
+  //If the request is for index.html, then lock it down.
+  if (settings.enableSecurity && ( req.path.indexOf("index.html") > -1 || req.path == "/mapfolio/" || req.path.indexOf("/services/") == 0 || req.path.indexOf("/search") == 0 || req.path.indexOf("/placesearch") == 0)) {
+    //All other requests to the mapfolio folder should be allowed.
+
+    //check for authentication
+    //req.isAuthenticated() - always returns false.
+    if (req.session && req.session.passport && req.session.passport.user) {
+      return next();
+    }
+    else {
+      res.redirect('/mapfolio/login.html');
+      return;
+    }
+  }
+
+  return next();
 }
+
 
 
 //Look for any errors (this signature is for error handling), this is generally defined after all other app.uses.

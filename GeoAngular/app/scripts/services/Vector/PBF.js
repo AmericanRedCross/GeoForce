@@ -21,6 +21,8 @@ function PBF(options) {
   this._onTilesLoaded = options.onTilesLoaded; //Store the real function in a local property.
   this._onClick = options.onClick; //Store the real function in a local property.
   this._onSelect = options.onSelect;  //Store the real function in a local property so we can overload it later with angular stuff.
+  this._onFilter = options.filter; //Store the real function in a local property.
+  this._style = options.style; //Store the real function in a local property.
 
   var self = this;
 
@@ -42,6 +44,18 @@ function PBF(options) {
 
   }
 
+  options.filter = function(vtf){
+
+    return self._onFilter(vtf, $rootScope);
+
+  }
+
+  options.style = function(vtf){
+
+    return self._style(vtf, $rootScope);
+
+  }
+
   this.layer = new L.TileLayer.MVTSource(options);
 }
 
@@ -52,7 +66,8 @@ PBF.prototype.getLayer = function () {
   return this.layer;
 };
 
-PBF.prototype.fetchFeatureDetails = function(guid, level) {
+PBF.prototype.fetchFeatureDetails = function(guid, level, name) {
+
 
   var detailsUrl = config.chubbsPath(this.options.detailsUrl);
   if (!detailsUrl) {
@@ -61,6 +76,10 @@ PBF.prototype.fetchFeatureDetails = function(guid, level) {
   }
 
   var theme = $rootScope.$stateParams.theme || 'project';
+
+  //Exit if theme is none.
+  if(theme.toLowerCase() === 'none') return;
+
   var themeName = $rootScope.themeNameHash[theme];
   if (typeof level === 'undefined' || level === null) {
     console.error('we need a level.');
@@ -69,6 +88,11 @@ PBF.prototype.fetchFeatureDetails = function(guid, level) {
   var filters = 'null';
   if ($rootScope.$stateParams.filters) {
     filters = $rootScope.$stateParams.filters;
+  }
+
+  //for disasterType, just use the disaster endpoint
+  if(theme.toLowerCase() == 'disastertype'){
+    theme = 'disaster';
   }
 
   detailsUrl = detailsUrl.replace(':theme', theme)
@@ -80,6 +104,7 @@ PBF.prototype.fetchFeatureDetails = function(guid, level) {
     var featureLayer = { feature: { properties: {}}};
     featureLayer.feature.properties.salesforce = {};
     featureLayer.feature.properties.salesforce[themeName] = details;
+    featureLayer.feature.properties.name = name;
     $rootScope.$broadcast('details', featureLayer);
 
   }).error(function(err){

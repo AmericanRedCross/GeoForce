@@ -1,0 +1,16 @@
+doctype html
+html
+	head
+		title #{title}
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
+		div.header
+			img(src='/img/logo.png',alt='logo')
+
+
+		.container
+			.main-content
+				block content
+		.sidebar
+				block sidebar
+	footer

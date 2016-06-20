@@ -7,6 +7,9 @@
 
 module.exports = angular.module('GeoAngular').factory('Donuts', function () {
 
+  var service = {};
+  service.dataset = [];
+
   /**
    * Creates a D3 Donut that is located in the details panel.
    */
@@ -72,7 +75,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
             data['-9999'] = {
               'count': 1,
               'color': visualizationDictionary[-9999].color,
-              'alias': visualizationDictionary[-9999].label
+              'alias': visualizationDictionary[-9999].label || 'Unknown'
             };
           }
         }
@@ -91,7 +94,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
           data[reportingValue] = {
             'count': 1,
             'color': reportingProperties.color,
-            'alias': reportingProperties.label
+            'alias': reportingProperties.label || 'Unknown'
           };
         }
 
@@ -112,7 +115,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
     var mergedOther = {
       'count': 0,
       'color': visualizationDictionary[-9999].color,
-      'alias': visualizationDictionary[-9999].label
+      'alias': visualizationDictionary[-9999].label || 'Unknown'
     };
 
     // Merge all 'other' objects; we determine which are 'other' by testing to see if its been assigned the 'other' color
@@ -125,8 +128,9 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
       }
     }
 
-    // Add the merge objedt to the dataset we will use in donut chart
+    // Add the merge object to the dataset we will use in donut chart
     dataset.push(mergedOther);
+    service.dataset = dataset;
 
 
     // Use jQuery to get this cluster markers height and width (set in the CSS)
@@ -262,7 +266,7 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
     options.unassignedColor = options.unassignedColor || '#CCCCCC';
     options.unassignedLabel = options.unassignedLabel || 'Not Assigned';
 
-    var defaultPalette = ["#009400", "#FFC93A", "#FF3849", "#171CE8", "#05FFD9", "#EC8E2F", "#6ED444", "#9556EF", "#2175DE", "#E23B5D", "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5", "#009400", "#FFC93A", "#FF3849", "#171CE8", "#05FFD9", "#EC8E2F", "#6ED444", "#9556EF", "#2175DE", "#E23B5D", "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
+    var defaultPalette = ['#e65552',	'#f18432',	'#f4d746',	'#6d7c58',	'#b9c03e',	'#0f4e60',	'#01aa95',	'#a1b1cc',	'#ff859a',	'#b3b091',	'#8d2725',	'#a37654',	'#baa749',	'#75bb18',	'#dddfb3',	'#39b4d7',	'#87d8ce',	'#4876c3',	'#db1739',	'#8d8105',	'#d08484',	'#fdd5b7',	'#f4f7d4',	'#d8efb9',	'#eef758',	'#d6f4fd',	'#abbebc',	'#847cd1',	'#ebb8d4',	'#e9ce84',	'#d0a6a6',	'#615549',	'#99692b',	'#adbf95',	'#15e5c5',	'#5bb7d2',	'#4a8c84',	'#d18cfd',	'#fc173e',	'#fbf3a5',	'#9b5c5c',	'#fbebde',	'#ddb903',	'#cbcbcb',	'#464646',	'#287084',	'#b2f7ee',	'#9e9e9e',	'#eeeeee',	'#ae1fa9']
 
     var dictionary = {};
 
@@ -298,18 +302,18 @@ module.exports = angular.module('GeoAngular').factory('Donuts', function () {
    * Public functions that are accessible elsewhere in the app.
    * Ex: Donuts.createDetailsDonut(arg1, arg2);
    */
-  return {
 
     /**
      * Creates a D3 donut that goes around a label on the map.
      */
-    createLabelDonut: function(sectors, projects, divId) {
+    service.createLabelDonut = function(sectors, projects, divId) {
       var vizDictionary = makeVisualizationDictionary(sectors);
       var donut = new ExpandoDonut(projects, vizDictionary, divId , 'bottom');
       $(divId).prepend('<div id="sectors-heading" class="heading">Sectors</div>');
       return donut;
-    }
+    };
 
-  };
+  return service;
+
 
 });

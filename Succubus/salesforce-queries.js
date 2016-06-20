@@ -136,7 +136,14 @@ module.exports = {
 
 
   indicator: "Select " + indicatorFields + " From Indicator__c",
-  indicatorValue: "Select " + indicatorValueFields + " From Indicator_Value__c"
-//  logframeElement: "Select " + logframeElementFields + " From Logframe_Element__c",
+
+  indicatorValue: "Select " + indicatorValueFields + " From Indicator_Value__c",
+
+  /**
+   * Gets just the related organization table. This is used for organization-project relationships.
+   */
+  relatedOrganization: "Select Project__c, Organization__c, name from Related_Organization__c"
+
+  //logframeElement: "Select " + logframeElementFields + " From Logframe_Element__c",
 
 };

@@ -62,10 +62,6 @@ operation.execute = flow.define(
         AND guid{{gadm_level}} = {{guids}} {{filters}}; ";
     }
 
-
-    //operation.IndicatorQuery = "SELECT * FROM sf_indicator, sf_indicator_value " +
-    //  "WHERE sf_indicator.project__c = {{guid}} AND sf_indicator_value.indicator__c = sf_indicator.sf_id; ";
-
     operation.IndicatorQuery = "SELECT sf_indicator.*, " +
       "val.actual__c, val.collection_period__c, val.effective_date__c, val.overlap__c, val.period__c, val.subjective__c, " +
       "val.target_percent__c, val.target__c, val.variance__c, val.period_actual_sum__c, val.period_actuals_max__c, " +
@@ -86,6 +82,8 @@ operation.execute = flow.define(
     //In SalesForce, the phase__c column is text and has delimited values in the cells.  So, we'll do a 'like' operator instead of =
     var activeProjectWhereClause = " AND (sf_project.phase__c LIKE '%2%' OR sf_project.phase__c LIKE '%3%' OR sf_project.phase__c LIKE '%4%')";
 
+    //Do not display projects or disasters that have TEST as the first word in the project name.
+    var removeTESTProjects = " AND name NOT ILIKE 'test%'";
 
     //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
     if (operation.isInputValid(args) === true) {
@@ -103,10 +101,12 @@ operation.execute = flow.define(
         var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g, '%').replace(/%27/g, "'");
         filters = " AND (" + inputFilters + ")";
         filters += activeProjectWhereClause;
+        filters += removeTESTProjects;
       }
       else {
         //Add where clause to only show active projects
         filters = activeProjectWhereClause;
+        filters += removeTESTProjects;
       }
 
       if (operation.inputs["gadm_level"] === "arc") {
@@ -135,6 +135,12 @@ operation.execute = flow.define(
       return;
     }
     var projects = this.projects = results.rows;
+    if(!projects || projects.length == 0){
+      //No properties for this GUID
+      this({});
+    }
+
+    //Get related project indicators
     for (var i = 0, len = projects.length; i < len; i++) {
       var proj = projects[i];
       var projId = proj.sf_id;

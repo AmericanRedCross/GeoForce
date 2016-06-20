@@ -4,7 +4,6 @@
  */
 
 module.exports = angular.module('GeoAngular').controller('SearchECOSCtrl', function($scope, $rootScope, $stateParams, $http, VectorProvider) {
-  console.log('SearchECOSCtrl');
   $scope.params = $stateParams;
 
   var url = config.chubbsPath('services/custom/custom_operation?name=doecostextsearch&format=json&text=:text');

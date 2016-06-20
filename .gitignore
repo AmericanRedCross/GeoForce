@@ -56,13 +56,19 @@ Chubbs/settings.prod.js
 Chubbs/private/*
 
 # This is the data that gets written nightly into the web app's assets by Succubus
-GeoAngular/app/succubus_gitignore/*
+# GeoAngular/app/succubus_gitignore/*
 
 # This data is also written within the succubus itself for debug purposes, this too should be ignored.
 Succubus/meta-data/*
 
 GeoAngular/app/succubus_gitignore/sf-object-field-hash.json
 GeoAngular/app/succubus_gitignore/sf-project-filter-checkboxes.json
+GeoAngular/app/succubus_gitignore/sf-disaster-filter-checkboxes.json
+
 Succubus/meta-data/sf-object-field-hash.json
 Succubus/meta-data/sf-objects.json
 Succubus/meta-data/sf-project-filter-checkboxes.json
+
+*.mbtiles
+
+GeoAngular/app/scripts/global.js

@@ -3,11 +3,17 @@
  *       on 3/27/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function($scope, $http, $state, $stateParams) {
+module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function ($scope, $http, $state, $stateParams, $timeout) {
+  $scope.filterMode = "project"; //Which theme are we filtering?
   $scope.params = $stateParams;
+  $scope.searchText = '';
   $scope.navTab = 'sectors';
   $scope.sectors = [];
+  $scope.selected = false;
+  $scope.disasterTypes = [];
   $scope.status = [];
+  $scope.businessUnits = [];
+  $scope.disasterTypescategory = {};
   debug.budget = $scope.budget = {
     slider: [2000, 8000],
     min: 0,
@@ -21,8 +27,209 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $http.get('succubus_gitignore/sf-project-filter-checkboxes.json', {cache: true}).success(function (data, status) {
     angular.extend($scope, data);
     debug.filtersScope = $scope;
-  }).error(function() {
+  }).error(function () {
     console.error("Unable to fetch project filter meta data");
+  });
+
+  $http.get('succubus_gitignore/sf-disaster-filter-checkboxes.json', {cache: true}).success(function (data, status) {
+    angular.extend($scope, data);
+    debug.filtersScope = $scope;
+    $scope.categorizeDisasterFilters();
+    //$scope.defaultStatus(); // check Monitoring and Active in Status object
+  }).error(function () {
+    console.error("Unable to fetch disaster filter meta data");
+  });
+
+  $http.get('succubus_gitignore/sf-object-field-hash.json', {cached: true}).success(function (sfFieldHash) {
+    $scope.sfFieldHash = sfFieldHash;
+    $scope.businessUnits = sfFieldHash["Project__c"]["business_unit__c"]["picklistValues"];
+    getBusinessUnitTypes();
+  }).error(function () {
+    console.error("Unable to fetch object field meta data");
+  });
+
+  // take array of disaster types and create a new object that separates by category
+  $scope.categorizeDisasterFilters = function () {
+    $scope.searchList = [];
+    var dt = $scope.disasterTypes;
+    var p = null;
+    var arr = [];
+    var cTypes = {};
+    for (var i = 0; i < dt.length; i++) {
+      if (dt[i].name.indexOf('---') !== -1) {
+        arr = [];
+        cTypes[dt[i].name.replace("--- ", "").replace(" ---", "")] = {};
+        p = dt[i].name.replace("--- ", "").replace(" ---", "");
+      } else {
+        $scope.searchList.push(dt[i]);
+      }
+      if (dt[i].name.indexOf('---') == -1) {
+        arr.push(dt[i]);
+        cTypes[p] = arr;
+      }
+    }
+    $scope.disasterTypescategory = cTypes;
+  };
+
+  $scope.closePanels = function () {
+    for (var param in $stateParams) {
+      if ($stateParams[param] === 'open') {
+        $stateParams[param] = null;
+      }
+    }
+  };
+
+  $scope.$on('theme-update', function () {
+
+    if ($stateParams.theme.indexOf('disaster')!==-1) {
+      $scope.navTab = 'disasterType';
+    };
+
+    if ($stateParams.theme.indexOf('project')!== -1) {
+      $scope.navTab = 'sectors';
+    };
+
+    if ($stateParams.theme.indexOf('disaster') !== -1 && ($stateParams.filters)) {
+      decodeDisasterFiltersURL();
+    }
+
+    if ($stateParams.theme.indexOf('project') !== -1 && ($stateParams.filters)) {
+      decodeProjectFiltersURL();
+    }
+  });
+
+  var getBusinessUnitTypes = function () {
+    var BusinessUnitTypes = [];
+
+    $scope.businessUnits.forEach(function (val, idx) {
+      BusinessUnitTypes.push(val);
+      BusinessUnitTypes[idx].checked = false;
+    });
+
+    $scope.BusinessUnitTypes = BusinessUnitTypes;
+  };
+
+  // the two decode methods read the url and update the filter panel
+  // checkboxes (disastertype, projecttype, businesstype & status) accordingly
+
+  var decodeDisasterFiltersURL = function () {
+    //var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
+    var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
+
+    var index = [];
+    for (var i = 0; i < str.length; i++) {
+      if (str[i] === "%") index.push(i);
+    }
+
+    var arr = [];
+    for (var i = 0; i < index.length; i++) {
+      arr.push(str.substring(index[i] + 1, index[i + 1]));
+      i = i + 1;
+    }
+
+    if ($stateParams.filters !== null && $stateParams.filters !== ""
+      && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined') {
+
+      var disasters = $scope.disasterTypes;
+      var statuses = $scope.disasterStatus;
+
+      $scope.sectorClause = null;
+      var first = true;
+      for (var s = 0; s < arr.length; s++) {
+        for (var i = 0, len = disasters.length; i < len; ++i) {
+          var disaster = disasters[i];
+          if (arr[s].indexOf(disaster.name) !== -1) {
+            if (first) {
+              disaster.checked = true;
+              $scope.sectorClause = "disaster_type__c LIKE '%" + disaster.name + "%' ";
+              first = false;
+            } else {
+              disaster.checked = true;
+              $scope.sectorClause += "OR disaster_type__c LIKE '%" + disaster.name + "%' ";
+            }
+          }
+        }
+
+        if ($stateParams.filters.indexOf('iroc_status__c') !== -1) {
+          for (var i = 0, len = statuses.length; i < len; ++i) {
+            var status = statuses[i];
+            if (arr[s].indexOf(status.name) !== -1) {
+              status.checked = true;
+            }
+          }
+        }
+        $scope.disasterStatusFilter();
+      }
+    }
+    else {
+      $scope.clearDisasterTypeFilter();
+    }
+  };
+
+  var decodeProjectFiltersURL = function () {
+    //var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
+    var str = decodeURIComponent(encodeURIComponent($stateParams.filters));
+
+    var index = [];
+
+    //loop through string and remove '%'
+    for (var i = 0; i < str.length; i++) {
+      if (str[i] === "%") index.push(i);
+    }
+
+    var arr = [];
+    for (var i = 0; i < index.length; i++) {
+      arr.push(str.substring(index[i] + 1, index[i + 1]));
+      i = i + 1;
+    }
+
+    if ($stateParams.filters !== null && $stateParams.filters !== ""
+      && $stateParams.filters !== "null" && typeof $stateParams.filters !== 'undefined') {
+
+      var sectors = $scope.sectors;
+      $scope.sectorClause = null;
+      var bunits = $scope.BusinessUnitTypes;
+      var bunit = bunits[i];
+
+
+      var first = true;
+      for (var s = 0; s < arr.length; s++) {
+        if ($stateParams.filters.indexOf('sector__c') !== -1){
+          for (var i = 0, len = sectors.length; i < len; ++i) {
+            var sector = sectors[i];
+            if (arr[s] == sector.name) {
+              if (first) {
+                sector.checked = true;
+                $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
+                first = false;
+              } else {
+                sector.checked = true;
+                $scope.sectorClause = "sector__c LIKE '%" + sector.name + "%' ";
+              }
+            }
+          }
+
+        }
+        if ($stateParams.filters.indexOf('business_unit__c') !== -1) {
+          for (var i = 0, len = bunits.length; i < len; ++i) {
+            if (arr[s].indexOf(bunit.label) !== -1) {
+              bunit.checked = true;
+            }
+          }
+        }
+
+      }
+    }
+    else {
+      //uncheck all filters
+      $scope.clearAllFilters();
+    }
+  };
+
+
+  $scope.$on('filters-update', function () {
+    if ($stateParams.theme.indexOf('disaster') !== -1) decodeDisasterFiltersURL();
+    if ($stateParams.theme == 'project') decodeProjectFiltersURL();
   });
 
   /**
@@ -35,7 +242,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       $scope.budget.max = data[0].max;
       $scope.budget.slider = [data[0].min, data[0].max];
     }
-  }).error(function() {
+  }).error(function () {
     console.error("Unable to fetch Total Budget Min, Mean, Max");
   });
 
@@ -45,17 +252,17 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       radio: 'on',
       empty: true,
       opened: false
-    },{
+    }, {
       name: 'End Date',
       radio: 'on',
       empty: true,
       opened: false
-    },{
+    }, {
       name: 'Create Date',
       radio: 'on',
       empty: true,
       opened: false
-    },{
+    }, {
       name: 'Last Modified',
       radio: 'on',
       empty: true,
@@ -63,7 +270,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     }
   ];
 
-  $scope.toggleDate = function($event, dateFilter) {
+  $scope.toggleDate = function ($event, dateFilter) {
     $event.preventDefault();
     $event.stopPropagation();
 
@@ -88,6 +295,48 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
+  $scope.businessUnitsFilter = function () {
+    var bunits = $scope.BusinessUnitTypes;
+    $scope.businessUnitsClause = null;
+    var first = true;
+    for (var i = 0, len = bunits.length; i < len; ++i) {
+      var bunit = bunits[i];
+      if (bunit.checked) {
+        if (first) {
+          $scope.businessUnitsClause = "business_unit__c LIKE '%" + bunit.label + "%' ";
+          first = false;
+        } else {
+          $scope.businessUnitsClause += "OR business_unit__c LIKE '%" + bunit.label + "%' ";
+        }
+      }
+    }
+    $scope.composeWhereClause();
+  };
+
+  $scope.disasterTypesFilter = function () {
+    var disasters = $scope.disasterTypes;
+    $scope.sectorClause = null;
+    var first = true;
+    for (var i = 0, len = disasters.length; i < len; ++i) {
+      var disaster = disasters[i];
+      if (disaster.checked) {
+        if (first) {
+          $scope.sectorClause = "disaster_type__c LIKE '%" + disaster.name + "%' ";
+          if ($scope.statusClause !== null) {
+            $scope.sectorClause = $scope.sectorClause + 'AND ' + "(" + $scope.statusClause + ")";
+          }
+          first = false;
+        } else {
+          $scope.sectorClause += "OR disaster_type__c LIKE '%" + disaster.name + "%' ";
+          if ($scope.statusClause !== null) {
+            $scope.sectorClause = $scope.sectorClause + 'AND' + "(" + $scope.statusClause + ")";
+          }
+        }
+      }
+    }
+    $scope.composeWhereClause();
+  };
+
   $scope.clearSectorsFilter = function () {
     var sectors = $scope.sectors;
     for (var i = 0, len = sectors.length; i < len; ++i) {
@@ -95,6 +344,48 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     }
     $scope.sectorClause = null;
     $scope.composeWhereClause();
+  };
+
+  $scope.clearBusinessUnitFilter = function () {
+    var bunits = $scope.BusinessUnitTypes;
+    for (var i = 0, len = bunits.length; i < len; ++i) {
+      bunits[i].checked = false;
+    }
+    $scope.businessUnitsClause = null;
+
+    $scope.composeWhereClause();
+  };
+
+  $scope.clearDisasterTypeFilter = function () {
+    var disasters = $scope.disasterTypes;
+    for (var i = 0, len = disasters.length; i < len; ++i) {
+      disasters[i].checked = false;
+    }
+
+    for (var i = 0; i < $scope.disasterStatus.length; i++) {
+      $scope.disasterStatus[i].checked = false;
+    }
+
+    $scope.statusClause = null;
+    $scope.sectorClause = null;
+    $scope.composeWhereClause();
+  };
+
+  $scope.clearDisasterFilter = function () {
+    var disasters = $scope.disasterTypes;
+    for (var i = 0, len = disasters.length; i < len; ++i) {
+      disasters[i].checked = false;
+    }
+    $scope.sectorClause = null;
+    $scope.composeWhereClause();
+  };
+
+  $scope.defaultStatus = function () {
+    for (var i = 0; i < $scope.disasterStatus.length; i++) {
+      if ($scope.disasterStatus[i].name !== "Inactive") {
+        $scope.disasterStatus[i].checked = true;
+      }
+    }
   };
 
   $scope.statusFilter = function () {
@@ -105,7 +396,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
       var stat = status[i];
       if (stat.checked) {
         if (first) {
-          $scope.statusClause = "status__c LIKE '%" + stat.name + "%' ";
+          $scope.statusClause = "status__c LIKE '%" + stat.name + "%'";
           first = false;
         } else {
           $scope.statusClause += "OR status__c LIKE '%" + stat.name + "%' ";
@@ -115,6 +406,24 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.composeWhereClause();
   };
 
+  $scope.disasterStatusFilter = function () {
+    var status = $scope.disasterStatus;
+    $scope.statusClause = null;
+    var first = true;
+    for (var i = 0, len = status.length; i < len; ++i) {
+      var stat = status[i];
+      if (stat.checked) {
+        if (first) {
+          $scope.statusClause = "iroc_status__c LIKE '%" + stat.name + "%'";
+          first = false;
+        } else {
+          $scope.statusClause += "OR iroc_status__c LIKE '%" + stat.name + "%' ";
+        }
+      }
+    }
+  };
+
+
   $scope.clearStatusFilter = function () {
     var status = $scope.status;
     for (var i = 0, len = status.length; i < len; ++i) {
@@ -123,6 +432,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.statusClause = null;
     $scope.composeWhereClause();
   };
+
 
   $scope.dateFilter = function () {
     $scope.dateClause = null;
@@ -169,19 +479,19 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
         empty: true,
         opened: false,
         date: null
-      },{
+      }, {
         name: 'End Date',
         radio: 'on',
         empty: true,
         opened: false,
         date: null
-      },{
+      }, {
         name: 'Create Date',
         radio: 'on',
         empty: true,
         opened: false,
         date: null
-      },{
+      }, {
         name: 'Last Modified',
         radio: 'on',
         empty: true,
@@ -219,7 +529,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
    * @returns {string}
    */
   function dateString(date) {
-    return date.toISOString().slice(0,10);
+    return date.toISOString().slice(0, 10);
   }
 
   $scope.budgetFilter = function () {
@@ -245,7 +555,18 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
   $scope.composeWhereClause = function () {
     $scope.whereClause = null;
-    var parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause];
+    var parts = [];
+
+    if ($stateParams.theme.indexOf('disaster') !== -1) {
+      if ($scope.sectorClause == null) {
+        parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause];
+      } else {
+        parts = [$scope.sectorClause, $scope.dateClause, $scope.budgetClause];
+      }
+    } else {
+      parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause, $scope.businessUnitsClause];
+    }
+
     var first = true;
     for (var i = 0, len = parts.length; i < len; ++i) {
       var part = parts[i];
@@ -263,7 +584,10 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   };
 
   $scope.submitFilter = function () {
-    $stateParams.filters = $scope.whereClause;
+
+    if ($stateParams.theme.indexOf('project') !== -1)$stateParams.filters = escape($scope.whereClause);
+    if ($stateParams.theme.indexOf('disaster') !== -1)$stateParams.filters = escape($scope.whereClause);
+
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
   };
@@ -273,6 +597,54 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.clearStatusFilter();
     $scope.clearDateFilter();
     $scope.clearBudgetFilter();
+    $scope.clearDisasterTypeFilter();
+    $scope.clearBusinessUnitFilter();
   };
+
+  // puts the category in URL
+  $scope.putCategoryURL = function (categoryName) {
+    if ($stateParams.category == categoryName) {
+      $stateParams.category = null;
+      $state.go($state.current.name, $stateParams);
+    } else {
+      $stateParams.category = categoryName;
+      $state.go($state.current.name, $stateParams);
+    }
+  };
+
+  $scope.handleSearch = function (val) {
+    var dt = $scope.disasterTypescategory;
+    $scope.searchText = val;
+    for (var i = 0; i < Object.keys(dt).length; i++) {
+      var arr = dt[Object.keys(dt)[i]];
+      for (var z = 0; z < arr.length; z++) {
+        if (arr[z].name.indexOf(val) !== -1) {
+          $stateParams.category = Object.keys(dt)[i];
+          $scope.disasterTypescategory[Object.keys(dt)[i]][z].isSearchActive = true;
+        }
+      }
+    }
+    var state = $state.current.name || 'main';
+    $state.go(state, $stateParams);
+  };
+
+  $scope.highlightLayer = function (val) {
+    $scope.selected = true;
+    $timeout(function () {
+      var dt = $scope.disasterTypescategory;
+      for (var i = 0; i < Object.keys(dt).length; i++) {
+        var arr = dt[Object.keys(dt)[i]];
+        for (var z = 0; z < arr.length; z++) {
+          if (arr[z].name.indexOf(val) !== -1) {
+            $scope.disasterTypescategory[Object.keys(dt)[i]][z].isSearchActive = false;
+          }
+        }
+      }
+      $scope.searchText = '';
+      $scope.selected = false;
+    }, 2000);
+  };
+
+  $scope.UNOCHAIconLookup = config.UNOCHAIconLookup;
 
 });

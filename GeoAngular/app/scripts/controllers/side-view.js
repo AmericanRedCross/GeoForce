@@ -12,7 +12,8 @@ module.exports = angular.module('GeoAngular').controller('SideViewCtrl', functio
   }
 
   //Connect the layout onresize end event
-  window.layout.panes.center.bind("layoutpaneonresize_end", resizeScrollablePanel);
+  window.addEventListener("resize", resizeScrollablePanel);
+
 
   //For Init.
   resizeScrollablePanel();

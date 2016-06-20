@@ -1,13 +1,14 @@
 .dnd-box {
-    border: 3px dashed #ccc;
-    width: 350px;
-    margin: 20px auto;
-    background-color: #F6ECED;
-    color: #a5a5a5;
-    font-size: 20px;
-    text-align: center;
-    padding: 20px 30px;
-    cursor: pointer;
+  border: 3px dashed #ccc;
+  width: 558px;
+  margin: 20px auto 0px auto;
+  background-color: #F6ECED;
+  color: #a5a5a5;
+  font-size: 20px;
+  text-align: center;
+  padding: 20px 30px;
+  cursor: pointer;
+
 }
 
 .dnd-box-drag-over {
@@ -16,5 +17,61 @@
 }
 
 .dnd-box input {
-    padding-top: 10px;
+  padding-top: 10px;
+}
+
+.cancel-modal{
+  font-size: 15px;
+  font-family: "Open Sans";
+  color: rgb(60, 127, 173);
+  margin: 20px 0px 0px 0px;
+
+}
+
+
+.modal-dialog .modal-comp{
+  background-color: rgb(255, 255, 255);
+  opacity: 0.961;
+  border-radius: 0px;
+  color: rgb(63, 63, 63);
+  font-size: 14px;
+  font-family: "Open Sans";
+  color: rgb(63, 63, 63);
+  line-height: 25px;
+}
+
+.modal-title {
+  font-size: 21px;
+  font-family: oswaldregular;
+  color: rgb(63, 63, 63);
+}
+
+.btn-footer {
+  background-color: rgb(237, 27, 46);
+  padding: 7px 20px 7px 20px;
+  border-radius: 0px;
+  margin: 20px 0px 10px 0px;
+  font-size: 15px;
+  font-family: oswaldregular;
+  color: rgb(255, 255, 255);
+  /*-moz-transform: matrix( 0.53548387096774,0,0,0.53571428571429,0,0);*/
+  /* -webkit-transform: matrix( 0.53548387096774,0,0,0.53571428571429,0,0); */
+  /*-ms-transform: matrix( 0.53548387096774,0,0,0.53571428571429,0,0);*/
+  text-transform: uppercase;
+}
+
+.modal-footer {
+  padding: 0px;
+  margin:0px;
+  text-align: right;
+  border:none;
+}
+
+.alert-modal{
+  border-radius: 0px;
+}
+
+.modal-header {
+  border-bottom: 0px;
+  padding: 35px 20px 0px 20px;
 }

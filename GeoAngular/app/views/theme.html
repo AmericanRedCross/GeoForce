@@ -1,24 +1,28 @@
-<nav ng-controller="ThemeCtrl" id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom" role="navigation">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="javascript: return false;">View by:</a>
-    </div>
-    <div class="menu-selection">
-        <ul class="nav navbar-nav">
-            <li class="dropdown">
-                                    <span class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleThemeMenu()">
-                                        {{themeName}}
-                                    </span>
-                <ul id="ThemeMenu" class="dropdown-menu">
-                    <li ng-click="project()">Project</li>
-                    <li ng-click="disaster()">Disasters</li>
-                    <li ng-click="projectRisk()">Project Risk</li>
-                    <li ng-click="projectHealth()">Project Health</li>
-                    <li ng-click="none()">None</li>
-                    <!--<li ng-click="activeTheme='Risks'"><a href="javascript: return false;">Risks</a></li>-->
-                    <!--<li ng-click="activeTheme='Pipeline'"><a href="javascript: return false;">Pipeline</a></li>-->
-                    <!--<li ng-click="activeTheme='Project Health'"><a href="javascript: return false;">PROJECT HEALTH</a></li>-->
-                </ul>
-            </li>
+<nav ng-controller="ThemeCtrl" id="ThemeSelectorMenu" class="navbar navbar-default navbar-fixed-bottom"
+     role="navigation">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="javascript: return false;">View by:</a>
+  </div>
+  <div class="menu-selection">
+    <ul class="nav navbar-nav">
+      <li class="dropdown">
+        <span class="dropdown-toggle" data-toggle="dropdown" ng-click="toggleThemeMenu()">
+          <div class="glyphicon glyphicon-chevron-up pull-right theme"></div>
+          <div class="text-center">{{themeName}}</div>
+
+        </span>
+        <ul id="ThemeMenu" class="dropdown-menu">
+          <li ng-click="project()">Projects</li>
+          <li ng-click="disaster()">Disasters</li>
+          <li ng-click="disasterType()">Disaster Type</li>
+          <li ng-click="projectRisk()">Project Risk</li>
+          <li ng-click="projectHealth()">Project Health</li>
+          <li ng-click="none()">None</li>
+          <!--<li ng-click="activeTheme='Risks'"><a href="javascript: return false;">Risks</a></li>-->
+          <!--<li ng-click="activeTheme='Pipeline'"><a href="javascript: return false;">Pipeline</a></li>-->
+          <!--<li ng-click="activeTheme='Project Health'"><a href="javascript: return false;">PROJECT HEALTH</a></li>-->
         </ul>
-    </div>
+      </li>
+    </ul>
+  </div>
 </nav>

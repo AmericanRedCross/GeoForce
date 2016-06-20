@@ -3,63 +3,109 @@
  *       on 5/6/14.
  */
 
-module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $state, $stateParams, VectorProvider) {
+module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function ($scope, $rootScope, $state, $stateParams, VectorProvider, LayerConfig) {
 
   var themeNameHash = $rootScope.themeNameHash = {
     project: 'Projects',
     disaster: 'Disasters',
     projectRisk: 'Project Risk',
     projectHealth: 'Project Health',
+    disasterType: 'Disaster Type',
     none: 'None'
   };
 
   $scope.project = function () {
     $scope.themeName = themeNameHash.project;
-    ensureThemeCount();
     $scope.setThemeQueryParam('project');
   };
 
   $scope.disaster = function () {
     $scope.themeName = themeNameHash.disaster;
-    ensureThemeCount();
     $scope.setThemeQueryParam('disaster');
   };
 
   $scope.projectRisk = function () {
       $scope.themeName = themeNameHash.projectRisk;
-      ensureThemeCount();
       $scope.setThemeQueryParam('projectRisk');
   };
 
   $scope.projectHealth = function () {
       $scope.themeName = themeNameHash.projectHealth;
-      ensureThemeCount();
       $scope.setThemeQueryParam('projectHealth');
+  };
+
+  $scope.disasterType = function () {
+    $scope.themeName = themeNameHash.disasterType;
+    $scope.setThemeQueryParam('disasterType');
   };
 
   $scope.none = function () {
     $scope.themeName = themeNameHash.none;
-    var layersArr = $.grep($stateParams.layers.split(','), function(routeLayer){
-      return routeLayer !== 'gadm0' && routeLayer !== 'theme';
-    });
-    $stateParams.layers = layersArr.join(',');
     $scope.setThemeQueryParam('none');
   };
 
-  function ensureThemeCount() {
-    if ($stateParams.layers.indexOf('gadm0') === -1 && $stateParams.layers.indexOf('theme') === -1) {
-      $stateParams.layers += ',gadm0';
+
+  $scope.closePanels = function (){
+    for (var param in $stateParams) {
+      if ($stateParams[param] === 'open') {
+        $stateParams[param] = null;
+      }
     }
-  }
+  };
 
   $scope.setThemeQueryParam = function (theme) {
+
+    //close details panel on theme change
+    if($scope.isParam('details-panel') == true){
+      if($stateParams.theme !== theme){
+        $scope.closePanels();
+      }
+    }
+
+
+    //append the default disaster filter when switching from project to disaster
+    if(theme.indexOf('disaster') !== -1 && $stateParams.theme.indexOf('project') !== -1){
+      $stateParams.filters = "iroc_status__c LIKE '%Monitoring%'OR iroc_status__c LIKE '%Active%'";
+    }
+
+    //remove all filters when switching from disaster to project
+    if(theme.indexOf('project')!==-1 && $stateParams.theme.indexOf('disaster')!== -1 ){
+      delete $stateParams.filters;
+    }
+
     $stateParams.theme = theme;
+
+    //force gadm0 on disaster and disasterType
+    if(theme.indexOf('disaster')!==-1 && $stateParams.layers.split(",")[1] !== 'gadm0'){
+      var layersArray;
+
+      if($stateParams.layers){
+        layersArray = $stateParams.layers.split(",");
+      }
+
+      //Remove all GADM layers.
+      layersArray.forEach(function (value, key) {
+        if (LayerConfig.themeLayers.indexOf(value) > -1) {
+          layersArray.splice(layersArray.indexOf(value), 1); //remove any GADMs
+        }
+      });
+
+      //Add in the gadm layer to the layers list in the stateparams.
+      layersArray.push("gadm0");
+      $stateParams.layers = layersArray.join(",");
+    }
+
+    //close filters panel if theme is  None
+    if($stateParams.theme == 'none' || $stateParams.theme !== null) {
+      $scope.closeParam('filters-panel');
+    }
+
+
     var state = $state.current.name || 'main';
     $state.go(state, $stateParams);
   };
 
-  $scope.themeName = themeNameHash[$stateParams.theme] || 'Projects';
-
+  $scope.themeName = themeNameHash[$stateParams.theme] || themeNameHash[config.defaultTheme];
   /*
    Handling Theme Menu Animations
    */
@@ -82,7 +128,7 @@ module.exports = angular.module('GeoAngular').controller('ThemeCtrl', function (
       var self = this;
       setTimeout(function () {
         $(self).addClass("theme-selector-li-on");
-      }, index*150);
+      }, index*100);
     });
   };
 

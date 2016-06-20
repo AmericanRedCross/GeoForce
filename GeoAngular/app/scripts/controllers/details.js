@@ -6,11 +6,13 @@
 module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function ($scope, $rootScope, $state, $stateParams, $http, Donuts, $filter) {
 
   $scope.details = {};
+  $scope.navTab = 'details';
 
   $scope.salesforceUrl = config.salesforceUrl;
 
   $http.get('succubus_gitignore/sf-object-field-hash.json', {cached: true}).success(function(sfFieldHash) {
     $scope.sfFieldHash = sfFieldHash;
+    $scope.ProjectBusinessUnit = sfFieldHash["Project__c"]["business_unit__c"]["picklistValues"];
   });
 
   $scope.showRfa = function (details, value) {
@@ -58,7 +60,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     var desc = key;
 
     // disaster
-    if ($stateParams.theme === 'disaster') {
+    if ($stateParams.theme.indexOf('disaster') !== -1) {
 
       if ($scope.sfFieldHash.Disaster__c[key]) {
         desc = $scope.sfFieldHash.Disaster__c[key].label || key;
@@ -236,6 +238,24 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   //Init selectedFeatureTitle property
   $scope.title= "Feature Details";
 
+  var sortDetails = function(){
+    var projectkey = Object.keys($scope.groupings)[0];
+
+    // Projects and Project Risk have same sorting rules
+    if($scope.groupings.hasOwnProperty('Projects')==true || $scope.groupings.hasOwnProperty('Project Risk')==true){
+      $scope.groupings[projectkey] = SortByProjectRisk($scope.groupings[projectkey]);
+    };
+
+    if($scope.groupings.hasOwnProperty('Project Health')==true){
+      $scope.groupings[projectkey] = SortByProjectHealth($scope.groupings[projectkey]);
+    };
+
+    if($scope.groupings.hasOwnProperty('Disasters')==true){
+      $scope.groupings['Disasters'] = SoryByDisaster($scope.groupings['Disasters']);
+    };
+
+  };
+
   $scope.toggleState = function(stateName) {
     var state = $state.current.name !== stateName ? stateName : 'main';
     $state.go(state, $stateParams);
@@ -258,18 +278,99 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (properties.salesforce) { // salesforce theme badge selected
       $scope.contextualLayer = false;
       $scope.groupings = properties.salesforce;
+
+      sortDetails();
+
       $scope.numThemeItems = $.map(properties.salesforce, function(n) { return n}).length;
       $scope.showList();
-      $scope.openParam('details-panel');
+
+      // close param if user selects a country with no data
+      var objtitle = Object.keys(properties.salesforce)[0];
+      if(properties.salesforce[objtitle].length>=1){
+        $scope.openParam('details-panel');
+      } else {
+        $scope.closeParam('details-panel');
+      }
+
       $scope.createDonuts();
+      $scope.dataset = Donuts.dataset;
+
+      //sector legend
+      var dc=0; //total sectors
+      for(var i=0;i<$scope.dataset.length;i++){
+        dc = dc + $scope.dataset[i].count;
+      }
+      for(var i=0;i<$scope.dataset.length;i++){
+        $scope.dataset[i].width = Math.round((277 * ($scope.dataset[i].count/dc))); // percentage of div (250px)
+      }
+      // Sort sector array by count
+      $scope.dataset.sort(function (a, b) {
+        return b.width - a.width; // sort by count
+      });
+
+      if($scope.dataset.length>0) {
+        $scope.datasetTitle = $scope.dataset[0].alias;
+        $scope.datasetColor = $scope.dataset[0].color;
+        $scope.datasetCount = $scope.dataset[0].count;
+      }
+
+      $scope.hideLegend = false;
+      // end sector legend
+
     } else { // standard geojson, show properties as details
 
       $scope.contextualLayer = (properties.sf_id ? false : true);
       $scope.showDetails(properties);
       $scope.openParam('details-panel');
+      //$scope.numThemeItems = 1; //non sales force features
     }
     $scope.resizeDetailsPanel();
   });
+
+  var SortByProjectRisk = function(arr){
+    arr.sort(function (a, b) {
+      if (config.ProjectRiskOrder[a.overall_assessment__c] < config.ProjectRiskOrder[b.overall_assessment__c]) {
+        return 1;
+      }
+      if (config.ProjectRiskOrder[a.overall_assessment__c] > config.ProjectRiskOrder[b.overall_assessment__c]) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+
+    return arr;
+  };
+  var SoryByDisaster = function(arr){
+    arr.sort(function (a, b) {
+      if (config.DisasterOrder[a.iroc_status__c] < config.DisasterOrder[b.iroc_status__c]) {
+        return 1;
+      }
+      if (config.DisasterOrder[a.iroc_status__c] > config.DisasterOrder[b.iroc_status__c]) {
+        return -1;
+      }
+      // in case of a tie; order by date
+      return new Date(b.date__c) - new Date(a.date__c);
+
+    });
+
+    return arr;
+  };
+  var SortByProjectHealth = function(arr){
+    arr.sort(function (a, b) {
+      if (config.ProjectHealthOrder[a.overall_status__c] < config.ProjectHealthOrder[b.overall_status__c]) {
+        return 1;
+      }
+      if (config.ProjectHealthOrder[a.overall_status__c] > config.ProjectHealthOrder[b.overall_status__c]) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+
+    return arr;
+  };
+
 
   $scope.$on('route-update', function () {
     var sf_id = $stateParams.sf_id;
@@ -305,6 +406,8 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
   };
 
   $scope.showDetails = function (item, themeItems, idx) {
+    $scope.hideLegend = true;
+
     if (item.sf_id) {
       $rootScope.setParamWithVal('sf_id', item.sf_id);
     }
@@ -316,8 +419,16 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     if (themeItems) $scope.activeThemeItemsList = themeItems;
 
     $scope.itemsList = false;
+    //
+    if(!$scope.$$phase) {
+      $scope.$apply(function(){
+        $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+      });
+    } else {
+      $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+    }
 
-    $scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
+      //$scope.details = removeUnwantedItems(formatDetails(item, $stateParams.theme), $stateParams.theme);
 
     if (!$scope.contextualLayer) {
       $scope.lessDetails = removeUnwantedItems(lessDetails(formatDetails(item, $stateParams.theme)), $stateParams.theme);
@@ -401,7 +512,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     var formattedDetails = {};
     var formattingDictionary = config.projectDetailsFormatting;
 
-    if (type === 'disaster') {
+    if (type.indexOf('disaster') !== -1) {
       formattingDictionary = config.disasterDetailsFormatting;
     }
     else if (type === 'project') {
@@ -455,7 +566,7 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
 
   function lessDetails(details) {
     var lessDetails = [];
-    if ($stateParams.theme === 'disaster') {
+    if ($stateParams.theme.indexOf('disaster')!==-1) {
       for (var i = 0, len = config.disasterDetailsShortList.length; i < len; i++) {
         var key = config.disasterDetailsShortList[i];
         lessDetails.push({
@@ -494,10 +605,11 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     $scope.title = $scope.featureTitle;
     $scope.itemsList = true;
     $scope.details = false;
+    $scope.hideLegend = false;
   };
 
   $scope.resizeDetailsPanel = function() {
-    var height = $('#MapCtrl').height() - 200; //Magic Number
+    var height = $('#MapCtrl').height() - 260; //Magic Number
 
     //height is the value that the entire details panel should never exceed.
     //Within the panel itself, the inner container needs to adjust its height based on the contents of the panel.
@@ -511,10 +623,11 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     $('#DetailsPanel .InnerContainer ').css("max-height", height - innerTop - bottomHeight);
   };
 
-	//Connect the layout onresize end event
-	window.layout.panes.center.bind("layoutpaneonresize_end", $scope.resizeDetailsPanel);
+	//Connect the window onresize end event
+  window.addEventListener("resize", $scope.resizeDetailsPanel);
 
-	//For Init.
+
+  //For Init.
 	$scope.resizeDetailsPanel();
 
   $scope.save = function (data, name) {
@@ -526,5 +639,11 @@ module.exports = angular.module('GeoAngular').controller('DetailsCtrl', function
     downloadLink.download = name || 'feature.geojson';
     downloadLink.click();
   };
+
+  $scope.updateSectorLegend = function(alias,color,count){
+    $scope.datasetTitle = alias;
+    $scope.datasetColor = color;
+    $scope.datasetCount = count;
+  }
 
 });

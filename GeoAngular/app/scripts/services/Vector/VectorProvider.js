@@ -62,7 +62,7 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
   }
 
   function processFeatureItinerary(featItinerary) {
-    console.log("FEATURE ITINERARY:");
+
     for (var j = 0, len = featItinerary.length; j < len; j++) {
       var feat = featItinerary[j];
       if ( feat.iscenter ) {
@@ -70,7 +70,6 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
         $rootScope.$broadcast('center-feature', feat);
       }
     }
-    console.log(['featItinerary',featItinerary]);
 
     // if there are no features for the current bounding box
     //if (!featItinerary || featItinerary.length === 0) {
@@ -141,7 +140,6 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
     updateBBox: function(bboxStr) {
       vector.bbox = bboxStr;
 
-      console.log('VectorProvider bbox: ' + vector.bbox);
       fetchFeatureItinerary();
     },
 

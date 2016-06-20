@@ -498,4 +498,13 @@ common.writeGeoJSONFile = function (geojson, name, callback) {
 
 }
 
+
+common.encode = function(input) {
+  return encodeURIComponent(input).replace(/'/g,"%27").replace(/"/g,"%22");
+}
+
+common.decode = function(input) {
+  return decodeURIComponent(input.replace(/\+/g,  " "));
+}
+
 module.exports = common;

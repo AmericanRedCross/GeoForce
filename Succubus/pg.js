@@ -299,13 +299,12 @@ function insertQuery (sfQueryName, cb) {
 	var queryTable = 'sf_' + S(sfQueryName).underscore().s;
 
 	salesforce.queryAndFlattenResults(queryStr, function (rows) {
-		if(rows && rows.length > 0)
-        {
-            insertRows(queryTable, rows, queryStr, cb);
-        }
-        else{
-            cb();
-        }
+		if (rows && rows.length > 0) {
+			insertRows(queryTable, rows, queryStr, cb);
+		}
+		else {
+			cb();
+		}
 	});
 }
 

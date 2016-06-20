@@ -170,22 +170,12 @@
     </div>
 
     </div> <!-- /#wrapper -->
-    <script src="javascript/pbf/vectortile/vectortilelayer.js"></script>
-    <script src="javascript/pbf/vectortile/vectortilefeature.js"></script>
-    <script src="javascript/pbf/vectortile/vectortile.js"></script>
-    <script src="javascript/pbf/vectortile/pbf/ieee/ieee.js"></script>
-    <script src="javascript/pbf/vectortile/pbf/pbf.js"></script>
-    <script src="javascript/pbf/vectortile/point.js"></script>
 
-    <script src="javascript/pbf/TileLayer.PBF/TileLayer.PBFSource.js"></script>
-    <script src="javascript/pbf/TileLayer.PBF/TileLayer.PBFLayer.js"></script>
-    <script src="javascript/pbf/TileLayer.PBF/PBFFeature.js"></script>
+    <script src="javascript/Leaflet.MapboxVectorTile.js"></script>
 
 <script type="text/javascript">
     var map = L.map('map').setView([0,0], 7);
     map.locate({setView: true, maxZoom: 10});
-    //var _server = "http://localhost:3001";
-    var _server = "https://webviz.redcross.org";
 
     L.tileLayer('https://a.tiles.mapbox.com/v3/americanredcross.map-dn70q0vb/{z}/{x}/{y}.png').addTo(map);
 
@@ -258,17 +248,6 @@
         }
     }
 
-    //Add layer
-    //map.addLayer(pbfSource);
-
-    map.on("layerremove", function(removed){
-        //This is the layer that was removed.
-        //If it is a TileLayer.PBFSource, then call a method to actually remove the children, too.
-        if(removed.layer.removeChildLayers){
-            removed.layer.removeChildLayers(map);
-        }
-    });
-
     //Set 'enter' click trigger for button
     $('#uxSearchterm').keypress(function (e) {
         if (e.keyCode == 13)
@@ -322,7 +301,7 @@
             returnGeometry: "no"
         };
 
-        var url = _server + '/services/nameSearch';
+        var url = '/services/nameSearch';
 
         //Send POST, using JSONP
         $.getJSON(url, postArgs).done(function (data) {
@@ -330,6 +309,7 @@
         }).fail(function (jqxhr, textStatus, error) {
             var err = textStatus + ', ' + error;
             console.log("Request Failed: " + err);
+            $("#result").html("There is a problem with the search service.");
         }).always(function () {
             loading.kill();
         });
@@ -339,9 +319,21 @@
     var _geoJSON = ""; //Store the GeoJSON of IRC Data
     var _geoJSONLayer; //the leaflet layer to hold GeoJSON admin objects
     function handleNameSearchResponse(data) {
+
         $("#result").html(""); //clear name result panel
         $("#adminResult").html(""); //clear admin panel
         $("#stackWrapper").hide(); // hide admin title and choose location button
+
+        if(data && data.features){
+            if(data.features.length == 0){
+                //Let user know there are no matches
+                $("#result").html("No matches found. Please try another search term.");
+                return;
+            }
+        }
+
+        //Let user know they can click on results.
+        $("#result").html('<div style="padding: 5px;margin-bottom: 10px;">Click on a match below to see a preview of the location.</div>'); //clear name result panel
 
         //Build result table
         var table = $("<table><thead><tr><th>Name</th><th>Level</th><th>Source</th></tr></thead></table>").appendTo("#result");
@@ -400,7 +392,7 @@
         var loading = new loader("#adminResult");
 
 
-        var url = _server + '/services/getAdminStack';
+        var url = '/services/getAdminStack';
 
         //Send POST, using JSONP
         $.getJSON(url, postArgs).done(function (data) {
@@ -420,7 +412,7 @@
             returnGeometry: "yes"
         };
 
-        var url = _server + '/services/getAdminStack';
+        var url = '/services/getAdminStack';
 
         //Send POST,
         $.getJSON(url, postArgs).done(function (data) {
@@ -481,20 +473,23 @@
 
             //if level is specified, turn on only that level. Default to 2
             if(level) {
-                showThisLayer("gadm" + level + "_geom_simplify_med", function (feature) {
-                    //Filter.  As each vector tile feature comes in, passes thru here to decide whether or not to draw. True will draw, false will omit.
-                    if (feature.properties.guid == _geoJSON.features[0].properties.stack_guid) {
-                        return true;
-                    }
-                    return false;
-                }, function(){
+                var layerName;
+                if(level == '-1') {
+                    layerName = "arc_regions_dissolved_geom";
+                }
+                else{
+                    layerName = "gadm" + level + "_geom_simplify_med";
+
+                }
+
+                showThisLayer(layerName, _geoJSON.features[0].properties.stack_guid, function(){
                     //After layer has been added to map
                     //zoom to layer
                     map.fitBounds(gjl.getBounds());
                 });
             }
             else{
-                showThisLayer("gadm0_geom_simplify_med", function(feature){ return true;}, function() {
+                showThisLayer("gadm0_geom_simplify_med", '', function() {
                     //After layer has been added to map
                     //zoom to layer
                     map.fitBounds(gjl.getBounds());
@@ -562,41 +557,26 @@
         // $("#uxChooseThis").prop("disabled", false); //enabled the second option box
     });
 
-function showThisLayer(name, filter, cb) {
-    if(pbfSource) map.removeLayer(pbfSource);
-    pbfSource = null;
-    pbfSource = createGADMVecorTileLayer(name, filter);
-    pbfSource.styleFor = pbfStyle;
-
-    map.addLayer(pbfSource);
-
-    //Callback when layer is added to map
-    if(cb) cb();
-}
-
-function createGADMVecorTileLayer(name, filter){
-    return new L.TileLayer.PBFSource({
-        //url: "../services/vector-tiles/GADM/{z}/{x}/{y}.pbf",
-        url: "../services/postgis/" + name + "/vector-tiles/{z}/{x}/{y}.pbf" ,
-        debug: false,
-        clickableLayers: [],
-        getIDForLayerFeature: function(feature) {
-            return feature.properties.guid;
-        },
-
-        /**
-         * The filter function gets called when iterating though each vector tile feature (vtf). You have access
-         * to every property associated with a given feature (the feature, and the layer). You can also filter
-         * based of the context (each tile that the feature is drawn onto).
-         *
-         * Returning false skips over the feature and it is not drawn.
-         *
-         * @param feature
-         * @returns {boolean}
-         */
-        filter: filter
-    });
-}
+    function showThisLayer(name, guid, cb) {
+        if(pbfSource) map.removeLayer(pbfSource);
+        pbfSource = null;
+        pbfSource = createGADMVecorTileLayer(name, guid);
+        pbfSource.style = pbfStyle;
+        map.addLayer(pbfSource);
+        //Callback when layer is added to map
+        if(cb) cb();
+    }
+    function createGADMVecorTileLayer(name, guid){
+        return new L.TileLayer.MVTSource({
+            //url: "../services/vector-tiles/GADM/{z}/{x}/{y}.pbf",
+            url: "../services/postgis/" + name + "/vector-tiles/{z}/{x}/{y}.pbf?fields=guid" + (guid ? "&where=guid%3D%27" + guid + "%27" : ""), //filter by guid if present
+            debug: false,
+            clickableLayers: [],
+            getIDForLayerFeature: function(feature) {
+                return feature.properties.guid;
+            }
+        });
+    }
 </script>
 <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

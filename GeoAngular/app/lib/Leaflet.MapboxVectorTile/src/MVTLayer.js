@@ -68,6 +68,7 @@ module.exports = L.TileLayer.Canvas.extend({
     this.features = {};
     this.featuresWithLabels = [];
     this._highestCount = 0;
+    this.legendObject = {};
   },
 
   onAdd: function(map) {
@@ -156,7 +157,8 @@ module.exports = L.TileLayer.Canvas.extend({
 
 
 
-    //Initialize this tile's feature storage hash, if it hasn't already been created.  Used for when filters are updated, and features are cleared to prepare for a fresh redraw.
+    //Initialize this tile's feature storage hash, if it hasn't already been created.
+    // Used for when filters are updated, and features are cleared to prepare for a fresh redraw.
     if (!this._canvasIDToFeatures[layerCtx.id]) {
       this._initializeFeaturesHash(layerCtx);
     }else{
@@ -200,6 +202,11 @@ module.exports = L.TileLayer.Canvas.extend({
       if (!mvtFeature) {
         //Get a style for the feature - set it just once for each new MVTFeature
         var style = self.style(vtf);
+
+        //If style.legendLabel property exists, build a legend object.
+        //if(style.legendLabel){
+        //  self.legendObject[style.legendLabel] = style;
+        //}
 
         //create a new feature
         self.features[uniqueID] = mvtFeature = new MVTFeature(self, vtf, layerCtx, uniqueID, style);
@@ -344,8 +351,9 @@ module.exports = L.TileLayer.Canvas.extend({
     //id is the entire zoom:x:y.  we just want x:y.
     var ca = id.split(":");
     var canvasId = ca[1] + ":" + ca[2];
+
+    //TODO: this is sometimes undefined.
     if (typeof this._tiles[canvasId] === 'undefined') {
-      console.error("typeof this._tiles[canvasId] === 'undefined'");
       return;
     }
     var canvas = this._tiles[canvasId];
@@ -387,6 +395,7 @@ module.exports = L.TileLayer.Canvas.extend({
         selectedFeatures.push(feature);
       } else {
         feature.draw(canvasID);
+        this.addLegendStyle(feature);
       }
     }
 
@@ -395,6 +404,7 @@ module.exports = L.TileLayer.Canvas.extend({
       var selFeat = selectedFeatures[j];
       selFeat.draw(canvasID);
     }
+
   },
 
   _resetCanvasIDToFeatures: function(canvasID, canvas) {
@@ -417,6 +427,29 @@ module.exports = L.TileLayer.Canvas.extend({
 
   featureWithLabelAdded: function(feature) {
     this.featuresWithLabels.push(feature);
+  },
+
+  addLegendStyle: function(feature){
+    //Take in a feature, and add in class names and colors based on drawing style
+
+    //If style.legendLabel property exists, build a legend object.
+    if(feature.style.legendLabel){
+      this.legendObject[feature.style.legendLabel] = feature.style;
+    }
+
+    //Store the bubble HTML, if present
+    if(feature.staticLabel){
+      this.legendObject[feature.style.legendLabel] = feature.staticLabel.icon;
+    }
+  },
+
+  clearLegendObject: function(){
+    this.legendObject = {};
+  },
+
+  getLegendObject: function(){
+    //Get the legend object for this layer.
+    return this.legendObject;
   }
 
 });

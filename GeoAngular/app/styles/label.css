@@ -45,15 +45,90 @@
   -ms-transition: opacity .2s ease-in-out;
   -o-transition: opacity .2s ease-in-out;
   transition: opacity .2s ease-out;
-
-  filter: alpha(opacity=50);
-  opacity: 0.5;
 }
 
-.label-icon-number-40percent:hover {
-  filter: alpha(opacity=100);
-  opacity: 1;
+/* smaller labels */
+.small-label .label-icon-number-40percent, .small-label .label-icon-number-100percent {
+  font-size: 9px;
+  line-height: 16px;
+  box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+  height: 16px;
+  width: 16px;
 }
+
+/* For Disaster Type UNOCHA icons*/
+.small-label .label-icon-number-100percent i{
+  font-size: 9px;
+  line-height: 16px;
+}
+
+/* medium labels */
+.medium-label .label-icon-number-40percent, .medium-label .label-icon-number-100percent {
+  font-size: 12px;
+  line-height:28px;
+  box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+  height: 27px;
+  width: 27px;
+}
+
+/* For Disaster Type UNOCHA icons*/
+.medium-label .label-icon-number-100percent i{
+  font-size: 17px;
+  line-height: 25px;
+  margin-left: -3px;
+}
+
+.large-label .label-icon-number-100percent i{
+  font-size: 26px;
+  line-height: 36px;
+  margin-left: -3px;
+}
+
+/* large labels */
+.large-label .label-icon-number-40percent, .large-label .label-icon-number-100percent {
+  font-size: 14px;
+  line-height: 41px;
+  box-shadow: 0px 0px 0px 2px rgba(255,255,255,1);
+  height: 42px;
+  width:42px;
+}
+
+/* For Disaster Type UNOCHA icons*/
+/*.large-label .label-icon-number-100percent i{*/
+  /*font-size: 9px;*/
+  /*line-height: 16px;*/
+/*}*/
+
+/*.label-icon-number-40percent:hover {*/
+  /*filter: alpha(opacity=100);*/
+  /*opacity: 1;*/
+/*}*/
+
+.label-icon-number-100percent {
+  background-color: rgba(110, 175, 255, 1);
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 14px;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 41px;
+  box-shadow: 0px 0px 0px 5px rgba(255,255,255,1);
+  height: 42px;
+  width:42px;
+
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-out;
+}
+
+/* Make the border puff a little*/
+/*.label-icon-number-100percent:hover {*/
+  /*box-shadow: 0px 0px 0px 7px rgba(255,255,255,1);*/
+/*}*/
 
 .label-icon-text {
   display: inline-block;
@@ -74,8 +149,53 @@
   color: #ffff00;
 }
 
-.label-icon-number-selected, .label-icon-text-selected .label-icon-number-40percent {
-  box-shadow: 0px 0px 0px 7px rgb(255,255,0);
+.label-icon-number-selected, .label-icon-text-selected .label-icon-number-40percent, .label-icon-text-selected .label-icon-number-100percent {
+  box-shadow: 0px 0px 0px 2px rgb(0,255,255);
   filter: alpha(opacity=100);
   opacity: 1;
 }
+
+/* smaller labels */
+.small-label .label-icon-number-selected, .small-label .label-icon-text-selected .label-icon-number-40percent, .small-label .label-icon-text-selected .label-icon-number-100percent{
+  box-shadow: 0px 0px 0px 2px rgb(0,255,255);
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+
+/* smaller labels */
+.medium-label .label-icon-number-selected, .medium-label .label-icon-text-selected .label-icon-number-40percent, .medium-label .label-icon-text-selected .label-icon-number-100percent{
+  box-shadow: 0px 0px 0px 2px rgb(0,255,255);
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+
+/* smaller labels */
+.large-label .label-icon-number-selected, .large-label .label-icon-text-selected .label-icon-number-40percent, .large-label .label-icon-text-selected .label-icon-number-100percent{
+  box-shadow: 0px 0px 0px 2px rgb(0,255,255);
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+
+/*  force the size and offset here */
+/*.small-label .leaflet-marker-icon{*/
+   /*height: 16px !important;*/
+   /*width: 16px !important;*/
+   /*margin-top: -8px !important;*/
+   /*margin-left: -8px !important;*/
+/*}*/
+
+/*  force the size and offset here */
+/*.medium-label .leaflet-marker-icon{*/
+  /*height: 22px !important;*/
+  /*width: 22px !important;*/
+  /*margin-top: -11px  !important;*/
+  /*margin-left: -11px !important;*/
+/*}*/
+
+/*  force the size and offset here */
+/*.large-label .leaflet-marker-icon{*/
+  /*height: 42px !important;*/
+  /*width: 42px !important;*/
+  /*margin-top: -21px !important;*/
+  /*margin-left: -21px !important;*/
+/*}*/
