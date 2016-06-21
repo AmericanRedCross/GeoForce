@@ -3,7 +3,7 @@
  *       on 6/3/14.
  */
 
-var Resource = require('./resource');
+var Resource = require('./Resource');
 var $rootScope = require('./vector').$rootScope;
 var toGeoJSON = require('./vector').toGeoJSON;
 var $ = require('./vector').$;

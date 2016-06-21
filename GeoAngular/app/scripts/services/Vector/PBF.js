@@ -3,7 +3,7 @@
  *       on 12/15/14.
  */
 
-var Resource = require('./resource');
+var Resource = require('./Resource');
 var $rootScope = require('./vector').$rootScope;
 var $http = require('./vector').$http;
 var vector = require('./vector');

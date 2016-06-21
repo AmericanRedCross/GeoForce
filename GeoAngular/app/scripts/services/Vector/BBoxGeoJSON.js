@@ -4,7 +4,7 @@
  */
 
 var FeatureSet = require('../../../lib/featurelabel/FeatureSet');
-var Resource = require('./resource');
+var Resource = require('./Resource');
 var bboxUrl = require('./vector').bboxUrl;
 var bboxResources = require('./vector').bboxResources;
 
