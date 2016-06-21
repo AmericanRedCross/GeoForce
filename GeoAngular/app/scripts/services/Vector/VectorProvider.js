@@ -21,7 +21,7 @@ module.exports = angular.module('GeoAngular').factory('VectorProvider', function
   var BBoxGeoJSON = require('./BBoxGeoJSON');
   var KML = require('./KML');
   var CSV = require('./csv');
-  var PBF = require('./pbf');
+  var PBF = require('./PBF');
 
 
   /**
