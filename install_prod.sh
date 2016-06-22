@@ -9,8 +9,14 @@ cp settings/chubbs_settings_prod.js GeoForce/Chubbs/private/settings.js
 cp settings/succubus_settings_prod.js GeoForce/Succubus/settings.js
 cp ssl_keys/geo.cer GeoForce/Chubbs/private/geo.cer
 cp ssl_keys/geo.pfx GeoForce/Chubbs/private/geo.pfx
+echo INSTALLING MAPFOLIO DEPENDENCIES
+cd GeoAngular/app/lib/Leaflet.MapboxVectorTile
+npm install
+echo BUILDING geo-angular.js
+cd ../../../
+npm run-script build
 echo INSTALLING CHUBBS DEPENDENCIES
-cd GeoForce/Chubbs
+cd ../Chubbs
 npm install
 echo INSTALLING GEOANGULAR DEPENDENCIES
 cd ../GeoAngular
