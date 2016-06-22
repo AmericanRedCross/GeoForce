@@ -83,7 +83,7 @@ operation.execute = flow.define(
     var activeProjectWhereClause = " AND (sf_project.phase__c LIKE '%1%' OR sf_project.phase__c LIKE '%2%' OR sf_project.phase__c LIKE '%3%' OR sf_project.phase__c LIKE '%4%' OR sf_project.phase__c LIKE '%5%' OR sf_project.phase__c LIKE '%6%')";
 
     //Do not display projects or disasters that have TEST as the first word in the project name.
-    var removeTESTProjects = " AND name NOT ILIKE 'test%'";
+    var removeTESTProjects = " AND sf_project.name NOT ILIKE 'test%'";
 
     //See if inputs are set. Incoming arguments should contain the same properties as the input parameters.
     if (operation.isInputValid(args) === true) {
@@ -91,6 +91,11 @@ operation.execute = flow.define(
       operation.inputs["guids"] = args.guids;
       operation.inputs["gadm_level"] = args.gadm_level;
       operation.inputs["filters"] = args.filters;
+
+      // TODO dynamically handle this for all columns
+      //if(operation.inputs["filters"].indexOf('status__c')!==-1){
+      //  operation.inputs["filters"] = operation.inputs["filters"].replace(/status__c/g, "sf_project.status__c")
+      //}
 
       var filters = '';
 
@@ -105,7 +110,7 @@ operation.execute = flow.define(
       }
       else {
         //Add where clause to only show active projects
-        filters = activeProjectWhereClause;
+        //filters = activeProjectWhereClause;
         filters += removeTESTProjects;
       }
 

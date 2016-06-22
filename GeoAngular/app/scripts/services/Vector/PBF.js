@@ -100,6 +100,8 @@ PBF.prototype.fetchFeatureDetails = function(guid, level, name) {
     .replace(':level', level)
     .replace(':filters', filters);
 
+  //TODO dynamically add sf_project to each filter column if arcregions
+
   $http.get(detailsUrl, {cache: true}).success(function (details) {
     var featureLayer = { feature: { properties: {}}};
     featureLayer.feature.properties.salesforce = {};

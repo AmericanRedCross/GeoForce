@@ -63,6 +63,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.phase__c = sfFieldHash["Project__c"]["phase__c"]["picklistValues"];
     // add description & combine phase 3/4/5
     $scope.phase__c.forEach(function(phase){
+      phase.checked = false;
       sfFieldHash["Project__c"]["phase__c"].inlineHelpText.split(/\n/).forEach(function(desc){
         if(desc.indexOf(phase.value) !== -1){
           phase.description = desc
@@ -419,15 +420,16 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $scope.statusFilter = function () {
     var status = $scope.status;
     $scope.statusClause = null;
+    var statusColumn = ($stateParams.layers.indexOf('arcregions') !== -1) ? 'status__c' : 'status__c';
     var first = true;
     for (var i = 0, len = status.length; i < len; ++i) {
       var stat = status[i];
       if (stat.checked) {
         if (first) {
-          $scope.statusClause = "status__c LIKE '%" + stat.name + "%'";
+          $scope.statusClause = statusColumn + " LIKE '%" + stat.name + "%'";
           first = false;
         } else {
-          $scope.statusClause += "OR status__c LIKE '%" + stat.name + "%' ";
+          $scope.statusClause += "OR " + statusColumn + " LIKE '%" + stat.name + "%' ";
         }
       }
     }
@@ -439,16 +441,25 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
     $scope.phaseClause = null;
     var first = true;
     for (var i = 0, len = phase.length; i < len; ++i) {
-      var stat = phase[i];
-      if (stat.checked) {
+      var p = phase[i];
+      if (p.checked) {
         if (first) {
-          $scope.phaseClause = "phase__c LIKE '%" + stat.name + "%'";
+          $scope.phaseClause = "phase__c LIKE '%" + p.value + "%'";
           first = false;
         } else {
-          $scope.phaseClause += "OR phase__c LIKE '%" + stat.name + "%' ";
+          $scope.phaseClause += "OR phase__c LIKE '%" + p.value + "%' ";
         }
       }
     }
+    $scope.composeWhereClause();
+  };
+
+  $scope.clearPhaseFilter = function () {
+    var phase = $scope.phase__c;
+    for (var i = 0, len = phase.length; i < len; ++i) {
+      phase[i].checked = false;
+    }
+    $scope.phaseClause = null;
     $scope.composeWhereClause();
   };
 
@@ -605,12 +616,12 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
 
     if ($stateParams.theme.indexOf('disaster') !== -1) {
       if ($scope.sectorClause == null) {
-        parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause];
+        parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause, $scope.phaseClause];
       } else {
-        parts = [$scope.sectorClause, $scope.dateClause, $scope.budgetClause];
+        parts = [$scope.sectorClause, $scope.dateClause, $scope.budgetClause, $scope.phaseClause];
       }
     } else {
-      parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause, $scope.businessUnitsClause];
+      parts = [$scope.sectorClause, $scope.dateClause, $scope.statusClause, $scope.budgetClause, $scope.businessUnitsClause, $scope.phaseClause];
     }
 
     var first = true;
@@ -641,6 +652,7 @@ module.exports = angular.module('GeoAngular').controller('FiltersCtrl', function
   $scope.clearAllFilters = function () {
     $scope.clearSectorsFilter();
     $scope.clearStatusFilter();
+    $scope.clearPhaseFilter();
     $scope.clearDateFilter();
     $scope.clearBudgetFilter();
     $scope.clearDisasterTypeFilter();

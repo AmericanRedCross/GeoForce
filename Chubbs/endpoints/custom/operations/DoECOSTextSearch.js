@@ -39,7 +39,7 @@ function buildQueryClause(searchFields, tableName, tableAlias){
     }
     if(tableName == 'sf_project'){
        sql = sql.replace(" * ", " 'Project' as theme_type, sf_project.* "); //Replace * with whitelist
-       sql += " AND (phase__c LIKE '%1%' OR phase__c LIKE '%2%' OR phase__c LIKE '%3%' OR phase__c LIKE '%4%' OR phase__c LIKE '%5% OR phase__c LIKE '%6%'))";
+       sql += ")";
        sql += removeTESTProjects;
     }else if(tableName == 'sf_disaster'){
         sql = sql.replace(" * ", " 'Disaster' as theme_type, sf_disaster.* "); //Replace * with whitelist

@@ -524,7 +524,7 @@
                   <md-content class="md-padding project-filters">
                     <a ng-click="clearPhaseFilter()">Clear Phase Filter</a>
                     <label ng-repeat="p in phase__c" class="checkbox">
-                      <input type="checkbox" ng-model="stat.checked" ng-change="phaseFilter()">
+                      <input type="checkbox" ng-model="p.checked" ng-change="phaseFilter()">
                       ({{p.value}}) {{p.description}}
                     </label>
                   </md-content>
