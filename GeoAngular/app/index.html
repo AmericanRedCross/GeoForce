@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="bower_components/leaflet-dist/leaflet.css"/>
   <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css"/>
   <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
@@ -446,131 +448,138 @@
             </div>
           </div>
           <div class="row">
+              <md-content>
+              <md-tabs md-dynamic-height md-border-bottom>
 
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs">
-              <li class="active"><a class="a-nav-tab" ng-click="navTab='sectors'" data-toggle="tab">Sectors</a></li>
-              <li><a class="a-nav-tab" ng-click="navTab='bunits'" data-toggle="tab">Business Units</a></li>
-              <li><a class="a-nav-tab" ng-click="navTab='date'" data-toggle="tab">Date</a></li>
-              <li><a class="a-nav-tab" ng-click="navTab='status'" data-toggle="tab">Status</a></li>
-              <li><a class="a-nav-tab" ng-click="navTab='budget'" data-toggle="tab">Budget</a></li>
-              <li><a class="a-nav-tab" ng-click="navTab='custom'" data-toggle="tab">Custom</a></li>
-            </ul>
+                <md-tab ng-click="navTab='sectors'" md-active label="sectors" id="sectors-filter">
+                    <md-content class="md-padding project-filters">
+                    <a ng-click="clearSectorsFilter()">Clear All Sector Filters</a>
 
-            <!-- Tab panes -->
-            <div class="tab-content scrollable">
-              <div ng-class="{active: navTab==='sectors'}" class="tab-pane" id="sectors-filter">
-                <a ng-click="clearSectorsFilter()">Clear All Sector Filters</a>
+                    <div ng-repeat="sector in sectors">
+                      <label class="checkbox">
+                        <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
+                        <i
+                          class="icon-{{sector.name.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i>
+                        <span class="sector-name">{{sector.name}}</span>
+                      </label>
+                      <hr/>
+                    </div>
+                  </md-content>
+                </md-tab>
+                <md-tab ng-click="navTab='bunits'" label="bunits" id="bunits-filter">
+                  <md-content class="md-padding project-filters">
+                    <div ng-repeat="unit in BusinessUnitTypes">
+                      <label class="checkbox">
+                        <input type="checkbox" ng-model="unit.checked" ng-change="businessUnitsFilter()">
+                        <i
+                          class="icon-{{unit.label.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i>
+                        <span class="sector-name">{{unit.label}}</span>
+                      </label>
+                      <hr/>
+                    </div>
+                  </md-content>
+                </md-tab>
+                <md-tab ng-click="navTab='date'" label="date" id="date-filter">
+                  <md-content class="md-padding project-filters project-filters">
+                    <a ng-click="clearDateFilter()">Clear All Date Filters</a>
 
-                <div ng-repeat="sector in sectors">
-                  <label class="checkbox">
-                    <input type="checkbox" ng-model="sector.checked" ng-change="sectorsFilter()">
-                    <i
-                      class="icon-{{sector.name.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i>
-                    <span class="sector-name">{{sector.name}}</span>
-                  </label>
-                  <hr/>
-                </div>
-                <br/>
-                <br/>
-              </div>
-              <div ng-class="{active: navTab==='bunits'}" class="tab-pane" id="bunits-filter">
-                <div ng-repeat="unit in BusinessUnitTypes">
-                  <label class="checkbox">
-                    <input type="checkbox" ng-model="unit.checked" ng-change="businessUnitsFilter()">
-                    <i
-                      class="icon-{{unit.label.split(' ').join('').split('&').join('').split('(').join('').split(')').join('').split(',').join('')}}"></i>
-                    <span class="sector-name">{{unit.label}}</span>
-                  </label>
-                  <hr/>
-                </div>
-
-              </div>
-              <div ng-class="{active: navTab==='date'}" class="tab-pane" id="date-filter">
-                <a ng-click="clearDateFilter()">Clear All Date Filters</a>
-
-                <div class="panel panel-default" ng-repeat="filter in dateFilters">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">{{filter.name}}</h3>
-                  </div>
-                  <div class="panel-body">
-                    <p class="input-group">
-                      <input type="text" class="form-control" ng-change="dateFilter()" datepicker-popup="EEE MMM d, y"
-                             ng-model="filter.date" is-open="filter.opened" ng-required="true" close-text="Close"/>
+                    <div class="panel panel-default" ng-repeat="filter in dateFilters">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">{{filter.name}}</h3>
+                      </div>
+                      <div class="panel-body">
+                        <p class="input-group">
+                          <input type="text" class="form-control" ng-change="dateFilter()" datepicker-popup="EEE MMM d, y"
+                                 ng-model="filter.date" is-open="filter.opened" ng-required="true" close-text="Close"/>
                                                 <span class="input-group-btn">
                                                   <button type="button" class="btn btn-default"
                                                           ng-click="toggleDate($event, filter)"><i
                                                     class="glyphicon glyphicon-calendar"></i></button>
                                                 </span>
-                    <div class="btn-group">
-                      <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio"
-                             btn-radio="'before'">Before</label>
-                      <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'on'">On</label>
-                      <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio"
-                             btn-radio="'after'">After</label>
-                    </div>
-                    <label class="checkbox">
-                      <input type="checkbox" ng-model="filter.empty" ng-change="dateFilter()">
-                      Include Records with an Empty {{filter.name}}.
+                        <div class="btn-group">
+                          <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio"
+                                 btn-radio="'before'">Before</label>
+                          <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio" btn-radio="'on'">On</label>
+                          <label class="btn btn-default" ng-change="dateFilter()" ng-model="filter.radio"
+                                 btn-radio="'after'">After</label>
+                        </div>
+                        <label class="checkbox">
+                          <input type="checkbox" ng-model="filter.empty" ng-change="dateFilter()">
+                          Include Records with an Empty {{filter.name}}.
+                        </label>
+                        </p>
+                      </div>
+                    </div>                  </md-content>
+                </md-tab>
+                <md-tab ng-click="navTab='status'" label="status" id="status-filter">
+                  <md-content class="md-padding project-filters">
+                    <a ng-click="clearStatusFilter()">Clear All Status Filters</a>
+                    <label ng-repeat="stat in status" class="checkbox">
+                      <input type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
+                      {{stat.name}}
                     </label>
-                    </p>
-                  </div>
-                </div>
+                  </md-content>
+                </md-tab>
+                <md-tab ng-click="navTab='phase'" label="phase" id="phase-filter">
+                  <md-content class="md-padding project-filters">
+                    <a ng-click="clearPhaseFilter()">Clear Phase Filter</a>
+                    <label ng-repeat="p in phase__c" class="checkbox">
+                      <input type="checkbox" ng-model="stat.checked" ng-change="phaseFilter()">
+                      ({{p.value}}) {{p.description}}
+                    </label>
+                  </md-content>
+                </md-tab>
+                <md-tab ng-click="navTab='budget'" label="budget" id="budget-filter">
+                  <md-content class="md-padding project-filters">
+                    <a ng-click="clearBudgetFilter()">Clear Budget Filter</a>
 
-              </div>
-              <div ng-class="{active: navTab==='status'}" class="tab-pane" id="status-filter">
-                <a ng-click="clearStatusFilter()">Clear All Status Filters</a>
-                <label ng-repeat="stat in status" class="checkbox">
-                  <input type="checkbox" ng-model="stat.checked" ng-change="statusFilter()">
-                  {{stat.name}}
-                </label>
-              </div>
-              <div ng-class="{active: navTab==='budget'}" class="tab-pane" id="budget-filter">
-                <a ng-click="clearBudgetFilter()">Clear Budget Filter</a>
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Total Budget</h3>
+                      </div>
+                      <div class="panel-body">
+                        <b>Min: {{budget.slider[0] | currency:"$"}}</b>
+                        <b>Max: {{budget.slider[1] | currency:"$"}}</b>
+                        <br/><br/>
 
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Total Budget</h3>
-                  </div>
-                  <div class="panel-body">
-                    <b>Min: {{budget.slider[0] | currency:"$"}}</b>
-                    <b>Max: {{budget.slider[1] | currency:"$"}}</b>
-                    <br/><br/>
-
-                    <div ui-slider="{range: true}" ui-slider min="{{budget.min}}" max="{{budget.max}}"
-                         ng-model="budget.slider" ng-keyup="budgetFilter()" ng-mouseup="budgetFilter()"></div>
-                  </div>
-                </div>
-                <h4>Total Budget Stats</h4>
-                <table class="table panel panel-default">
-                  <thead class="panel-heading">
-                  <tr>
-                    <th>Min</th>
-                    <th>Mean</th>
-                    <th>Max</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>{{budget.min | currency:"$"}}</td>
-                    <td>{{budget.mean | currency:"$"}}</td>
-                    <td>{{budget.max | currency:"$"}}</td>
-                  </tr>
-                  </tbody>
-                </table>
-
-              </div>
-              <div ng-class="{active: navTab==='custom'}" class="tab-pane" id="custom-filter">
-                <h4 class="title">Filter WHERE Clause</h4>
+                        <div ui-slider="{range: true}" ui-slider min="{{budget.min}}" max="{{budget.max}}"
+                             ng-model="budget.slider" ng-keyup="budgetFilter()" ng-mouseup="budgetFilter()"></div>
+                      </div>
+                    </div>
+                    <h4>Total Budget Stats</h4>
+                    <table class="table panel panel-default">
+                      <thead class="panel-heading">
+                      <tr>
+                        <th>Min</th>
+                        <th>Mean</th>
+                        <th>Max</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td>{{budget.min | currency:"$"}}</td>
+                        <td>{{budget.mean | currency:"$"}}</td>
+                        <td>{{budget.max | currency:"$"}}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </md-content>
+                </md-tab>
+                <md-tab ng-click="navTab='custom'" label="custom" id="custom-filter">
+                  <md-content class="md-padding project-filters">
+                    <h4 class="title">Filter WHERE Clause</h4>
                 <textarea class="form-control" rows="6" placeholder="Create a custom where clause..."
                           ng-model="whereClause"></textarea>
 
-                <div ng-click="submitFilter()" type="button"
-                     class="btn btn-danger btn-footer pull-right custom-filter-submit">
-                  Submit
-                </div>
-              </div>
-            </div>
+                    <div ng-click="submitFilter()" type="button"
+                         class="btn btn-danger btn-footer pull-right custom-filter-submit">
+                      Submit
+                    </div>
+                  </md-content>
+                </md-tab>
+
+              </md-tabs>
+            </md-content>
 
           </div>
         </div>
@@ -1328,6 +1337,11 @@
 <script src="bower_components/leaflet-dist/leaflet-src.js"></script>
 <script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
 <script src="bower_components/angular-ui-slider/src/slider.js"></script>
+<script src="bower_components/angular-material/angular-material.min.js"></script>
+<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-messages/angular-messages.min.js"></script>
+
 <!-- endbower -->
 <!-- endbuild -->
 

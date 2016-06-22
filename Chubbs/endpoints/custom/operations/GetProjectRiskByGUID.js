@@ -74,12 +74,12 @@ operation.execute = flow.define(
       if(operation.inputs["filters"] && operation.inputs["filters"] !== 'null'){
         var inputFilters = operation.inputs["filters"].replace(/%20/g, ' ').replace(/%25/g,'%').replace(/%27/g,"'");
         filters = " AND (" + inputFilters + ")";
-        filters += activeProjectWhereClause;
+        //filters += activeProjectWhereClause;
         filters += removeTESTProjects;
       }
       else{
         //Add where clause to only show active projects
-        filters = activeProjectWhereClause;
+        //filters = activeProjectWhereClause;
         filters += removeTESTProjects;
       }
 

@@ -88,14 +88,14 @@ operation.execute = flow.define(
 
                 //Add where clause to only show active projects
                 if (operation.inputs["theme"].toLowerCase() == 'project' || operation.inputs["theme"].toLowerCase() == 'projectrisk' || operation.inputs["theme"].toLowerCase() == 'projecthealth') {
-                    filters += activeProjectWhereClause;
+                    //filters += activeProjectWhereClause;
                     filters += removeTESTProjects;
                 }
             }
             else {
                 //Add where clause to only show active projects
                 if (operation.inputs["theme"].toLowerCase() == 'project' || operation.inputs["theme"].toLowerCase() == 'projectrisk' || operation.inputs["theme"].toLowerCase() == 'projecthealth') {
-                    filters = activeProjectWhereClause;
+                    //filters = activeProjectWhereClause;
                     filters += removeTESTProjects;
                 }
             }

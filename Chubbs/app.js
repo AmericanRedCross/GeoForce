@@ -100,7 +100,7 @@ if(settings && settings.application && settings.application.mode && settings.app
 
 }else{
   //In geoforce mode, load the mapfolio routes and ensure authentication.
-  app.use(ensureAuthenticated);
+  //app.use(ensureAuthenticated);
   app.use('/mapfolio/', express.static('../GeoAngular/app/'));
 }
 
