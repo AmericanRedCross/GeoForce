@@ -728,7 +728,7 @@ function buildDisasterTypeLabel(disasterType, color) {
     }
   }
 
-  var icon = config.UNOCHAIconLookup[disasterType].icon || 'icon-other_cluster_other';
+  var icon = (config.UNOCHAIconLookup[disasterType]) ? config.UNOCHAIconLookup[disasterType].icon : 'icon-other_cluster_other';
 
   return '<div class="label-icon-number-100percent"' + (backColor ? ' style="font-family: humanitarian_icons; background-color: ' + backColor + ';color: ' + labelColor + '"' : '') + '><i class="un ' + icon + '"></i></div>';
 
