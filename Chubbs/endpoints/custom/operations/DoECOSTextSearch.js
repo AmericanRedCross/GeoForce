@@ -16,7 +16,7 @@ operation.outputImage = false;
 operation.inputs["text"] = {}; //search text
 
 operation.ProjectSearchFields = ["sector__c", "status__c", "stage_name__c", "sub_sector__c", "name", "summary__c", "sf_id"]; //List columns from sf_project thru which to search
-operation.DisasterSearchFields = ["name", "disaster_type__c", "summary__c", "unique_disaster_id__c", "sf_id", "category__c"]; //List columns from sf_disaster thru which to search
+operation.DisasterSearchFields = ["name", "disaster_type__c", "summary__c", "sf_id", "category__c"]; //List columns from sf_disaster thru which to search
 
 //Do not display projects or disasters that have TEST as the first word in the project name.
 var removeTESTProjects = " AND name NOT ILIKE 'test%'";

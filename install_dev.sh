@@ -1,29 +1,33 @@
 #!/usr/bin/env bash
-echo !!! INSTALLING MAPFOLIO SERVER PRODUCTION !!!
+echo !!! INSTALLING MAPFOLIO SERVER DEVELOPMENT !!!
 echo CLONING GIT REPOSITORY FROM GITHUB
 rm -rf GeoForce
 git clone https://github.com/AmericanRedCross/GeoForce.git
-git checkout origin development
+cd GeoForce/
+sudo git checkout development
 echo COPYING SETTINGS FILES AND SSL CERTIFICATES
-cp settings/chubbs_settings_prod.js GeoForce/Chubbs/private/settings.js
-cp settings/succubus_settings_prod.js GeoForce/Succubus/settings.js
-cp ssl_keys/geo.cer GeoForce/Chubbs/private/geo.cer
-cp ssl_keys/geo.pfx GeoForce/Chubbs/private/geo.pfx
+cp ~/Mapfolio/settings/chubbs_settings_dev.js ~/Mapfolio/GeoForce/Chubbs/private/settings.js
+cp ~/Mapfolio/settings/succubus_settings_dev.js ~/Mapfolio/GeoForce/Succubus/settings.js
+cp ~/Mapfolio/ssl_keys/geo.cer ~/Mapfolio/GeoForce/Chubbs/private/geo.cer
+cp ~/Mapfolio/ssl_keys/geo.pfx ~/Mapfolio/GeoForce/Chubbs/private/geo.pfx
 echo INSTALLING MAPFOLIO DEPENDENCIES
-cd GeoAngular/app/lib/Leaflet.MapboxVectorTile
-npm install
-echo BUILDING geo-angular.js
-cd ../../../
-npm run-script build
-echo INSTALLING CHUBBS DEPENDENCIES
-cd ../Chubbs
+cd ~/Mapfolio/GeoForce/GeoAngular/app/lib/Leaflet.MapboxVectorTile/
 npm install
 echo INSTALLING GEOANGULAR DEPENDENCIES
-cd ../GeoAngular
+cd ~/Mapfolio/GeoForce/GeoAngular/
+npm install
+echo BUILDING geo-angular.js
+cd ~/Mapfolio/GeoForce/GeoAngular
+sudo npm run-script build
+echo INSTALLING CHUBBS DEPENDENCIES
+cd ~/Mapfolio/GeoForce/Chubbs
 npm install
 echo INSTALLING SUCCUBUS DEPENDENCIES
-cd ../Succubus
+cd ~/Mapfolio/GeoForce/Succubus
 npm install
 echo RUNNING SUCCUBUS PREPERATION SCRIPTS
-node preprocessing_operations/meta.js
+sudo node ~/Mapfolio/GeoForce/Succubus/preprocessing_operations/meta.js
+echo RESTART Chubbs
+cd ~/Mapfolio/GeoForce/Chubbs
+sudo pm2 restart all
 echo !!! SUCCESS !!!
