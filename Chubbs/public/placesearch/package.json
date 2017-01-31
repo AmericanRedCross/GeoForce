@@ -1,0 +1,38 @@
+{
+  "name": "placesearch",
+  "description": "Red Cross MapFolio ECOS add location",
+  "author": "Daniel Baah <dbaah@spatialdev.com>",
+  "private": true,
+  "scripts": {
+    "watchify": "watchify -vd -p browserify-hmr -e --debug src/main.js -o dist/build.js",
+    "serve": "http-server -o -s -c 1 -a localhost",
+    "dev": "cross-env NODE_ENV=development npm-run-all --parallel watchify serve",
+    "build": "cross-env NODE_ENV=production browserify -g envify src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
+  },
+  "dependencies": {
+    "axios": "^0.15.3",
+    "leaflet": "^0.7.7",
+    "leaflet-draw": "^0.4.9",
+    "leaflet-mapbox-vector-tile": "^0.1.6",
+    "vue": "^2.1.10"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.1",
+    "browserify-hmr": "^0.3.1",
+    "cross-env": "^1.0.6",
+    "envify": "^3.4.1",
+    "http-server": "^0.9.0",
+    "npm-run-all": "^2.1.2",
+    "uglify-js": "^2.5.0",
+    "vueify": "^9.1.0",
+    "watchify": "^3.4.0"
+  },
+  "browserify": {
+    "transform": [
+      "vueify"
+    ]
+  },
+  "browser": {
+    "vue": "vue/dist/vue.min"
+  }
+}
