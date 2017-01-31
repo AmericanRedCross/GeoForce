@@ -2,9 +2,9 @@
     <div class="wrapper">
         <form v-on:submit.prevent="onSubmit" v-on:submit="getLocationSearchResults()">
             <input v-model="query" type="text"/>
-            <input v-on:click="getLocationSearchResults()" type="submit">Submit</input>
+            <input v-on:click="getLocationSearchResults()" type="submit"></input>
         </form>
-        <div>Search for a placename or administrative boundary by entering a name in the search box.</div>
+        <div>Search for a places' name or administrative boundary by entering a name in the search box.</div>
         <div style="font-size:90%; color:#6d6e70;">Hint: enter a name, NOT a fully qualified City, Province, Country
             (for example, 'Port-au-Prince' NOT 'Port-au-Prince, Haiti')
         </div>
@@ -12,8 +12,8 @@
 </template>
 
 <script>
-    var state = require('../store.vue');
-    var axios = require('axios');
+    import state from '../store.vue'
+    import axios from 'axios'
 
     export default {
         name: 'LocationSearch',

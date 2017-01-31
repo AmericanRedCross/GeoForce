@@ -1,7 +1,8 @@
-# placesearch
+# placesearch-browserify
 
-> Red Cross MapFolio ECOS add location
+> Add custom locations to Red Cross GeoDB and ECOS
 
+## Build Setup
 
 # install dependencies
 npm install
@@ -11,6 +12,3 @@ npm run dev
 
 # build for production with minification
 npm run build
-```
-
-For more information see the [docs for vueify](https://github.com/vuejs/vueify).

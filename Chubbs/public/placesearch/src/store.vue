@@ -2,7 +2,8 @@
 * Created by DBaah on 1/30/17.
 */
 <script>
-    var axios = require('axios');
+    //    var axios = require('axios');
+    import axios from 'axios';
 
     export default ({
         debug: true,

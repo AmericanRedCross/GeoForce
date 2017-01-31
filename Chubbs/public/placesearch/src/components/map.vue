@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    var state = require('../store.vue');
+    import state from '../store.vue'
 
     export default {
         name: 'leafletmap',

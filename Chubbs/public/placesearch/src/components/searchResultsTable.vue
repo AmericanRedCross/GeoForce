@@ -36,10 +36,11 @@
 </template>
 
 <script>
-    var state = require('../store.vue');
-    var axios = require('axios');
-    var adminStack = require('./adminStack.vue');
-    var map = require('./map.vue');
+
+    import state from '../store.vue'
+    import axios from 'axios'
+    import adminStack from './adminStack.vue'
+    import map from './map.vue'
 
     export default {
         name: 'searchResultsTable',
