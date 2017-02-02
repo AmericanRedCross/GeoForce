@@ -15,7 +15,7 @@
                     {{loc.properties.name }} <span
                         v-if="loc.properties.adminName1">, {{loc.properties.adminName1}}</span>
                 </td>
-                <td v-if="searchLocationResultType === 'GeoDB'" v-on:click="startGetAdminStackById(loc);">
+                <td v-if="searchLocationResultType != 'Geonames'" v-on:click="startGetAdminStackById(loc);">
                     {{loc.properties.fullname }}
                 </td>
 
@@ -24,7 +24,7 @@
                 </td>
 
 
-                <td v-if="searchLocationResultType === 'GeoDB'">
+                <td v-if="searchLocationResultType != 'Geonames'">
                     {{loc.properties.level}}
                 </td>
 
@@ -87,16 +87,24 @@
                         });
             },
             startGetAdminStackById: function (feature) {
+
                 var vm = this;
                 var hostIp = vm.sharedState.config.hostIp;
                 var level = feature.properties.level;
+                var searchType = feature.properties.source === "Custom" ? "stackid" : "featureid";
                 vm.sharedState.setgeoJSON(feature);
 
                 var postArgs = {
-                    featureid: feature.properties.featureid,
                     format: "GeoJSON",
                     returnGeometry: "yes"
                 };
+
+                postArgs[searchType] = feature.properties[searchType];
+
+                if(feature.properties.source === "Custom") {
+                    postArgs["adminlevel"] = feature.properties.level;
+                    postArgs["datasource"] = feature.properties.source;
+                }
 
                 var url = hostIp + '/services/getAdminStack';
 

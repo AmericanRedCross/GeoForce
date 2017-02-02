@@ -8,7 +8,7 @@
     export default ({
         debug: true,
         config: {
-            hostIp: "http://54.187.215.30"
+            hostIp: "http://127.0.0.1:3000"
         },
         state: {
             message: 'Hello!',
@@ -16,6 +16,7 @@
             searchLocationResults: [],
             searchLocationResultType: "",
             adminStackResponse: {},
+            customAdminStackResponse: {},
             _geoJSONLayer: null,
             _geoJSON: null
         },
@@ -27,6 +28,9 @@
         },
         setAdminStackResponse: function (results){
             this.state.adminStackResponse = results;
+        },
+        setCustomAdminStackResponse: function (results){
+            this.state.customAdminStackResponse = results;
         },
         setgeoJSONLayer: function (geojson){
             this.state._geoJSONLayer = geojson;

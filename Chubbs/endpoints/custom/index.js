@@ -321,6 +321,12 @@ exports.app = function (passport) {
                         searchObj.isSpatial = false;
 
                         //GATrackEvent("Get Admin Stack", "by Stack ID, Admin, Datasource",  this.args.stackid + "," + this.args.adminlevel + "," + this.args.datasource); //Analytics
+                    } else if (settings.dsColumns[this.args.datasource.toLowerCase()]) {
+                        //Set up search parameters
+                        searchObj.stackid = this.args.stackid;
+                        searchObj.adminlevel = this.args.adminlevel;
+                        searchObj.datasource = this.args.datasource;
+                        searchObj.isSpatial = false;
                     }
                     else {
                         //Couldn't find this datasource in the settings file. Exit.
@@ -518,7 +524,7 @@ exports.app = function (passport) {
           //Check which format was specified
 
           this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
-          this.args.featureCollection.source = "GeoDB";
+          this.args.featureCollection.source = this.args.featureCollection.features[0].properties.source || "GeoDB";
           this.args.breadcrumbs = [
             { link: "/services", name: "Home" },
             { link: "", name: "Query" }
@@ -658,8 +664,15 @@ exports.app = function (passport) {
     function executeAdminStackSearch(searchObject, callback) {
         var sql = "";
 
+        if (searchObject.datasource.toLowerCase() === "custom"){
+
+            sql = buildAdminStackCustomQuery(searchObject.stackid, searchObject.adminlevel, searchObject.returnGeometry, searchObject.datasource);
+            common.log(sql);
+
+            common.executePgQuery(sql, callback);
+        }
         //See if this is a spatial (WKT) search or not
-        if (searchObject.isSpatial == false) {
+        else if (searchObject.isSpatial == false) {
             //lookup by id, datasource and level
             //build sql query
             sql = buildAdminStackQuery(searchObject.stackid, searchObject.datasource, searchObject.adminlevel, searchObject.returnGeometry);
@@ -761,6 +774,25 @@ exports.app = function (passport) {
             }
         }
     )
+
+    function buildAdminStackCustomQuery (uuid, level, returnGemoetry, datasource) {
+        // build up query to be executed for adding custom locations to admin stacks
+
+        var gadmTable = "gadm" + (parseInt(level) - 1);
+        var queryObj = {};
+        var columns = [];
+
+        // get columns
+        for (var i= 0; i < parseInt(level); i++){
+            columns.push("id_" + i + " as adm" + i + "_code");
+            columns.push("name_" + i + " as adm" + i + "_name");
+        }
+
+        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ", arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid, acl.level  FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.stack_guid = " + gadmTable + " .guid AND guid = $1"
+        queryObj.values = [uuid];
+
+        return queryObj;
+    }
 
     function buildAdminStackQuery(rowid, datasource, level, returnGeometry) {
         //build up the query to be executed for getting Admin Stacks

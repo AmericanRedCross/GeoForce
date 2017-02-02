@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <form v-on:submit.prevent="onSubmit" v-on:submit="getLocationSearchResults()">
+        <form v-on:submit.prevent="getLocationSearchResults()">
             <input v-model="query" type="text"/>
             <input v-on:click="getLocationSearchResults()" type="submit"></input>
         </form>
@@ -30,7 +30,7 @@
         },
         methods: {
             getLocationSearchResults: function () {
-                var vm = this
+                var vm = this;
                 var hostIp = this.sharedState.config.hostIp;
 
                 axios.post(hostIp + '/services/nameSearch', {

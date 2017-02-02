@@ -6,14 +6,30 @@
 
 <script>
     import state from '../store.vue'
+    import axios from 'axios'
+
+    var map;
 
     export default {
         name: 'leafletmap',
         mounted: function () {
-            this.map = L.map('map').setView([0, 0], 3);
+            var vm = this;
+
+            map = this.map = L.map('map').setView([0, 0], 3);
             L.tileLayer('https://a.tiles.mapbox.com/v3/americanredcross.map-dn70q0vb/{z}/{x}/{y}.png').addTo(this.map);
 
+            // FeatureGroup is to store editable layers
+            var drawnItems = new L.FeatureGroup().addTo(this.map);
+
+            // add leaflet draw
             this.map.addControl(new L.Control.Draw({
+                position: 'topright',
+                edit: {
+                    featureGroup: drawnItems,
+                    poly: {
+                        allowIntersection: false
+                    }
+                },
                 draw: {
                     circle: false,
                     polyline: false,
@@ -22,6 +38,16 @@
                     simpleshape: false
                 }
             }));
+
+            this.map.on(L.Draw.Event.CREATED, function (event) {
+                var layer = event.layer;
+
+                drawnItems.addLayer(layer);
+
+                // get Admin Stack
+                vm.getAdminStack(layer._latlng);
+
+            });
 
             this.showThisLayer("gadm0_geom_simplify_med");
 
@@ -110,14 +136,14 @@
 
                 vm.sharedState.setgeoJSON(infeature.features[0]);
 
-                var _geoJSONLayer = vm.sharedState.state._geoJSONLayer;
+                var _geoJSONLayer = vm.sharedState.state._geoJSONLayer || vm.pbfSource;
                 var _geoJSON = vm.sharedState.state._geoJSON;
                 var source = vm.sharedState.state.searchLocationResultType;
 
                 //clear the map
                 if (_geoJSONLayer) map.removeLayer(_geoJSONLayer);
 
-                if (_geoJSON && source == "GeoDB") {
+                if (_geoJSON && source == "GADM") {
 
                     var gjl = L.geoJson(_geoJSON.geometry);
 
@@ -140,15 +166,35 @@
                     }
                 }
                         // Geonames results are displayed at markers
-                else if (_geoJSON && source == "Geonames") {
+                else if (_geoJSON && source === "Geonames" || source === "Custom") {
                     //Pluck out the x,y and plot it
                     vm.sharedState.setgeoJSONLayer(L.featureGroup([L.marker([_geoJSON.properties.centroid[1], _geoJSON.properties.centroid[0]])]).addTo(map));
                     //zoom to layer
                     if (vm.sharedState.state._geoJSONLayer) {
                         var bounds = vm.sharedState.state._geoJSONLayer.getBounds();
-                        map.fitBounds(bounds, {maxZoom:7});
+                        map.fitBounds(bounds, {maxZoom:9});
                     }
                 }
+            },
+            getAdminStack: function(cords){
+
+                var hostIp = this.sharedState.config.hostIp;
+                var vm = this;
+
+                var postArgs = {
+                    wkt: "POINT(" + cords.lng + " " + cords.lat + ")",
+                    datasource: "GADM", //Default Search for x,y admin stack is GADM
+                    format: "GeoJSON",
+                    returnGeometry: "yes"
+                };
+
+                axios.post(hostIp + '/services/getAdminStack', postArgs)
+                        .then(function (response) {
+                            vm.sharedState.setCustomAdminStackResponse(response.data);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
             }
         }
     }
