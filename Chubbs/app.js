@@ -314,3 +314,5 @@ app.get('/search', function (req, res) {
   var querystring = (req.originalUrl.indexOf("?") > -1 ? "?" + req.originalUrl.split("?")[1] : "");
   res.redirect("/placesearch/search.html" + querystring);
 });
+
+module.exports = app;

@@ -474,6 +474,9 @@ exports.app = function (passport) {
     }
   });
 
+    /**
+     * Create custom ARC location POST endpoint
+     */
     app.post('/services/customLocation', function (req, res){
         var args = {};
         var body = req.body;
@@ -483,6 +486,7 @@ exports.app = function (passport) {
         // check for required body args
         if (body.ecos_id === undefined || body.name === undefined || body.wkt === undefined){
             args.errorMessage = "error: ecos_id, name, & wkt required in POST body";
+            // throw missing required arguments error
             common.respond(req, res, args);
         } else {
             var sql = {};
@@ -491,12 +495,14 @@ exports.app = function (passport) {
 
             common.executePgQuery(sql, function(err, result){
                 if(err){
+                    // throw error with db message
                     common.log(err);
                     args.errorMessage = err.message;
                     common.respond(req, res, args);
                 } else {
 
-                    args.featureCollection = common.formatters.geoJSONFormatter(result.rows);
+                    // response should be [{"___create_arccustomlocation":"true"}]
+                    args.featureCollection = result.rows;
                     common.respond(req, res, args);
                 }
 
@@ -504,12 +510,41 @@ exports.app = function (passport) {
         }
     });
 
+    /**
+     * Edit custom ARC location PATCH endpoint
+     */
     app.patch('/services/customLocation', function (req, res){
+
         var args = {};
+        var body = req.body;
         args.format = "json";
         args.featureCollection = {};
 
-        common.respond(req, res, args);
+        // check for required body args
+        if (body.id === undefined || body.ecos_id === undefined || body.name === undefined || body.wkt === undefined){
+            args.errorMessage = "error: ecos_id, name, & wkt required in POST body";
+            // throw missing required arguments error
+            common.respond(req, res, args);
+        } else {
+            var sql = {};
+            sql.text = "SELECT * FROM ___edit_arccustomlocation($1,$2,$3,$4)";
+            sql.values = [parseInt(body.id), body.ecos_id, body.wkt, body.name];
+
+            common.executePgQuery(sql, function(err, result){
+                if(err){
+                    // throw error with db message
+                    common.log(err);
+                    args.errorMessage = err.message;
+                    common.respond(req, res, args);
+                } else {
+
+                    // response should be [{"___edit_arccustomlocation":"true"}]
+                    args.featureCollection = result.rows;
+                    common.respond(req, res, args);
+                }
+
+            });
+        }
     });
 
 

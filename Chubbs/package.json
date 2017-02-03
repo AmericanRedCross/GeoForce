@@ -32,7 +32,6 @@
     "tilelive": "5.1.2",
     "mbtiles": "0.4.3",
     "millstone": "0.6.12",
-    "request": "2.37.0",
     "semver": "2.3.0",
     "ya-csv": "0.9.4",
     "jsdom": "0.10.5",
@@ -52,7 +51,8 @@
     "sinon": "1.10.3",
     "chai": "1.9.1",
     "express-mock-request": "0.0.2",
-    "supertest": "0.13.0"
+    "supertest": "0.13.0",
+    "chai-things": "0.2.0"
   },
   "keywords": [
     "PostGIS",
