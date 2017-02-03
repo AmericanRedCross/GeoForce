@@ -474,6 +474,44 @@ exports.app = function (passport) {
     }
   });
 
+    app.post('/services/customLocation', function (req, res){
+        var args = {};
+        var body = req.body;
+        args.format = "json";
+        args.featureCollection = {};
+
+        // check for required body args
+        if (body.ecos_id === undefined || body.name === undefined || body.wkt === undefined){
+            args.errorMessage = "error: ecos_id, name, & wkt required in POST body";
+            common.respond(req, res, args);
+        } else {
+            var sql = {};
+            sql.text = "SELECT * FROM ___create_arccustomlocation($1,$2,$3)";
+            sql.values = [body.ecos_id, body.wkt, body.name];
+
+            common.executePgQuery(sql, function(err, result){
+                if(err){
+                    common.log(err);
+                    args.errorMessage = err.message;
+                    common.respond(req, res, args);
+                } else {
+
+                    args.featureCollection = common.formatters.geoJSONFormatter(result.rows);
+                    common.respond(req, res, args);
+                }
+
+            });
+        }
+    });
+
+    app.patch('/services/customLocation', function (req, res){
+        var args = {};
+        args.format = "json";
+        args.featureCollection = {};
+
+        common.respond(req, res, args);
+    });
+
 
     //RedCross GeoWebServices Search Functions
     //pass in a search term, check the Geodatabase for matching names
@@ -509,13 +547,13 @@ exports.app = function (passport) {
             }
 
         }, function (err, result) {
-        //this is the result of executeAdminNameSearch 'not-strict' callback
-        //result should be sucess or error.  If success, return results to user.
-        //if error or no results, try GeoNames
+            //this is the result of executeLooseAdminNameSearch 'not-strict' callback
+            //result should be success or error.  If success, return results to user.
+            //if error or no results, try arc custom location search
 
         if (err || (result && result.rows.length == 0)) {
-          //Check GeoNames
-          executeGeoNamesAPISearch(this.args.searchterm, this);
+            // Check arc_custom_locations table
+            executeCustomLocationAdminNameSearch(this.args.searchterm, {returnGeometry: this.args.returnGeometry} , this);
         }
         else {
           common.log("loose matches for " + this.args.searchterm + ": " + result.rows.length);
@@ -535,6 +573,29 @@ exports.app = function (passport) {
           return;
         }
       },
+        function (err, result) {
+            //this is the result of arc custom location 'not-strict' callback
+            //result should be success or error.  If success, return results to user.
+            //if error or no results, try GeoNames
+
+            if(err || (result && result.rows.length == 0)){
+                //Check GeoNames
+                executeGeoNamesAPISearch(this.args.searchterm, this);
+            }
+            else{
+                common.log("custom location matches for " + this.args.searchterm + ": " + result.rows.length);
+
+                this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
+                this.args.featureCollection.source = "Custom";
+                this.args.breadcrumbs = [
+                    { link: "/services", name: "Home" },
+                    { link: "", name: "Query" }
+                ];
+                common.respond(this.req, this.res, this.args);
+                return;
+            }
+
+        },
       function (statuscode, result) {
             //This is the callback from the GeoNamesAPI Search
             //check the result and decide what to do.
@@ -635,6 +696,15 @@ exports.app = function (passport) {
             }
         }
 
+
+        //run it
+        common.executePgQuery(sql, callback);
+    }
+
+    function executeCustomLocationAdminNameSearch(searchterm, options, callback){
+
+        var query = "SELECT " + (options.returnGeometry === "yes" ? "geom, " : "") + " ecos_id, 'Custom' as source, name, country, gadm_stack_guid, gadm_stack_level FROM arc_custom_locations WHERE name ILIKE($1 || '%') ORDER BY name";
+        var sql = {text: query, values: [searchterm]};
 
         //run it
         common.executePgQuery(sql, callback);
@@ -778,17 +848,17 @@ exports.app = function (passport) {
     function buildAdminStackCustomQuery (uuid, level, returnGemoetry, datasource) {
         // build up query to be executed for adding custom locations to admin stacks
 
-        var gadmTable = "gadm" + (parseInt(level) - 1);
+        var gadmTable = "gadm" + (parseInt(level));
         var queryObj = {};
         var columns = [];
 
         // get columns
-        for (var i= 0; i < parseInt(level); i++){
+        for (var i= 0; i <= parseInt(level); i++){
             columns.push("id_" + i + " as adm" + i + "_code");
             columns.push("name_" + i + " as adm" + i + "_name");
         }
 
-        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ", arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid, acl.level  FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.stack_guid = " + gadmTable + " .guid AND guid = $1"
+        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ",id , arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid  FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1"
         queryObj.values = [uuid];
 
         return queryObj;
