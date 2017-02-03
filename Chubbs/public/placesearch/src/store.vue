@@ -16,7 +16,7 @@
             searchLocationResults: [],
             searchLocationResultType: "",
             adminStackResponse: {},
-            customAdminStackResponse: {},
+//            customAdminStackResponse: {},
             _geoJSONLayer: null,
             _geoJSON: null
         },
@@ -29,9 +29,9 @@
         setAdminStackResponse: function (results){
             this.state.adminStackResponse = results;
         },
-        setCustomAdminStackResponse: function (results){
-            this.state.customAdminStackResponse = results;
-        },
+//        setCustomAdminStackResponse: function (results){
+//            this.state.customAdminStackResponse = results;
+//        },
         setgeoJSONLayer: function (geojson){
             this.state._geoJSONLayer = geojson;
         },

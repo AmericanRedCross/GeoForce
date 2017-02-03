@@ -190,7 +190,7 @@
 
                 axios.post(hostIp + '/services/getAdminStack', postArgs)
                         .then(function (response) {
-                            vm.sharedState.setCustomAdminStackResponse(response.data);
+                            vm.sharedState.setAdminStackResponse(response.data);
                         })
                         .catch(function (error) {
                             console.log(error);

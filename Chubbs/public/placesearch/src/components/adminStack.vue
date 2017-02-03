@@ -33,9 +33,9 @@
             adminStack () {
                 return this.sharedState.state.adminStackResponse;
             },
-            adminStack () {
-                return this.sharedState.state.customAdminStackResponse;
-            }
+//            adminStack () {
+//                return this.sharedState.state.customAdminStackResponse;
+//            }
         },
         methods: {
 

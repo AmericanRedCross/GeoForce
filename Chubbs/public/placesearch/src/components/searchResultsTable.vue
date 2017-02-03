@@ -102,8 +102,9 @@
                 postArgs[searchType] = feature.properties[searchType];
 
                 if(feature.properties.source === "Custom") {
-                    postArgs["adminlevel"] = feature.properties.level;
+                    postArgs["adminlevel"] = feature.properties.gadm_stack_level;
                     postArgs["datasource"] = feature.properties.source;
+                    postArgs[searchType] = feature.properties.gadm_stack_guid;
                 }
 
                 var url = hostIp + '/services/getAdminStack';
