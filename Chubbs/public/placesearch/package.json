@@ -24,7 +24,8 @@
     "leaflet": "^0.7.7",
     "leaflet-draw": "^0.4.9",
     "leaflet-mapbox-vector-tile": "^0.1.6",
-    "vue": "^2.0.1"
+    "vue": "^2.0.1",
+    "es6-promise": "4.0.5"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
