@@ -6,17 +6,14 @@ CREATE TABLE arc_custom_locations (
  ecos_id character varying not null,
  name character varying not null,
  geom geometry not null,
- --level character varying,
+ level character varying,
  country character varying,
  gadm_stack_guid uuid,
- gadm_stack_level character varying,
  created_by character varying,
  updated_by character varying,
  created timestamp with time zone not null default now(),
  updated timestamp with time zone not null default now()
 );
-
-DELETE FROM text_search WHERE source = 'Custom';
 
 /**************
 
@@ -25,17 +22,10 @@ tests
 SELECT * FROM gadm2 WHERE ST_Intersects(ST_GeomFromText('POINT(-2.18902587890625 7.396514773092444)', 4326), geom);
 SELECT st_geomfromtext as geom FROM ST_GeomFromText('POINT(-41.9765042089989 -11.4713226763985)', 4326);
 
-SELECT * FROM text_search where stack_guid = '6ad3318d-c6a3-4c43-9f80-e3943d2f5e4d' Limit 5
-SELECT * FROM text_search_2012 where level = '4' Limit 5
-SELECT * FROM uuid_generate_v4();
 
 SELECT * FROM ___create_arcCustomLocation('id1245', 'POINT(-2.18902587890625 7.396514773092444)', 'Chiraa');
 SELECT * FROM ___create_arcCustomLocation('id1245', 'POINT(152.941205658511 -27.4459127098148)', 'brisbane cty');
 
-SELECT * FROM text_search WHERE stack_guid = '6ad3318d-c6a3-4c43-9f80-e3943d2f5e4d'
-SELECT ecos_id, name, country, year, gadm_stack_guid FROM arc_custom_locations WHERE name ILIKE('Chiraa' || '%');
-SELECT * FROM text_search WHERE name = 'Chiraa';
-SELECT * FROM gadm3 WHERE stack_guid = udf_executestrictadminsearchbynamewithgeom
 SELECT * FROM arc_custom_locations
 
 SELECT  ecos_id, name, country, year, gadm_stack_guid FROM arc_custom_locations WHERE name ILIKE('chiraa' || '%') ORDER BY name
@@ -59,10 +49,6 @@ WHERE ST_Intersects(ST_GeomFromText($1, 4326), geom) GROUP BY stack_guid,isd_reg
 
 ***************/
 
--- If user specifies level, associate with gadm stack according to level
--- If user does not specify level, automtically associate with one level lower than the calculated intersect 
--- Because we dont want to do two hit tests, one when the user drops a pin, and another when a user creates a location, we need the stack_guid from the text_search table
-
 DROP FUNCTION IF EXISTS ___create_arccustomlocation(character varying,character varying,character varying,uuid);
 DROP FUNCTION IF EXISTS ___create_arccustomlocation(character varying,character varying,character varying,uuid, integer);
 DROP FUNCTION IF EXISTS ___create_arccustomlocation(character varying,character varying,character varying);
@@ -75,6 +61,7 @@ var stack;
 var geom;
 var lowestgadmlevel = 5;
 var gadmstack_level;
+var level;
 
 if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== '' && name !== null) {
 
@@ -99,6 +86,9 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
         return plv8.elog(ERROR, 'Unable to find admin stack with associated geometry');
     }
 
+    // We assume this new location is the NEXT admin level down
+    level = gadmstack_level + 1;
+
     // capitalize each word in name
     var n = [];
     name.split(" ").forEach(function(w,i){n.push(w[0].toUpperCase() + w.slice(1,w.length))});
@@ -106,7 +96,7 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // create new custom location
     try {
-	plv8.execute("INSERT INTO arc_custom_locations (ecos_id, name, country, geom, gadm_stack_guid, gadm_stack_level, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7)", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, gadmstack_level, ecos_id]);
+	plv8.execute("INSERT INTO arc_custom_locations (ecos_id, name, country, geom, gadm_stack_guid, level, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7)", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, level, ecos_id]);
     } catch (e) {
         return plv8.elog(ERROR, e);
     }
@@ -127,7 +117,7 @@ TESTS
 SELECT * FROM arc_custom_locations;
 
 SELECT * FROM ___edit_arcCustomLocation(1, 'ECOS231394', 'POINT(-2.1842432 7.343332)', 'Chiraa FC')
-SELECT * FROM ___edit_arcCustomLocation(1, 'ECOS231394', 'POINT(-1.1842432 7.343332)', 'Chiraa FC')
+SELECT * FROM ___edit_arcCustomLocation(1, 'ECOS231394', 'POINT(-1.1842432 7.343332)', 'Chiraa FC');
 SELECT * FROM ___edit_arcCustomLocation(2, 'ECOS14533', 'POINT(152.234 -27.41148)', 'brisbane capital');
 
 SELECT  ecos_id, name, country, gadm_stack_guid FROM arc_custom_locations WHERE name ILIKE('ch' || '%') ORDER BY name
@@ -143,6 +133,7 @@ var stack;
 var geom;
 var lowestgadmlevel = 5;
 var editRecordId;
+var level;
 
 if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== '' && name !== null) {
 
@@ -169,6 +160,7 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
     // run our own hit test
     for (var i = lowestgadmlevel; i <= lowestgadmlevel; i--){
 		stack = plv8.execute("SELECT * FROM gadm" + i + " WHERE ST_Intersects($1::geometry, geom)", [geom]);
+		level = i;
 		if(stack.length > 0) break;
     }
 
@@ -177,6 +169,9 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
         return plv8.elog(ERROR, 'Unable to find admin stack with associated geometry');
     }
 
+    // We assume this new location is the NEXT admin level down
+    level = level + 1;
+
     // capitalize each word in name
     var n = [];
     name.split(" ").forEach(function(w,i){n.push(w[0].toUpperCase() + w.slice(1,w.length))});
@@ -184,7 +179,7 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // update existing location
     try {
-    	plv8.execute("UPDATE arc_custom_locations SET ecos_id = $1, name = $2, country = $3, geom = $4, gadm_stack_guid = $5, updated_by = $1, updated = now() WHERE id = $6", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, editRecordId]);
+    	plv8.execute("UPDATE arc_custom_locations SET ecos_id = $1, name = $2, country = $3, geom = $4, gadm_stack_guid = $5, updated_by = $1, level = $7, updated = now() WHERE id = $6", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, editRecordId, level]);
     } catch (e) {
         return plv8.elog(ERROR, e);
     }
