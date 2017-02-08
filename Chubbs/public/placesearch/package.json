@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
+    "keen-ui": "^1.0.0",
     "leaflet": "^0.7.7",
     "leaflet-draw": "^0.4.9",
     "leaflet-mapbox-vector-tile": "^0.1.6",

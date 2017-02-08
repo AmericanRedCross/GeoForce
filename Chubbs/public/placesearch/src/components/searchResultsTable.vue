@@ -1,38 +1,47 @@
 <template>
-    <div class="result" style="float:left" v-if="searchLocationResults.length > 0">
-        <div style="padding: 5px;margin-bottom: 10px;">Click on a match below to see a preview of the location.</div>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Level</th>
-                <th>Source</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(loc,index) in searchLocationResults" v-show="index <= 10">
-                <td v-if="searchLocationResultType === 'Geonames'" v-on:click="startGetAdminStackByXY(loc);">
-                    {{loc.properties.name }} <span
-                        v-if="loc.properties.adminName1">, {{loc.properties.adminName1}}</span>
-                </td>
-                <td v-if="searchLocationResultType != 'Geonames'" v-on:click="startGetAdminStackById(loc);">
-                    {{loc.properties.fullname }}
-                </td>
 
-                <td v-if="searchLocationResultType === 'Geonames'">
-                    {{loc.properties.fcodeName}}
-                </td>
+    <div>
+        <ui-progress-linear color="primary" v-show="searchResultsLoading"></ui-progress-linear>
+        <div class="result" style="float:left" v-if="!searchResultsLoading">
 
+            <div v-show="emptySearchResults">No matches found. Please try another search term.</div>
 
-                <td v-if="searchLocationResultType != 'Geonames'">
-                    {{loc.properties.level}}
-                </td>
+            <div v-show="searchLocationResults.length > 0 && !searchResultsLoading">
+                <div style="padding: 5px;margin-bottom: 10px;">Click on a match below to see a preview of the location.</div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Level</th>
+                        <th>Source</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(loc,index) in searchLocationResults" v-show="index <= 10">
+                        <td v-if="searchLocationResultType === 'Geonames'" v-on:click="startGetAdminStackByXY(loc);">
+                            {{loc.properties.name }} <span
+                                v-if="loc.properties.adminName1">, {{loc.properties.adminName1}}</span>
+                        </td>
+                        <td v-if="searchLocationResultType != 'Geonames'" v-on:click="startGetAdminStackById(loc);">
+                            {{loc.properties.fullname || loc.properties.name}}
+                        </td>
 
-                <td>{{searchLocationResultType}}</td>
-            </tr>
-            </tbody>
-        </table>
+                        <td v-if="searchLocationResultType === 'Geonames'">
+                            {{loc.properties.fcodeName}}
+                        </td>
+
+                        <td v-if="searchLocationResultType != 'Geonames'">
+                            {{loc.properties.level || loc.properties.level}}
+                        </td>
+
+                        <td>{{searchLocationResultType}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
 </template>
 
 <script>
@@ -58,6 +67,12 @@
             },
             searchLocationResultType () {
                 return this.sharedState.state.searchLocationResultType;
+            },
+            searchResultsLoading () {
+                return this.sharedState.state.searchResultsLoading;
+            },
+            emptySearchResults () {
+                return this.sharedState.state.emptySearchResults;
             }
         },
         methods: {
@@ -101,8 +116,8 @@
 
                 postArgs[searchType] = feature.properties[searchType];
 
-                if(feature.properties.source === "Custom") {
-                    postArgs["adminlevel"] = feature.properties.gadm_stack_level;
+                if (feature.properties.source === "Custom") {
+                    postArgs["adminlevel"] = feature.properties.level;
                     postArgs["datasource"] = feature.properties.source;
                     postArgs[searchType] = feature.properties.gadm_stack_guid;
                 }
@@ -145,5 +160,11 @@
 
     tr {
         cursor: pointer;
+    }
+
+    .ui-progress-linear {
+        width: 50%;
+        float: right;
+        margin: 100px 78px 0px 0px;
     }
 </style>

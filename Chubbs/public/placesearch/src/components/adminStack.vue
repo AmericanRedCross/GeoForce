@@ -32,10 +32,7 @@
             // listen for changes in both types of admin stack responses
             adminStack () {
                 return this.sharedState.state.adminStackResponse;
-            },
-//            adminStack () {
-//                return this.sharedState.state.customAdminStackResponse;
-//            }
+            }
         },
         methods: {
 

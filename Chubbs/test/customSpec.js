@@ -9,6 +9,7 @@ var path = require('path');
 
 describe('Custom API endpoint suit', function () {
 
+    // get a custom locations' admin stack
     describe('GET /services/getAdminStack', function () {
         it('should have status 200 and contain specified data structure', function (done) {
 
@@ -33,6 +34,7 @@ describe('Custom API endpoint suit', function () {
         });
     });
 
+    // create custom location
     describe('POST /services/customLocation', function () {
         it('should have status 200 and contain specified data structure', function (done) {
 
@@ -54,6 +56,7 @@ describe('Custom API endpoint suit', function () {
         });
     });
 
+    // edit an existing custom location
     describe('PATCH /services/customLocation', function () {
         it('should have status 200 and contain specified data structure', function (done) {
 
