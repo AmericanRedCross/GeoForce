@@ -2,7 +2,7 @@
 * Created by DBaah on 1/30/17.
 */
 <script>
-    //    var axios = require('axios');
+
     import axios from 'axios';
     import config from './config'
 
@@ -18,7 +18,12 @@
             _geoJSONLayer: null,
             _geoJSON: null,
             searchResultsLoading: false,
-            emptySearchResults: false
+            emptySearchResults: false,
+            createLocationActivated: false,
+            createLocationPinDropped: false,
+            customLocationCoordinates: [],
+            editLocationActivated: false,
+            editLocationPinDropped: false
         },
         setSearchLocationResults: function (results){
             this.state.emptySearchResults = (results.data.features.length === 0);
@@ -39,9 +44,20 @@
         setsearchResultsLoading: function (isLoading){
             this.state.searchResultsLoading = isLoading;
         },
-        clearMessageAction: function () {
-            this.debug && console.log('clearMessageAction triggered');
-            this.state.message = ''
+        setCreateLocationActivated: function (activated){
+            this.state.createLocationActivated = activated;
+        },
+        setCreateLocationPinDropped: function (dropped) {
+            this.state.createLocationPinDropped = dropped;
+        },
+        setCustomLocationCoordinates: function (coordinates){
+            this.state.customLocationCoordinates = coordinates;
+        },
+        setEditLocationActivated: function (activated){
+            this.state.editLocationActivated = activated;
+        },
+        setEditLocationPinDropped: function (dropped){
+            this.state.editLocationPinDropped = dropped;
         }
     });
 </script>

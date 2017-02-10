@@ -6,7 +6,7 @@ import KeenUI from 'keen-ui';
 Vue.config.devtools = true;
 Vue.use(KeenUI);
 
-new Vue({ // eslint-disable-line no-new
+new Vue({
   el: '#app',
   store,
   render: (h) => h(app)

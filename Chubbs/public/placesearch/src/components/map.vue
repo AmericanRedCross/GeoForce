@@ -1,5 +1,10 @@
 <template>
     <div style="float:left">
+        <div class="newlocation-container">
+            <ui-button color="red" raised :size="size" class="btn" v-on:click="activateCreateLocation()">+ New
+                Location
+            </ui-button>
+        </div>
         <div id="map"></div>
     </div>
 </template>
@@ -7,38 +12,19 @@
 <script>
     import state from '../store.vue'
     import axios from 'axios'
-    import { UiTextbox } from 'keen-ui';
 
     var map;
 
     export default {
         name: 'leafletmap',
         mounted: function () {
-            var vm = this;
 
+            var vm = this;
             map = this.map = L.map('map').setView([0, 0], 3);
             L.tileLayer('https://a.tiles.mapbox.com/v3/americanredcross.map-dn70q0vb/{z}/{x}/{y}.png').addTo(this.map);
 
             // FeatureGroup is to store editable layers
-            this.drawnItems = new L.FeatureGroup().addTo(this.map);
-
-            // add leaflet draw
-            this.map.addControl(new L.Control.Draw({
-                position: 'topright',
-                edit: {
-                    featureGroup: this.drawnItems,
-                    poly: {
-                        allowIntersection: false
-                    }
-                },
-                draw: {
-                    circle: false,
-                    polyline: false,
-                    rectangle: false,
-                    polygon: false,
-                    simpleshape: false
-                }
-            }));
+            this.drawnItems = new L.FeatureGroup().addTo(map);
 
             // fires when user finishes create pin drop
             this.map.on(L.Draw.Event.CREATED, function (event) {
@@ -46,34 +32,65 @@
 
                 vm.drawnItems.addLayer(layer);
 
+                if (vm.drawnItems._map === null) vm.drawnItems.addTo(vm.map);
                 // activate create pin template
+
+                vm.sharedState.setCreateLocationPinDropped(true);
+                vm.sharedState.setCreateLocationActivated(false);
 
                 // get Admin Stack
                 vm.getAdminStack(layer._latlng);
+                // set Location lat_lng
+                vm.sharedState.setCustomLocationCoordinates(layer._latlng)
 
             });
 
-            // fires when user selects "save" in edit mode
-            this.map.on(L.Draw.Event.EDITSTOP, function (event){
-                var feature = vm.sharedState.state._geoJSON;
+            // fires when user selects "CANCEL" or "SAVE"
+            this.map.on(L.Draw.Event.EDITSTOP, function (event) {
 
-                vm.EditModeActivated = false;
+                // only set as activated if the edit Location Pin has been onto the map
+                if (vm.sharedState.editLocationPinDropped) {
+                    vm.sharedState.setEditLocationActivated(true);
+                }
             });
 
             // fires after user has moved pin from one location to another
-            this.map.on(L.Draw.Event.EDITMOVE, function (event){
+            this.map.on(L.Draw.Event.EDITMOVE, function (event) {
                 var layer = event.layer;
-                var feature = vm.sharedState.state._geoJSON;
 
-                // trigger popup
+                vm.drawnItems.addLayer(layer);
+                vm.sharedState.setEditLocationPinDropped(true);
+
+                // notify listeners that user is creating a NEW location
+                if(!vm.editLocationActivated){
+                    // set pin propped to true
+                    vm.sharedState.setCreateLocationPinDropped(true);
+                }
 
                 // get Admin Stack
                 vm.getAdminStack(layer._latlng);
+                // set Location lat_lng
+                vm.sharedState.setCustomLocationCoordinates(layer._latlng);
             });
 
             // fires after use has selected edit button
-            this.map.on(L.Draw.Event.EDITSTART, function (event){
-                vm.EditModeActivated = true;
+            this.map.on(L.Draw.Event.EDITSTART, function (event) {
+
+                vm.sharedState.setEditLocationActivated(true);
+                vm.sharedState.setEditLocationPinDropped(false);
+
+                // we're no longer in create location mode, so set to false
+                vm.sharedState.setCreateLocationPinDropped(false);
+            });
+
+            // fires after use has selected start button
+            this.map.on(L.Draw.Event.DRAWSTART, function (event) {
+
+                // only set edit activate true if new location is not activated
+                if (!vm.sharedState.state.createLocationActivated) vm.sharedState.setEditLocationActivated(true);
+
+                // set pin dropped to false
+                vm.sharedState.setCreateLocationPinDropped(false);
             });
 
             this.showThisLayer("gadm0_geom_simplify_med");
@@ -114,10 +131,10 @@
                     return style;
                 },
                 drawnItems: {},
-                EditModeActivated: false
+                mapControl: {}
             }
         },
-        computed:  {
+        computed: {
             adminStack () {
                 return this.sharedState.state.adminStackResponse;
             },
@@ -126,14 +143,42 @@
             },
             searchLocationResultType () {
                 return this.sharedState.state.searchLocationResultType;
+            },
+            createLocationActivated () {
+                return this.sharedState.state.createLocationActivated;
+            },
+            createLocationPinDropped () {
+                return this.sharedState.state.createLocationPinDropped;
+            },
+            editLocationActivated () {
+                return this.sharedState.state.editLocationActivated;
+            },
+            editLocationPinDropped () {
+                return this.sharedState.state.editLocationPinDropped;
             }
         },
         watch: {
-            adminStack: function (){
-                if(this.EditModeActivated === false){
-                    this.showMapFeature(this.adminStack)
+            adminStack: function () {
+                if (!this.createLocationPinDropped && !this.editLocationPinDropped) {
+                    this.showMapFeature(this.adminStack);
                 }
+            },
+            createLocationActivated: function () {
+                this.deactiveCreateMapControls();
+            },
+            searchLocationResults: function () {
+
+            },
+            editLocationActivated: function () {
+                this.activateEditLocation();
+            },
+            createLocationPinDropped: function () {
+                this.deactiveCreateMapControls();
+            },
+            editLocationPinDropped: function () {
+                this.deactivateEditMapControls();
             }
+
         },
         methods: {
             showThisLayer: function (name, guid, cb) {
@@ -160,7 +205,7 @@
                     }
                 });
             },
-            showMapFeature: function(infeature) {
+            showMapFeature: function (infeature) {
                 var vm = this;
                 var map = this.map;
                 var level = infeature.level || null;
@@ -172,22 +217,26 @@
                 //clear the map
                 if (_geoJSON && _geoJSONLayer) map.removeLayer(_geoJSONLayer);
 
+                if (vm.drawnItems.hasOwnProperty("_layers") && !vm.sharedState.state.createLocationPinDropped) {
+                    vm.map.removeLayer(vm.drawnItems);
+                }
+
                 if (source == "GADM") {
 
                     var gjl = L.geoJson(_geoJSON.geometry);
 
                     //if level is specified, turn on only that level. Default to 2
-                    if(level) {
+                    if (level) {
                         var layerName = (level == "-1") ? "arc_regions_dissolved_geom" : "gadm" + level + "_geom_simplify_med";
 
-                        this.showThisLayer(layerName, _geoJSON.properties.stack_guid, function(){
+                        this.showThisLayer(layerName, _geoJSON.properties.stack_guid, function () {
                             //After layer has been added to map
                             //zoom to layer
                             map.fitBounds(gjl.getBounds());
                         });
                     }
-                    else{
-                        this.showThisLayer("gadm0_geom_simplify_med", '', function() {
+                    else {
+                        this.showThisLayer("gadm0_geom_simplify_med", '', function () {
                             //After layer has been added to map
                             //zoom to layer
                             map.fitBounds(gjl.getBounds());
@@ -202,10 +251,10 @@
                     //zoom to layer
                     if (vm.sharedState.state._geoJSONLayer) {
                         var bounds = vm.sharedState.state._geoJSONLayer.getBounds();
-                        map.fitBounds(bounds, {maxZoom:9});
+                        map.fitBounds(bounds, {maxZoom: 9});
                     }
 
-                // Custom results should be added to drawnItems layer
+                    // Custom results should be added to drawnItems layer
                 } else if (_geoJSON && source === "Custom") {
                     //Pluck out the x,y and plot it
                     var x = _geoJSON.properties.centroid[1];
@@ -213,14 +262,26 @@
                     var layer = L.marker([x, y]);
 
                     vm.sharedState.setgeoJSONLayer(layer);
+
+//                    map.eachLayer(function (l) {
+//                        if(l instanceof L.Marker) map.removeLayer(l);
+//                    });
+
+//                    vm.drawnItems.eachLayer(function (l){
+//                        if(l instanceof L.Marker) vm.drawnItems.removeLayer(l);
+//                    });
+
                     vm.drawnItems.addLayer(layer);
+
+                    if(vm.drawnItems._map === null || typeof vm.drawnItems._map === "undefined") vm.drawnItems.addTo(map);
+
                     //zoom to layer
                     if (vm.sharedState.state._geoJSONLayer) {
                         map.setView(L.latLng(x, y), 8)
                     }
                 }
             },
-            getAdminStack: function(cords){
+            getAdminStack: function (cords) {
 
                 var hostIp = this.sharedState.config.hostIp;
                 var vm = this;
@@ -239,6 +300,86 @@
                         .catch(function (error) {
                             console.log(error);
                         });
+            },
+            activateCreateLocation: function () {
+                var vm = this;
+                var _geoJSONLayer = vm.sharedState.state._geoJSONLayer || vm.pbfSource;
+
+                if (vm.mapControl._map === null || typeof vm.mapControl._map === "undefined") {
+
+                    vm.drawnItems.eachLayer(function (l){
+                        if(l instanceof L.Marker) vm.drawnItems.removeLayer(l);
+                    });
+
+                    vm.mapControl = new L.Control.Draw({
+                        position: 'topleft',
+                        edit: {
+                            featureGroup: this.drawnItems,
+                            poly: {
+                                allowIntersection: false
+                            }
+                        },
+                        draw: {
+                            circle: false,
+                            polyline: false,
+                            rectangle: false,
+                            polygon: false,
+                            simpleshape: false,
+                            marker: true
+                        }
+                    });
+
+                    // add leaflet draw
+                    this.map.addControl(vm.mapControl);
+                }
+
+                //clear the map
+//                if (_geoJSONLayer) vm.map.removeLayer(_geoJSONLayer);
+
+                this.sharedState.setCreateLocationActivated(true);
+
+            },
+            activateEditLocation: function () {
+                var vm = this;
+
+                if (vm.mapControl._map === null || typeof vm.mapControl._map === "undefined") {
+
+                    vm.mapControl = new L.Control.Draw({
+                        position: 'topleft',
+                        edit: {
+                            featureGroup: this.drawnItems,
+                            poly: {
+                                allowIntersection: false
+                            }
+                        },
+                        draw: {
+                            circle: false,
+                            polyline: false,
+                            rectangle: false,
+                            polygon: false,
+                            simpleshape: false,
+                            marker: true
+                        }
+                    });
+
+                    // add leaflet draw
+                    this.map.addControl(vm.mapControl);
+                }
+
+            },
+            deactiveCreateMapControls : function (){
+                // first check if we're in the right state to remove map controls
+                if (!this.createLocationActivated && !this.createLocationPinDropped){
+                    if (this.mapControl._map !== null && typeof this.mapControl._map !== "undefined") this.map.removeControl(this.mapControl);
+                    this.map.removeLayer(this.drawnItems);
+                }
+            },
+            deactivateEditMapControls : function (){
+                // first check if we're in the right state to remove map controls
+                if (!this.editLocationActivated && !this.editLocationPinDropped){
+                    if (this.mapControl._map !== null && typeof this.mapControl._map !== "undefined") this.map.removeControl(this.mapControl);
+                    this.map.removeLayer(this.drawnItems);
+                }
             }
         }
     }
@@ -247,9 +388,17 @@
 <style>
 
     #map {
-        float: left;
         width: 400px;
         height: 400px;
+    }
+
+    .newlocation-container {
+        width: 100%;
+    }
+
+    .newlocation-container .btn {
+        float: left;
+        margin: 10px 0 10px 0;
     }
 
 

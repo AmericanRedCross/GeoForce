@@ -63,6 +63,7 @@ var lowestgadmlevel = 5;
 var gadmstack_level;
 var level;
 
+// in the future, first verify that ECOS ID has the proper rights to create a location
 if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== '' && name !== null) {
 
     try {
