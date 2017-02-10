@@ -738,7 +738,7 @@ exports.app = function (passport) {
 
     function executeCustomLocationAdminNameSearch(searchterm, options, callback){
 
-        var query = "SELECT " + (options.returnGeometry === "yes" ? "geom, " : "") + " id, ecos_id, 'Custom' as source, name, country, gadm_stack_guid, level FROM arc_custom_locations WHERE name ILIKE($1 || '%') ORDER BY name";
+        var query = "SELECT " + (options.returnGeometry === "yes" ? "geom, " : "") + " id, gadm_stack_level, ecos_id, 'Custom' as source, name, country, gadm_stack_guid, level FROM arc_custom_locations WHERE name ILIKE($1 || '%') ORDER BY name";
         var sql = {text: query, values: [searchterm]};
 
         //run it
@@ -883,19 +883,18 @@ exports.app = function (passport) {
     function buildAdminStackCustomQuery (uuid, level, returnGemoetry, datasource) {
 
         // build up query to be executed for adding custom locations to admin stacks
-        // subtract one from level because custom locations are ONE level lower than gadm
-        var gadmLevel = parseInt(level)-1;
+        var gadmLevel = parseInt(level);
         var gadmTable = "gadm" + gadmLevel;
         var queryObj = {};
         var columns = [];
 
-        // get columns
+        // get columns names
         for (var i= 0; i <= gadmLevel; i++){
             columns.push("id_" + i + " as adm" + i + "_code");
             columns.push("name_" + i + " as adm" + i + "_name");
         }
 
-        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ",id , arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid  FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
+        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ",id , gadm_stack_level, arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid  FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
         queryObj.values = [uuid];
 
         return queryObj;

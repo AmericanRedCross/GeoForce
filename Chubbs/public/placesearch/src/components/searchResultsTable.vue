@@ -47,7 +47,7 @@
         </div>
 
         <!-- Create Map Location Input-->
-        <div class="create-location" v-show="(createLocationActivated === true || createLocationPinDropped === true)">
+        <div class="create-location" v-show="createLocationActivated || createLocationPinDropped">
 
             <div v-show="createLocationActivated && !createLocationPinDropped">
                 Please click on the din icon to drop a pin on the map.
@@ -74,7 +74,7 @@
         </div>
 
         <!-- Edit Map Location Input-->
-        <div class="edit-location" v-show="(editLocationActivated === true)">
+        <div class="edit-location" v-show="editLocationActivated && !createLocationActivated">
 
             <table cellspacing="10" cellpadding="0" class="edit-table">
                 <thead>
@@ -159,6 +159,10 @@
             },
             searchLocationResults: function (){
                 console.log("What the")
+            },
+            // clear customLocation object whenever create location button is slected
+            createLocationActivated: function () {
+                this.customLocation = {name: "", ecos_id: ""};
             }
         },
         methods: {
@@ -190,7 +194,7 @@
 
                 var vm = this;
                 var hostIp = vm.sharedState.config.hostIp;
-                var level = feature.properties.level;
+                var level = feature.properties.gadm_stack_level;
                 var searchType = feature.properties.source === "Custom" ? "stackid" : "featureid";
                 vm.sharedState.setgeoJSON(feature);
 
@@ -202,7 +206,7 @@
                 postArgs[searchType] = feature.properties[searchType];
 
                 if (feature.properties.source === "Custom") {
-                    postArgs["adminlevel"] = feature.properties.level;
+                    postArgs["adminlevel"] = feature.properties.gadm_stack_level;
                     postArgs["datasource"] = feature.properties.source;
                     postArgs[searchType] = feature.properties.gadm_stack_guid;
                 }

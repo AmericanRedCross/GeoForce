@@ -9,6 +9,7 @@ CREATE TABLE arc_custom_locations (
  level character varying,
  country character varying,
  gadm_stack_guid uuid,
+ gadm_stack_level character varying, -- so we know where to begin our hit test
  created_by character varying,
  updated_by character varying,
  created timestamp with time zone not null default now(),
@@ -60,8 +61,8 @@ $BODY$
 var stack;
 var geom;
 var lowestgadmlevel = 5;
-var gadmstack_level;
-var level;
+var gadm_stack_level;
+var level = 8; //automatically assign level 8 to all custom locations
 
 // in the future, first verify that ECOS ID has the proper rights to create a location
 if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== '' && name !== null) {
@@ -77,7 +78,7 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
     for (var i = lowestgadmlevel; i <= lowestgadmlevel; i--){
 	stack = plv8.execute("SELECT * FROM gadm" + i + " WHERE ST_Intersects($1::geometry, geom)", [geom]);
 	if(stack.length > 0) {
-          gadmstack_level = i;
+          gadm_stack_level = i;
 	  break;
 	}
     }
@@ -87,9 +88,6 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
         return plv8.elog(ERROR, 'Unable to find admin stack with associated geometry');
     }
 
-    // We assume this new location is the NEXT admin level down
-    level = gadmstack_level + 1;
-
     // capitalize each word in name
     var n = [];
     name.split(" ").forEach(function(w,i){n.push(w[0].toUpperCase() + w.slice(1,w.length))});
@@ -97,7 +95,7 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // create new custom location
     try {
-	plv8.execute("INSERT INTO arc_custom_locations (ecos_id, name, country, geom, gadm_stack_guid, level, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7)", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, level, ecos_id]);
+	plv8.execute("INSERT INTO arc_custom_locations (ecos_id, name, country, geom, gadm_stack_guid, gadm_stack_level, level, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, gadm_stack_level, level, ecos_id]);
     } catch (e) {
         return plv8.elog(ERROR, e);
     }
@@ -133,8 +131,9 @@ $BODY$
 var stack;
 var geom;
 var lowestgadmlevel = 5;
+var gadm_stack_level;
 var editRecordId;
-var level;
+var level = 8;
 
 if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== '' && name !== null) {
 
@@ -160,9 +159,11 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // run our own hit test
     for (var i = lowestgadmlevel; i <= lowestgadmlevel; i--){
-		stack = plv8.execute("SELECT * FROM gadm" + i + " WHERE ST_Intersects($1::geometry, geom)", [geom]);
-		level = i;
-		if(stack.length > 0) break;
+	stack = plv8.execute("SELECT * FROM gadm" + i + " WHERE ST_Intersects($1::geometry, geom)", [geom]);
+	if(stack.length > 0) {
+          gadm_stack_level = i;
+	  break;
+	}
     }
 
     // make sure our hit test returned something
@@ -170,17 +171,14 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
         return plv8.elog(ERROR, 'Unable to find admin stack with associated geometry');
     }
 
-    // We assume this new location is the NEXT admin level down
-    level = level + 1;
-
-    // capitalize each word in name
+    // capitalize first letter of each word in name
     var n = [];
     name.split(" ").forEach(function(w,i){n.push(w[0].toUpperCase() + w.slice(1,w.length))});
     name = n.join(" ")
 
     // update existing location
     try {
-    	plv8.execute("UPDATE arc_custom_locations SET ecos_id = $1, name = $2, country = $3, geom = $4, gadm_stack_guid = $5, updated_by = $1, level = $7, updated = now() WHERE id = $6", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, editRecordId, level]);
+    	plv8.execute("UPDATE arc_custom_locations SET ecos_id = $1, name = $2, country = $3, geom = $4, gadm_stack_guid = $5, updated_by = $1, level = $7, gadm_stack_level = $8, updated = now() WHERE id = $6", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, editRecordId, level, gadm_stack_level]);
     } catch (e) {
         return plv8.elog(ERROR, e);
     }

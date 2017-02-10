@@ -330,13 +330,17 @@
                     });
 
                     // add leaflet draw
-                    this.map.addControl(vm.mapControl);
+                    vm.map.addControl(vm.mapControl);
                 }
 
-                //clear the map
-//                if (_geoJSONLayer) vm.map.removeLayer(_geoJSONLayer);
+                //TODO clear the map if vector tile layer is On
+                if (_geoJSONLayer) vm.map.removeLayer(_geoJSONLayer);
 
-                this.sharedState.setCreateLocationActivated(true);
+                vm.sharedState.setCreateLocationActivated(true);
+
+                // disable edit location state
+                vm.sharedState.setEditLocationActivated(false);
+                vm.sharedState.setEditLocationPinDropped(false);
 
             },
             activateEditLocation: function () {
