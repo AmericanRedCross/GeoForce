@@ -21,12 +21,14 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
+    "es6-promise": "4.0.5",
     "keen-ui": "^1.0.0",
     "leaflet": "^0.7.7",
     "leaflet-draw": "^0.4.9",
     "leaflet-mapbox-vector-tile": "^0.1.6",
+    "tether": "^1.4.0",
     "vue": "^2.0.1",
-    "es6-promise": "4.0.5"
+    "vue-hot-reload-api": "^2.0.8"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
