@@ -29,8 +29,8 @@
             this.state.emptySearchResults = (results.data.features.length === 0);
             this.state.searchLocationResults = results.data.features;
         },
-        setSearchLocationResultType: function (results){
-            this.state.searchLocationResultType = results.data.source;
+        setSearchLocationResultType: function (source){
+            this.state.searchLocationResultType = source;
         },
         setAdminStackResponse: function (results){
             this.state.adminStackResponse = results;

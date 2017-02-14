@@ -48,7 +48,6 @@
                             }
 
                             vm.sharedState.setsearchResultsLoading(false);
-                            vm.sharedState.setSearchLocationResultType(response);
                             vm.sharedState.setSearchLocationResults(response);
 
                             // disable create map & edit map triggers

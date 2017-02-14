@@ -1,100 +1,99 @@
 <template>
 
-    <div>
+    <div class="container">
         <ui-progress-linear color="primary" v-show="searchResultsLoading"></ui-progress-linear>
         <div class="result" v-if="!searchResultsLoading && !createLocationPinDropped && !createLocationActivated && !editLocationActivated">
 
             <div v-if="emptySearchResults">No matches found. Please try another search term.</div>
             <div class="table-container" v-if="searchLocationResults.length > 0 && !searchResultsLoading">
+
                 <thead>
                 <th>Name</th>
-                <th v-if="searchLocationResultType === 'Custom'">ECOS ID</th>
+                <th>ECOS ID</th>
                 <th>Level</th>
                 <th>Source</th>
                 </thead>
 
                 <div class="body">
-                    <div class="row" v-for="(loc,index) in searchLocationResults" v-show="index <= 10">
-
-                        <div class="cell" v-if="searchLocationResultType === 'Geonames'"
-                             v-on:click="startGetAdminStackByXY(loc); loc.properties.active = !loc.properties.active">
-                            {{loc.properties.name }} <span
-                                v-if="loc.properties.adminName1">, {{loc.properties.adminName1}}</span>
-                        </div>
-
-                        <div class="cell" v-if="searchLocationResultType != 'Geonames'"
-                             v-on:click="startGetAdminStackById(loc); loc.properties.active = !loc.properties.active">
-                            {{loc.properties.fullname || loc.properties.name}}
-                        </div>
-
-                        <div class="cell" v-if="searchLocationResultType === 'Custom'">{{loc.properties.ecos_id}}</div>
-
-                        <div class="cell" v-if="searchLocationResultType === 'Geonames'">
-                            {{loc.properties.fcodeName}}
-                        </div>
-
-                        <div class="cell" v-if="searchLocationResultType != 'Geonames'">
-                            {{loc.properties.level || loc.properties.level}}
-                        </div>
-
-                        <div class="cell">{{searchLocationResultType}}</div>
-
+                    <div class="row" v-for="(loc,index) in searchLocationResults">
+                        <div class="cell" v-if="loc.properties.source === 'Geonames'" v-on:click="startGetAdminStackByXY(loc)">{{loc.properties.name }}<span v-if="loc.properties.adminName1">, {{loc.properties.adminName1}}</span></div>
+                        <div class="cell" v-if="loc.properties.source != 'Geonames'" v-on:click="startGetAdminStackById(loc)">{{loc.properties.fullname || loc.properties.name}}</div>
+                        <div class="cell" v-if="loc.properties.source === 'Custom'">{{loc.properties.ecos_id}}</div>
+                        <div class="cell" v-if="loc.properties.source != 'Custom'"></div>
+                        <div class="cell" v-if="loc.properties.source === 'Geonames'">{{loc.properties.fcodeName}}</div>
+                        <div class="cell" v-if="loc.properties.source != 'Geonames'">{{loc.properties.level || loc.properties.level}}</div>
+                        <div class="cell">{{loc.properties.source}}</div>
                     </div>
                 </div>
-
             </div>
 
         </div>
 
-        <!-- Create Map Location Input-->
-        <div class="create-location" v-show="createLocationActivated || createLocationPinDropped">
+    <!-- Create Map Location Input-->
+    <div class="create-location" v-show="createLocationActivated || createLocationPinDropped">
 
-            <div v-show="createLocationActivated && !createLocationPinDropped">
-                Please click on the din icon to drop a pin on the map.
-            </div>
-
-            <table cellspacing="10" cellpadding="0" class="edit-table" v-show="createLocationPinDropped">
-                <thead>
-                <th class="align-left">Name</th>
-                <th class="align-left">ECOS id</th>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td><ui-textbox placeholder="Enter location name" v-model="customLocation.name"></ui-textbox></td>
-                        <td><ui-textbox placeholder="Enter ECOS ID" v-model="customLocation.ecos_id"></ui-textbox></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div v-show="createLocationPinDropped">
-                <ui-button type="secondary">Cancel</ui-button> <ui-button raised  :loading="loadingSubmitCustomLocation" v-on:click="createCustomLocation()">Submit</ui-button>
-            </div>
-
+        <div v-show="createLocationActivated && !createLocationPinDropped">
+            Please click on the din icon to drop a pin on the map.
         </div>
 
-        <!-- Edit Map Location Input-->
-        <div class="edit-location" v-show="editLocationActivated && !createLocationActivated">
+        <table cellspacing="10" cellpadding="0" class="edit-table" v-show="createLocationPinDropped">
+            <thead>
+            <th class="align-left">Name</th>
+            <th class="align-left">ECOS id</th>
+            </thead>
 
-            <table cellspacing="10" cellpadding="0" class="edit-table">
-                <thead>
-                <th class="align-left">Name</th>
-                <th class="align-left">ECOS id</th>
-                </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <ui-textbox required placeholder="Enter location name" v-model="customLocation.name"></ui-textbox>
+                </td>
+                <td>
+                    <ui-textbox required placeholder="Enter ECOS ID" v-model="customLocation.ecos_id"></ui-textbox>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-                <tbody>
-                <tr>
-                    <td><ui-textbox placeholder="Enter location name" v-model="customLocation.name"></ui-textbox></td>
-                    <td><ui-textbox placeholder="Enter ECOS ID" v-model="customLocation.ecos_id"></ui-textbox></td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div>
-                <ui-button type="secondary">Cancel</ui-button> <ui-button raised  :loading="loadingSubmitCustomLocation" v-on:click="editCustomLocation()">Submit</ui-button>
-            </div>
-
+        <div v-show="createLocationPinDropped">
+            <ui-button type="secondary" v-on:click="cancelCustomLocationView()">Cancel</ui-button>
+            <ui-button raised :loading="loadingSubmitCustomLocation" v-on:click="createCustomLocation()">Submit
+            </ui-button>
         </div>
+
+    </div>
+
+    <!-- Edit Map Location Input-->
+    <div class="edit-location" v-show="editLocationActivated && !createLocationActivated">
+
+        <table cellspacing="10" cellpadding="0" class="edit-table">
+            <thead>
+            <th class="align-left">Name</th>
+            <th class="align-left">ECOS id</th>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>
+                    <ui-textbox required placeholder="Enter location name" v-model="customLocation.name"></ui-textbox>
+                </td>
+                <td>
+                    <ui-textbox required placeholder="Enter ECOS ID" v-model="customLocation.ecos_id"></ui-textbox>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div>
+            <ui-button type="secondary" v-on:click="cancelCustomLocationView()">Cancel</ui-button>
+            <ui-button raised :loading="loadingSubmitCustomLocation" v-on:click="editCustomLocation()">Submit
+            </ui-button>
+        </div>
+
+    </div>
+
+        <ui-snackbar-container
+                ref="snackbarContainer"
+        ></ui-snackbar-container>
 
     </div>
 
@@ -150,14 +149,14 @@
         },
         watch: {
             editLocationActivated: function () {
-                if(this.sharedState.state._geoJSON.hasOwnProperty("properties")){
+                if (this.sharedState.state._geoJSON.hasOwnProperty("properties")) {
                     // set "customLocation properties" when Custom Location is selected from Search Results
                     this.customLocation.name = this.sharedState.state._geoJSON.properties.name;
                     this.customLocation.ecos_id = this.sharedState.state._geoJSON.properties.ecos_id;
                     this.customLocation.id = this.sharedState.state._geoJSON.properties.id;
                 }
             },
-            searchLocationResults: function (){
+            searchLocationResults: function () {
                 console.log("What the")
             },
             // clear customLocation object whenever create location button is slected
@@ -171,6 +170,7 @@
                 vm._chosenFeature = feature;
                 var hostIp = vm.sharedState.config.hostIp;
                 vm.sharedState.setgeoJSON(feature);
+                vm.sharedState.setSearchLocationResultType(feature.properties.source);
 
                 var postArgs = {
                     wkt: "POINT(" + feature.properties.lng + " " + feature.properties.lat + ")",
@@ -194,9 +194,10 @@
 
                 var vm = this;
                 var hostIp = vm.sharedState.config.hostIp;
-                var level = feature.properties.gadm_stack_level;
+                var level = feature.properties.level;
                 var searchType = feature.properties.source === "Custom" ? "stackid" : "featureid";
                 vm.sharedState.setgeoJSON(feature);
+                vm.sharedState.setSearchLocationResultType(feature.properties.source);
 
                 var postArgs = {
                     format: "GeoJSON",
@@ -246,6 +247,7 @@
                         .then(function (response) {
                             console.log(response);
                             vm.loadingSubmitCustomLocation = false;
+                            vm.createSnackbar("You new location has been added to 'Custom' source");
 
                             // TODO figure out what we want to do after a successful POST.. UiSnackbar??
                             vm.sharedState.setCreateLocationPinDropped(false);
@@ -254,6 +256,7 @@
                         .catch(function (error) {
                             vm.loadingSubmitCustomLocation = false;
                             console.log(error);
+                            vm.createSnackbar(error.response.data.error || "Error.")
                         });
             },
             editCustomLocation: function () {
@@ -268,7 +271,7 @@
                 };
 
 
-                if(vm.customLocationCoordinates.length !== 2) {
+                if (vm.customLocationCoordinates.length !== 2) {
                     postArgs.wkt = "POINT (" + vm.sharedState.state._geoJSONLayer._latlng.lng + " " + vm.sharedState.state._geoJSONLayer._latlng.lat + ")";
                 } else {
                     postArgs.wkt = "POINT(" + vm.customLocationCoordinates.lng + " " + vm.customLocationCoordinates.lat + ")";
@@ -289,13 +292,31 @@
                         .catch(function (error) {
                             vm.loadingSubmitCustomLocation = false;
                             console.log(error);
+                            vm.createSnackbar(error.response.data.error || "Error.")
                         });
+            },
+            createSnackbar: function(message) {
+                this.$refs.snackbarContainer.createSnackbar({
+                    message: message,
+                    duration: 5000
+                });
+            },
+            cancelCustomLocationView: function (){
+                // disable create map & edit map triggers
+                this.sharedState.setCreateLocationPinDropped(false);
+                this.sharedState.setCreateLocationActivated(false);
+                this.sharedState.setEditLocationActivated(false);
+                this.sharedState.setEditLocationPinDropped(false);
             }
         }
     }
 </script>
 
 <style>
+
+    .md-table table {
+        /*max-width: 500px;*/
+    }
 
     .edit-location, .create-location {
         padding: 20px;
@@ -304,13 +325,12 @@
 
     .result {
         padding: 20px;
-        float: left;
     }
 
     .ui-progress-linear {
-    width: 50%;
+    width: 100%;
     float: right;
-    margin: 100px 78px 0px 0px;
+    margin: 100px 0 0 0;
     }
 
     .table-container {
@@ -341,7 +361,7 @@
     }
 
     .edit-table {
-        min-width:600px;
+        min-width: 600px;
     }
 
     .align-left {
@@ -350,6 +370,16 @@
 
     .edit-table td:first-child {
         padding: 0 50px 0 0;
+    }
+
+    .container {
+        width: 60%;
+        height: 100%;
+        float: left;
+    }
+
+    thead th {
+        text-align: left;
     }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
-    <div style="float:left">
+    <div class="map-container">
         <div class="newlocation-container">
-            <ui-button color="red" raised :size="size" class="btn" v-on:click="activateCreateLocation()">+ New
+            <ui-button color="red" raised :size="size" class="btn" v-on:click="sharedState.setCreateLocationActivated(true)">+ New
                 Location
             </ui-button>
         </div>
@@ -76,11 +76,13 @@
             // fires after use has selected edit button
             this.map.on(L.Draw.Event.EDITSTART, function (event) {
 
-                vm.sharedState.setEditLocationActivated(true);
-                vm.sharedState.setEditLocationPinDropped(false);
+                if(!vm.sharedState.createLocationActivated) {
+                    vm.sharedState.setEditLocationActivated(true);
+                    vm.sharedState.setEditLocationPinDropped(false);
 
-                // we're no longer in create location mode, so set to false
-                vm.sharedState.setCreateLocationPinDropped(false);
+                    // we're no longer in create location mode, so set to false
+                    vm.sharedState.setCreateLocationPinDropped(false);
+                }
             });
 
             // fires after use has selected start button
@@ -131,7 +133,8 @@
                     return style;
                 },
                 drawnItems: {},
-                mapControl: {}
+                mapControl: {},
+                mvtSource: {}
             }
         },
         computed: {
@@ -164,19 +167,23 @@
                 }
             },
             createLocationActivated: function () {
-                this.deactiveCreateMapControls();
+                (this.createLocationActivated) ? this.activateCreateLocation() : this.deactivateMapControls();
             },
             searchLocationResults: function () {
-
+                this.deactivateMapControls();
             },
             editLocationActivated: function () {
-                this.activateEditLocation();
+                if (this.editLocationActivated){
+                    this.activateEditLocation();
+                } else {
+                    this.deactivateMapControls();
+                }
             },
             createLocationPinDropped: function () {
-                this.deactiveCreateMapControls();
+                this.deactivateMapControls();
             },
             editLocationPinDropped: function () {
-                this.deactivateEditMapControls();
+                this.deactivateMapControls();
             }
 
         },
@@ -263,13 +270,13 @@
 
                     vm.sharedState.setgeoJSONLayer(layer);
 
-//                    map.eachLayer(function (l) {
-//                        if(l instanceof L.Marker) map.removeLayer(l);
-//                    });
+                    // remove pbf source layer
+                    this.map.removeLayer(this.pbfSource);
 
-//                    vm.drawnItems.eachLayer(function (l){
-//                        if(l instanceof L.Marker) vm.drawnItems.removeLayer(l);
-//                    });
+                    // remove all markers
+                    vm.drawnItems.eachLayer(function (l){
+                        if(l instanceof L.Marker) vm.drawnItems.removeLayer(l);
+                    });
 
                     vm.drawnItems.addLayer(layer);
 
@@ -305,6 +312,7 @@
                 var vm = this;
                 var _geoJSONLayer = vm.sharedState.state._geoJSONLayer || vm.pbfSource;
 
+                // add leaflet draw controls
                 if (vm.mapControl._map === null || typeof vm.mapControl._map === "undefined") {
 
                     vm.drawnItems.eachLayer(function (l){
@@ -336,8 +344,6 @@
                 //TODO clear the map if vector tile layer is On
                 if (_geoJSONLayer) vm.map.removeLayer(_geoJSONLayer);
 
-                vm.sharedState.setCreateLocationActivated(true);
-
                 // disable edit location state
                 vm.sharedState.setEditLocationActivated(false);
                 vm.sharedState.setEditLocationPinDropped(false);
@@ -346,7 +352,7 @@
             activateEditLocation: function () {
                 var vm = this;
 
-                if (vm.mapControl._map === null || typeof vm.mapControl._map === "undefined") {
+                if ((vm.mapControl._map === null || typeof vm.mapControl._map === "undefined") && vm.editLocationActivated) {
 
                     vm.mapControl = new L.Control.Draw({
                         position: 'topleft',
@@ -368,21 +374,18 @@
 
                     // add leaflet draw
                     this.map.addControl(vm.mapControl);
+                } else {
+                    this.deactivateMapControls();
                 }
 
             },
-            deactiveCreateMapControls : function (){
+            deactivateMapControls : function (){
                 // first check if we're in the right state to remove map controls
-                if (!this.createLocationActivated && !this.createLocationPinDropped){
+                if (!this.editLocationActivated && !this.editLocationPinDropped && !this.createLocationActivated &&!this.createLocationPinDropped){
                     if (this.mapControl._map !== null && typeof this.mapControl._map !== "undefined") this.map.removeControl(this.mapControl);
+                    // remove leaflet draw & pbfsource layer from map
                     this.map.removeLayer(this.drawnItems);
-                }
-            },
-            deactivateEditMapControls : function (){
-                // first check if we're in the right state to remove map controls
-                if (!this.editLocationActivated && !this.editLocationPinDropped){
-                    if (this.mapControl._map !== null && typeof this.mapControl._map !== "undefined") this.map.removeControl(this.mapControl);
-                    this.map.removeLayer(this.drawnItems);
+                    this.map.removeLayer(this.pbfSource);
                 }
             }
         }
@@ -403,6 +406,11 @@
     .newlocation-container .btn {
         float: left;
         margin: 10px 0 10px 0;
+    }
+
+    .map-container {
+        width:40%;
+        float: left;
     }
 
 

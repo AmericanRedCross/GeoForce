@@ -5,13 +5,13 @@
       <div id="content">
         <search></search>
 
-        <div class="clearfix wrapper">
+        <div class="results-container">
           <leafletmap></leafletmap>
 
           <searchResultsTable></searchResultsTable>
-        </div>
 
-        <adminStack></adminStack>
+          <adminStack></adminStack>
+        </div>
 
       </div> <!-- /#content -->
 
@@ -73,5 +73,9 @@
 
   a {
     color: #42b983;
+  }
+
+  .results-container {
+    height:600px;
   }
 </style>

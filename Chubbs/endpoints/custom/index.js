@@ -886,7 +886,7 @@ exports.app = function (passport) {
             columns.push("name_" + i + " as adm" + i + "_name");
         }
 
-        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ",id , gadm_stack_level, arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid  FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
+        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ",id , gadm_stack_level, arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid, 'Custom' as source FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
         queryObj.values = [uuid];
 
         return queryObj;
@@ -904,7 +904,7 @@ exports.app = function (passport) {
 
         var queryObj = {};
         try {
-            queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + " FROM " + table + " WHERE guid = $1";
+            queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + ", 'GADM' as source FROM " + table + " WHERE guid = $1";
             //If we're asking for Extents, then we need to include other columns in group by clause
             if(settings.dsColumns[table].geometry.toLowerCase().indexOf("extent")){
               queryObj.text += " GROUP BY " + settings.dsColumns[table].columns.split(",").map(function(item){ return (item.split("as ").length > 0 ? item.split("as ")[1] : item.split("as ")[0] )}).join(",");
@@ -931,7 +931,7 @@ exports.app = function (passport) {
 
         var queryObj = {};
 
-        queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + " FROM " + table + " WHERE ST_Intersects(ST_GeomFromText($1, 4326), geom)";
+        queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + ", 'GADM' as source FROM " + table + " WHERE ST_Intersects(ST_GeomFromText($1, 4326), geom)";
 
         //If we're asking for Extents, then we need to include other columns in group by clause
         if (settings.dsColumns[table].geometry.toLowerCase().indexOf("extent")) {
