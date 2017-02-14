@@ -424,12 +424,11 @@ exports.app = function (passport) {
 //        console.log('Page has been tracked with Google Analytics');
 //      }
 //    });
-
     //Detect if args were passed in
     if (JSON.stringify(args) != '{}') {
       //Add custom properties as defaults
       args.view = "admin_namesearch"
-      args.featureCollection = { source: "GeoDB" };
+      args.featureCollection = { };
       args.jsonp = true;
 
       //Get the text arg, pass it to function
@@ -450,7 +449,6 @@ exports.app = function (passport) {
         executeAdminIDSearch(featureid, { type: "id", returnGeometry: args.returnGeometry }, function (result) {
           //handle results of id search
           args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
-          args.featureCollection.source = "GeoDB";
           args.breadcrumbs = [{ link: "/services", name: "Home" }, { link: "", name: "Query" }];
           common.respond(req, res, args);
           return;
@@ -557,79 +555,65 @@ exports.app = function (passport) {
             this.res = res;
             this.args = args;
 
-            //Start looking for exact matches
+            //Start looking for geo db matches
             executeStrictAdminNameSearch(searchterm, options, this);
 
         }, function (err, result) {
-            //this is the result of executeAdminNameSearch 'strict' callback
-            //result should be sucess or error.  If success, return results to user.
-            //if error or no results, try the non-strict results
-            if(err || (result && result.rows.length == 0)){
-              //Try querying internal GeoDB - not strict
-              executeLooseAdminNameSearch(this.args.searchterm, { returnGeometry: this.args.returnGeometry }, this);
-            }
-            else{
-              common.log("strict matches for " + this.args.searchterm + ": " + result.rows.length);
+            // this is the result of executeAdminNameSearch 'strict' callback
+            // result should be success or error. Fetch Loose Admin Names
 
-              this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
-              this.args.featureCollection.source = "GeoDB";
-              this.args.breadcrumbs = [
-                { link: "/services", name: "Home" },
-                { link: "", name: "Query" }
-              ];
-              common.respond(this.req, this.res, this.args);
-              return;
+            if(err || (result && result.rows.length == 0)) {
+                this.args.featureCollection = {type: "FeatureCollection", features: []}
+            } else {
+                this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows);
             }
+
+            common.log("strict matches for " + this.args.searchterm + ": " + result.rows.length);
+
+            // Try querying internal GeoDB - not strict
+            executeLooseAdminNameSearch(this.args.searchterm, { returnGeometry: this.args.returnGeometry }, this);
+
 
         }, function (err, result) {
-            //this is the result of executeLooseAdminNameSearch 'not-strict' callback
-            //result should be success or error.  If success, return results to user.
-            //if error or no results, try arc custom location search
 
-        if (err || (result && result.rows.length == 0)) {
-            // Check arc_custom_locations table
+            // first check if features exist in feature collections
+            // if they do, then don't bother to add new results to array of existing features
+            if (this.args.featureCollection.features.length === 0){
+
+                if (!err && (result && result.rows.length > 0)) {
+                    // set feature Collection to results
+                    this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows);
+
+                }
+            }
+
             executeCustomLocationAdminNameSearch(this.args.searchterm, {returnGeometry: this.args.returnGeometry} , this);
-        }
-        else {
-          common.log("loose matches for " + this.args.searchterm + ": " + result.rows.length);
 
-          //Return results
-          //Check which format was specified
 
-          this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
-          this.args.featureCollection.source = this.args.featureCollection.features[0].properties.source || "GeoDB";
-          this.args.breadcrumbs = [
-            { link: "/services", name: "Home" },
-            { link: "", name: "Query" }
-          ];
-
-          //Render HTML page with results at bottom
-          common.respond(this.req, this.res, this.args);
-          return;
-        }
       },
         function (err, result) {
+
             //this is the result of arc custom location 'not-strict' callback
-            //result should be success or error.  If success, return results to user.
-            //if error or no results, try GeoNames
 
-            if(err || (result && result.rows.length == 0)){
-                //Check GeoNames
-                executeGeoNamesAPISearch(this.args.searchterm, this);
-            }
-            else{
+            // if rows are returned, append Custom location results to current feature collection
+            if(!err && (result && result.rows.length > 0)){
                 common.log("custom location matches for " + this.args.searchterm + ": " + result.rows.length);
+                var featureCollection = this.args.featureCollection;
+                var resultFeatures = common.formatters.geoJSONFormatter(result.rows);
 
-                this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
-                this.args.featureCollection.source = "Custom";
-                this.args.breadcrumbs = [
-                    { link: "/services", name: "Home" },
-                    { link: "", name: "Query" }
-                ];
-                common.respond(this.req, this.res, this.args);
-                return;
+                // append to features if they exist
+                if (typeof featureCollection.features !== "undefined"){
+                    resultFeatures.features.map(function(r){featureCollection.features.push(r)});
+                } else {
+                    // set collection to custom location search results
+                    featureCollection = resultFeatures;
+                }
+
+                this.args.featureCollection = featureCollection;
             }
 
+            //Check GeoNames
+            executeGeoNamesAPISearch(this.args.searchterm, this);
         },
       function (statuscode, result) {
             //This is the callback from the GeoNamesAPI Search
@@ -641,24 +625,32 @@ exports.app = function (passport) {
             ];
 
             if (statuscode && statuscode == "200") {
-                //we got a response, decide what to do
+                //we got a response, check for existing features, if so, append
                 if (result && result.geonames && result.geonames.length > 0) {
 
-                    this.args.featureCollection = common.formatters.geoJSONFormatter(result.geonames); //The page will parse the geoJson to make the HTMl
-                    this.args.featureCollection.source = "Geonames";
+                    var featureCollection = this.args.featureCollection;
+                    var resultFeatures = common.formatters.geoJSONFormatter(result.geonames);//The page will parse the geoJson to make the HTMl
+
+                    // add "source" property to each feature
+                    resultFeatures.features.map(function(r){r.properties.source = "Geonames"});
+
+                    // append to features if they exist
+                    if (typeof featureCollection.features != "undefined"){
+                        resultFeatures.features.map(function(r){featureCollection.features.push(r)});
+                        this.args.featureCollection = featureCollection;
+                    } else {
+                        // set collection to geonames response
+                        this.args.featureCollection = resultFeatures; //The page will parse the geoJson to make the HTMl
+                    }
 
                     //Render HTML page with results at bottom
                     common.respond(this.req, this.res, this.args);
                 }
                 else {
-                    //no results
-                    var infoMessage = "No results found.";
-                    this.args.infoMessage = infoMessage;
-                    this.args.featureCollection = { message: infoMessage, type: "FeatureCollection", features: [] }; //The page will parse the geoJson to make the HTMl
-                    this.args.featureCollection.source = "Geonames";
 
                     //Render HTML page with results at bottom
                     common.respond(this.req, this.res, this.args);
+
                 }
             } else {
                 //handle a non 200 response
@@ -738,7 +730,7 @@ exports.app = function (passport) {
 
     function executeCustomLocationAdminNameSearch(searchterm, options, callback){
 
-        var query = "SELECT " + (options.returnGeometry === "yes" ? "geom, " : "") + " id, gadm_stack_level, ecos_id, 'Custom' as source, name, country, gadm_stack_guid, level FROM arc_custom_locations WHERE name ILIKE($1 || '%') ORDER BY name";
+        var query = "SELECT " + (options.returnGeometry === "yes" ? "geom, " : "") + " id, gadm_stack_level, ecos_id, 'Custom' as source, name, country, gadm_stack_guid, level FROM arc_custom_locations WHERE name ILIKE('%' || $1 || '%') ORDER BY name";
         var sql = {text: query, values: [searchterm]};
 
         //run it

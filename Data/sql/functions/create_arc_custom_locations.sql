@@ -100,7 +100,10 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
         return plv8.elog(ERROR, e);
     }
 
+} else {
+   return plv8.elog(ERROR, "Missing parameters. Name, ECOS ID& Geometry Required.");
 }
+
 
 return JSON.stringify(true);
 
@@ -183,6 +186,8 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
         return plv8.elog(ERROR, e);
     }
 
+} else {
+   return plv8.elog(ERROR, "Missing parameters. Name, ECOS ID& Geometry Required.");
 }
 
 return JSON.stringify(true);
@@ -192,3 +197,64 @@ $BODY$
   COST 100;
 ALTER FUNCTION public.___edit_arcCustomLocation(integer, character varying, character varying, character varying)
   OWNER TO postgres;
+
+
+-- add prepending wildcard to loose admin name search functions
+-- Function: public.udf_executeadminsearchbyname(character varying)
+
+-- DROP FUNCTION public.udf_executeadminsearchbyname(character varying);
+
+CREATE OR REPLACE FUNCTION public.udf_executeadminsearchbyname(inname character varying)
+  RETURNS SETOF text_search_results AS
+$BODY$
+DECLARE
+	r text_search_results%rowtype;
+BEGIN
+	for r in
+
+	SELECT stack_guid, feature_guid, name, level, source, country, year, fullname
+	FROM text_search
+	where name ILIKE('%' || inname ||'%')
+	AND source != 'GAUL'
+	ORDER BY name, source
+	loop
+        return next r;
+    end loop;
+    return;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION public.udf_executeadminsearchbyname(character varying)
+  OWNER TO postgres;
+
+  -- Function: public.udf_executeadminsearchbynamewithgeom(character varying)
+
+-- DROP FUNCTION public.udf_executeadminsearchbynamewithgeom(character varying);
+
+CREATE OR REPLACE FUNCTION public.udf_executeadminsearchbynamewithgeom(inname character varying)
+  RETURNS SETOF text_search_results_withgeom AS
+$BODY$
+DECLARE
+	r text_search_results_withgeom%rowtype;
+BEGIN
+	for r in
+
+	SELECT stack_guid, feature_guid, name, level, source, country, year, ST_AsGeoJSON(geom)::json, fullname
+	FROM text_search
+	where name ILIKE('%' || inname || '%')
+	AND source != 'GAUL'
+	ORDER BY name, source
+	loop
+        return next r;
+    end loop;
+    return;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION public.udf_executeadminsearchbynamewithgeom(character varying)
+  OWNER TO postgres;
+
