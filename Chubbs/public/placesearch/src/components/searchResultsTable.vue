@@ -9,20 +9,20 @@
 
                 <thead>
                 <th>Name</th>
-                <th>ECOS ID</th>
-                <th>Level</th>
-                <th>Source</th>
+                <th class="align-center">ECOS ID</th>
+                <th class="align-center">Level</th>
+                <th class="align-right">Source</th>
                 </thead>
 
                 <div class="body">
                     <div class="row" v-for="(loc,index) in searchLocationResults">
-                        <div class="cell" v-if="loc.properties.source === 'Geonames'" v-on:click="startGetAdminStackByXY(loc)">{{loc.properties.name }}<span v-if="loc.properties.adminName1">, {{loc.properties.adminName1}}</span></div>
-                        <div class="cell" v-if="loc.properties.source != 'Geonames'" v-on:click="startGetAdminStackById(loc)">{{loc.properties.fullname || loc.properties.name}}</div>
-                        <div class="cell" v-if="loc.properties.source === 'Custom'">{{loc.properties.ecos_id}}</div>
-                        <div class="cell" v-if="loc.properties.source != 'Custom'"></div>
-                        <div class="cell" v-if="loc.properties.source === 'Geonames'">{{loc.properties.fcodeName}}</div>
-                        <div class="cell" v-if="loc.properties.source != 'Geonames'">{{loc.properties.level || loc.properties.level}}</div>
-                        <div class="cell">{{loc.properties.source}}</div>
+                        <div class="cell name" v-if="loc.properties.source === 'Geonames'" v-on:click="startGetAdminStackByXY(loc)">{{loc.properties.name }}<span v-if="loc.properties.adminName1">, {{loc.properties.adminName1}}</span></div>
+                        <div class="cell name" v-if="loc.properties.source != 'Geonames'" v-on:click="startGetAdminStackById(loc)">{{loc.properties.fullname || loc.properties.name}}</div>
+                        <div class="cell align-center" v-if="loc.properties.source === 'Custom'">{{loc.properties.ecos_id}}</div>
+                        <div class="cell align-center" v-if="loc.properties.source != 'Custom'"></div>
+                        <div class="cell align-center" v-if="loc.properties.source === 'Geonames'">{{loc.properties.fcodeName}}</div>
+                        <div class="cell align-center" v-if="loc.properties.source != 'Geonames'">{{loc.properties.level || loc.properties.level}}</div>
+                        <div class="cell align-right">{{loc.properties.source}}</div>
                     </div>
                 </div>
             </div>
@@ -334,14 +334,15 @@
     }
 
     .table-container {
-    max-width: 550px;
-    margin: 0px 25px;
-    max-height: 500px;
-    overflow-y: scroll;
+        min-width: 600px;
+        margin: 0 25px 0 0;
+        max-height: 500px;
+        overflow-y: scroll;
     }
 
     .body {
-    display: table-row-group;
+        display: table-row-group;
+        background: white;
     }
 
     .body-container {
@@ -355,9 +356,13 @@
     .cell {
     display: table-cell;
     text-align: left;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #dbdbdb;
     padding: 15px 5px;
     cursor: pointer;
+    }
+
+    .cell.name {
+        min-width: 300px;
     }
 
     .edit-table {
@@ -366,6 +371,14 @@
 
     .align-left {
         text-align: left;
+    }
+
+    .align-right {
+        text-align: right;
+    }
+
+    .align-center {
+        text-align: center;
     }
 
     .edit-table td:first-child {

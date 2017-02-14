@@ -396,7 +396,7 @@
 
     #map {
         width: 400px;
-        height: 400px;
+        height: 450px;
     }
 
     .newlocation-container {
