@@ -54,7 +54,7 @@ DROP FUNCTION IF EXISTS ___create_arccustomlocation(character varying,character 
 DROP FUNCTION IF EXISTS ___create_arccustomlocation(character varying,character varying,character varying,uuid, integer);
 DROP FUNCTION IF EXISTS ___create_arccustomlocation(character varying,character varying,character varying);
 
-CREATE OR REPLACE FUNCTION public.___create_arcCustomLocation(ecos_id character varying, wkt character varying, name character varying)
+CREATE OR REPLACE FUNCTION public.___create_arccustomlocation(ecos_id character varying, wkt character varying, name character varying)
   RETURNS text AS
 $BODY$
 
@@ -63,6 +63,7 @@ var geom;
 var lowestgadmlevel = 5;
 var gadm_stack_level;
 var level = 8; //automatically assign level 8 to all custom locations
+var new_record;
 
 // in the future, first verify that ECOS ID has the proper rights to create a location
 if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== '' && name !== null) {
@@ -93,11 +94,16 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
     name.split(" ").forEach(function(w,i){n.push(w[0].toUpperCase() + w.slice(1,w.length))});
     name = n.join(" ")
 
-    // create new custom location
+    // create new custom location and return new record
     try {
-	plv8.execute("INSERT INTO arc_custom_locations (ecos_id, name, country, geom, gadm_stack_guid, gadm_stack_level, level, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, gadm_stack_level, level, ecos_id]);
+	new_record = plv8.execute("INSERT INTO arc_custom_locations (ecos_id, name, country, geom, gadm_stack_guid, gadm_stack_level, level, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, gadm_stack_level, ecos_id, name, country, gadm_stack_guid, level", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, gadm_stack_level, level, ecos_id])[0];
     } catch (e) {
         return plv8.elog(ERROR, e);
+    }
+
+    // add custom property
+    if (typeof new_record === "object"){
+	    new_record["source"] = 'Custom';
     }
 
 } else {
@@ -105,13 +111,14 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 }
 
 
-return JSON.stringify(true);
+return JSON.stringify(new_record);
 
 $BODY$
   LANGUAGE plv8 VOLATILE
   COST 100;
-ALTER FUNCTION public.___create_arcCustomLocation(character varying, character varying, character varying)
+ALTER FUNCTION public.___create_arccustomlocation(character varying, character varying, character varying)
   OWNER TO postgres;
+
 /***************************************************************************************
 
 TESTS
@@ -137,6 +144,7 @@ var lowestgadmlevel = 5;
 var gadm_stack_level;
 var editRecordId;
 var level = 8;
+var updated_record;
 
 if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== '' && name !== null) {
 
@@ -181,16 +189,21 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // update existing location
     try {
-    	plv8.execute("UPDATE arc_custom_locations SET ecos_id = $1, name = $2, country = $3, geom = $4, gadm_stack_guid = $5, updated_by = $1, level = $7, gadm_stack_level = $8, updated = now() WHERE id = $6", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, editRecordId, level, gadm_stack_level]);
+    	updated_record = plv8.execute("UPDATE arc_custom_locations SET ecos_id = $1, name = $2, country = $3, geom = $4, gadm_stack_guid = $5, updated_by = $1, level = $7, gadm_stack_level = $8, updated = now() WHERE id = $6 RETURNING id, gadm_stack_level, ecos_id, name, country, gadm_stack_guid, level", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, editRecordId, level, gadm_stack_level])[0];
     } catch (e) {
         return plv8.elog(ERROR, e);
+    }
+
+    // add custom property
+    if (typeof updated_record === "object"){
+	updated_record["source"] = 'Custom';
     }
 
 } else {
    return plv8.elog(ERROR, "Missing parameters. Name, ECOS ID& Geometry Required.");
 }
 
-return JSON.stringify(true);
+return JSON.stringify(updated_record);
 
 $BODY$
   LANGUAGE plv8 VOLATILE

@@ -64,8 +64,12 @@
                     } else {
                         // custom features
                         if (typeof this._geoJSONLayer._latlng !== "undefined") url += "&placename=" + feature.properties.name;
-                        url += "&x=" + this._geoJSONLayer._latlng.lng + "&y=" + this._geoJSONLayer._latlng.lat;
+                        url += "&x=" + this._geoJSONLayer._latlng.lng + "&y=" + this._geoJSONLayer._latlng.lat + "&adminlevel=" + feature.properties.level + "&stackid=" + feature.properties.gadm_stack_guid;
                     }
+
+                    // add source to url
+                    url+= "&source=" + feature.properties.source;
+
                     //redirect
                     window.location = url;
                 }

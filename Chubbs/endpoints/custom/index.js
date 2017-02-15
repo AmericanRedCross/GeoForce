@@ -499,8 +499,8 @@ exports.app = function (passport) {
                     common.respond(req, res, args);
                 } else {
 
-                    // response should be [{"___create_arccustomlocation":"true"}]
-                    args.featureCollection = result.rows;
+                    // response should be [{"___create_arccustomlocation": {} }]
+                    args.featureCollection = common.formatters.geoJSONFormatter([JSON.parse(result.rows[0]["___create_arccustomlocation"])]);
                     common.respond(req, res, args);
                 }
 
@@ -535,9 +535,8 @@ exports.app = function (passport) {
                     args.errorMessage = err.message;
                     common.respond(req, res, args);
                 } else {
-
                     // response should be [{"___edit_arccustomlocation":"true"}]
-                    args.featureCollection = result.rows;
+                    args.featureCollection = common.formatters.geoJSONFormatter([JSON.parse(result.rows[0]["___edit_arccustomlocation"])]);
                     common.respond(req, res, args);
                 }
 
@@ -886,7 +885,7 @@ exports.app = function (passport) {
             columns.push("name_" + i + " as adm" + i + "_name");
         }
 
-        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ",id , gadm_stack_level, arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid, 'Custom' as source FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
+        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ",id , gadm_stack_level, arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid, 'Custom' as source, level FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
         queryObj.values = [uuid];
 
         return queryObj;

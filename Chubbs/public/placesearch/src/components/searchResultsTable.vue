@@ -166,7 +166,7 @@
                 }
             },
             searchLocationResults: function () {
-                console.log("What the")
+
             },
             // clear customLocation object whenever create location button is slected
             createLocationActivated: function () {
@@ -230,7 +230,7 @@
                             vm.sharedState.setAdminStackResponse(response.data);
 
                             // if results are Custom, set turn on edit mode
-                            if (vm.sharedState.state.searchLocationResultType === "Custom") {
+                            if (vm.sharedState.state.searchLocationResultType === "Custom" && !vm.sharedState.state.createLocationPinDropped) {
                                 vm.sharedState.setEditLocationActivated(true);
                             }
                         })
@@ -259,8 +259,11 @@
                             vm.createSnackbar("You new location has been added to 'Custom' source");
 
                             // TODO figure out what we want to do after a successful POST.. UiSnackbar??
-                            vm.sharedState.setCreateLocationPinDropped(false);
+//                            vm.sharedState.setCreateLocationPinDropped(false);
                             vm.sharedState.setCreateLocationActivated(false);
+
+                            // fetch new stack information
+                            vm.startGetAdminStackById(response.data.features[0]);
                         })
                         .catch(function (error) {
                             vm.loadingSubmitCustomLocation = false;
@@ -298,6 +301,8 @@
                             //TODO figure out what we want to do after a successful PATCH... UiSnackbar?
 //                            vm.sharedState.setEditLocationActivated(false);
                             vm.sharedState.setEditLocationPinDropped(false);
+                            // fetch new stack information
+                            vm.startGetAdminStackById(response.data.features[0]);
                         })
                         .catch(function (error) {
                             vm.loadingSubmitCustomLocation = false;
