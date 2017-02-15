@@ -1,7 +1,7 @@
 <template>
     <div class="map-container">
         <div class="newlocation-container">
-            <ui-button color="red" raised :size="size" class="btn" v-on:click="sharedState.setCreateLocationActivated(true)">+ New
+            <ui-button color="red" raised :size="size" class="btn" @click="sharedState.setCreateLocationActivated(true)">+ New
                 Location
             </ui-button>
         </div>
@@ -76,7 +76,7 @@
             // fires after use has selected edit button
             this.map.on(L.Draw.Event.EDITSTART, function (event) {
 
-                if(!vm.sharedState.createLocationActivated) {
+                if(!vm.sharedState.state.createLocationActivated && !vm.sharedState.state.createLocationPinDropped) {
                     vm.sharedState.setEditLocationActivated(true);
                     vm.sharedState.setEditLocationPinDropped(false);
 
@@ -173,7 +173,7 @@
                 this.deactivateMapControls();
             },
             editLocationActivated: function () {
-                if (this.editLocationActivated){
+                if (this.editLocationActivated & !this.createLocationActivated){
                     this.activateEditLocation();
                 } else {
                     this.deactivateMapControls();

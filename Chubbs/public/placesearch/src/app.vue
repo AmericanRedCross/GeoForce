@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <div id="wrapper">
 
-      <div id="content">
+    <div id="content">
         <search></search>
 
         <div class="results-container">
@@ -15,12 +14,11 @@
 
       </div> <!-- /#content -->
 
-      <div id="footer">
-        <div id="line"></div>
-        <p>&copy; <a href="http://redcross.org" target="_blank">American Red Cross</a> 2013</p>
-      </div>
+    <div id="footer">
+      <div id="line"></div>
+      <p>&copy; <a href="http://redcross.org" target="_blank">American Red Cross</a> 2013</p>
+    </div>
 
-    </div> <!-- /#wrapper -->
   </div>
 </template>
 
@@ -55,6 +53,8 @@
     width: 95%;
     max-width: 1280px;
     margin: 20px auto 0 auto;
+    min-height: 100%;
+    position: relative;
   }
 
   h1, h2 {
@@ -76,6 +76,6 @@
   }
 
   .results-container {
-    height:600px;
+    min-height: 568px;
   }
 </style>

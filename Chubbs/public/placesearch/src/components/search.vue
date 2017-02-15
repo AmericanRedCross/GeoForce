@@ -1,6 +1,6 @@
 <template>
     <div class="search-wrapper">
-        <form v-on:submit.prevent="getLocationSearchResults()">
+        <form @submit.prevent="getLocationSearchResults()">
             <ui-textbox icon="search" placeholder="Search for a place or administrative boundary" v-model="query"></ui-textbox>
         </form>
         <div class="hint"> <span style="color:#ff0000">Hint:</span> enter a name, NOT a fully qualified City, Province, Country (for example, 'Port-au-Prince' NOT 'Port-au-Prince, Haiti')
