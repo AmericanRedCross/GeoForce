@@ -323,6 +323,8 @@ exports.app = function (passport) {
                         //GATrackEvent("Get Admin Stack", "by Stack ID, Admin, Datasource",  this.args.stackid + "," + this.args.adminlevel + "," + this.args.datasource); //Analytics
                     } else if (settings.dsColumns[this.args.datasource.toLowerCase()]) {
                         //Set up search parameters
+                        // get arc_custom_location record id from custom source in case there's multiple custom locations in the same stack
+                        if(this.args.datasource.toLowerCase() === "custom") searchObj.customid = this.args.customid;
                         searchObj.stackid = this.args.stackid;
                         searchObj.adminlevel = this.args.adminlevel;
                         searchObj.datasource = this.args.datasource;
@@ -762,7 +764,7 @@ exports.app = function (passport) {
 
         if (searchObject.datasource.toLowerCase() === "custom"){
 
-            sql = buildAdminStackCustomQuery(searchObject.stackid, searchObject.adminlevel, searchObject.returnGeometry, searchObject.datasource);
+            sql = buildAdminStackCustomQuery(searchObject.customid, searchObject.stackid, searchObject.adminlevel, searchObject.returnGeometry, searchObject.datasource);
             common.log(sql);
 
             common.executePgQuery(sql, callback);
@@ -871,7 +873,7 @@ exports.app = function (passport) {
         }
     )
 
-    function buildAdminStackCustomQuery (uuid, level, returnGemoetry, datasource) {
+    function buildAdminStackCustomQuery (customid, uuid, level, returnGemoetry, datasource) {
 
         // build up query to be executed for adding custom locations to admin stacks
         var gadmLevel = parseInt(level);
@@ -885,7 +887,7 @@ exports.app = function (passport) {
             columns.push("name_" + i + " as adm" + i + "_name");
         }
 
-        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ",id , gadm_stack_level, arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid, 'Custom' as source, level FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
+        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ",id , gadm_stack_level, arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid, 'Custom' as source, level FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.id = " + customid + " AND acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
         queryObj.values = [uuid];
 
         return queryObj;

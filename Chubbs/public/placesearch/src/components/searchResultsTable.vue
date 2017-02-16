@@ -219,6 +219,7 @@
                     postArgs["adminlevel"] = feature.properties.gadm_stack_level;
                     postArgs["datasource"] = feature.properties.source;
                     postArgs[searchType] = feature.properties.gadm_stack_guid;
+                    postArgs["customid"] = feature.properties.id;
                 }
 
                 var url = hostIp + '/services/getAdminStack';
