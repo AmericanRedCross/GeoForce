@@ -873,7 +873,7 @@ exports.app = function (passport) {
         }
     )
 
-    function buildAdminStackCustomQuery (customid, uuid, level, returnGemoetry, datasource) {
+    function buildAdminStackCustomQuery (customid, uuid, level, returnGeometry, datasource) {
 
         // build up query to be executed for adding custom locations to admin stacks
         var gadmLevel = parseInt(level);
@@ -887,7 +887,7 @@ exports.app = function (passport) {
             columns.push("name_" + i + " as adm" + i + "_name");
         }
 
-        queryObj.text = "SELECT " + (returnGemoetry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry : "") + ",id , gadm_stack_level, arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid, 'Custom' as source, level FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.id = " + customid + " AND acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
+        queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry +"," : "") + "id , gadm_stack_level, arc_region as isd_region, " + columns.join(",") + " ,acl.name, ST_AsText(ST_Centroid(acl.geom)) as centroid, 'Custom' as source, level FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.id = " + customid + " AND acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
         queryObj.values = [uuid];
 
         return queryObj;
