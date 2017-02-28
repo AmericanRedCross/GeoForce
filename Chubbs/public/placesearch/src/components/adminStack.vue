@@ -1,6 +1,9 @@
 <template>
     <div id="stackWrapper" v-if="adminStack.features">
-        <div style="font-weight:600;">
+        <div class="chooseButton-wrapper" v-if="adminStack.features.length > 0">
+            <ui-button class="chooseButton" raised @click="sendBackResult()">Choose This Location</ui-button>
+        </div>
+        <div v-show="adminStack.features.length > 0" style="font-weight:600;">
             Administrative Boundary Hierarchy:
         </div>
         <div id="adminResult" v-if="adminStack.features.length > 0">
@@ -9,10 +12,7 @@
                 <div v-if="key === 'centroid'">{{key}}: {{val[0]}}, {{val[1]}}</div>
             </div>
         </div>
-        <div v-if="adminStack.features.length === 0">No Admin Stack Available</div>
-        <div v-if="adminStack.features.length > 0">
-            <ui-button class="chooseButton" raised @click="sendBackResult()">Choose This Location</ui-button>
-        </div>
+        <div class="chooseButton-wrapper" v-if="adminStack.features.length === 0">No Admin Stack Available</div>
 
         <ui-snackbar-container position="right" ref="snackbarContainer"></ui-snackbar-container>
 
@@ -94,7 +94,7 @@
             createSnackbar: function(message) {
                 this.$refs.snackbarContainer.createSnackbar({
                     message: message,
-                    duration: 5000,
+                    duration: 5000
 
                 });
             }
@@ -103,16 +103,28 @@
 </script>
 
 <style>
+
+    #adminResult {
+        padding: 11px 20px 20px 20px;
+        font-size: 14px;
+        line-height: 25px;
+    }
+
     #stackWrapper {
         text-align: left;
         position: relative;
         display: inline-block;
         width: 100%;
+        padding: 0 20px 20px 0;
     }
 
     .chooseButton {
         background-color: #337AFF !important;
         color: #fff !important;
+    }
+
+    .chooseButton-wrapper {
+        padding: 20px 0 20px 0;
     }
 
 </style>

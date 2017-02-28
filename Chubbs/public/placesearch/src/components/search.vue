@@ -62,6 +62,9 @@
                             vm.sharedState.setCreateLocationActivated(false);
                             vm.sharedState.setEditLocationActivated(false);
                             vm.sharedState.setEditLocationPinDropped(false);
+
+                            // clear admin stack
+                            vm.sharedState.setAdminStackResponse({});
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -75,20 +78,20 @@
 <style>
     .search-wrapper {
         padding: 20px;
-        height: 181px;
+        height: 140px;
         background: #fff;
         width: 100%;
-
     }
 
     .search-wrapper .hint {
         font-size: 12px;
         color: #626262;
+        margin: 0 0 0 36px;
     }
 
     .form-wrapper {
         max-width: 781px;
-        margin: 25px auto;
+        margin: 15px auto;
     }
 
     .ui-textbox__input, .ui-textbox__textarea {

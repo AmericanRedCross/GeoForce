@@ -20,6 +20,7 @@ body {
 #content {
     padding-bottom: 80px;
     height: 100%;
+    max-width: 1280px;
     width: 95%;
     margin: 20px auto 0 auto;
 }
@@ -44,10 +45,6 @@ body {
     text-decoration: none;
     cursor: pointer;
     color: #6d6e70;
-}
-
-#adminResult, #result {
-    padding: 20px;
 }
 
 .clearfix:before, .clearfix:after {
@@ -88,8 +85,4 @@ body {
 
 .btn-search {
     margin: 0 15px;
-}
-
-#stackWrapper {
-    padding: 20px;
 }

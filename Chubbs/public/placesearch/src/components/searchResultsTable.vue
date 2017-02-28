@@ -198,6 +198,8 @@
                 axios.post(url, postArgs)
                         .then(function (response) {
                             vm.sharedState.setAdminStackResponse(response.data);
+                            // scroll to top of results table
+                            vm.scrollPageTo($('.search-wrapper').height() + 45 );
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -238,6 +240,9 @@
                             if (vm.sharedState.state.searchLocationResultType === "Custom" && !vm.sharedState.state.createLocationPinDropped) {
                                 vm.sharedState.setEditLocationActivated(true);
                             }
+
+                            // scroll to top of results table
+                            vm.scrollPageTo($('.search-wrapper').height() + 45 );
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -274,7 +279,7 @@
 
                             // scroll to bottom of page
                             setTimeout(function(){
-                                vm.scrollToBottom();
+                                vm.scrollPageTo($('#stackWrapper').offset().top - 80 );
                             }, 500)
                         })
                         .catch(function (error) {
@@ -320,7 +325,7 @@
 
                             // scroll to bottom of page
                             setTimeout(function(){
-                                vm.scrollToBottom();
+                                vm.scrollPageTo($('#stackWrapper').offset().top - 80 );
                             }, 500)
                         })
                         .catch(function (error) {
@@ -341,9 +346,11 @@
                 this.sharedState.setCreateLocationActivated(false);
                 this.sharedState.setEditLocationActivated(false);
                 this.sharedState.setEditLocationPinDropped(false);
+                // clear admin stack
+                this.sharedState.setAdminStackResponse({});
             },
-            scrollToBottom: function () {
-                $('html,body').animate({ scrollTop: $('#stackWrapper').offset().top - 80 });
+            scrollPageTo: function (height) {
+                $('html,body').animate({ scrollTop: height});
             }
         }
     }
@@ -383,13 +390,14 @@
     .table-container {
         min-width: 560px;
         margin: 0 25px 0 0;
-        max-height: 500px;
+        max-height: 487px;
         overflow-y: scroll;
     }
 
     .body {
         display: table-row-group;
         background: white;
+        font-size: 14px;
     }
 
     .body-container {
@@ -411,6 +419,11 @@
         min-width: 300px;
         color: #337ab7;
         cursor: pointer;
+        font-weight: bold;
+    }
+
+    .cell.name:hover {
+        color: #22527b;
     }
 
     .edit-table {
@@ -435,9 +448,8 @@
 
     .container {
         width: 60%;
-        height: 100%;
         float: left;
-        min-height: 550px;
+        max-height: 509px;
         position: relative;
     }
 

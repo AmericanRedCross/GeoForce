@@ -162,7 +162,7 @@
         },
         watch: {
             adminStack: function () {
-                if (!this.createLocationPinDropped && !this.editLocationPinDropped) {
+                if (!this.createLocationPinDropped && !this.editLocationPinDropped && this.adminStack.features) {
                     this.showMapFeature(this.adminStack);
                 }
             },

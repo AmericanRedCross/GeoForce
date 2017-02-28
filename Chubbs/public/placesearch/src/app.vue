@@ -16,7 +16,7 @@
 
     <div id="footer">
       <div id="line"></div>
-      <p>&copy; <a href="http://redcross.org" target="_blank">American Red Cross</a> 2013</p>
+      <p>&copy; <a href="http://redcross.org" target="_blank">American Red Cross</a> 2017</p>
     </div>
 
   </div>
@@ -51,7 +51,6 @@
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
     width: 100%;
-    max-width: 1280px;
     margin: 0;
     min-height: 100%;
     position: relative;
