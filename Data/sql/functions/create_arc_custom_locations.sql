@@ -23,6 +23,7 @@ CREATE TABLE arc_custom_locations_log (
   custom_location_name character varying null,
   ecos_id character varying not null,
   type character varying not null,
+  geom geometry not null,
   created timestamp with time zone not null default now()
 );
 
@@ -106,14 +107,14 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // create new custom location and return new record
     try {
-	new_record = plv8.execute("INSERT INTO arc_custom_locations (ecos_id, name, country, geom, gadm_stack_guid, gadm_stack_level, level, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, gadm_stack_level, ecos_id, name, country, gadm_stack_guid, level", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, gadm_stack_level, level, ecos_id])[0];
+	new_record = plv8.execute("INSERT INTO arc_custom_locations (ecos_id, name, country, geom, gadm_stack_guid, gadm_stack_level, level, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, gadm_stack_level, ecos_id, geom, name, country, gadm_stack_guid, level", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, gadm_stack_level, level, ecos_id])[0];
     } catch (e) {
         return plv8.elog(ERROR, e);
     }
 
     // add custom property
     if (typeof new_record === "object"){
-        plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type) VALUES ($1, $2, $3, $4)", [new_record.ecos_id, new_record.id, new_record.name, 'create']);
+        plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type, geom) VALUES ($1, $2, $3, $4, $5)", [new_record.ecos_id, new_record.id, new_record.name, 'create', new_record.geom]);
 	    new_record["source"] = 'Custom';
     }
 
@@ -200,14 +201,14 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // update existing location
     try {
-    	updated_record = plv8.execute("UPDATE arc_custom_locations SET ecos_id = $1, name = $2, country = $3, geom = $4, gadm_stack_guid = $5, updated_by = $1, level = $7, gadm_stack_level = $8, updated = now() WHERE id = $6 RETURNING id, gadm_stack_level, ecos_id, name, country, gadm_stack_guid, level", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, editRecordId, level, gadm_stack_level])[0];
+    	updated_record = plv8.execute("UPDATE arc_custom_locations SET ecos_id = $1, name = $2, country = $3, geom = $4, gadm_stack_guid = $5, updated_by = $1, level = $7, gadm_stack_level = $8, updated = now() WHERE id = $6 RETURNING id, gadm_stack_level, geom, ecos_id, name, country, gadm_stack_guid, level", [ecos_id, name, stack[0].name_0, geom, stack[0].guid, editRecordId, level, gadm_stack_level])[0];
     } catch (e) {
         return plv8.elog(ERROR, e);
     }
 
     // add custom property
     if (typeof updated_record === "object"){
-        plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type) VALUES ($1, $2, $3, $4)", [updated_record.ecos_id, updated_record.id, updated_record.name, 'edit']);
+        plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type, geom) VALUES ($1, $2, $3, $4, $5)", [updated_record.ecos_id, updated_record.id, updated_record.name, 'edit', updated_record.geom]);
 	    updated_record["source"] = 'Custom';
     }
 
