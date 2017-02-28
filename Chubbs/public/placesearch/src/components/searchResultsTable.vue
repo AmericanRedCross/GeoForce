@@ -449,7 +449,7 @@
     .container {
         width: 60%;
         float: left;
-        max-height: 509px;
+        height: 509px;
         position: relative;
     }
 

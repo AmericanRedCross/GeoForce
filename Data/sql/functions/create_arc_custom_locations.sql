@@ -114,8 +114,9 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // add custom property
     if (typeof new_record === "object"){
-        plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type, geom) VALUES ($1, $2, $3, $4, $5)", [new_record.ecos_id, new_record.id, new_record.name, 'create', new_record.geom]);
+       plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type, geom) VALUES ($1, $2, $3, $4, $5)", [new_record.ecos_id, new_record.id, new_record.name, 'create', new_record.geom]);
 	    new_record["source"] = 'Custom';
+	    delete new_record["geom"];
     }
 
 } else {
@@ -208,8 +209,9 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // add custom property
     if (typeof updated_record === "object"){
-        plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type, geom) VALUES ($1, $2, $3, $4, $5)", [updated_record.ecos_id, updated_record.id, updated_record.name, 'edit', updated_record.geom]);
+        //plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type, geom) VALUES ($1, $2, $3, $4, $5)", [updated_record.ecos_id, updated_record.id, updated_record.name, 'edit', updated_record.geom]);
 	    updated_record["source"] = 'Custom';
+	    delete updated_record["geom"];
     }
 
 } else {
