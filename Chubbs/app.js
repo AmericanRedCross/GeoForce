@@ -24,6 +24,7 @@ global.conString = "postgres://" + settings.pg.username + ":" + settings.pg.pass
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; //Hopefully fixes stream.js:94 UNABLE_TO_VERIFY_LEAF_SIGNATURE problem
 
+app.use(cors());
 // all environments
 app.set('ipaddr', settings.application.ip);
 app.set('port', process.env.PORT || settings.application.port);

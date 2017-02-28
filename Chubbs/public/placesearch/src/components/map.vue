@@ -1,7 +1,7 @@
 <template>
     <div class="map-container">
         <div class="newlocation-container">
-            <ui-button color="red" raised :size="size" class="btn" @click="sharedState.setCreateLocationActivated(true)">+ New
+            <ui-button color="red" raised :size="size" class="btn" @click="sharedState.setCreateLocationActivated(true); sharedState.setCreateLocationPinDropped(false)">+ New
                 Location
             </ui-button>
         </div>
@@ -344,6 +344,11 @@
                 //TODO clear the map if vector tile layer is On
                 if (_geoJSONLayer) vm.map.removeLayer(_geoJSONLayer);
 
+                // remove all markers
+                vm.drawnItems.eachLayer(function (l){
+                    if(l instanceof L.Marker) vm.drawnItems.removeLayer(l);
+                });
+
                 // disable edit location state
                 vm.sharedState.setEditLocationActivated(false);
                 vm.sharedState.setEditLocationPinDropped(false);
@@ -395,7 +400,7 @@
 <style>
 
     #map {
-        width: 400px;
+        width: 385px;
         height: 450px;
     }
 

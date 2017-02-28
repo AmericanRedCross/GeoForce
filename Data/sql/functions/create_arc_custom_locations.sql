@@ -1,5 +1,6 @@
 ﻿CREATE EXTENSION IF NOT EXISTS plv8;
-DROP TABLE IF EXISTS arc_custom_locations;
+DROP TABLE IF EXISTS arc_custom_locations CASCADE;
+DROP TABLE IF EXISTS arc_custom_locations_log CASCADE;
 
 CREATE TABLE arc_custom_locations (
  id serial primary key not null,
@@ -14,6 +15,15 @@ CREATE TABLE arc_custom_locations (
  updated_by character varying,
  created timestamp with time zone not null default now(),
  updated timestamp with time zone not null default now()
+);
+
+CREATE TABLE arc_custom_locations_log (
+  id serial primary key not null,
+  custom_location_id int not null references arc_custom_locations (id),
+  custom_location_name character varying null,
+  ecos_id character varying not null,
+  type character varying not null,
+  created timestamp with time zone not null default now()
 );
 
 /**************
@@ -63,7 +73,7 @@ var geom;
 var lowestgadmlevel = 5;
 var gadm_stack_level;
 var level = 8; //automatically assign level 8 to all custom locations
-var new_record;
+var new_record, log_record;
 
 // in the future, first verify that ECOS ID has the proper rights to create a location
 if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== '' && name !== null) {
@@ -103,6 +113,7 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // add custom property
     if (typeof new_record === "object"){
+        plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type) VALUES ($1, $2, $3, $4)", [new_record.ecos_id, new_record.id, new_record.name, 'create']);
 	    new_record["source"] = 'Custom';
     }
 
@@ -125,7 +136,7 @@ TESTS
 
 SELECT * FROM arc_custom_locations;
 
-SELECT * FROM ___edit_arcCustomLocation(1, 'ECOS231394', 'POINT(-2.1842432 7.343332)', 'Chiraa FC')
+SELECT * FROM ___edit_arcCustomLocation(1, 'new id', 'POINT(-2.1842432 7.343332)', 'NEW location FC')
 SELECT * FROM ___edit_arcCustomLocation(1, 'ECOS231394', 'POINT(-1.1842432 7.343332)', 'Chiraa FC');
 SELECT * FROM ___edit_arcCustomLocation(2, 'ECOS14533', 'POINT(152.234 -27.41148)', 'brisbane capital');
 
@@ -144,7 +155,7 @@ var lowestgadmlevel = 5;
 var gadm_stack_level;
 var editRecordId;
 var level = 8;
-var updated_record;
+var updated_record, log_record;
 
 if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== '' && name !== null) {
 
@@ -196,7 +207,8 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // add custom property
     if (typeof updated_record === "object"){
-	updated_record["source"] = 'Custom';
+        plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type) VALUES ($1, $2, $3, $4)", [updated_record.ecos_id, updated_record.id, updated_record.name, 'edit']);
+	    updated_record["source"] = 'Custom';
     }
 
 } else {

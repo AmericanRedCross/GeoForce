@@ -11,7 +11,7 @@
         </div>
         <div v-if="adminStack.features.length === 0">No Admin Stack Available</div>
         <div v-if="adminStack.features.length > 0">
-            <ui-button color="red" raised @click="sendBackResult()">Choose This Location</ui-button>
+            <ui-button class="chooseButton" raised @click="sendBackResult()">Choose This Location</ui-button>
         </div>
 
         <ui-snackbar-container position="right" ref="snackbarContainer"></ui-snackbar-container>
@@ -108,6 +108,11 @@
         position: relative;
         display: inline-block;
         width: 100%;
+    }
+
+    .chooseButton {
+        background-color: #337AFF !important;
+        color: #fff !important;
     }
 
 </style>

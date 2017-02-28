@@ -1,9 +1,9 @@
 <template>
   <div id="app">
 
-    <div id="content">
-        <search></search>
+    <search></search>
 
+    <div id="content">
         <div class="results-container">
           <leafletmap></leafletmap>
 
@@ -46,13 +46,13 @@
 
 <style>
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-    width: 95%;
+    width: 100%;
     max-width: 1280px;
-    margin: 20px auto 0 auto;
+    margin: 0;
     min-height: 100%;
     position: relative;
   }

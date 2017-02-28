@@ -5,7 +5,7 @@
         <div class="result"
              v-if="!searchResultsLoading && !createLocationPinDropped && !createLocationActivated && !editLocationActivated">
 
-            <div v-if="emptySearchResults">No matches found. Please try another search term.</div>
+            <div class="create-location-tip" v-if="emptySearchResults">No matches found. Please try another search term.</div>
             <div class="table-container" v-if="searchLocationResults.length > 0 && !searchResultsLoading">
 
                 <thead>
@@ -43,8 +43,8 @@
         <!-- Create Map Location Input-->
         <div class="create-location" v-show="createLocationActivated || createLocationPinDropped">
 
-            <div v-show="createLocationActivated && !createLocationPinDropped">
-                Please click on the din icon to drop a pin on the map.
+            <div class="create-location-tip" v-show="createLocationActivated && !createLocationPinDropped">
+                Please click the pin icon on the left side of the map to drop a pin on the map.
             </div>
 
             <table cellspacing="10" cellpadding="0" class="edit-table" v-show="createLocationPinDropped">
@@ -66,7 +66,7 @@
                 </tbody>
             </table>
 
-            <div v-show="createLocationPinDropped">
+            <div v-show="createLocationPinDropped && !createLocationComplete">
                 <ui-button type="secondary" @click="cancelCustomLocationView()">Cancel</ui-button>
                 <ui-button raised :loading="loadingSubmitCustomLocation" @click="createCustomLocation()" :disabled="customLocation.name.length === 0 || customLocation.ecos_id.length === 0">Submit
                 </ui-button>
@@ -96,14 +96,14 @@
                 </tbody>
             </table>
 
-            <div>
+            <div v-show="!editLocationComplete">
                 <ui-button type="secondary" @click="cancelCustomLocationView()">Cancel</ui-button>
                 <ui-button raised :loading="loadingSubmitCustomLocation" @click="editCustomLocation()" :disabled="customLocation.name.length === 0 || customLocation.ecos_id.length === 0">Submit</ui-button>
             </div>
 
         </div>
 
-        <ui-snackbar-container position="right" ref="snackbarContainer"></ui-snackbar-container>
+        <ui-snackbar-container class="snackbar" position="right" ref="snackbarContainer"></ui-snackbar-container>
     </div>
 
 </template>
@@ -127,7 +127,9 @@
                     name: "",
                     ecos_id: ""
                 },
-                loadingSubmitCustomLocation: false
+                loadingSubmitCustomLocation: false,
+                createLocationComplete: false,
+                editLocationComplete: false
             }
         },
         computed: {
@@ -163,6 +165,7 @@
                     this.customLocation.name = this.sharedState.state._geoJSON.properties.name;
                     this.customLocation.ecos_id = this.sharedState.state._geoJSON.properties.ecos_id;
                     this.customLocation.id = this.sharedState.state._geoJSON.properties.id;
+                    this.editLocationComplete = false;
                 }
             },
             searchLocationResults: function () {
@@ -171,6 +174,7 @@
             // clear customLocation object whenever create location button is slected
             createLocationActivated: function () {
                 this.customLocation = {name: "", ecos_id: ""};
+                this.createLocationComplete = false;
             }
         },
         methods: {
@@ -259,17 +263,24 @@
                             vm.loadingSubmitCustomLocation = false;
                             vm.createSnackbar("You new location has been added to 'Custom' source");
 
+                            vm.createLocationComplete = true;
+
                             // TODO figure out what we want to do after a successful POST.. UiSnackbar??
 //                            vm.sharedState.setCreateLocationPinDropped(false);
-                            vm.sharedState.setCreateLocationActivated(false);
+//                            vm.sharedState.setCreateLocationActivated(false);
 
                             // fetch new stack information
                             vm.startGetAdminStackById(response.data.features[0]);
+
+                            // scroll to bottom of page
+                            setTimeout(function(){
+                                vm.scrollToBottom();
+                            }, 500)
                         })
                         .catch(function (error) {
                             vm.loadingSubmitCustomLocation = false;
                             console.log(error);
-                            vm.createSnackbar(error.response.data.error || "Error.")
+                            if(error.response) vm.createSnackbar(error.response.data.error || "Error.")
                         });
             },
             editCustomLocation: function () {
@@ -299,22 +310,29 @@
                             vm.loadingSubmitCustomLocation = false;
                             vm.createSnackbar("You Custom location has been updated");
 
+                            vm.editLocationComplete = true;
+
                             //TODO figure out what we want to do after a successful PATCH... UiSnackbar?
 //                            vm.sharedState.setEditLocationActivated(false);
                             vm.sharedState.setEditLocationPinDropped(false);
                             // fetch new stack information
                             vm.startGetAdminStackById(response.data.features[0]);
+
+                            // scroll to bottom of page
+                            setTimeout(function(){
+                                vm.scrollToBottom();
+                            }, 500)
                         })
                         .catch(function (error) {
                             vm.loadingSubmitCustomLocation = false;
                             console.log(error);
-                            vm.createSnackbar(error.response.data.error || "Error.")
+                            if(error.response) vm.createSnackbar(error.response.data.error || "Error.")
                         });
             },
             createSnackbar: function(message) {
                 this.$refs.snackbarContainer.createSnackbar({
                     message: message,
-                    duration: 5000
+                    duration: 3000
                 });
             },
             cancelCustomLocationView: function (){
@@ -323,6 +341,9 @@
                 this.sharedState.setCreateLocationActivated(false);
                 this.sharedState.setEditLocationActivated(false);
                 this.sharedState.setEditLocationPinDropped(false);
+            },
+            scrollToBottom: function () {
+                $('html,body').animate({ scrollTop: $('#stackWrapper').offset().top - 80 });
             }
         }
     }
@@ -337,20 +358,30 @@
     .edit-location, .create-location {
         padding: 20px;
         float: left;
+        width: 100%;
+    }
+
+    .create-location-tip {
+        padding: 220px 0 0 0;
+        text-align: center;
+        color: #626262;
+        font-size: 18px;
     }
 
     .result {
-        padding: 20px;
+        padding: 20px
     }
 
     .ui-progress-linear {
-    width: 100%;
-    float: right;
-    margin: 100px 0 0 0;
+        width: 90%;
+        float: right;
+        margin: auto;
+        position: relative;
+        top: 56px;
     }
 
     .table-container {
-        min-width: 600px;
+        min-width: 560px;
         margin: 0 25px 0 0;
         max-height: 500px;
         overflow-y: scroll;
@@ -374,15 +405,16 @@
     text-align: left;
     border-bottom: 1px solid #dbdbdb;
     padding: 15px 5px;
-    cursor: pointer;
     }
 
     .cell.name {
         min-width: 300px;
+        color: #337ab7;
+        cursor: pointer;
     }
 
     .edit-table {
-        min-width: 600px;
+        min-width: 560px;
     }
 
     .align-left {
@@ -411,6 +443,11 @@
 
     thead th {
         text-align: left;
+    }
+
+    .snackbar {
+        /*position: relative;*/
+        /*bottom:250px;*/
     }
 
 </style>
