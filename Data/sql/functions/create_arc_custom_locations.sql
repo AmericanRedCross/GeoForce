@@ -102,7 +102,7 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // capitalize each word in name
     var n = [];
-    name.split(" ").forEach(function(w,i){n.push(w[0].toUpperCase() + w.slice(1,w.length))});
+    name.split(" ").forEach(function(w,i){ if(w.length > 0) n.push(w[0].toUpperCase() + w.slice(1,w.length)) });
     name = n.join(" ")
 
     // create new custom location and return new record
@@ -197,7 +197,7 @@ if (ecos_id !== '' && ecos_id != null && wkt !== '' && wkt !== null && name !== 
 
     // capitalize first letter of each word in name
     var n = [];
-    name.split(" ").forEach(function(w,i){n.push(w[0].toUpperCase() + w.slice(1,w.length))});
+    name.split(" ").forEach(function(w,i){if(w.length > 0) n.push(w[0].toUpperCase() + w.slice(1,w.length))});
     name = n.join(" ")
 
     // update existing location

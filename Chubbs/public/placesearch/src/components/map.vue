@@ -42,7 +42,8 @@
                 vm.getAdminStack(layer._latlng);
                 // set Location lat_lng
                 vm.sharedState.setCustomLocationCoordinates(layer._latlng)
-
+                // set geojsonlayer
+                vm.sharedState.setgeoJSONLayer(layer);
             });
 
             // fires when user selects "CANCEL" or "SAVE"
@@ -254,10 +255,13 @@
                 // Geonames results are displayed as markers
                 else if (_geoJSON && source === "Geonames") {
                     //Pluck out the x,y and plot it
-                    vm.sharedState.setgeoJSONLayer(L.featureGroup([L.marker([_geoJSON.properties.centroid[1], _geoJSON.properties.centroid[0]])]).addTo(map));
+                    var marker = L.marker([_geoJSON.properties.centroid[1], _geoJSON.properties.centroid[0]])
+                    vm.sharedState.setgeoJSONLayer(marker);
+                    var featuregroup = L.featureGroup([marker]).addTo(map);
+
                     //zoom to layer
                     if (vm.sharedState.state._geoJSONLayer) {
-                        var bounds = vm.sharedState.state._geoJSONLayer.getBounds();
+                        var bounds = featuregroup.getBounds();
                         map.fitBounds(bounds, {maxZoom: 9});
                     }
 

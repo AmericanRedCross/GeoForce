@@ -62,9 +62,10 @@
                     if (feature.properties.source === "GADM" && typeof feature.properties.featureid !== "undefined") {
                         url += "&featureid=" + feature.properties.featureid;
                     } else {
-                        // custom features
-                        if (typeof this._geoJSONLayer._latlng !== "undefined") url += "&placename=" + feature.properties.name;
-                        url += "&x=" + this._geoJSONLayer._latlng.lng + "&y=" + this._geoJSONLayer._latlng.lat + "&customid=" + feature.properties.id + "&adminlevel=" + feature.properties.gadm_stack_level + "&stackid=" + feature.properties.gadm_stack_guid;
+                        // custom and geoname features
+                        var latLng = this._geoJSONLayer._latlng;
+                        url += "&placename=" + feature.properties.name;
+                        url += "&x=" + latLng.lng + "&y=" + latLng.lat + "&customid=" + feature.properties.id + "&adminlevel=" + feature.properties.gadm_stack_level + "&stackid=" + feature.properties.gadm_stack_guid;
                     }
 
                     // add source to url
