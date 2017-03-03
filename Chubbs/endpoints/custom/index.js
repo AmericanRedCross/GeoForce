@@ -762,7 +762,7 @@ exports.app = function (passport) {
     function executeAdminStackSearch(searchObject, callback) {
         var sql = "";
 
-        if (searchObject.datasource.toLowerCase() === "custom"){
+        if (searchObject.datasource.toLowerCase() === "custom" && typeof searchObject.customid !== "undefined"){
 
             sql = buildAdminStackCustomQuery(searchObject.customid, searchObject.stackid, searchObject.adminlevel, searchObject.returnGeometry, searchObject.datasource);
             common.log(sql);
