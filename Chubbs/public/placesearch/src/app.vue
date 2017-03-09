@@ -97,5 +97,6 @@
     color: white;
     font-weight: bold;
     padding: 13px 0 0 20px;
+    float: left;
   }
 </style>
