@@ -199,7 +199,7 @@
                         .then(function (response) {
                             vm.sharedState.setAdminStackResponse(response.data);
                             // scroll to top of results table
-                            vm.scrollPageTo($('.search-wrapper').height() + 45 );
+                            vm.scrollPageTo($('.search-wrapper').height() + $('header').height() + 13 + 45 );
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -242,7 +242,7 @@
                             }
 
                             // scroll to top of results table
-                            vm.scrollPageTo($('.search-wrapper').height() + 45 );
+                            vm.scrollPageTo($('.search-wrapper').height() + $('header').height() + 13 + 45 );
                         })
                         .catch(function (error) {
                             console.log(error);

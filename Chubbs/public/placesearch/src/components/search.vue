@@ -2,7 +2,7 @@
     <div class="search-wrapper">
         <div class="form-wrapper">
             <form @submit.prevent="getLocationSearchResults()">
-                <ui-textbox icon="search" placeholder="Search for a place or administrative boundary"
+                <ui-textbox autofocus icon="search" placeholder="Search for a place or administrative boundary"
                             v-model="query"></ui-textbox>
             </form>
             <div class="hint"><span style="color:#ff0000">Hint:</span> enter a name, NOT a fully qualified City,

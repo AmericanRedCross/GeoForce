@@ -1,6 +1,12 @@
 <template>
   <div id="app">
 
+    <header>
+      <a href="/placesearch/search.html">
+        <div>ARC Place search</div>
+      </a>
+    </header>
+
     <search></search>
 
     <div id="content">
@@ -76,5 +82,20 @@
 
   .results-container {
     min-height: 568px;
+  }
+
+  header {
+    height: 45px;
+    background-color: #f44336;
+  }
+
+  header a {
+    text-decoration: none;
+  }
+
+  header div {
+    color: white;
+    font-weight: bold;
+    padding: 13px 0 0 20px;
   }
 </style>
