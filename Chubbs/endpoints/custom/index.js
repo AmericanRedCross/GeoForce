@@ -732,7 +732,7 @@ exports.app = function (passport) {
     function executeCustomLocationAdminNameSearch(searchterm, options, callback){
 
         var query = "SELECT " + (options.returnGeometry === "yes" ? "geom, " : "") + " id, gadm_stack_level, ecos_id, 'Custom' as source, name, country, gadm_stack_guid, level FROM arc_custom_locations WHERE name ILIKE('%' || $1 || '%') ORDER BY name";
-        var sql = {text: query, values: [searchterm]};
+        var sql = {text: query, values: [searchterm.trim()]};
 
         //run it
         common.executePgQuery(sql, callback);
