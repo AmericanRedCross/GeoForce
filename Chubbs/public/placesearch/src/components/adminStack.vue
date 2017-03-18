@@ -1,12 +1,12 @@
 <template>
-    <div id="stackWrapper" v-if="adminStack.features">
+    <div class="stack-container" v-if="adminStack.features">
         <div class="chooseButton-wrapper" v-if="adminStack.features.length > 0">
             <ui-button class="chooseButton" raised @click="sendBackResult()">Choose This Location</ui-button>
         </div>
         <div v-show="adminStack.features.length > 0" style="font-weight:600;">
             Administrative Boundary Hierarchy:
         </div>
-        <div id="adminResult" v-if="adminStack.features.length > 0">
+        <div class="adminResult" v-if="adminStack.features.length > 0">
             <div v-for="(val, key, index) in adminStack.features[0].properties">
                 <div v-if="key != 'centroid'">{{key}}: {{val}}</div>
                 <div v-if="key === 'centroid'">{{key}}: {{val[0]}}, {{val[1]}}</div>
@@ -105,18 +105,15 @@
 
 <style>
 
-    #adminResult {
+    .adminResult {
         padding: 11px 20px 20px 20px;
         font-size: 14px;
         line-height: 25px;
     }
 
-    #stackWrapper {
-        text-align: left;
-        position: relative;
-        display: inline-block;
+    .stack-container {
         width: 100%;
-        padding: 0 20px 20px 0;
+        padding: 36px 20px 20px 0;
     }
 
     .chooseButton {

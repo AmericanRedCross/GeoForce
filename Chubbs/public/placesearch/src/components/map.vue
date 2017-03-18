@@ -1,11 +1,12 @@
 <template>
     <div class="map-container">
+        <div id="map"></div>
         <div class="newlocation-container">
-            <ui-button color="red" raised :size="size" class="btn" @click="sharedState.setCreateLocationActivated(true); sharedState.setCreateLocationPinDropped(false)">+ New
-                Location
+            <ui-button color="default" raised :size="size" class="btn"
+                       @click="removeDrawnLayers(); sharedState.setCreateLocationActivated(true); sharedState.setCreateLocationPinDropped(false)">
+                + New Location
             </ui-button>
         </div>
-        <div id="map"></div>
     </div>
 </template>
 
@@ -30,6 +31,10 @@
             this.map.on(L.Draw.Event.CREATED, function (event) {
                 var layer = event.layer;
 
+                vm.drawnItems.eachLayer(function (l){
+                    if(l instanceof L.Marker) vm.drawnItems.removeLayer(l);
+                });
+
                 vm.drawnItems.addLayer(layer);
 
                 if (vm.drawnItems._map === null) vm.drawnItems.addTo(vm.map);
@@ -41,7 +46,7 @@
                 // get Admin Stack
                 vm.getAdminStack(layer._latlng);
                 // set Location lat_lng
-                vm.sharedState.setCustomLocationCoordinates(layer._latlng)
+                vm.sharedState.setCustomLocationCoordinates(layer._latlng);
                 // set geojsonlayer
                 vm.sharedState.setgeoJSONLayer(layer);
             });
@@ -329,7 +334,8 @@
                             featureGroup: this.drawnItems,
                             poly: {
                                 allowIntersection: false
-                            }
+                            },
+                            remove: false
                         },
                         draw: {
                             circle: false,
@@ -338,6 +344,9 @@
                             polygon: false,
                             simpleshape: false,
                             marker: true
+                        },
+                        marker: {
+                            repeatMode: false
                         }
                     });
 
@@ -396,6 +405,12 @@
                     this.map.removeLayer(this.drawnItems);
                     this.map.removeLayer(this.pbfSource);
                 }
+            },
+            removeDrawnLayers: function (){
+                var vm = this;
+                vm.drawnItems.eachLayer(function (l) {
+                    if (l instanceof L.Marker) vm.drawnItems.removeLayer(l);
+                });
             }
         }
     }
@@ -409,7 +424,9 @@
     }
 
     .newlocation-container {
-        width: 100%;
+        float: right;
+        position: relative;
+        top: 50px;
     }
 
     .newlocation-container .btn {
@@ -417,9 +434,17 @@
         margin: 10px 0 10px 0;
     }
 
+    .newlocation-container .button-container {
+        /*float:right;*/
+    }
+
     .map-container {
-        width:40%;
+        width: 100%;
         float: left;
+    }
+
+    .map-component-container {
+
     }
 
 

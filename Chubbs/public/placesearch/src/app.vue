@@ -3,7 +3,7 @@
 
     <header>
       <a href="/placesearch/search.html">
-        <div>ARC Place search</div>
+        <div>ECOS Location Finder</div>
       </a>
     </header>
 
@@ -11,11 +11,13 @@
 
     <div id="content">
         <div class="results-container">
-          <leafletmap></leafletmap>
-
-          <searchResultsTable></searchResultsTable>
-
-          <adminStack></adminStack>
+          <div class="results-upper-container">
+            <leafletmap></leafletmap>
+            <searchResultsTable></searchResultsTable>
+          </div>
+          <div class="adminstack-wrapper">
+            <adminStack></adminStack>
+          </div>
         </div>
 
       </div> <!-- /#content -->
@@ -82,6 +84,15 @@
 
   .results-container {
     min-height: 568px;
+  }
+
+  .results-upper-container {
+    height: 500px;
+  }
+
+  .adminstack-wrapper {
+    position: relative;
+    bottom: 45px;
   }
 
   header {

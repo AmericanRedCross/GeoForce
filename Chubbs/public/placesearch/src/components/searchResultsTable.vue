@@ -1,6 +1,6 @@
 <template>
 
-    <div class="container">
+    <div class="search-results-container">
         <ui-progress-linear color="primary" v-show="searchResultsLoading"></ui-progress-linear>
         <div class="result"
              v-if="!searchResultsLoading && !createLocationPinDropped && !createLocationActivated && !editLocationActivated">
@@ -44,13 +44,16 @@
         <div class="create-location" v-show="createLocationActivated || createLocationPinDropped">
 
             <div class="create-location-tip" v-show="createLocationActivated && !createLocationPinDropped">
-                Please click the pin icon on the left side of the map to drop a pin on the map.
+                Before adding a location please confirm with an ECOS System Administrator that your location does not exist
+                </br></br>
+                To proceed with a new location please click the pin icon on the left side of the map to drop a pin on the map
+
             </div>
 
             <table cellspacing="10" cellpadding="0" class="edit-table" v-show="createLocationPinDropped">
                 <thead>
-                <th class="align-left">Name</th>
-                <th class="align-left">ECOS id</th>
+                <th class="align-left">Location Name</th>
+                <th class="align-left">ECOS User ID</th>
                 </thead>
 
                 <tbody>
@@ -60,7 +63,7 @@
                                     v-model="customLocation.name"></ui-textbox>
                     </td>
                     <td>
-                        <ui-textbox required placeholder="Enter ECOS ID" v-model="customLocation.ecos_id"></ui-textbox>
+                        <ui-textbox required placeholder="Clara.barton@redcross.org" v-model="customLocation.ecos_id"></ui-textbox>
                     </td>
                 </tr>
                 </tbody>
@@ -369,14 +372,14 @@
     }
 
     .create-location-tip {
-        padding: 220px 0 0 0;
+        padding: 140px 0 0 0;
         text-align: center;
         color: #626262;
         font-size: 18px;
     }
 
     .result {
-        padding: 20px
+        padding: 0 20px 20px 20px;
     }
 
     .ui-progress-linear {
@@ -446,11 +449,11 @@
         padding: 0 50px 0 0;
     }
 
-    .container {
+    .search-results-container {
         width: 60%;
-        float: left;
-        height: 509px;
+        float: right;
         position: relative;
+        bottom: 506px;
     }
 
     thead th {

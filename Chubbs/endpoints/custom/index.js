@@ -546,6 +546,41 @@ exports.app = function (passport) {
         }
     });
 
+    /**
+     * DELETE custom ARC location
+     */
+    app.delete('/services/customLocation/:id', function (req, res){
+
+        var args = {};
+        var body = req.body;
+        args.format = "json";
+        args.featureCollection = {};
+
+        // check for required body args
+        if (req.params.id === undefined || body.ecos_id === undefined){
+            args.errorMessage = "error: ecos_id required in DELETE body";
+            // throw missing required arguments error
+            common.respond(req, res, args);
+        } else {
+            var sql = {};
+            sql.text = "SELECT * FROM ___delete_arccustomLocation($1,$2)";
+            sql.values = [parseInt(req.params.id), body.ecos_id];
+
+            common.executePgQuery(sql, function(err, result){
+                if(err){
+                    // throw error with db message
+                    common.log(err);
+                    args.errorMessage = err.message;
+                    common.respond(req, res, args);
+                } else {
+                    // response should be [{"___delete_arccustomLocation":"true"}]
+                    args.featureCollection = common.formatters.geoJSONFormatter([JSON.parse(result.rows[0]["___delete_arccustomlocation"])]);
+                    common.respond(req, res, args);
+                }
+
+            });
+        }
+    });
 
     //RedCross GeoWebServices Search Functions
     //pass in a search term, check the Geodatabase for matching names
