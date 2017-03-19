@@ -14,7 +14,7 @@
         </div>
         <div class="chooseButton-wrapper" v-if="adminStack.features.length === 0">No Admin Stack Available</div>
 
-        <ui-snackbar-container position="right" ref="snackbarContainer"></ui-snackbar-container>
+        <ui-snackbar-container position="right" transition="fade" ref="snackbarContainer"></ui-snackbar-container>
 
     </div>
 </template>

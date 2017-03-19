@@ -378,7 +378,8 @@
                             featureGroup: this.drawnItems,
                             poly: {
                                 allowIntersection: false
-                            }
+                            },
+                            remove: false
                         },
                         draw: {
                             circle: false,
@@ -386,7 +387,7 @@
                             rectangle: false,
                             polygon: false,
                             simpleshape: false,
-                            marker: true
+                            marker: false
                         }
                     });
 
@@ -407,10 +408,13 @@
                 }
             },
             removeDrawnLayers: function (){
+
                 var vm = this;
                 vm.drawnItems.eachLayer(function (l) {
                     if (l instanceof L.Marker) vm.drawnItems.removeLayer(l);
                 });
+
+                vm.map.removeControl(this.mapControl);
             }
         }
     }
@@ -426,7 +430,7 @@
     .newlocation-container {
         float: right;
         position: relative;
-        top: 50px;
+        bottom: 47px;
     }
 
     .newlocation-container .btn {

@@ -106,7 +106,7 @@
 
         </div>
 
-        <ui-snackbar-container class="snackbar" position="right" ref="snackbarContainer"></ui-snackbar-container>
+        <ui-snackbar-container class="snackbar" transition="fade" position="right" ref="snackbarContainer"></ui-snackbar-container>
     </div>
 
 </template>
@@ -282,7 +282,7 @@
 
                             // scroll to bottom of page
                             setTimeout(function(){
-                                vm.scrollPageTo($('#stackWrapper').offset().top - 80 );
+                                vm.scrollPageTo($('.stack-container').offset().top - 80 );
                             }, 500)
                         })
                         .catch(function (error) {
@@ -328,7 +328,7 @@
 
                             // scroll to bottom of page
                             setTimeout(function(){
-                                vm.scrollPageTo($('#stackWrapper').offset().top - 80 );
+                                vm.scrollPageTo($('.stack-container').offset().top - 80 );
                             }, 500)
                         })
                         .catch(function (error) {
@@ -379,7 +379,7 @@
     }
 
     .result {
-        padding: 0 20px 20px 20px;
+        padding: 0 0 20px 20px;
     }
 
     .ui-progress-linear {
@@ -391,9 +391,8 @@
     }
 
     .table-container {
-        min-width: 560px;
-        margin: 0 25px 0 0;
-        max-height: 487px;
+        min-width: 500px;
+        max-height: 400px;
         overflow-y: scroll;
     }
 
@@ -454,6 +453,8 @@
         float: right;
         position: relative;
         bottom: 506px;
+        min-height: 400px;
+
     }
 
     thead th {

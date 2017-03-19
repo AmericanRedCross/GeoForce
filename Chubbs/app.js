@@ -200,7 +200,7 @@ if(settings && settings.application && settings.application.mode && settings.app
 }else {
 //Root Request - show application
   app.get('/', function (req, res) {
-    res.redirect('/mapfolio/index.html');
+    res.redirect('/search');
   });
 }
 
@@ -240,7 +240,7 @@ function ensureAuthenticated(req, res, next) {
       return next();
     }
     else {
-      res.redirect('/mapfolio/login.html');
+      res.redirect('/search');
       return;
     }
   }
