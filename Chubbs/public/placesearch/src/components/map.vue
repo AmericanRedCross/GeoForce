@@ -414,7 +414,9 @@
                     if (l instanceof L.Marker) vm.drawnItems.removeLayer(l);
                 });
 
-                vm.map.removeControl(this.mapControl);
+                if(vm.mapControl._map){
+                    vm.map.removeControl(this.mapControl);
+                }
             }
         }
     }

@@ -19,7 +19,7 @@ CREATE TABLE arc_custom_locations (
 
 CREATE TABLE arc_custom_locations_log (
   id serial primary key not null,
-  custom_location_id int not null references arc_custom_locations (id),
+  custom_location_id int not null,
   custom_location_name character varying null,
   ecos_id character varying not null,
   type character varying not null,
