@@ -58,6 +58,9 @@
         },
         setEditLocationPinDropped: function (dropped){
             this.state.editLocationPinDropped = dropped;
+        },
+        clearSearchLocationResults: function () {
+            this.state.searchLocationResults = []
         }
     });
 </script>

@@ -102,11 +102,27 @@
             <div v-show="!editLocationComplete">
                 <ui-button type="secondary" @click="cancelCustomLocationView()">Cancel</ui-button>
                 <ui-button raised :loading="loadingSubmitCustomLocation" @click="editCustomLocation()" :disabled="customLocation.name.length === 0 || customLocation.ecos_id.length === 0">Submit</ui-button>
+                <ui-button class="deleteButton" color="red" type="primary" @click="showConfirm('deleteConfirm')">Delete Location</ui-button>
             </div>
 
         </div>
 
+        <ui-confirm
+                confirm-button-icon="delete"
+                confirm-button-text="Delete"
+                deny-button-text="Keep"
+                ref="deleteConfirm"
+                title="Delete Location"
+                type="danger"
+
+                @confirm="deleteCustomLocation()"
+                @deny=""
+        >
+            Are you sure you want to delete {{customLocation.name}}?
+        </ui-confirm>
+
         <ui-snackbar-container class="snackbar" transition="fade" position="right" ref="snackbarContainer"></ui-snackbar-container>
+
     </div>
 
 </template>
@@ -337,6 +353,35 @@
                             if(error.response) vm.createSnackbar(error.response.data.error || "Error.")
                         });
             },
+            deleteCustomLocation: function () {
+                var vm = this;
+                var hostIp = vm.sharedState.config.hostIp;
+                vm.loadingSubmitCustomLocation = true;
+
+                var postArgs = {
+                    "ecos_id": vm.customLocation.ecos_id
+                };
+
+                var url = hostIp + '/services/customLocation/' + vm.customLocation.id;
+
+                //Send POST,
+                axios.delete(url, {data: postArgs})
+                        .then(function (response) {
+                            console.log(response);
+                            vm.loadingSubmitCustomLocation = false;
+                            vm.createSnackbar("You Custom Location has been deleted");
+
+                            // send user back to default view
+                            vm.cancelCustomLocationView();
+                            vm.sharedState.clearSearchLocationResults()
+;
+                        })
+                        .catch(function (error) {
+                            vm.loadingSubmitCustomLocation = false;
+                            console.log(error);
+                            if(error.response) vm.createSnackbar(error.response.data.error || "Error.")
+                        });
+            },
             createSnackbar: function(message) {
                 this.$refs.snackbarContainer.createSnackbar({
                     message: message,
@@ -354,6 +399,9 @@
             },
             scrollPageTo: function (height) {
                 $('html,body').animate({ scrollTop: height});
+            },
+            showConfirm(ref) {
+                this.$refs[ref].open();
             }
         }
     }
@@ -464,6 +512,10 @@
     .snackbar {
         /*position: relative;*/
         /*bottom:250px;*/
+    }
+
+    .deleteButton {
+        margin: 0 0 0 190px;
     }
 
 </style>

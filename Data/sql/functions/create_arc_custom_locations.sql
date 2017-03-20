@@ -226,6 +226,52 @@ $BODY$
 ALTER FUNCTION public.___edit_arcCustomLocation(integer, character varying, character varying, character varying)
   OWNER TO postgres;
 
+-- Function: public.___delete_arccustomlocation(integer, character varying)
+
+-- DROP FUNCTION public.___delete_arccustomlocation(integer, character varying);
+
+CREATE OR REPLACE FUNCTION public.___delete_arccustomlocation(id integer, ecos_id character varying)
+  RETURNS text AS
+$BODY$
+
+var deleteRecordId, delete_record;
+var log_record;
+
+if (ecos_id !== '' && ecos_id != null && id !== '' && id !== null) {
+
+    try {
+	   delete_record = plv8.execute("SELECT id, name, country, ecos_id, geom FROM arc_custom_locations WHERE id = $1", [id]);
+    } catch (e) {
+        return plv8.elog(ERROR, e);
+    }
+
+    if (typeof delete_record[0] === "undefined"){
+        return plv8.elog(ERROR, "Invalid custom record id");
+    } else {
+       deleteRecordId = delete_record[0].id;
+    }
+
+    // delete existing location & log event
+    try {
+    	plv8.execute("DELETE FROM arc_custom_locations WHERE id = $1", [deleteRecordId]);
+        plv8.execute("INSERT INTO arc_custom_locations_log (ecos_id, custom_location_id, custom_location_name, type, geom) VALUES ($1, $2, $3, $4, $5)", [ecos_id, id, delete_record[0].name, 'delete', delete_record[0].geom]);
+    } catch (e) {
+        return plv8.elog(ERROR, e);
+    }
+
+
+} else {
+   return plv8.elog(ERROR, "Missing parameters. Custom Location ID & ECOS ID ");
+}
+
+return JSON.stringify(true);
+
+$BODY$
+  LANGUAGE plv8 VOLATILE
+  COST 100;
+ALTER FUNCTION public.___delete_arccustomlocation(integer, character varying)
+  OWNER TO postgres;
+
 
 -- add prepending wildcard to loose admin name search functions
 -- Function: public.udf_executeadminsearchbyname(character varying)
