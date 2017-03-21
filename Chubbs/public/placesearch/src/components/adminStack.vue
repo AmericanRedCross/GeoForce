@@ -8,7 +8,7 @@
         </div>
         <div class="adminResult" v-if="adminStack.features.length > 0">
             <div v-for="(val, key, index) in adminStack.features[0].properties">
-                <div v-if="key != 'centroid'">{{key}}: {{val}}</div>
+                <div v-if="key != 'centroid' & key != 'id' & key != 'gadm_stack_level'">{{key}}: {{val}}</div>
                 <div v-if="key === 'centroid'">{{key}}: {{val[0]}}, {{val[1]}}</div>
             </div>
         </div>

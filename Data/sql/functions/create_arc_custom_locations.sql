@@ -27,6 +27,21 @@ CREATE TABLE arc_custom_locations_log (
   created timestamp with time zone not null default now()
 );
 
+CREATE INDEX arc_custom_locations_name_idx
+  ON public.arc_custom_locations
+  USING btree
+  (name COLLATE pg_catalog."default");
+
+CREATE INDEX arc_custom_locations_gadm_stack_guid_idx
+  ON public.arc_custom_locations
+  USING btree
+  (gadm_stack_guid);
+
+CREATE INDEX arc_custom_locations_geom_idx
+  ON public.arc_custom_locations
+  USING gist
+  (geom);
+
 /**************
 
 tests
