@@ -1,0 +1,88 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 100%;
+}
+
+html,
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    height:100%;
+}
+
+
+#content {
+    padding-bottom: 80px;
+    height: 100%;
+    max-width: 1280px;
+    width: 95%;
+    margin: 40px auto 0 auto;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    padding: 1rem;
+    height: 80px;
+    background-color: #efefef;
+    text-align: center;
+    width: 100%;
+}
+
+#footer p {
+    margin-right: 20px;
+    font-size: smaller;
+    color: #6d6e70;
+}
+
+#footer a {
+    text-decoration: none;
+    cursor: pointer;
+    color: #6d6e70;
+}
+
+.clearfix:before, .clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+
+.btn-flat {
+    padding: 10px 15px;
+    cursor: pointer;
+    background: #56a0d3;
+    color: #3d3d3d;
+    border: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+.btn-flat:hover {
+    background: #0091cd;
+    color: #000;
+}
+
+.btn-chooseThis {
+    margin-left: 122px;
+}
+
+.btn-search {
+    margin: 0 15px;
+}

@@ -27,6 +27,14 @@ cd ~/Mapfolio/GeoForce/Succubus
 npm install
 echo RUNNING SUCCUBUS PREPERATION SCRIPTS
 sudo node ~/Mapfolio/GeoForce/Succubus/preprocessing_operations/meta.js
+echo INSTALLING PLACESEARCH DEPENDENCIES
+cd ~/Mapfolio/GeoForce/Chubbs/public/placesearch
+sudo npm install
+echo COPY custom compile.js into vueify/lib
+sudo cp ~/Mapfolio/compiler.js ~/Mapfolio/GeoForce/Chubbs/public/placesearch/node_modules/vueify/lib/
+echo BUILDING build.js
+cd ~/Mapfolio/GeoForce/Chubbs/public/placesearch
+sudo npm run build
 echo RESTART Chubbs
 cd ~/Mapfolio/GeoForce/Chubbs
 sudo pm2 restart all

@@ -321,6 +321,14 @@ exports.app = function (passport) {
                         searchObj.isSpatial = false;
 
                         //GATrackEvent("Get Admin Stack", "by Stack ID, Admin, Datasource",  this.args.stackid + "," + this.args.adminlevel + "," + this.args.datasource); //Analytics
+                    } else if (settings.dsColumns[this.args.datasource.toLowerCase()]) {
+                        //Set up search parameters
+                        // get arc_custom_location record id from custom source in case there's multiple custom locations in the same stack
+                        if(this.args.datasource.toLowerCase() === "custom") searchObj.customid = this.args.customid;
+                        searchObj.stackid = this.args.stackid;
+                        searchObj.adminlevel = this.args.adminlevel;
+                        searchObj.datasource = this.args.datasource;
+                        searchObj.isSpatial = false;
                     }
                     else {
                         //Couldn't find this datasource in the settings file. Exit.
@@ -418,12 +426,11 @@ exports.app = function (passport) {
 //        console.log('Page has been tracked with Google Analytics');
 //      }
 //    });
-
     //Detect if args were passed in
     if (JSON.stringify(args) != '{}') {
       //Add custom properties as defaults
       args.view = "admin_namesearch"
-      args.featureCollection = { source: "GeoDB" };
+      args.featureCollection = { };
       args.jsonp = true;
 
       //Get the text arg, pass it to function
@@ -444,7 +451,6 @@ exports.app = function (passport) {
         executeAdminIDSearch(featureid, { type: "id", returnGeometry: args.returnGeometry }, function (result) {
           //handle results of id search
           args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
-          args.featureCollection.source = "GeoDB";
           args.breadcrumbs = [{ link: "/services", name: "Home" }, { link: "", name: "Query" }];
           common.respond(req, res, args);
           return;
@@ -468,6 +474,113 @@ exports.app = function (passport) {
     }
   });
 
+    /**
+     * Create custom ARC location POST endpoint
+     */
+    app.post('/services/customLocation', function (req, res){
+        var args = {};
+        var body = req.body;
+        args.format = "json";
+        args.featureCollection = {};
+
+        // check for required body args
+        if (body.ecos_id === undefined || body.name === undefined || body.wkt === undefined){
+            args.errorMessage = "error: ecos_id, name, & wkt required in POST body";
+            // throw missing required arguments error
+            common.respond(req, res, args);
+        } else {
+            var sql = {};
+            sql.text = "SELECT * FROM ___create_arccustomlocation($1,$2,$3)";
+            sql.values = [body.ecos_id, body.wkt, body.name];
+
+            common.executePgQuery(sql, function(err, result){
+                if(err){
+                    // throw error with db message
+                    common.log(err);
+                    args.errorMessage = err.message;
+                    common.respond(req, res, args);
+                } else {
+
+                    // response should be [{"___create_arccustomlocation": {} }]
+                    args.featureCollection = common.formatters.geoJSONFormatter([JSON.parse(result.rows[0]["___create_arccustomlocation"])]);
+                    common.respond(req, res, args);
+                }
+
+            });
+        }
+    });
+
+    /**
+     * Edit custom ARC location PATCH endpoint
+     */
+    app.patch('/services/customLocation', function (req, res){
+
+        var args = {};
+        var body = req.body;
+        args.format = "json";
+        args.featureCollection = {};
+
+        // check for required body args
+        if (body.id === undefined || body.ecos_id === undefined || body.name === undefined || body.wkt === undefined){
+            args.errorMessage = "error: ecos_id, name, & wkt required in POST body";
+            // throw missing required arguments error
+            common.respond(req, res, args);
+        } else {
+            var sql = {};
+            sql.text = "SELECT * FROM ___edit_arccustomlocation($1,$2,$3,$4)";
+            sql.values = [parseInt(body.id), body.ecos_id, body.wkt, body.name];
+
+            common.executePgQuery(sql, function(err, result){
+                if(err){
+                    // throw error with db message
+                    common.log(err);
+                    args.errorMessage = err.message;
+                    common.respond(req, res, args);
+                } else {
+                    // response should be [{"___edit_arccustomlocation":"true"}]
+                    args.featureCollection = common.formatters.geoJSONFormatter([JSON.parse(result.rows[0]["___edit_arccustomlocation"])]);
+                    common.respond(req, res, args);
+                }
+
+            });
+        }
+    });
+
+    /**
+     * DELETE custom ARC location
+     */
+    app.delete('/services/customLocation/:id', function (req, res){
+
+        var args = {};
+        var body = req.body;
+        args.format = "json";
+        args.featureCollection = {};
+
+        // check for required body args
+        if (req.params.id === undefined || body.ecos_id === undefined){
+            args.errorMessage = "error: ecos_id required in DELETE body";
+            // throw missing required arguments error
+            common.respond(req, res, args);
+        } else {
+            var sql = {};
+            sql.text = "SELECT * FROM ___delete_arccustomLocation($1,$2)";
+            sql.values = [parseInt(req.params.id), body.ecos_id];
+
+            common.executePgQuery(sql, function(err, result){
+                if(err){
+                    // throw error with db message
+                    common.log(err);
+                    args.errorMessage = err.message;
+                    common.respond(req, res, args);
+                } else {
+                    // response should be [{"___delete_arccustomLocation":"true"}]
+                    args.featureCollection = common.formatters.geoJSONFormatter([JSON.parse(result.rows[0]["___delete_arccustomlocation"])]);
+                    common.respond(req, res, args);
+                }
+
+            });
+        }
+    });
 
     //RedCross GeoWebServices Search Functions
     //pass in a search term, check the Geodatabase for matching names
@@ -478,57 +591,66 @@ exports.app = function (passport) {
             this.res = res;
             this.args = args;
 
-            //Start looking for exact matches
+            //Start looking for geo db matches
             executeStrictAdminNameSearch(searchterm, options, this);
 
         }, function (err, result) {
-            //this is the result of executeAdminNameSearch 'strict' callback
-            //result should be sucess or error.  If success, return results to user.
-            //if error or no results, try the non-strict results
-            if(err || (result && result.rows.length == 0)){
-              //Try querying internal GeoDB - not strict
-              executeLooseAdminNameSearch(this.args.searchterm, { returnGeometry: this.args.returnGeometry }, this);
-            }
-            else{
-              common.log("strict matches for " + this.args.searchterm + ": " + result.rows.length);
+            // this is the result of executeAdminNameSearch 'strict' callback
+            // result should be success or error. Fetch Loose Admin Names
 
-              this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
-              this.args.featureCollection.source = "GeoDB";
-              this.args.breadcrumbs = [
-                { link: "/services", name: "Home" },
-                { link: "", name: "Query" }
-              ];
-              common.respond(this.req, this.res, this.args);
-              return;
+            if(err || (result && result.rows.length == 0)) {
+                this.args.featureCollection = {type: "FeatureCollection", features: []}
+            } else {
+                this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows);
             }
+
+            common.log("strict matches for " + this.args.searchterm + ": " + result.rows.length);
+
+            // Try querying internal GeoDB - not strict
+            executeLooseAdminNameSearch(this.args.searchterm, { returnGeometry: this.args.returnGeometry }, this);
+
 
         }, function (err, result) {
-        //this is the result of executeAdminNameSearch 'not-strict' callback
-        //result should be sucess or error.  If success, return results to user.
-        //if error or no results, try GeoNames
 
-        if (err || (result && result.rows.length == 0)) {
-          //Check GeoNames
-          executeGeoNamesAPISearch(this.args.searchterm, this);
-        }
-        else {
-          common.log("loose matches for " + this.args.searchterm + ": " + result.rows.length);
+            // first check if features exist in feature collections
+            // if they do, then don't bother to add new results to array of existing features
+            if (this.args.featureCollection.features.length === 0){
 
-          //Return results
-          //Check which format was specified
+                if (!err && (result && result.rows.length > 0)) {
+                    // set feature Collection to results
+                    this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows);
 
-          this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows); //The page will parse the geoJson to make the HTMl
-          this.args.featureCollection.source = "GeoDB";
-          this.args.breadcrumbs = [
-            { link: "/services", name: "Home" },
-            { link: "", name: "Query" }
-          ];
+                }
+            }
 
-          //Render HTML page with results at bottom
-          common.respond(this.req, this.res, this.args);
-          return;
-        }
+            executeCustomLocationAdminNameSearch(this.args.searchterm, {returnGeometry: this.args.returnGeometry} , this);
+
+
       },
+        function (err, result) {
+
+            //this is the result of arc custom location 'not-strict' callback
+
+            // if rows are returned, append Custom location results to current feature collection
+            if(!err && (result && result.rows.length > 0)){
+                common.log("custom location matches for " + this.args.searchterm + ": " + result.rows.length);
+                var featureCollection = this.args.featureCollection;
+                var resultFeatures = common.formatters.geoJSONFormatter(result.rows);
+
+                // append to features if they exist
+                if (typeof featureCollection.features !== "undefined"){
+                    resultFeatures.features.map(function(r){featureCollection.features.push(r)});
+                } else {
+                    // set collection to custom location search results
+                    featureCollection = resultFeatures;
+                }
+
+                this.args.featureCollection = featureCollection;
+            }
+
+            //Check GeoNames
+            executeGeoNamesAPISearch(this.args.searchterm, this);
+        },
       function (statuscode, result) {
             //This is the callback from the GeoNamesAPI Search
             //check the result and decide what to do.
@@ -539,24 +661,32 @@ exports.app = function (passport) {
             ];
 
             if (statuscode && statuscode == "200") {
-                //we got a response, decide what to do
+                //we got a response, check for existing features, if so, append
                 if (result && result.geonames && result.geonames.length > 0) {
 
-                    this.args.featureCollection = common.formatters.geoJSONFormatter(result.geonames); //The page will parse the geoJson to make the HTMl
-                    this.args.featureCollection.source = "Geonames";
+                    var featureCollection = this.args.featureCollection;
+                    var resultFeatures = common.formatters.geoJSONFormatter(result.geonames);//The page will parse the geoJson to make the HTMl
+
+                    // add "source" property to each feature
+                    resultFeatures.features.map(function(r){r.properties.source = "Geonames"});
+
+                    // append to features if they exist
+                    if (typeof featureCollection.features != "undefined"){
+                        resultFeatures.features.map(function(r){featureCollection.features.push(r)});
+                        this.args.featureCollection = featureCollection;
+                    } else {
+                        // set collection to geonames response
+                        this.args.featureCollection = resultFeatures; //The page will parse the geoJson to make the HTMl
+                    }
 
                     //Render HTML page with results at bottom
                     common.respond(this.req, this.res, this.args);
                 }
                 else {
-                    //no results
-                    var infoMessage = "No results found.";
-                    this.args.infoMessage = infoMessage;
-                    this.args.featureCollection = { message: infoMessage, type: "FeatureCollection", features: [] }; //The page will parse the geoJson to make the HTMl
-                    this.args.featureCollection.source = "Geonames";
 
                     //Render HTML page with results at bottom
                     common.respond(this.req, this.res, this.args);
+
                 }
             } else {
                 //handle a non 200 response
@@ -634,6 +764,15 @@ exports.app = function (passport) {
         common.executePgQuery(sql, callback);
     }
 
+    function executeCustomLocationAdminNameSearch(searchterm, options, callback){
+
+        var query = "SELECT " + (options.returnGeometry === "yes" ? "geom, " : "") + " id, gadm_stack_level, ecos_id, 'Custom' as source, name, country, gadm_stack_guid, level FROM arc_custom_locations WHERE name ILIKE('%' || $1 || '%') ORDER BY name";
+        var sql = {text: query, values: [searchterm.trim()]};
+
+        //run it
+        common.executePgQuery(sql, callback);
+    }
+
 //pass in an ID, check the text search table for the ID
 //This is part 1 of 2 for getting back an admin stack
     function executeAdminIDSearch(featureID, options, callback) {
@@ -658,8 +797,15 @@ exports.app = function (passport) {
     function executeAdminStackSearch(searchObject, callback) {
         var sql = "";
 
+        if (searchObject.datasource.toLowerCase() === "custom" && typeof searchObject.customid !== "undefined"){
+
+            sql = buildAdminStackCustomQuery(searchObject.customid, searchObject.stackid, searchObject.adminlevel, searchObject.returnGeometry, searchObject.datasource);
+            common.log(sql);
+
+            common.executePgQuery(sql, callback);
+        }
         //See if this is a spatial (WKT) search or not
-        if (searchObject.isSpatial == false) {
+        else if (searchObject.isSpatial == false) {
             //lookup by id, datasource and level
             //build sql query
             sql = buildAdminStackQuery(searchObject.stackid, searchObject.datasource, searchObject.adminlevel, searchObject.returnGeometry);
@@ -762,6 +908,26 @@ exports.app = function (passport) {
         }
     )
 
+    function buildAdminStackCustomQuery (customid, uuid, level, returnGeometry, datasource) {
+
+        // build up query to be executed for adding custom locations to admin stacks
+        var gadmLevel = parseInt(level);
+        var gadmTable = "gadm" + gadmLevel;
+        var queryObj = {};
+        var columns = [];
+
+        // get columns names
+        for (var i= 0; i <= gadmLevel; i++){
+            columns.push("id_" + i + " as adm" + i + "_code");
+            columns.push("name_" + i + " as adm" + i + "_name");
+        }
+
+        queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[datasource.toLowerCase()].geometry +"," : "") + "id , gadm_stack_level, gadm_stack_guid as stack_guid, arc_region as isd_region, " + columns.join(",") + " , ST_AsText(ST_Centroid(acl.geom)) as centroid, level, 'Custom' as source, acl.name FROM " + gadmTable + ", arc_custom_locations acl WHERE acl.id = " + customid + " AND acl.gadm_stack_guid = " + gadmTable + " .guid AND guid = $1 LIMIT 1"
+        queryObj.values = [uuid];
+
+        return queryObj;
+    }
+
     function buildAdminStackQuery(rowid, datasource, level, returnGeometry) {
         //build up the query to be executed for getting Admin Stacks
 
@@ -774,7 +940,7 @@ exports.app = function (passport) {
 
         var queryObj = {};
         try {
-            queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + " FROM " + table + " WHERE guid = $1";
+            queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + ", 'GADM' as source FROM " + table + " WHERE guid = $1";
             //If we're asking for Extents, then we need to include other columns in group by clause
             if(settings.dsColumns[table].geometry.toLowerCase().indexOf("extent")){
               queryObj.text += " GROUP BY " + settings.dsColumns[table].columns.split(",").map(function(item){ return (item.split("as ").length > 0 ? item.split("as ")[1] : item.split("as ")[0] )}).join(",");
@@ -801,7 +967,7 @@ exports.app = function (passport) {
 
         var queryObj = {};
 
-        queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + " FROM " + table + " WHERE ST_Intersects(ST_GeomFromText($1, 4326), geom)";
+        queryObj.text = "SELECT " + (returnGeometry == "yes" ? settings.dsColumns[table].geometry : "") + settings.dsColumns[table].columns + ", 'GADM' as source FROM " + table + " WHERE ST_Intersects(ST_GeomFromText($1, 4326), geom)";
 
         //If we're asking for Extents, then we need to include other columns in group by clause
         if (settings.dsColumns[table].geometry.toLowerCase().indexOf("extent")) {
