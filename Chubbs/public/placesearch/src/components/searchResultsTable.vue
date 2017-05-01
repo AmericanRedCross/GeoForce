@@ -63,7 +63,7 @@
                                     v-model="customLocation.name"></ui-textbox>
                     </td>
                     <td>
-                        <ui-textbox required placeholder="Clara.barton@redcross.org" v-model="customLocation.ecos_id"></ui-textbox>
+                        <ui-textbox required placeholder="clara.barton@redcross.org" v-model="customLocation.ecos_id"></ui-textbox>
                     </td>
                 </tr>
                 </tbody>
