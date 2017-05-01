@@ -601,7 +601,10 @@ exports.app = function (passport) {
             if(err || (result && result.rows.length == 0)) {
                 this.args.featureCollection = {type: "FeatureCollection", features: []}
             } else {
-                this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows);
+                this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows.sort(function(a,b){
+                    // sort by admin level
+                    return parseInt(a.level) - parseInt(b.level)}
+                ));
             }
 
             common.log("strict matches for " + this.args.searchterm + ": " + result.rows.length);
@@ -618,7 +621,10 @@ exports.app = function (passport) {
 
                 if (!err && (result && result.rows.length > 0)) {
                     // set feature Collection to results
-                    this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows);
+                    this.args.featureCollection = common.formatters.geoJSONFormatter(result.rows.sort(function(a,b){
+                        // sort by admin level
+                        return parseInt(a.level) - parseInt(b.level)
+                    }));
 
                 }
             }
